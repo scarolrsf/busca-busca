@@ -1,0 +1,41 @@
+name: Publicar
+
+# Publica a pasta site/ no GitHub Pages a cada alteração no repositório —
+# inclusive nas que a própria coleta grava, às 6h e às 18h.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Uma publicação por vez; se chegar outra, a anterior é descartada.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Conferir se há dado a publicar
+        run: |
+          test -s site/index.html || { echo 'site/index.html ausente'; exit 1; }
+          test -s site/dados.json || { echo 'site/dados.json ausente'; exit 1; }
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: publicacao
+        uses: actions/deploy-pages@v4
