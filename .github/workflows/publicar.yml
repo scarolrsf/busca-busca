@@ -31,11 +31,28 @@ jobs:
           test -s site/index.html || { echo 'site/index.html ausente'; exit 1; }
           test -s site/dados.json || { echo 'site/dados.json ausente'; exit 1; }
 
-      - uses: actions/configure-pages@v5
+      # No plano gratuito, o Pages só existe para repositório público. Enquanto
+      # não existir, este passo falha — e falhar aqui encheria a caixa de entrada
+      # de aviso de erro a cada coleta. Então ele avisa e o restante é pulado.
+      # Com `enablement`, assim que o repositório virar público o Pages é
+      # habilitado por esta própria execução, sem precisar mexer em Settings.
+      - id: pages
+        continue-on-error: true
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Pages ainda indisponível
+        if: steps.pages.outcome != 'success'
+        run: |
+          echo "::notice::O GitHub Pages ainda não está disponível para este repositório."
+          echo "::notice::No plano gratuito ele exige repositório público. A publicação será retomada sozinha na próxima alteração depois disso."
 
       - uses: actions/upload-pages-artifact@v3
+        if: steps.pages.outcome == 'success'
         with:
           path: site
 
       - id: publicacao
+        if: steps.pages.outcome == 'success'
         uses: actions/deploy-pages@v4
