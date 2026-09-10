@@ -164,20 +164,21 @@ registros de pertinência selecionada — é o que sustenta o recorte "Juizado
 Especial". `site/dados.json` deixou de ser versionado: é derivado de `dados/`
 pelo passo de publicação, para não duplicar 8 MB a cada coleta.
 
-**Implantação.** Repositório  criado como público, e o
+**Implantação.** Repositório `scarolrsf/busca-busca` criado como público, e o
 código enviado. O workflow foi disparado à mão para validar o caminho inteiro:
-consultou as seis fontes reais e gravou o commit em 1 minuto e 1 segundo, com sucesso. A Cloudflare Pages ainda **não** foi
+consultou as seis fontes reais e gravou o commit `Coleta de 10/09/2026 às 08h41`
+em 1 minuto e 1 segundo, com sucesso. A Cloudflare Pages ainda **não** foi
 configurada — o painel pediu login, que só Sarah pode fazer.
 
 **Pendências.**
 
 1. Entrar na Cloudflare e conectar o repositório em Pages — build command vazio,
-   output directory .
-2. Conferir a primeira execução agendada (6h ou 18h), já que até agora só houve
-   execução manual.
+   output directory `site`.
+2. Conferir a primeira execução agendada, às 6h ou às 18h, já que até agora só
+   houve execução manual.
 3. O cron do GitHub é fixo em UTC; se voltar o horário de verão, corrigir os dois
-   horários em .
-4. Cada coleta reescreve  inteiro, porque o campo
-    muda em todo registro — cerca de 1.700 linhas alteradas por
+   horários em `.github/workflows/coletar.yml`.
+4. Cada coleta reescreve `dados/temas-do-portal.json` inteiro, porque o campo
+   `verificadoEm` muda em todo registro — cerca de 1.700 linhas alteradas por
    execução. O Git comprime bem, mas convém observar o crescimento do
    repositório ao longo dos meses.
