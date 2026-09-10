@@ -44,6 +44,10 @@ contexto.csvObjetos_ = (texto) => {
 contexto.lerXlsx_ = (blob) => lerXlsxDeArquivo(blob.caminho);
 contexto.lerXlsxRemoto_ = (url) => lerXlsxDeArquivo(resposta(url, { segundos: 300 }).getBlob().caminho);
 
+/* Pausa entre uma tentativa e outra. Síncrona, como todo o resto da coleta. */
+contexto.esperar_ = (ms) =>
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+
 contexto.lerRegistros_ = (tabela) => BASE.ler(tabela);
 contexto.gravarRegistros_ = (tabela, registros) => BASE.gravar(tabela, registros);
 contexto.registrarAlteracoes_ = (linhas) => BASE.acrescentar(TABELAS.alteracoes, linhas);

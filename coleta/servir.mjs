@@ -4,7 +4,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const RAIZ = path.resolve('site');
-const TIPOS = { '.html': 'text/html; charset=utf-8', '.json': 'application/json; charset=utf-8' };
+const TIPOS = {
+  '.html': 'text/html; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  // Sem isto o ícone sai como octet-stream e o navegador o ignora — o que dá a
+  // impressão, ao conferir aqui, de que ele não funciona. Em produção o
+  // GitHub Pages já manda o tipo certo.
+  '.svg': 'image/svg+xml; charset=utf-8'
+};
 
 http.createServer((req, res) => {
   const nome = req.url === '/' ? 'index.html' : decodeURIComponent(req.url.split('?')[0]).replace(/^\//, '');

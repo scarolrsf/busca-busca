@@ -61,10 +61,31 @@ function coletarSTF_(){executarFonte_('STF — repercussão geral',PILOTO.stf,()
 function coletarInformativosSTF_(){executarFonte_('STF — informativos',PILOTO.stfInfo,()=>{
   return coletarInfosSTF_();
 });}
+/* Uma fonte não cai só por erro de rede. O portal do STF, quando está
+   sobrecarregado, responde 200 e devolve em meio segundo uma página de erro de
+   54 KB, sem a tabela — para o curl é sucesso, e só o leitor percebe que não
+   veio o que foi pedido. Como isso pode acontecer em qualquer uma das seis, a
+   repetição fica aqui, em volta da operação inteira: buscar, reconhecer e
+   comparar. Só a última falha é registrada; se alguma tentativa der certo, a
+   fonte conta como consultada, porque foi. */
+const TENTATIVAS_POR_FONTE=3;
 function executarFonte_(name,url,fn){
-  const time=new Date().toISOString();
-  try{const count=fn();registrarFonte_(name,time,time,'Consulta concluída',count,'Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.',url);console.log(name+': '+count+' registros processados.');}
-  catch(e){registrarFonte_(name,time,'','Falha / cobertura pendente',0,String(e.message||e).slice(0,1500),url);console.error(name+': '+e.message);}
+  let ultimo=null;
+  for(let t=1;t<=TENTATIVAS_POR_FONTE;t++){
+    const time=new Date().toISOString();
+    try{
+      const count=fn();
+      registrarFonte_(name,time,time,'Consulta concluída',count,'Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.',url);
+      console.log(name+': '+count+' registros processados.'+(t>1?' (na '+t+'ª tentativa)':''));
+      return;
+    }catch(e){
+      ultimo=e;
+      if(t<TENTATIVAS_POR_FONTE){console.error(name+': '+e.message+' — repetindo.');esperar_(t*5000);}
+    }
+  }
+  const fim=new Date().toISOString();
+  registrarFonte_(name,fim,'','Falha / cobertura pendente',0,'Em '+TENTATIVAS_POR_FONTE+' tentativas: '+String(ultimo&&ultimo.message||ultimo).slice(0,1400),url);
+  console.error(name+': '+(ultimo&&ultimo.message));
 }
 function atualizarRegistros_(sheetName,incoming,origin){
   const current=lerRegistros_(sheetName);const index={};current.forEach((r,i)=>index[r.id]=i);

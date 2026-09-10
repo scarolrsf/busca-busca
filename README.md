@@ -16,7 +16,7 @@ Três peças, todas gratuitas:
 
 | Peça | Onde roda | Quando |
 | --- | --- | --- |
-| Coleta nas fontes oficiais | GitHub Actions | 6h e 18h, horário de Brasília |
+| Coleta nas fontes oficiais | GitHub Actions | 6h07 e 18h07, horário de Brasília |
 | Base de dados | arquivos JSON no próprio repositório | a cada coleta |
 | Site | GitHub Pages | publica a cada alteração |
 
@@ -34,15 +34,23 @@ O endereço é **https://scarolrsf.github.io/busca-busca/**.
 ```
 site/            o que o GitHub Pages publica
   index.html     o portal inteiro: CSS e JS embutidos, sem dependências
-  dados.json     gerado pela coleta
+  icone.svg      o logotipo reduzido ao que se lê a 16 pixels
+  dados.json     derivado de dados/ na publicação; não versionado
 
 coleta/
-  executar.mjs      orquestra a coleta e grava site/dados.json
-  regras.js         uma regra de leitura por fonte oficial
-  ambiente.mjs      rede, leitura de xlsx e armazenamento
+  executar.mjs       orquestra a coleta
+  regras.js          uma regra de leitura por fonte oficial
+  ambiente.mjs       rede, leitura de xlsx e armazenamento
+  publicar.mjs       monta site/dados.json a partir da base
   conferir-regra.mjs confere a regra de suspensão contra a base inteira
+  conferir-fontes.mjs mostra, no resumo da execução, quais fontes responderam
 
 dados/           a base entre uma coleta e outra, versionada
+  temas-do-portal.json         precedentes e incidentes
+  informativos-do-portal.json  julgados divulgados em informativo
+  alteracoes.json              o que mudou, linha a linha
+  fontes.json                  situação da última consulta a cada fonte
+  conferencia.json             quando cada origem foi lida pela última vez
 work/            apoio local, fora do repositório (ver .gitignore)
 ```
 
@@ -52,7 +60,7 @@ work/            apoio local, fora do repositório (ver .gitignore)
 node coleta/executar.mjs
 ```
 
-Consulta as seis fontes, atualiza `dados/` e regrava `site/dados.json`. Depois:
+Consulta as seis fontes, atualiza `dados/` e gera `site/dados.json`. Depois:
 
 ```bash
 npx --yes serve site
@@ -73,6 +81,23 @@ Quando uma fonte não responde, **nada é apagado**: os registros dela continuam
 sendo os da última consulta bem-sucedida, a falha é anotada, e a aba "Fontes e
 atualização" mostra um ponto vermelho. O portal nunca apresenta dado velho como
 recém-conferido.
+
+### Quando o tribunal oscila
+
+Os portais oscilam, e nem toda oscilação se parece com erro. O do STF, quando
+está sobrecarregado, responde **200 com uma página de erro sem a tabela**, em
+meio segundo: para o curl é sucesso; só o leitor percebe que não veio o que foi
+pedido. Por isso a repetição acontece em dois níveis:
+
+- Em `ambiente.mjs`, na requisição: três tentativas para erro de rede, tempo
+  esgotado, 429 e 5xx, com pausa crescente. Um 403 ou 404 não é repetido — é
+  resposta, não soluço.
+- Em `regras.js`, em volta da fonte inteira: três tentativas de buscar,
+  reconhecer e comparar. É esse nível que salva o caso do 200 com página errada,
+  e vale para as seis fontes.
+
+Uma fonte só é dada como falha depois que as três tentativas falharem, e o que
+fica anotado é o último erro.
 
 ### Certificado do STF
 
@@ -103,6 +128,28 @@ intermediário não cobra manutenção.
    está na lista de resultados da pesquisa de repercussão geral
    (`listarProcesso.asp`), que traz a mesma marca ao lado da situação de cada
    tema e devolve o cadastro inteiro numa requisição.
+
+## O que é base e o que é derivado
+
+O repositório guarda **uma coisa só**: a base em `dados/`. Tudo que o site lê é
+derivado dela por `coleta/publicar.mjs`, no momento de publicar.
+
+Isso não é preciosismo de arquitetura. O `site/dados.json` é minificado numa
+linha só; versioná-lo fazia o Git gravar 1,7 MB inteiros a cada coleta, porque
+não há como guardar a diferença de uma linha que mudou por inteiro. A duas
+coletas por dia, isso é mais de 1 GB por ano de repositório.
+
+Pela mesma razão, a data de conferência não fica em cada registro. Ela é o
+instante em que a fonte foi lida — o mesmo para todos os registros daquela
+fonte —, e mora em `dados/conferencia.json`, uma linha por origem. O campo só
+reaparece dentro de um registro como exceção: quando ele **some da fonte**, a
+data dele para ali, em vez de continuar acompanhando uma fonte que já não o
+traz. `publicar.mjs` devolve o campo na montagem, então a ficha continua
+mostrando quando aquele registro foi conferido pela última vez.
+
+Efeito colateral útil: `conferencia.json` muda a cada coleta, ainda que nada
+mais mude. Isso mantém o repositório ativo, e o GitHub desliga workflow agendado
+em repositório parado por 60 dias.
 
 ## Até quando vale a suspensão
 
@@ -148,6 +195,70 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 10/09/2026 — Crescimento do repositório, repetição das fontes e ícone
+
+**Responsável:** Claude Code, a pedido de Sarah ("pode fazer tudo o que falta").
+
+**Motivo.** Fecha as três pendências abertas na revisão desta mesma data.
+
+**1. O repositório crescia sem teto.** Duas causas, medidas antes de mexer:
+
+- `site/dados.json` era versionado. Minificado numa linha só, o Git não consegue
+  guardar a diferença: gravava **1,69 MB inteiros por coleta**. Seis versões já
+  ocupavam 10 MB — a duas coletas por dia, mais de 1 GB por ano. Ele é derivado
+  de `dados/`, e o próprio docstring de `publicar.mjs` sempre disse que a
+  intenção era não versioná-lo. Agora nasce no passo de publicação, que de
+  quebra passa a rodar a conferência da regra de suspensão antes de publicar.
+- `verificadoEm` era o mesmo instante copiado em 3.204 registros e reescrito a
+  cada coleta. Passou para `dados/conferencia.json`, uma linha por origem. O
+  campo só reaparece no registro como exceção, quando ele some da fonte e a data
+  precisa parar. `publicar.mjs` devolve o campo na montagem.
+
+Medido numa coleta real, com alteração de verdade nas fontes: **84 linhas
+inseridas e 34 removidas**, contra 1.733/1.733 antes — e o diff agora mostra o
+que mudou (o STF publicou as descrições dos temas 1480 e 1481). Conferido que o
+`dados.json` gerado é idêntico ao anterior registro a registro, mudando só a
+ordem das chaves. As quatro propriedades do registro ausente foram testadas com
+armazenamento em memória.
+
+**2. A coleta agendada nunca havia rodado, e não tolerava soluço.** Ao rodar a
+coleta completa para medir o item 1, a repercussão geral do STF falhou com
+"Tabela não localizada" em 0 segundo. Investigado: o portal do STF, quando está
+sobrecarregado, responde **200 com uma página de erro de 54 KB, sem a tabela**.
+Para o curl é sucesso. Medido daqui, ele responde duas vezes seguidas e trava na
+terceira. Não havia repetição em lugar nenhum: uma oscilação de segundos
+derrubava a fonte por doze horas. Acrescentada repetição em dois níveis — na
+requisição (rede, tempo esgotado, 429 e 5xx) e em volta da fonte inteira, que é
+o nível que resolve o 200 com página errada. Depois disso, coleta real com
+**6 de 6 fontes**, zero falhas.
+
+O horário passou de 09:00/21:00 para 09:07/21:07 UTC. O agendador do GitHub é de
+melhor esforço e a hora cheia é quando todo mundo agenda; um minuto quebrado cai
+fora do pico. Continua sendo 6h e 18h de Brasília, com sete minutos.
+
+**3. O site não tinha ícone.** Criado `site/icone.svg`: o logotipo reduzido ao
+que se lê a 16 pixels — os dois aros cruzados de fundo e o B no lugar onde a
+lente nasce. Cor fixa nos dois temas, porque a aba tem fundo próprio.
+Acrescentada também a `description`, para quando o endereço é compartilhado.
+
+**Arquivos.** `coleta/ambiente.mjs`, `coleta/regras.js`, `coleta/executar.mjs`,
+`coleta/publicar.mjs`, `coleta/servir.mjs`, `site/index.html`,
+`site/icone.svg` (novo), `dados/conferencia.json` (novo),
+`.github/workflows/coletar.yml`, `.github/workflows/publicar.yml`,
+`.gitignore`, `README.md`.
+
+**Dados.** A base foi migrada uma vez: `verificadoEm` removido de todos os
+registros, `conferencia.json` montado com as datas por origem, sem exceções — as
+datas eram uniformes dentro de cada origem. `site/dados.json` deixou de ser
+versionado.
+
+**Pendências.**
+
+1. A confirmação em produção continua dependendo da próxima execução no Actions:
+   é lá que se vê se o remendo do certificado do STF funciona e o que o corpo do
+   403 do STJ revela. Nada disso é observável desta máquina.
+2. A primeira execução *agendada* ainda não ocorreu.
 
 ### 10/09/2026 — Metade das fontes não respondia no GitHub Actions
 

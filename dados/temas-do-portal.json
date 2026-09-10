@@ -65585,8 +65585,8 @@
   "tribunal": "STF",
   "tipo": "Repercussão geral",
   "numero": "1480",
-  "questao": "Tema 1480 — o STF ainda não publicou a descrição da controvérsia.",
-  "area": "Cível",
+  "questao": "Recurso extraordinário em que se discute, à luz dos artigos 5º; XXXV; LIV; 37; e 100, da Constituição Federal, se o curso do prazo prescricional da obrigação de pagar quantia certa pela Fazenda Pública é suspenso durante o cumprimento de obrigação de fazer imposta na mesma sentença, consistente na implantação de parcela remuneratória em folha de pagamento.",
+  "area": "Fazenda Pública",
   "situacao": "Em julgamento",
   "suspensao": "",
   "julgamento": "",
@@ -65596,9 +65596,9 @@
   "fonte": "https://portal.stf.jus.br/jurisprudenciaRepercussao/verAndamentoProcesso.asp?incidente=7480555&numeroProcesso=1586626&classeProcesso=RE&numeroTema=1480",
   "origem": "STF — repercussão geral",
   "pertinencia": "Possível pertinência — classificação automática ampla",
-  "observacoes": "Título: \nRelator: MINISTRO PRESIDENTE\nAssuntos: 10671-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Liquidação / Cumprimento / Execução | Obrigação de Fazer / Não Fazer\n5632-DIREITO CIVIL | Fatos Jurídicos | Prescrição e Decadência\n13305-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Atos Processuais | Prazo | Suspensão / Interrupção\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
+  "observacoes": "Título: Suspensão do prazo prescricional da obrigação de pagar quantia certa pela Fazenda Pública durante o cumprimento de obrigação de fazer imposta na mesma sentença.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 10671-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Liquidação / Cumprimento / Execução | Obrigação de Fazer / Não Fazer\n5632-DIREITO CIVIL | Fatos Jurídicos | Prescrição e Decadência\n13305-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Atos Processuais | Prazo | Suspensão / Interrupção\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1586626",
-  "atualizadoEm": "2026-09-10T11:12:00.558Z",
+  "atualizadoEm": "2026-09-10T17:36:29.105Z",
   "anotacaoManual": ""
  },
  {
@@ -65606,7 +65606,7 @@
   "tribunal": "STF",
   "tipo": "Repercussão geral",
   "numero": "1481",
-  "questao": "Tema 1481 — o STF ainda não publicou a descrição da controvérsia.",
+  "questao": "Recurso extraordinário em que se discute, à luz do artigo 2º da Emenda Constitucional nº 51/2006, se agentes comunitários de saúde e agentes de combate a endemias que estavam em exercício antes da promulgação da referida emenda podem ser efetivados no serviço público, independentemente de aprovação em concurso público, quando admitidos mediante processo seletivo simplificado.",
   "area": "Fazenda Pública",
   "situacao": "Em julgamento",
   "suspensao": "",
@@ -65617,9 +65617,9 @@
   "fonte": "https://portal.stf.jus.br/jurisprudenciaRepercussao/verAndamentoProcesso.asp?incidente=7331812&numeroProcesso=1563095&classeProcesso=RE&numeroTema=1481",
   "origem": "STF — repercussão geral",
   "pertinencia": "Possível pertinência — classificação automática ampla",
-  "observacoes": "Título: \nRelator: MINISTRO PRESIDENTE\nAssuntos: 10223-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Regime Estatutário | Enquadramento\n10226-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Regime Estatutário | Reintegração ou Readmissão\n10409-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Empregado Público / Temporário\n12519-DIREITO DA SAÚDE | Pública | Vigilância Sanitária e Epidemológica\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
+  "observacoes": "Título: Possibilidade de efetivação no serviço público de agentes comunitários de saúde e agentes de combate a endemias em exercício antes da Emenda Constitucional nº 51/2006.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 10223-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Regime Estatutário | Enquadramento\n10226-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Regime Estatutário | Reintegração ou Readmissão\n10409-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Empregado Público / Temporário\n12519-DIREITO DA SAÚDE | Pública | Vigilância Sanitária e Epidemológica\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1563095",
-  "atualizadoEm": "2026-09-10T11:12:00.558Z",
+  "atualizadoEm": "2026-09-10T17:36:29.105Z",
   "anotacaoManual": ""
  }
 ]

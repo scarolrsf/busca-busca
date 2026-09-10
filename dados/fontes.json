@@ -1,8 +1,8 @@
 [
  [
   "STJ — temas e processos",
-  "2026-09-10T11:40:46.384Z",
-  "2026-09-10T11:40:46.384Z",
+  "2026-09-10T17:35:33.158Z",
+  "2026-09-10T17:35:33.158Z",
   "Consulta concluída",
   "1495",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -10,8 +10,8 @@
  ],
  [
   "TJMG — IUJ",
-  "2026-09-10T11:40:55.769Z",
-  "2026-09-10T11:40:55.769Z",
+  "2026-09-10T17:35:38.819Z",
+  "2026-09-10T17:35:38.819Z",
   "Consulta concluída",
   "48",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-09-10T11:40:57.642Z",
-  "2026-09-10T11:40:57.642Z",
+  "2026-09-10T17:35:41.147Z",
+  "2026-09-10T17:35:41.147Z",
   "Consulta concluída",
   "172",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,29 +28,29 @@
  ],
  [
   "STJ — informativos",
-  "2026-09-10T11:41:25.542Z",
-  "2026-09-10T11:17:23.270Z",
-  "Falha / cobertura pendente",
-  "0",
-  "A fonte respondeu HTTP 403.",
+  "2026-09-10T17:35:54.289Z",
+  "2026-09-10T17:35:54.289Z",
+  "Consulta concluída",
+  "15",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://processo.stj.jus.br/jurisprudencia/externo/informativo/"
  ],
  [
   "STF — repercussão geral",
-  "2026-09-10T11:41:26.096Z",
-  "2026-09-10T11:17:24.630Z",
-  "Falha / cobertura pendente",
-  "0",
-  "Falha de rede ao consultar a fonte: curl: (60) SSL certificate problem: unable to get local issuer certificate\nMore details here: https://curl.se/docs/sslcerts.html\n\ncurl failed to verify the legitimacy of the server and therefore could not\nestablish a secure connection to it. To learn more about this situation and\nhow to fix it, plea",
+  "2026-09-10T17:35:55.662Z",
+  "2026-09-10T17:35:55.662Z",
+  "Consulta concluída",
+  "1481",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
  ],
  [
   "STF — informativos",
-  "2026-09-10T11:41:26.648Z",
-  "2026-09-10T11:17:56.341Z",
-  "Falha / cobertura pendente",
-  "0",
-  "Falha de rede ao consultar a fonte: curl: (60) SSL certificate problem: unable to get local issuer certificate\nMore details here: https://curl.se/docs/sslcerts.html\n\ncurl failed to verify the legitimacy of the server and therefore could not\nestablish a secure connection to it. To learn more about this situation and\nhow to fix it, plea",
+  "2026-09-10T17:36:29.301Z",
+  "2026-09-10T17:36:29.301Z",
+  "Consulta concluída",
+  "1012",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://portal.stf.jus.br/textos/verTexto.asp?servico=informativoSTF"
  ]
 ]

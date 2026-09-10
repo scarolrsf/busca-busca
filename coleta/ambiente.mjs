@@ -46,6 +46,38 @@ const COOKIES = path.join(TEMP, 'cookies.txt');
  */
 const ANCORAS = {};
 
+/*
+ * Repetição.
+ *
+ * Os portais dos tribunais oscilam. O do STF, medido daqui, responde duas vezes
+ * seguidas e trava na terceira. Sem repetir, uma oscilação de segundos derruba a
+ * fonte da coleta inteira, e a base fica doze horas sem aquele tribunal por
+ * causa de um soluço — foi o que aconteceu com a repercussão geral.
+ *
+ * Repete só o que é passageiro: erro de rede, tempo esgotado, 429 e 5xx. Um 403
+ * ou um 404 é resposta, não soluço; repetir só adiaria o registro do que já se
+ * sabe. Todas as requisições daqui são de leitura, então repeti-las não tem
+ * efeito colateral.
+ */
+const TENTATIVAS = 3;
+
+function esperar(ms) {
+  // Espera síncrona: o resto da coleta é síncrono, e dormir com um subprocesso
+  // custaria mais que a própria espera.
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function vaiAdiantarRepetir(saidaDoCurl, codigo) {
+  if (saidaDoCurl !== 0) return true;          // erro de rede ou tempo esgotado
+  return codigo === 429 || (codigo >= 500 && codigo < 600);
+}
+
+/** O código HTTP da última resposta, lido do arquivo de cabeçalhos do curl. */
+function codigoDe(cabecalhosBrutos) {
+  const status = cabecalhosBrutos.split(/\r?\n/).filter(l => /^HTTP\//.test(l)).pop() || '';
+  return Number((status.match(/\s(\d{3})\s?/) || [])[1] || 0);
+}
+
 function ancoraDaCadeia(host) {
   if (Object.prototype.hasOwnProperty.call(ANCORAS, host)) return ANCORAS[host];
   ANCORAS[host] = null;
@@ -114,28 +146,37 @@ export function buscar(url, opcoes) {
 
   args.push(url);
 
-  let r = spawnSync('curl', args, { encoding: 'buffer', maxBuffer: 1024 * 1024 * 256 });
-  if (r.error) throw new Error('curl indisponível: ' + r.error.message);
+  let r = null;
+  let brutos = '';
+  let codigo = 0;
 
-  // 60 é o código do curl para "não consegui validar o certificado do servidor".
-  if (r.status === 60) {
-    const host = (() => { try { return new URL(url).hostname; } catch (e) { return ''; } })();
-    const ancora = host ? ancoraDaCadeia(host) : null;
-    if (ancora) {
-      r = spawnSync('curl', ['--cacert', ancora].concat(args),
-        { encoding: 'buffer', maxBuffer: 1024 * 1024 * 256 });
+  for (let tentativa = 1; tentativa <= TENTATIVAS; tentativa++) {
+    r = spawnSync('curl', args, { encoding: 'buffer', maxBuffer: 1024 * 1024 * 256 });
+    if (r.error) throw new Error('curl indisponível: ' + r.error.message);
+
+    // 60 é o código do curl para "não consegui validar o certificado do servidor".
+    if (r.status === 60) {
+      const host = (() => { try { return new URL(url).hostname; } catch (e) { return ''; } })();
+      const ancora = host ? ancoraDaCadeia(host) : null;
+      if (ancora) {
+        r = spawnSync('curl', ['--cacert', ancora].concat(args),
+          { encoding: 'buffer', maxBuffer: 1024 * 1024 * 256 });
+      }
     }
+
+    brutos = fs.existsSync(cabecalhos) ? fs.readFileSync(cabecalhos, 'latin1') : '';
+    codigo = codigoDe(brutos);
+
+    if (!vaiAdiantarRepetir(r.status, codigo) || tentativa === TENTATIVAS) break;
+    esperar(tentativa * 4000);
   }
 
   if (r.status !== 0) {
-    throw new Error('Falha de rede ao consultar a fonte: ' + String(r.stderr || '').slice(0, 300));
+    throw new Error('Falha de rede ao consultar a fonte, em ' + TENTATIVAS + ' tentativas: ' +
+      String(r.stderr || '').slice(0, 300));
   }
 
-  const brutos = fs.existsSync(cabecalhos) ? fs.readFileSync(cabecalhos, 'latin1') : '';
   const linhas = brutos.split(/\r?\n/);
-  const status = linhas.filter(l => /^HTTP\//.test(l)).pop() || 'HTTP/1.1 000';
-  const codigo = Number((status.match(/\s(\d{3})\s?/) || [])[1] || 0);
-
   const mapa = {};
   linhas.forEach(l => {
     const i = l.indexOf(':');

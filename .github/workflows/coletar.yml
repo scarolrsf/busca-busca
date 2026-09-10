@@ -1,12 +1,18 @@
 name: Coleta
 
-# 09:00 e 21:00 UTC = 6h e 18h no horário de Brasília.
-# O cron do GitHub não conhece fuso: se o Brasil voltar a ter horário de verão,
-# estes dois horários precisam ser corrigidos à mão.
+# 09:07 e 21:07 UTC = 6h07 e 18h07 no horário de Brasília.
+#
+# Os sete minutos são de propósito. O agendador do GitHub é de melhor esforço, e
+# a hora cheia é quando o mundo inteiro agenda: pedir 09:00 costuma render uma
+# execução bem mais tarde, ou nenhuma, quando a fila está grande. Um minuto
+# quebrado cai fora do pico e chega perto do horário pedido.
+#
+# O cron do GitHub não conhece fuso. O Brasil não tem horário de verão desde
+# 2019; se voltar a ter, estes dois horários precisam ser corrigidos à mão.
 on:
   schedule:
-    - cron: '0 9 * * *'
-    - cron: '0 21 * * *'
+    - cron: '7 9 * * *'
+    - cron: '7 21 * * *'
   workflow_dispatch:
 
 permissions:
