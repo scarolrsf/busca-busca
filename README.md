@@ -326,6 +326,12 @@ aparece no computador, onde sobra largura.
 trecho das abas em `desenha()`), `.claude/launch.json` (novo, prévia local),
 `README.md`.
 
+Enquanto este trabalho corria, o commit `bd12d64` — o das tipografias
+auto-hospedadas — gravou a pasta como ela estava e levou junto a primeira
+metade do bloco `celular` e as três correções de grade do item 7. Nada se
+perdeu, mas as mudanças de celular ficam repartidas entre aquele commit e o
+seguinte.
+
 **Validação.** Prévia local (`serve site` na porta 4173), no navegador embutido
 do Claude Code, com a base real de 10/09/2026. Conferido em 375×812, 320×700,
 740×420 e 1280×800, nos temas claro e escuro, nas seis abas, na ficha aberta e
