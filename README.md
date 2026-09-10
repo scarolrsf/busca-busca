@@ -135,6 +135,38 @@ inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
 
+### 10/09/2026 — O portal deixa de ser só dos Juizados
+
+**Responsável:** Claude Code, a pedido de Sarah.
+
+**Motivo.** Sarah vai disponibilizar o buscador também às varas cíveis. O que
+começou como um pedido de rótulo — trocar "Área do Juizado" por "Área" na
+faceta — é, na verdade, uma troca de público: o portal falava como se todo
+consulente fosse dos Juizados.
+
+**O que mudou.**
+
+- A faceta e a coluna da planilha passaram a se chamar apenas "Área".
+- A procedência do registro deixou de dizer "Seleção dos Juizados", e passou a
+  dizer "Triagem inicial".
+- O filtro de competência continua com "Todos", "Justiça comum" e "Juizado
+  Especial" — essa distinção fica mais útil, não menos, com dois públicos. O que
+  mudou é o padrão: a consulta ainda abre em "Juizado Especial" na primeira
+  visita, mas a escolha passa a ser lembrada por navegador (`bb-escopo` no
+  localStorage). Quem atua na justiça comum troca uma vez.
+- O endereço continua carregando `escopo=` sempre que a competência sai de
+  "Juizado Especial", e não quando sai da preferência guardada: um link copiado
+  precisa abrir na mesma competência para quem o recebe, seja qual for a
+  preferência de quem clica.
+- O guia ganhou, na seção Competência, a entrada "Qual vem marcada".
+
+**Corrigido de passagem.** A ficha imprimia `pertinencia` cru, então 356
+registros exibiam "Selecionado na planilha inicial" na tela — o vocabulário
+interno, que não deve aparecer para o consulente. A função `rotuloPublico`
+existia exatamente para isso desde o começo e nunca tinha sido chamada. Agora é.
+
+**Pendências.** Nenhuma nova.
+
 ### 10/09/2026 — Saída do Apps Script para GitHub Actions e Cloudflare Pages
 
 **Responsável:** Claude Code, a pedido de Sarah.

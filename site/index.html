@@ -454,8 +454,8 @@ var CURADO = 'Selecionado na planilha inicial';
 /* A base guarda de onde cada registro veio, com o vocabulário de quem mantém o
    portal. Na tela vale o nome que o consulente reconhece. */
 var ROTULOS_PUBLICOS = {
-  'Selecionado na planilha inicial': 'Seleção dos Juizados',
-  'Planilha inicial': 'Seleção dos Juizados',
+  'Selecionado na planilha inicial': 'Triagem inicial',
+  'Planilha inicial': 'Triagem inicial',
   'Possível pertinência — classificação automática ampla': 'Incluído pela coleta automática',
   'Importado — não conferido': 'Sem conferência automática'
 };
@@ -785,7 +785,7 @@ function grupoSituacao(r) {
 }
 
 /**
- * Área do Juizado. O rótulo da fonte resolve a maior parte, mas o RUPE e o
+ * Área da matéria. O rótulo da fonte resolve a maior parte, mas o RUPE e o
  * cadastro do STF entregam quase tudo como "transversal" — nesses casos a área
  * sai do próprio texto do tema, que quase sempre denuncia a matéria.
  */
@@ -890,6 +890,17 @@ function risco(r) {
   return nivelAlcance(grupoSuspensao(r));
 }
 
+
+/**
+ * O portal atende tanto os Juizados quanto as varas comuns. Em vez de eleger um
+ * padrão que estará errado para metade das pessoas, ele lembra a última escolha
+ * de cada navegador — e abre em "Juizado Especial" só na primeira visita, que é
+ * de onde o projeto nasceu.
+ */
+function escopoPreferido() {
+  var g = lembrar('escopo');
+  return g === 'todos' || g === 'comum' || g === 'juizado' ? g : 'juizado';
+}
 
 /* Competência do Juizado Especial.
    A triagem já feita vale como resposta; os IUJ vêm da Turma Recursal, logo são
@@ -1184,7 +1195,7 @@ function abaRegistros(lista, rotuloSingular, rotuloPlural) {
   desenhaRail(noEscopo, [
     { titulo: 'Tribunal', campo: 'tribunal' },
     { titulo: 'Tipo de precedente', campo: 'tipo' },
-    { titulo: 'Área do Juizado', campo: '_area' },
+    { titulo: 'Área', campo: '_area' },
     { titulo: 'Estágio do julgamento', campo: '_situacao' }
   ], campos);
 
@@ -1285,7 +1296,7 @@ var COLUNAS = [
   ['Identificador', r => r._titulo],
   ['Tribunal', r => r.tribunal],
   ['Espécie', r => r.tipo],
-  ['Área do Juizado', r => r._area],
+  ['Área', r => r._area],
   ['Situação', r => r._situacao],
   ['Pendências identificadas', r => (r.tipo === 'Informativo' ? '' : pendencias(r))],
   ['Alcance registrado', r => (r.tipo === 'Informativo' ? '' : rotuloAlcance(r._alcance))],
@@ -1727,7 +1738,7 @@ function ficha(r) {
 
   h += '<section class="secao">' +
     (fonte ? '<a class="link-fonte" href="' + esc(fonte) + '" target="_blank" rel="noopener noreferrer">Fonte oficial ↗<span class="oculto"> (abre em nova aba)</span></a>' : '') +
-    '<p class="procedencia">Origem: ' + esc(r.origem || '—') + ' · ' + esc(r.pertinencia || '—') +
+    '<p class="procedencia">Origem: ' + esc(r.origem || '—') + ' · ' + esc(rotuloPublico(r.pertinencia)) +
       (r.verificadoEm ? ' · Última conferência automática em ' + esc(dataBR(r.verificadoEm, true)) : ' · Sem conferência automática registrada') +
     '</p>' +
     '<p class="procedencia">Os campos reproduzem o que a fonte publicou na data da consulta. A conferência automática não certifica a completude da fonte.</p>' +
@@ -2033,7 +2044,7 @@ function abaAjuda() {
         'à direita o alcance da suspensão. São independentes — um tema pode estar julgado e continuar suspenso.</dd></div>' +
       '<div class="dado legenda-item"><dt><span class="sigla">STJ</span> ' +
         '<span class="sigla">Repetitivo</span> <span class="etiqueta">Fazenda Pública</span></dt>' +
-        '<dd>Tribunal de origem, espécie do precedente e área do Juizado a que a matéria corresponde.</dd></div>' +
+        '<dd>Tribunal de origem, espécie do precedente e área a que a matéria corresponde.</dd></div>' +
     '</dl></section>' +
 
     '<section class="secao"><h2>Os blocos do topo</h2>' +
@@ -2108,6 +2119,9 @@ function abaAjuda() {
       campo('Justiça comum',
         'Precedentes em que a fonte não indica competência de Juizado. A classificação decorre do que a fonte publica e não afirma, por si, a incompetência do Juizado.') +
       campo('Todos', 'A base inteira, das três origens, sem recorte de competência.') +
+      campo('Qual vem marcada',
+        'A consulta abre em “Juizado Especial”, que é o recorte mais estreito. Quem atua na justiça comum troca uma vez, ' +
+        'e o portal passa a abrir na competência escolhida — a preferência fica guardada neste navegador, não na base.') +
     '</dl></section>' +
 
     '<section class="secao"><h2>Textos para copiar</h2><dl class="dados definicoes">' +
@@ -2141,6 +2155,9 @@ function paraURL() {
   var p = [];
   if (estado.aba !== 'temas') p.push('aba=' + estado.aba);
   if (estado.termo.trim()) p.push('q=' + encodeURIComponent(estado.termo.trim()));
+  // O escopo vai no endereço sempre que sair do padrão da base, e não do padrão
+  // guardado neste navegador: assim um link copiado abre na mesma competência
+  // para quem o receber, seja qual for a preferência de quem clica.
   if (estado.escopo !== 'juizado') p.push('escopo=' + estado.escopo);
   if (estado.ordem !== 'relevancia') p.push('ordem=' + estado.ordem);
   if (estado.dia) p.push('dia=' + estado.dia);
@@ -2166,7 +2183,7 @@ function deURL() {
   estado.filtros = {};
   estado.termo = '';
   estado.aba = 'temas';
-  estado.escopo = 'juizado';
+  estado.escopo = escopoPreferido();
   estado.ordem = 'relevancia';
   estado.dia = '';
   estado.destaque = '';
@@ -2306,7 +2323,7 @@ function ligar() {
     estado.aba = 'temas';
     estado.termo = '';
     estado.filtros = {};
-    estado.escopo = 'juizado';
+    estado.escopo = escopoPreferido();
     estado.destaque = '';
     estado.registroId = null;
     estado.limite = PAGINA;
@@ -2396,6 +2413,7 @@ function ligar() {
     var esc2 = alvo.closest('[data-escopo]');
     if (esc2) {
       estado.escopo = esc2.getAttribute('data-escopo');
+      guardar('escopo', estado.escopo);
       estado.limite = PAGINA;
       return aplicar();
     }
