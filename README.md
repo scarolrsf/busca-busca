@@ -223,6 +223,30 @@ inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
 
+### 10/09/2026 — Arquivo LICENSE: todos os direitos reservados
+
+**Responsável:** Muse Spark, a pedido de Sarah (proteger a autoria, após a
+pesquisa sobre registro no INPI).
+
+**Motivo.** O repositório precisa continuar público (exigência do GitHub Pages
+gratuito), e público sem licença gera ambiguidade sobre reuso. Sarah escolheu
+reter todos os direitos.
+
+**O que mudou.** Novo `LICENSE` na raiz: titularidade exclusiva de Sarah
+Carolina (Leis 9.610/98 e 9.609/98), permitindo só visualização e consulta;
+qualquer outro uso depende de autorização expressa. Exceção registrada no
+próprio arquivo: as fontes em `site/fontes/` seguem a SIL OFL de seus autores.
+
+**Arquivos.** `LICENSE` (novo), `README.md`.
+
+**Validação.** Arquivo texto lido após gravação; nenhuma mudança em código,
+coleta ou base — `publicar.mjs` já validado na entrega anterior e o HTML não
+foi tocado desta vez.
+
+**Dados.** Nenhuma mudança na coleta nem na base.
+
+**Pendências.** Registro do programa no INPI (e-Software), a cargo de Sarah.
+
 ### 10/09/2026 — © no rodapé
 
 **Responsável:** Muse Spark, a pedido de Sarah.
