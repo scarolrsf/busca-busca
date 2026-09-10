@@ -223,6 +223,27 @@ inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
 
+### 10/09/2026 — Assinatura no rodapé
+
+**Responsável:** Muse Spark, a pedido de Sarah ("coloque no final da página:
+projeto por Sarah Carolina").
+
+**Motivo.** Dar autoria visível ao portal, no rodapé de todas as páginas.
+
+**O que mudou.** Em `site/index.html`: linha "Projeto por Sarah Carolina"
+abaixo do selo da coleta, em `.credito` próprio (centralizado, miúdo, no tom
+terciário da paleta para não brigar com o selo). Estático no HTML — aparece em
+todas as abas sem depender do JavaScript.
+
+**Arquivos.** `site/index.html`, `README.md`.
+
+**Validação.** `node coleta/publicar.mjs` passa com a base intacta e a
+conferência da regra de suspensão verde.
+
+**Dados.** Nenhuma mudança na coleta nem na base.
+
+**Pendências.** Nenhuma nova.
+
 ### 10/09/2026 — Polimento visual: hovers, seleção, espera e leitura
 
 **Responsável:** Muse Spark, a pedido de Sarah (deixar o sistema mais
