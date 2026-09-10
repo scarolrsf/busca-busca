@@ -100,6 +100,8 @@ body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--sans)
 a{color:var(--acento)}
 button,input,select{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--acento);outline-offset:2px;border-radius:3px}
+/* A seleção acompanha a paleta: copiar tese e ementa é gesto central aqui. */
+::selection{background:var(--acento-fraco)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
@@ -146,7 +148,7 @@ button,input,select{font:inherit;color:inherit}
   .rail{position:static;max-height:none;order:2;border-top:1px solid var(--borda);padding-top:16px}
   #conteudo{order:1}
 }
-.rail{position:sticky;top:106px;display:flex;flex-direction:column;gap:18px;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:4px}
+.rail{position:sticky;top:106px;display:flex;flex-direction:column;gap:18px;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:4px;scrollbar-width:thin;scrollbar-color:var(--borda-forte) transparent}
 .grupo-titulo{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--tinta-3);margin:0 0 8px;font-weight:600}
 .opcoes{display:flex;flex-direction:column;gap:1px}
 .opcao{display:flex;align-items:center;gap:8px;min-height:26px;padding:5px 6px;border-radius:4px;cursor:pointer;font-size:.9rem;color:var(--tinta-2)}
@@ -162,7 +164,9 @@ button,input,select{font:inherit;color:inherit}
 .escopo{display:inline-flex;border:1px solid var(--borda-forte);border-radius:var(--raio);overflow:hidden;background:var(--superficie);margin-bottom:14px}
 .escopo button{border:0;background:none;padding:7px 16px;cursor:pointer;font-size:13.5px;color:var(--tinta-2);border-right:1px solid var(--borda);display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-height:44px;justify-content:center}
 .escopo button:last-child{border-right:0}
+.escopo button:hover{background:var(--superficie-2);color:var(--tinta)}
 .escopo button[aria-pressed="true"]{background:var(--acento-forte);color:var(--sobre-acento);font-weight:600}
+.escopo button[aria-pressed="true"]:hover{background:var(--acento-forte);color:var(--sobre-acento)}
 .escopo .n{font-family:var(--mono);font-size:11px;font-variant-numeric:tabular-nums;opacity:.75;font-weight:400}
 .alcance{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr));gap:10px;margin-bottom:16px}
 .alcance-item{text-align:left;border:1px solid var(--borda);border-left:3px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie);padding:9px 12px;cursor:pointer;display:flex;flex-direction:column;gap:1px}
@@ -240,7 +244,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .secao{padding:18px 24px;border-bottom:1px solid var(--borda)}
 .secao:last-child{border-bottom:0}
 .secao h2{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--tinta-3);margin:0 0 8px;font-weight:600}
-.texto-juridico{font-family:var(--serif);font-size:1.03rem;line-height:1.62;white-space:pre-wrap;margin:0;text-wrap:pretty}
+.texto-juridico{font-family:var(--serif);font-size:1.03rem;line-height:1.62;white-space:pre-wrap;margin:0;text-wrap:pretty;max-width:68ch}
 .dados{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:14px 20px;margin:0}
 .dado{display:flex;flex-direction:column;gap:2px}
 .dado dt{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta-3)}
@@ -262,7 +266,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .acoes-favoritos{margin-bottom:16px}
 .acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
 .botao-copiar{border:1px solid var(--acento);background:var(--superficie);color:var(--acento);border-radius:var(--raio);padding:7px 13px;cursor:pointer;font-size:13.5px;font-weight:500;transition:background .12s,color .12s}
-.botao-copiar:hover{background:var(--acento-fraco)}
+.botao-copiar:hover{background:var(--acento);border-color:var(--acento);color:var(--sobre-acento)}
 .botao-copiar.copiado{background:var(--seguro-fraco);border-color:var(--seguro);color:var(--seguro)}
 
 /* ------------------------------------------------------ novidades e fontes */
@@ -318,7 +322,8 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .favorito:hover{color:var(--atencao);background:var(--superficie-2)}
 .favorito svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7}
 .favorito[aria-pressed="true"]{color:var(--atencao)}
-.favorito[aria-pressed="true"] svg{fill:currentColor}
+.favorito[aria-pressed="true"] svg{fill:currentColor;animation:estrela .25s ease-out}
+@keyframes estrela{0%{transform:scale(.6)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
 .ficha-pe .fonte-min{margin-left:0}
 
 /* ------------------------------------------------- prévia antes de copiar */
@@ -338,7 +343,9 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 /* ---------------------------------------------------------- exportação */
 .baixar{border:1px solid var(--borda-forte);background:var(--superficie);color:var(--tinta-2);border-radius:var(--raio);padding:5px 11px;cursor:pointer;font-size:13px;margin-left:10px}
 .baixar:hover{border-color:var(--acento);color:var(--acento)}
-.carregando{padding:60px 20px;text-align:center;color:var(--tinta-2)}
+.carregando{padding:60px 20px;text-align:center;color:var(--tinta-2);animation:pulso 1.6s ease-in-out infinite}
+/* A regra global de prefers-reduced-motion já desliga as duas animações. */
+@keyframes pulso{0%,100%{opacity:.5}50%{opacity:1}}
 .erro-fixo{position:fixed;left:12px;right:12px;bottom:12px;z-index:60;background:var(--critico-fraco);color:var(--critico);border:1px solid var(--critico);border-radius:var(--raio);padding:11px 42px 11px 13px;font-size:13px;line-height:1.5;box-shadow:var(--sombra)}
 .erro-fixo strong{display:block;margin-bottom:2px}
 .erro-fixo code{font-family:var(--mono);font-size:12px;overflow-wrap:anywhere}
