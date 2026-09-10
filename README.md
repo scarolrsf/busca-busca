@@ -33,9 +33,11 @@ O endereço é **https://scarolrsf.github.io/busca-busca/**.
 
 ```
 site/            o que o GitHub Pages publica
-  index.html     o portal inteiro: CSS e JS embutidos, sem dependências
-  icone.svg      o logotipo reduzido ao que se lê a 16 pixels
-  dados.json     derivado de dados/ na publicação; não versionado
+   index.html     o portal inteiro: CSS e JS embutidos, sem dependências
+   icone.svg      o logotipo reduzido ao que se lê a 16 pixels
+   fontes/        IBM Plex Sans, IBM Plex Mono e Source Serif 4 em woff2,
+                  servidas daqui para não requisitar ao Google (LGPD)
+   dados.json     derivado de dados/ na publicação; não versionado
 
 coleta/
   executar.mjs       orquestra a coleta
@@ -613,3 +615,70 @@ sem servidor e sem dado pessoal.
 **Pendências.** Se o portal for adotado institucionalmente, o login natural é o
 SSO do próprio tribunal, com o jurídico ciente do tratamento de dados — e não
 uma senha criada por este projeto.
+
+### 10/09/2026 — Fontes auto-hospedadas: fim da requisição ao Google
+
+**Responsável:** Muse Spark, a pedido de Sarah (auditoria de credenciais e LGPD).
+
+**Motivo.** A auditoria concluiu que o portal não tem credenciais (as seis fontes
+são públicas, sem login nem chave; o cookie do RUPE é de sessão e some com a
+execução) e não trata dado pessoal — exceto por um ponto: o `index.html`
+carregava IBM Plex Sans/Mono e Source Serif 4 do Google Fonts, e cada visita
+entregava IP e User-Agent ao Google. Era a única saída de dado do navegador.
+
+**O que mudou.** Os arquivos woff2 (subconjuntos latin e latin-ext, licenças SIL
+OFL) foram baixados do Google uma vez e passam a ser servidos de
+`site/fontes/` — 10 arquivos, ~386 KB. A Sans e a Serif vieram como variáveis
+(o mesmo arquivo cobre 400–600, confirmado por hash) e são declaradas com
+`font-weight: 400 600`; a Mono tem instâncias estáticas por peso. O visual não
+muda: mesmas famílias, mesmos pesos. Os três `<link>` ao Google (inclusive os
+`preconnect`) foram removidos e viraram 10 blocos `@font-face` no próprio
+`<style>`.
+
+**Arquivos.** `site/index.html`, `site/fontes/` (novo, 10 `.woff2`).
+
+**Validação.** `grep` por `googleapis|gstatic` em `site/`: só resta o `xmlns` do
+SVG (namespace, não é requisição). As 10 URLs `./fontes/` referenciadas existem
+em disco; site servido localmente devolve 200 para o HTML e os woff2.
+`node coleta/publicar.mjs` passa com a base intacta (3.204 temas, 1.225
+informativos) e a conferência da regra de suspensão continua verde.
+
+**Dados.** Nenhuma mudança na coleta nem na base.
+
+**Implantação.** `site/fontes/` é versionado e o Pages publica a pasta `site`
+como está — nada a configurar no workflow.
+
+**Pendências.** Se um dia se quiser zero binário no repositório, a alternativa é
+trocar por fontes do sistema; por ora o custo (~386 KB) vale o visual.
+
+### 10/09/2026 — Alvos de 24 px e toque sem atraso
+
+**Responsável:** Muse Spark, a pedido de Sarah (revisão de ergonomia).
+
+**Motivo.** A auditoria de ergonomia apontou que dois cliques descumpriam a
+regra dos 24×24 px que o próprio CSS declara (WCAG 2.2, 2.5.8): o "← Voltar"
+da ficha e o ✕ do aviso de erro ficavam em ~20 px de altura. E o toque em
+mobile pagava 300 ms de atraso (a espera pelo duplo-toque de zoom).
+
+**O que mudou.** Tudo em `site/index.html`, sem mudar o visual:
+
+- `.voltar` ganhou `min-height:24px` com `inline-flex` — a altura mínima passa
+  a valer mesmo em contexto de linha.
+- O botão do `.erro-fixo` ganhou `min-width/min-height:24px` com centralização
+  — o ✕ continua no mesmo lugar, só com área clicável maior.
+- `touch-action:manipulation` no seletor universal — elimina o atraso do toque
+  sem tirar o zoom de pinça; a justificativa entrou no comentário da seção
+  "ergonomia de base".
+
+**Arquivos.** `site/index.html`, `README.md`.
+
+**Validação.** Chaves do `<style>` balanceadas (275/275); varredura dos
+seletores clicáveis sem dimensão mínima: só resta `.marca`, cuja área já é
+grande (selo de 44×31 px + texto). `node coleta/publicar.mjs` passa com a base
+intacta e a conferência da regra de suspensão verde.
+
+**Dados.** Nenhuma mudança na coleta nem na base.
+
+**Pendências.** Nenhuma nova. O próximo passo de ergonomia, se um dia o mobile
+crescer, seria avaliar os 44 px da Apple em vez dos 24 px do WCAG — por ora o
+público de cartório é majoritariamente desktop.

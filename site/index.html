@@ -7,10 +7,24 @@
 <meta name="description" content="Precedentes qualificados, incidentes e informativos do TJMG, do STJ e do STF: descubra se o tema tem ordem de suspensão que alcança o processo em análise.">
 <link rel="icon" href="./icone.svg" type="image/svg+xml">
 <meta name="theme-color" content="#27496d">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
 <style>
+/* ---------------------------------------------------------------------------
+   Fontes auto-hospedadas (LGPD): IBM Plex Sans, IBM Plex Mono e Source Serif 4
+   servidas de ./fontes/, sem requisição ao Google. Sans e Serif são variáveis
+   e cobrem os pesos 400–600; a Mono tem instâncias estáticas por peso.
+   Subconjuntos latin e latin-ext (o português precisa do latin-ext para os
+   acentos). Licenças SIL Open Font License.
+--------------------------------------------------------------------------- */
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url("./fontes/ibm-plex-mono-400-latin-ext.woff2") format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url("./fontes/ibm-plex-mono-400-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url("./fontes/ibm-plex-mono-500-latin-ext.woff2") format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url("./fontes/ibm-plex-mono-500-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:600;font-display:swap;src:url("./fontes/ibm-plex-mono-600-latin-ext.woff2") format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:600;font-display:swap;src:url("./fontes/ibm-plex-mono-600-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:400 600;font-display:swap;src:url("./fontes/ibm-plex-sans-400-latin-ext.woff2") format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:400 600;font-display:swap;src:url("./fontes/ibm-plex-sans-400-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:"Source Serif 4";font-style:normal;font-weight:400 600;font-display:swap;src:url("./fontes/source-serif-4-400-latin-ext.woff2") format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"Source Serif 4";font-style:normal;font-weight:400 600;font-display:swap;src:url("./fontes/source-serif-4-400-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
 /* ---------------------------------------------------------------------------
    Busca Busca — precedentes, incidentes e informativos
 
@@ -77,9 +91,11 @@
    em px: crescer junto só faria o cabeçalho comer a tela.
 
    Alvos de clique seguem o mínimo de 24x24 px do WCAG 2.2 (2.5.8); abaixo
-   disso a taxa de erro sobe muito para quem tem limitação motora. */
+   disso a taxa de erro sobe muito para quem tem limitação motora. O
+   touch-action:manipulation em tudo elimina o atraso de 300 ms do toque
+   (a espera pelo duplo-toque de zoom), sem tirar o zoom de pinça. */
 :root{font-size:15px}
-*{box-sizing:border-box}
+*{box-sizing:border-box;touch-action:manipulation}
 body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--sans);font-size:1rem;line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:var(--acento)}
 button,input,select{font:inherit;color:inherit}
@@ -148,7 +164,7 @@ button,input,select{font:inherit;color:inherit}
 .escopo button:last-child{border-right:0}
 .escopo button[aria-pressed="true"]{background:var(--acento-forte);color:var(--sobre-acento);font-weight:600}
 .escopo .n{font-family:var(--mono);font-size:11px;font-variant-numeric:tabular-nums;opacity:.75;font-weight:400}
-.alcance{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.alcance{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr));gap:10px;margin-bottom:16px}
 .alcance-item{text-align:left;border:1px solid var(--borda);border-left:3px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie);padding:9px 12px;cursor:pointer;display:flex;flex-direction:column;gap:1px}
 .alcance-item:hover{border-color:var(--borda-forte)}
 .alcance-item[aria-pressed="true"]{background:var(--acento-fraco);border-color:var(--acento)}
@@ -208,7 +224,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .mais:hover{border-color:var(--acento)}
 
 /* ------------------------------------------------------------------ ficha */
-.voltar{border:0;background:none;color:var(--acento);cursor:pointer;padding:4px 0;margin-bottom:8px;font-size:13.5px}
+.voltar{border:0;background:none;color:var(--acento);cursor:pointer;padding:4px 0;margin-bottom:8px;font-size:13.5px;display:inline-flex;align-items:center;min-height:24px}
 .detalhe{background:var(--superficie);border:1px solid var(--borda);border-radius:var(--raio);overflow:hidden}
 .detalhe-cabeca{padding:20px 24px;border-bottom:1px solid var(--borda);border-top:3px solid var(--borda-forte);display:flex;flex-direction:column;gap:10px}
 .detalhe-cabeca.r-ALTO{border-top-color:var(--critico)}
@@ -225,7 +241,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .secao:last-child{border-bottom:0}
 .secao h2{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--tinta-3);margin:0 0 8px;font-weight:600}
 .texto-juridico{font-family:var(--serif);font-size:1.03rem;line-height:1.62;white-space:pre-wrap;margin:0;text-wrap:pretty}
-.dados{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px 20px;margin:0}
+.dados{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:14px 20px;margin:0}
 .dado{display:flex;flex-direction:column;gap:2px}
 .dado dt{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta-3)}
 .dado dd{margin:0;font-size:.94rem}
@@ -233,7 +249,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .link-fonte{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--borda-forte);border-radius:var(--raio);padding:7px 12px;text-decoration:none;font-size:13.5px}
 .link-fonte:hover{border-color:var(--acento);background:var(--acento-fraco)}
 .procedencia{font-size:12.5px;color:var(--tinta-3);margin:12px 0 0}
-.dados.definicoes{grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px 28px}
+.dados.definicoes{grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:16px 28px}
 .legenda .dado{grid-column:1/-1}
 .legenda-item dt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;text-transform:none;letter-spacing:0;font-size:13.5px;color:var(--tinta);font-weight:600;margin-bottom:3px}
 .amostra{display:inline-block;width:46px;height:19px;border:1px solid var(--borda);border-left:3px solid var(--borda-forte);border-radius:3px;background:var(--superficie);flex-shrink:0}
@@ -326,7 +342,76 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .erro-fixo{position:fixed;left:12px;right:12px;bottom:12px;z-index:60;background:var(--critico-fraco);color:var(--critico);border:1px solid var(--critico);border-radius:var(--raio);padding:11px 42px 11px 13px;font-size:13px;line-height:1.5;box-shadow:var(--sombra)}
 .erro-fixo strong{display:block;margin-bottom:2px}
 .erro-fixo code{font-family:var(--mono);font-size:12px;overflow-wrap:anywhere}
-.erro-fixo button{position:absolute;right:6px;top:6px;border:0;background:none;color:inherit;cursor:pointer;font-size:15px;padding:2px 7px;line-height:1}
+.erro-fixo button{position:absolute;right:6px;top:6px;border:0;background:none;color:inherit;cursor:pointer;font-size:15px;padding:2px 7px;line-height:1;min-width:24px;min-height:24px;display:inline-flex;align-items:center;justify-content:center}
+/* ------------------------------------------------------------------ celular
+   Até aqui o desenho supunha uma tela larga. No telefone a faixa do topo não
+   cabia em uma linha só: marca, campo de busca e preferências pediam 503 px de
+   largura mínima contra os 375 px de um iPhone comum, e o excedente empurrava
+   a página inteira para o lado — o texto saía pela direita e era preciso
+   arrastar na horizontal para ler cada linha. A busca desce então para uma
+   linha própria, que é o que mais se usa no telefone, e marca e preferências
+   dividem a primeira.
+
+   Campos de digitação passam a 16 px porque o Safari do iPhone dá zoom em
+   qualquer campo com fonte menor que isso, e voltar do zoom depois é manual.
+
+   O texto deixa de ser justificado: numa coluna de 350 px a justificação abre
+   rios de espaço branco entre as palavras, e nem a hifenização os fecha.
+
+   Os alvos de toque sobem para 44 px — o mínimo confortável para o dedo, mais
+   generoso que os 24 px que o WCAG exige do ponteiro.
+--------------------------------------------------------------------------- */
+@media (max-width:700px){
+  .topo-faixa{flex-wrap:wrap;gap:8px 10px;padding:8px 12px}
+  .marca{flex:1 1 auto;min-width:0}
+  .marca-nome{font-size:16px}
+  .preferencias{margin-left:auto}
+  .busca{flex:1 0 100%;order:3}
+  .busca input{font-size:16px;padding:11px 38px 11px 36px}
+  .busca-dica{display:none}
+  .abas{padding:0 12px;gap:0}
+  .aba{min-height:44px;padding:12px 10px}
+
+  .pagina{padding:14px 12px;gap:18px}
+  .rodape{padding:4px 12px 32px}
+
+  .escopo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
+  .escopo button{padding:7px 10px}
+  .alcance{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .alcance-item{padding:9px 10px}
+
+  .filtro-detalhado{flex-direction:column;align-items:stretch;gap:10px;padding:12px}
+  .campo-filtro.cresce{min-width:0}
+  .campo-filtro input,.campo-filtro select,.ordenar,.filtro-dia{font-size:16px;min-height:40px}
+  #f-numero{width:100%}
+  .filtro-detalhado .limpar-tudo{min-height:44px}
+  .baixar{margin:6px 0 0;min-height:40px}
+
+  .ficha{padding:12px}
+  .favorito{padding:7px}
+  .detalhe-cabeca{padding:16px 14px}
+  .detalhe-cabeca h1{font-size:1.28rem}
+  .secao{padding:16px 14px}
+  .botao-copiar,.link-fonte,.limpar-tudo,.mais,.voltar{min-height:44px}
+  .botao-copiar,.link-fonte{display:inline-flex;align-items:center}
+  .ao-topo{right:12px;bottom:12px;padding:11px 13px}
+
+  .texto-juridico,.questao,.tese-curta,.diff,.dado dd,.aviso span,.vazio p,
+  .fonte-nota,.selo-fonte,.previa-texto,.boas-vindas-corpo{text-align:left}
+
+  .previa{max-width:none;width:calc(100vw - 16px)}
+  .previa-cabeca{padding:12px 14px}
+  .previa-texto{padding:14px}
+  .previa-pe{flex-direction:column;align-items:stretch;gap:10px;padding:12px 14px}
+  .previa-pe .botao-copiar{width:100%;justify-content:center}
+}
+/* O subtítulo da marca é a primeira coisa a sair quando a linha aperta: ele
+   repete o que as abas já dizem, e sem ele o nome e as preferências cabem. */
+@media (max-width:540px){
+  .marca-sub{display:none}
+  .marca-selo svg{width:38px;height:27px}
+}
+
 </style>
 </head>
 <body>
@@ -2262,6 +2347,18 @@ function desenha() {
   var abas = document.querySelectorAll('.aba');
   for (var i = 0; i < abas.length; i++) {
     abas[i].setAttribute('aria-selected', abas[i].getAttribute('data-aba') === estado.aba ? 'true' : 'false');
+  }
+
+  /* No telefone a barra de abas não cabe inteira e rola na horizontal: sem
+     isto, escolher uma aba pelo endereço ou pelo guia deixaria a aba ativa
+     fora da vista, e a pessoa veria a página mudar sem ver o que escolheu. */
+  var abaAtiva = document.querySelector('.aba[aria-selected="true"]');
+  var barraAbas = document.querySelector('.abas');
+  if (abaAtiva && barraAbas.scrollWidth > barraAbas.clientWidth) {
+    var esquerda = abaAtiva.offsetLeft - barraAbas.scrollLeft;
+    if (esquerda < 0 || esquerda + abaAtiva.offsetWidth > barraAbas.clientWidth) {
+      barraAbas.scrollLeft = abaAtiva.offsetLeft - 12;
+    }
   }
 
   if (estado.registroId) {
