@@ -26,6 +26,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # O dados.json não é versionado: é derivado da base em dados/. Ele nasce
+      # aqui, no momento de publicar. Versioná-lo custaria 1,7 MB de blob novo a
+      # cada coleta — o arquivo é minificado numa linha só, então o Git não
+      # consegue guardar a diferença, guarda o arquivo inteiro de novo.
+      # Este passo também roda a conferência da regra de suspensão: uma base que
+      # a viole não chega a ser publicada.
+      - name: Gerar o dados.json a partir da base
+        run: node coleta/publicar.mjs
+
       - name: Conferir se há dado a publicar
         run: |
           test -s site/index.html || { echo 'site/index.html ausente'; exit 1; }

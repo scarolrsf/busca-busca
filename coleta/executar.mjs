@@ -24,7 +24,8 @@ const TABELAS = {
   temas: 'TEMAS DO PORTAL',
   informativos: 'INFORMATIVOS DO PORTAL',
   alteracoes: 'ALTERACOES',
-  fontes: 'FONTES'
+  fontes: 'FONTES',
+  conferencia: 'CONFERENCIA'
 };
 
 /* --------------------------------------------------- ambiente das regras */
@@ -46,6 +47,16 @@ contexto.lerXlsxRemoto_ = (url) => lerXlsxDeArquivo(resposta(url, { segundos: 30
 contexto.lerRegistros_ = (tabela) => BASE.ler(tabela);
 contexto.gravarRegistros_ = (tabela, registros) => BASE.gravar(tabela, registros);
 contexto.registrarAlteracoes_ = (linhas) => BASE.acrescentar(TABELAS.alteracoes, linhas);
+
+/* Uma linha por origem: [origem, instante da última leitura bem-sucedida].
+   Gravada em ordem fixa, para que a coleta não produza diferença só por ter
+   visitado as fontes em outra ordem. */
+contexto.lerConferencia_ = () => {
+  const linhas = BASE.ler(TABELAS.conferencia);
+  return Object.fromEntries((Array.isArray(linhas) ? linhas : []).map(l => [l[0], l[1]]));
+};
+contexto.gravarConferencia_ = (mapa) => BASE.gravar(TABELAS.conferencia,
+  Object.entries(mapa).sort((a, b) => (a[0] < b[0] ? -1 : 1)));
 
 contexto.registrarFonte_ = (nome, tentativa, sucesso, situacao, quantidade, detalhe, url) => {
   const atuais = BASE.ler(TABELAS.fontes);

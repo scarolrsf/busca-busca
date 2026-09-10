@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Busca Busca">
+  <title>Busca Busca</title>
+  <!--
+    O logotipo reduzido ao que ainda se lê a 16 pixels.
+
+    Na marca, dois círculos iguais se cruzam e a interseção forma a lente — o
+    ponto em que o processo e o precedente tratam da mesma questão. Numa aba de
+    navegador não cabe a lente inteira: os dois aros ficam de fundo, cruzando-se
+    atrás da letra, e o B ocupa exatamente o lugar onde a lente nasce. A forma
+    é uma só e o azul é o mesmo do cabeçalho, para que a aba seja reconhecida
+    de relance no meio de outras vinte.
+
+    Cor fixa nos dois temas de propósito: a aba tem fundo próprio, claro ou
+    escuro conforme o navegador, e um ícone que acompanhasse o tema sumiria
+    contra metade deles.
+  -->
+  <rect width="32" height="32" rx="7" fill="#27496d"/>
+  <g fill="none" stroke="#f8f2e3" stroke-opacity=".38" stroke-width="1.5">
+    <circle cx="11.6" cy="16" r="9.2"/>
+    <circle cx="20.4" cy="16" r="9.2"/>
+  </g>
+  <text x="16" y="16.8" text-anchor="middle" dominant-baseline="central"
+        font-family="'Source Serif 4', Georgia, 'Times New Roman', serif"
+        font-size="17" font-weight="600" fill="#f8f2e3">B</text>
+</svg>

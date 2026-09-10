@@ -37,7 +37,7 @@ jobs:
         run: |
           git config user.name  'Coleta automática'
           git config user.email 'actions@github.com'
-          git add dados site/dados.json
+          git add dados
           if git diff --staged --quiet; then
             echo 'Nenhuma alteração nas fontes.'
           else

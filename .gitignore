@@ -3,6 +3,11 @@
 # de novo a qualquer momento — não pertencem ao repositório.
 work/
 
+# Derivado da base em dados/, gerado por coleta/publicar.mjs na publicação e ao
+# rodar a coleta à mão. Minificado numa linha só: versioná-lo faria o Git gravar
+# 1,7 MB inteiros a cada coleta, sem conseguir guardar só a diferença.
+site/dados.json
+
 node_modules/
 *.log
 .DS_Store

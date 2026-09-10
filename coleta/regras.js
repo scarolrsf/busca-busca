@@ -73,19 +73,34 @@ function atualizarRegistros_(sheetName,incoming,origin){
     if(!fresh.id||!fresh.questao||seen.has(fresh.id))throw Error('Identidade ausente ou duplicada na fonte: '+fresh.id);seen.add(fresh.id);
     for(const k of CAMPOS)if(String(fresh[k]||'').length>45000)throw Error('Campo muito extenso; exige adaptação antes de gravar: '+fresh.id+' '+k);
   }
+  /* A data de conferência é a mesma para todos os registros de uma fonte: é o
+     instante em que a fonte foi lida. Guardá-la em cada registro fazia cada
+     coleta reescrever milhares de linhas idênticas. Ela mora agora na tabela
+     CONFERENCIA, uma linha por origem. O campo só reaparece no registro como
+     exceção: quando ele some da fonte e a data dele para de acompanhar. */
+  const conferencia=lerConferencia_();
+  const anteriorDaOrigem=conferencia[origin]||'';
+  const efetiva=r=>r.verificadoEm||conferencia[r.origem]||'';
   const comparable=CAMPOS.filter(k=>!['verificadoEm','atualizadoEm','anotacaoManual','pertinencia','origem'].includes(k));
   for(const fresh of incoming){
     const pos=index[fresh.id],old=pos===undefined?null:current[pos];
-    let changed=false;const next={...(old||{}),...fresh,verificadoEm:now};
+    let changed=false;const next={...(old||{}),...fresh};delete next.verificadoEm;
     if(old){
       next.anotacaoManual=old.anotacaoManual||'';
       if(old.pertinencia==='Selecionado na planilha inicial')next.pertinencia=old.pertinencia;
-      for(const k of comparable){if(!(k in fresh))continue;const a=String(old[k]||''),b=String(fresh[k]||'');if(a!==b){changed=true;changes.push([now,fresh.id,rotuloTema_(next),ROTULOS[CAMPOS.indexOf(k)],a,b,fresh.fonte,old.verificadoEm?'Atualização na fonte':'Primeira conferência']);}}
+      for(const k of comparable){if(!(k in fresh))continue;const a=String(old[k]||''),b=String(fresh[k]||'');if(a!==b){changed=true;changes.push([now,fresh.id,rotuloTema_(next),ROTULOS[CAMPOS.indexOf(k)],a,b,fresh.fonte,efetiva(old)?'Atualização na fonte':'Primeira conferência']);}}
     }else{changed=true;changes.push([now,fresh.id,rotuloTema_(next),'Cadastro','',fresh.questao,fresh.fonte,'Inclusão na base']);}
     if(changed)next.atualizadoEm=now;
     if(pos===undefined){index[fresh.id]=current.length;current.push(next);}else current[pos]=next;
   }
-  // Não removemos registros que desapareçam de uma fonte. Eles continuam com a data anterior.
+  // Não removemos registros que desapareçam de uma fonte. Eles continuam com a
+  // data anterior — e é só por isso que o campo existe no registro: para que a
+  // data de quem sumiu pare, em vez de acompanhar a fonte que já não o traz.
+  for(const r of current){
+    if(r.origem!==origin||seen.has(r.id)||r.verificadoEm||!anteriorDaOrigem)continue;
+    r.verificadoEm=anteriorDaOrigem;
+  }
+  conferencia[origin]=now;gravarConferencia_(conferencia);
   gravarRegistros_(sheetName,current);
   if(changes.length)registrarAlteracoes_(changes);
   return incoming.length;

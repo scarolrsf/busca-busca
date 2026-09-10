@@ -17,15 +17,23 @@ export function publicar() {
   const base = armazenamento(path.join(RAIZ, 'dados'));
   const historico = base.ler('ALTERACOES');
 
-  const semAnotacaoPrivada = r => {
+  /* A data de conferência não fica em cada registro — seriam milhares de cópias
+     do mesmo instante, reescritas a cada coleta. Ela é devolvida aqui, na
+     montagem do arquivo que o site lê, para que a ficha continue mostrando
+     quando aquele registro foi conferido pela última vez. */
+  const conferencia = Object.fromEntries(base.ler('CONFERENCIA').map(l => [l[0], l[1]]));
+
+  const paraOSite = r => {
     const copia = Object.assign({}, r);
     delete copia.anotacaoManual;   // a conferência interna não vai ao ar
+    const data = r.verificadoEm || conferencia[r.origem] || '';
+    if (data) copia.verificadoEm = data; else delete copia.verificadoEm;
     return copia;
   };
 
   const dados = {
-    temas: base.ler('TEMAS DO PORTAL').map(semAnotacaoPrivada),
-    informativos: base.ler('INFORMATIVOS DO PORTAL').map(semAnotacaoPrivada),
+    temas: base.ler('TEMAS DO PORTAL').map(paraOSite),
+    informativos: base.ler('INFORMATIVOS DO PORTAL').map(paraOSite),
     fontes: base.ler('FONTES'),
     alteracoes: historico.slice(-1200).reverse(),
     totalAlteracoes: historico.length,
