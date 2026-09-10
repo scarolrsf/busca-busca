@@ -18,18 +18,21 @@ Três peças, todas gratuitas:
 | --- | --- | --- |
 | Coleta nas fontes oficiais | GitHub Actions | 6h e 18h, horário de Brasília |
 | Base de dados | arquivos JSON no próprio repositório | a cada coleta |
-| Site | Cloudflare Pages | publica a cada alteração |
+| Site | GitHub Pages | publica a cada alteração |
 
 A coleta roda no GitHub Actions, e não num serviço menor, por um motivo
 concreto: a lista de temas do STF tem 7,7 MB e a planilha de informativos tem
 9 MB que viram 62 MB ao descompactar. Isso não cabe no Google Apps Script
 (6 minutos por execução) nem num Cloudflare Worker (128 MB de memória).
 
-O site é estático — um HTML e um JSON. A Cloudflare serve de cache, então o
-número de pessoas acessando ao mesmo tempo não é problema.
+O site é estático — um HTML e um JSON. O Pages serve por CDN e comprime o
+`dados.json` de 8,5 MB para 1,4 MB na transferência, então o número de pessoas
+acessando ao mesmo tempo não é problema.
+
+O endereço é **https://scarolrsf.github.io/busca-busca/**.
 
 ```
-site/            o que a Cloudflare publica
+site/            o que o GitHub Pages publica
   index.html     o portal inteiro: CSS e JS embutidos, sem dependências
   dados.json     gerado pela coleta
 
@@ -71,6 +74,17 @@ sendo os da última consulta bem-sucedida, a falha é anotada, e a aba "Fontes e
 atualização" mostra um ponto vermelho. O portal nunca apresenta dado velho como
 recém-conferido.
 
+### Certificado do STF
+
+Os dois endereços do STF enviam só o certificado deles e omitem o intermediário
+que os encadeia a uma autoridade confiável. Navegador e Windows disfarçam o
+defeito, porque buscam sozinhos o elo que falta no endereço que o próprio
+certificado indica. O curl no Linux não busca — por isso a coleta funcionava na
+máquina da Sarah e falhava no GitHub Actions. O `coleta/ambiente.mjs` faz essa
+busca à mão quando o curl recusa o certificado, e repete a requisição. Nenhum
+certificado fica gravado no repositório, então a troca periódica do
+intermediário não cobra manutenção.
+
 ### O que foi preciso para o STF
 
 1. **Temas.** `jurisprudenciaRepercussao/todostemas.asp` devolve o cadastro
@@ -111,13 +125,13 @@ coleta falhar em vez de chegar à tela.
 
 ## Publicar
 
-O site é publicado pela Cloudflare Pages a cada alteração no repositório:
+O site é publicado pelo GitHub Pages a cada alteração no repositório, pelo
+workflow `publicar.yml`. O `site/dados.json` é versionado pela própria coleta,
+então não há passo de build: qualquer hospedagem estática publica a pasta
+`site` como está.
 
-- **Build command** — nenhum
-- **Build output directory** — `site`
-
-O `site/dados.json` é versionado pela própria coleta, então não há passo de
-build: qualquer hospedagem estática publica a pasta `site` como está.
+A Cloudflare Pages continua sendo uma alternativa, caso um dia se queira domínio
+próprio — build command vazio, output directory `site`. Não está em uso.
 
 A coleta precisa de permissão de escrita no repositório, já declarada no
 workflow (`permissions: contents: write`).
@@ -134,6 +148,62 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 10/09/2026 — Metade das fontes não respondia no GitHub Actions
+
+**Responsável:** Claude Code, a pedido de Sarah (revisão geral do sistema).
+
+**Motivo.** A única execução da coleta no GitHub Actions terminou em verde, mas
+**três das seis fontes falharam** — e o site publicado vem dizendo, desde então,
+que 3 fontes não responderam. A coleta funcionava na máquina da Sarah, então o
+defeito só existia em produção, que é justamente onde ninguém olha.
+
+**Causa 1 — certificado do STF (resolvido).** `portal.stf.jus.br` e
+`www.stf.jus.br` enviam só o certificado próprio e omitem o intermediário. O
+Windows busca sozinho o elo que falta; o curl no Linux não. Daí
+`unable to get local issuer certificate` nas duas fontes do STF. O
+`coleta/ambiente.mjs` passou a ler o endereço do intermediário no próprio
+certificado, baixá-lo e repetir a requisição. Conferido localmente com o
+repositório de certificados esvaziado (`CURL_CA_BUNDLE` apontando para arquivo
+vazio), que reproduz a condição do runner: as duas fontes voltaram a responder
+200 — 4.920.647 e 9.339.018 bytes. **A confirmação em produção depende da
+próxima execução no Actions.**
+
+**Causa 2 — HTTP 403 no informativo do STJ (em aberto).** `processo.stj.jus.br`
+responde 200 a partir do Brasil e 403 a partir do runner. Os dados abertos do
+STJ, em outro domínio, funcionam no runner — então não é bloqueio ao STJ inteiro,
+e sim àquele domínio. A hipótese é filtro por origem da requisição, mas ela não
+pode ser testada daqui. O erro passou a registrar um trecho do corpo da
+resposta, para que a próxima execução mostre se é página de bloqueio ou outra
+coisa.
+
+**Falha silenciosa (resolvido).** Criado `coleta/conferir-fontes.mjs`, chamado
+pelo workflow: cada fonte sem resposta vira aviso visível no resumo da execução,
+e perder as seis de uma vez derruba o trabalho — seis tribunais não saem do ar
+juntos, então isso seria problema da coleta, e merece o e-mail que o GitHub
+manda quando um trabalho falha.
+
+**Documentação corrigida.** O README dizia que o site é publicado pela
+Cloudflare Pages. Não é: está no GitHub Pages, em
+https://scarolrsf.github.io/busca-busca/. A Cloudflare nunca chegou a ser
+ligada e segue como alternativa para domínio próprio.
+
+**Arquivos.** `coleta/ambiente.mjs`, `coleta/conferir-fontes.mjs` (novo),
+`.github/workflows/coletar.yml`, `README.md`.
+
+**Pendências.**
+
+1. Confirmar, na próxima execução automática, se as fontes do STF voltaram e o
+   que o corpo do 403 do STJ revela.
+2. A primeira execução *agendada* ainda não ocorreu; até agora só houve
+   acionamento manual.
+3. Cada coleta reescreve a marca de conferência de todos os registros, o que
+   produz commits de ~1.700 linhas mesmo quando nada mudou de fato. Não é
+   urgente — o repositório tem 3,1 MB —, mas cresce sem limite e torna o
+   `git log -p` inútil para ver o que mudou de verdade. O histórico útil já
+   está em `dados/alteracoes.json`.
+4. O site não tem ícone próprio (favicon): a aba mostra o ícone genérico e cada
+   visita gera um 404 em `/favicon.ico`.
 
 ### 10/09/2026 — O portal deixa de ser só dos Juizados
 

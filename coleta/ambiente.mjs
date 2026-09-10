@@ -27,6 +27,55 @@ const COOKIES = path.join(TEMP, 'cookies.txt');
 
 /* ------------------------------------------------------------------- rede */
 
+/*
+ * Cadeia de certificados incompleta.
+ *
+ * Os dois endereços do STF enviam só o certificado deles e omitem o
+ * intermediário que os liga a uma autoridade confiável. O navegador disfarça o
+ * defeito: quando falta um elo, ele busca sozinho no endereço que o próprio
+ * certificado indica (a extensão AIA). O curl no Linux não faz essa busca — por
+ * isso a coleta funcionava na máquina da Sarah, onde quem valida é o Windows,
+ * que busca o elo faltante, e falhava no runner do GitHub com "unable to get
+ * local issuer certificate".
+ *
+ * Aqui o elo é buscado à mão, uma vez por host e por execução. Nada é gravado no
+ * repositório: assim a troca periódica do intermediário não quebra a coleta nem
+ * cobra manutenção. Se o remendo não for possível, o erro original é mantido —
+ * um problema de certificado que não seja este deve continuar interrompendo a
+ * consulta, e não ser contornado em silêncio.
+ */
+const ANCORAS = {};
+
+function ancoraDaCadeia(host) {
+  if (Object.prototype.hasOwnProperty.call(ANCORAS, host)) return ANCORAS[host];
+  ANCORAS[host] = null;
+  try {
+    const folha = spawnSync('openssl',
+      ['s_client', '-connect', host + ':443', '-servername', host],
+      { input: '', encoding: 'utf8', timeout: 30000 });
+    const texto = spawnSync('openssl', ['x509', '-noout', '-text'],
+      { input: String(folha.stdout || ''), encoding: 'utf8', timeout: 30000 });
+    const uri = (String(texto.stdout || '').match(/CA Issuers - URI:(S+)/) || [])[1];
+    if (!uri) return null;
+
+    const der = path.join(TEMP, 'ca-' + host + '.der');
+    const pem = path.join(TEMP, 'ca-' + host + '.pem');
+    const baixa = spawnSync('curl', ['--silent', '--max-time', '30', '--location',
+      '--output', der, uri], { encoding: 'buffer' });
+    if (baixa.status !== 0 || !fs.existsSync(der) || !fs.statSync(der).size) return null;
+
+    // O arquivo vem em DER; o curl só aceita âncora em PEM.
+    const converte = spawnSync('openssl',
+      ['x509', '-inform', 'DER', '-in', der, '-out', pem], { encoding: 'utf8', timeout: 30000 });
+    if (converte.status !== 0 || !fs.existsSync(pem)) return null;
+
+    ANCORAS[host] = pem;
+    return pem;
+  } catch (e) {
+    return null;
+  }
+}
+
 /**
  * Uma requisição, de forma síncrona. Devolve o corpo em Buffer, o código HTTP
  * e os cabeçalhos — o suficiente para o que as regras precisam.
@@ -65,8 +114,19 @@ export function buscar(url, opcoes) {
 
   args.push(url);
 
-  const r = spawnSync('curl', args, { encoding: 'buffer', maxBuffer: 1024 * 1024 * 256 });
+  let r = spawnSync('curl', args, { encoding: 'buffer', maxBuffer: 1024 * 1024 * 256 });
   if (r.error) throw new Error('curl indisponível: ' + r.error.message);
+
+  // 60 é o código do curl para "não consegui validar o certificado do servidor".
+  if (r.status === 60) {
+    const host = (() => { try { return new URL(url).hostname; } catch (e) { return ''; } })();
+    const ancora = host ? ancoraDaCadeia(host) : null;
+    if (ancora) {
+      r = spawnSync('curl', ['--cacert', ancora].concat(args),
+        { encoding: 'buffer', maxBuffer: 1024 * 1024 * 256 });
+    }
+  }
+
   if (r.status !== 0) {
     throw new Error('Falha de rede ao consultar a fonte: ' + String(r.stderr || '').slice(0, 300));
   }
@@ -93,7 +153,16 @@ export function buscar(url, opcoes) {
 /** O objeto que as regras esperam receber de `buscarResposta_`. */
 export function resposta(url, opcoes) {
   const r = buscar(url, opcoes);
-  if (r.codigo !== 200) throw new Error('A fonte respondeu HTTP ' + r.codigo + '.');
+  if (r.codigo !== 200) {
+    // Sem um trecho do corpo, um bloqueio de firewall e uma página fora do ar
+    // chegam ao painel como o mesmo "HTTP 403", e não há como distinguir.
+    let pista = '';
+    try {
+      pista = fs.readFileSync(r.arquivo, 'utf8').replace(/<[^>]*>/g, ' ')
+        .replace(/s+/g, ' ').trim().slice(0, 160);
+    } catch (e) { /* sem pista */ }
+    throw new Error('A fonte respondeu HTTP ' + r.codigo + '.' + (pista ? ' Resposta: ' + pista : ''));
+  }
   return {
     getResponseCode: () => r.codigo,
     getAllHeaders: () => r.cabecalhos,

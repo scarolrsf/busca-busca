@@ -30,6 +30,9 @@ jobs:
       - name: Consultar os tribunais
         run: node --max-old-space-size=4096 coleta/executar.mjs
 
+      - name: Conferir a resposta das fontes
+        run: node coleta/conferir-fontes.mjs
+
       - name: Publicar o que mudou
         run: |
           git config user.name  'Coleta automática'
