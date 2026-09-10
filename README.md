@@ -219,3 +219,30 @@ inserir.
 2. Alternativa, se preferir manter o repositório privado: a Cloudflare Pages
    aceita repositório privado — nesse caso, basta entrar na Cloudflare e conectar.
 3. Conferir a primeira execução agendada da coleta, às 6h ou às 18h.
+
+### 10/09/2026 — Repositório tornado público e publicação no GitHub Pages
+
+**Responsável:** Sarah concluiu a troca de visibilidade; Claude Code no restante.
+
+**Motivo.** O repositório havia sido criado privado por engano, o que impedia o
+GitHub Pages no plano gratuito e fazia o workflow de publicação falhar a cada
+alteração.
+
+**Arquivos.** `.github/workflows/publicar.yml` passou a tolerar a ausência do
+Pages em vez de falhar — o erro chegava por e-mail duas vezes por dia sem que
+houvesse defeito no código — e ganhou `enablement: true`, para habilitar o Pages
+por conta própria assim que ele ficasse disponível.
+
+**Validação.** Repositório confirmado público pela API. A publicação foi
+disparada em seguida.
+
+**Implantação.** Endereço previsto: `https://scarolrsf.github.io/busca-busca/`.
+A coleta continua em `.github/workflows/coletar.yml`, às 6h e às 18h, e cada
+coleta dispara uma nova publicação.
+
+**Pendências.**
+
+1. Conferir a primeira execução agendada da coleta, às 6h ou às 18h — até aqui
+   só houve execução manual.
+2. A Cloudflare Pages continua uma alternativa, caso se prefira domínio próprio
+   e cache mais próximo do usuário. Não é necessária para o site funcionar.
