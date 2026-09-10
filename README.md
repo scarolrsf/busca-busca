@@ -185,3 +185,37 @@ configurada — o painel pediu login, que só Sarah pode fazer.
    `verificadoEm` muda em todo registro — cerca de 1.700 linhas alteradas por
    execução. O Git comprime bem, mas convém observar o crescimento do
    repositório ao longo dos meses.
+
+### 10/09/2026 — Publicação: GitHub Pages preparado, visibilidade e Cloudflare pendentes
+
+**Responsável:** Claude Code, a pedido de Sarah.
+
+**Motivo.** A Cloudflare exige login que só Sarah pode fazer, e o site continuava
+sem endereço. O GitHub Pages publica o mesmo repositório e podia ser ligado pela
+sessão já autenticada, sem impedir a Cloudflare depois.
+
+**Arquivos.** Criado `.github/workflows/publicar.yml`: envia a pasta `site` como
+artefato do Pages a cada alteração em `main` — inclusive as que a coleta grava —,
+conferindo antes que `site/index.html` e `site/dados.json` existem, para que o
+site não suba vazio. `site/dados.json` voltou a ser versionado e passou a ser
+gravado pela coleta: sem isso, qualquer hospedagem precisaria de um passo de
+build, e esquecer esse detalhe publicaria o portal sem dados.
+
+**Validação.** Nenhuma publicação ocorreu ainda. O workflow de publicação não
+chegou a rodar, porque o Pages não está habilitado.
+
+**Implantação.** O repositório foi criado **privado**, apesar de a tela de criação
+mostrar "Public" — erro de leitura meu, confirmado depois pela API, que respondia
+404 a consulta anônima. O GitHub Pages, no plano gratuito, exige repositório
+público. A troca de visibilidade foi iniciada e parou na etapa "Confirm access":
+o GitHub pede reautenticação por código enviado ao e-mail, que não cabe a mim
+inserir.
+
+**Pendências.**
+
+1. Concluir a troca de visibilidade para público: em Settings → General → Danger
+   Zone, "Change visibility", e confirmar com o código recebido por e-mail.
+   Depois, habilitar o Pages em Settings → Pages com a origem "GitHub Actions".
+2. Alternativa, se preferir manter o repositório privado: a Cloudflare Pages
+   aceita repositório privado — nesse caso, basta entrar na Cloudflare e conectar.
+3. Conferir a primeira execução agendada da coleta, às 6h ou às 18h.
