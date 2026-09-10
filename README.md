@@ -164,17 +164,20 @@ registros de pertinência selecionada — é o que sustenta o recorte "Juizado
 Especial". `site/dados.json` deixou de ser versionado: é derivado de `dados/`
 pelo passo de publicação, para não duplicar 8 MB a cada coleta.
 
-**Implantação.** Repositório `scarolrsf/busca-busca` criado como público. O
-commit inicial está feito **localmente**; o envio ao GitHub ainda **não** foi
-concluído, porque o gerenciador de credenciais do Windows exige uma janela de
-confirmação que só Sarah pode aceitar. A Cloudflare Pages ainda **não** foi
-configurada: o painel pediu login.
+**Implantação.** Repositório  criado como público, e o
+código enviado. O workflow foi disparado à mão para validar o caminho inteiro:
+consultou as seis fontes reais e gravou o commit em 1 minuto e 1 segundo, com sucesso. A Cloudflare Pages ainda **não** foi
+configurada — o painel pediu login, que só Sarah pode fazer.
 
 **Pendências.**
 
-1. Sarah executar `git push -u origin main` e aprovar a janela do GitHub.
-2. Entrar na Cloudflare e conectar o repositório em Pages — build command vazio,
-   output directory `site`.
-3. Conferir a primeira execução automática do workflow.
-4. O cron do GitHub é fixo em UTC; se voltar o horário de verão, corrigir os dois
-   horários em `.github/workflows/coletar.yml`.
+1. Entrar na Cloudflare e conectar o repositório em Pages — build command vazio,
+   output directory .
+2. Conferir a primeira execução agendada (6h ou 18h), já que até agora só houve
+   execução manual.
+3. O cron do GitHub é fixo em UTC; se voltar o horário de verão, corrigir os dois
+   horários em .
+4. Cada coleta reescreve  inteiro, porque o campo
+    muda em todo registro — cerca de 1.700 linhas alteradas por
+   execução. O Git comprime bem, mas convém observar o crescimento do
+   repositório ao longo dos meses.
