@@ -118,3 +118,63 @@ O site é publicado pela Cloudflare Pages a cada alteração no repositório:
 
 A coleta precisa de permissão de escrita no repositório, já declarada no
 workflow (`permissions: contents: write`).
+
+## Regra permanente de atualização deste documento
+
+Este README é o documento único do projeto: requisitos, arquitetura, dados,
+operação, pendências e histórico. A cada alteração, atualize na mesma entrega as
+seções afetadas e acrescente uma entrada datada abaixo, com responsável, motivo,
+arquivos, validação, efeito nos dados e na implantação, e pendências.
+
+Distinga sempre implementação local, teste com amostras, consulta real às fontes
+e publicação. Não registre resultado simulado como confirmação oficial. Não
+inclua credenciais, cookies ou tokens aqui.
+
+## Histórico
+
+### 10/09/2026 — Saída do Apps Script para GitHub Actions e Cloudflare Pages
+
+**Responsável:** Claude Code, a pedido de Sarah.
+
+**Motivo.** O portal existia como prévia local e como piloto em Google Apps
+Script, nunca publicado. Sarah pediu um endereço acessível a todos. O Apps
+Script não sustenta a coleta: a lista de temas do STF tem 7,7 MB e a planilha de
+informativos, 9 MB que viram 62 MB descompactados — acima do que cabe em 6
+minutos de execução. Um Cloudflare Worker também não serve (128 MB de memória).
+A coleta passou para o GitHub Actions, e o site para a Cloudflare Pages.
+
+**Arquivos.** Criados `coleta/ambiente.mjs` (rede via curl síncrono, leitor de
+zip e xlsx sem dependências, armazenamento em JSON), `coleta/regras.js` (as
+regras de leitura das seis fontes, extraídas de Code.gs e Parsers.gs sem
+nenhuma API do Apps Script), `coleta/executar.mjs`, `coleta/publicar.mjs`,
+`coleta/servir.mjs` e `.github/workflows/coletar.yml`. `conferir-regra.mjs`
+passou de `work/` para `coleta/`. A interface foi para `site/index.html` sem
+alteração de layout — muda apenas a origem dos dados, de `/api/data` para
+`./dados.json`. `outputs/` foi removido para não haver duas cópias da interface.
+
+**Validação.** Consulta real às seis fontes, sem amostras: STJ temas (1.495),
+IUJ (48), RUPE (172), informativos STJ (15), temas STF (1.481) e informativos
+STF (1.012), em cerca de 60 segundos, nenhuma falha. Base resultante: 3.204
+temas, 1.225 julgados, 5.321 alterações registradas. A conferência da regra de
+suspensão passou sobre a base inteira. O site foi servido localmente e conferido
+lendo `site/dados.json`.
+
+**Dados.** `dados/` foi semeado com a base já conferida, preservando os 158
+registros de pertinência selecionada — é o que sustenta o recorte "Juizado
+Especial". `site/dados.json` deixou de ser versionado: é derivado de `dados/`
+pelo passo de publicação, para não duplicar 8 MB a cada coleta.
+
+**Implantação.** Repositório `scarolrsf/busca-busca` criado como público. O
+commit inicial está feito **localmente**; o envio ao GitHub ainda **não** foi
+concluído, porque o gerenciador de credenciais do Windows exige uma janela de
+confirmação que só Sarah pode aceitar. A Cloudflare Pages ainda **não** foi
+configurada: o painel pediu login.
+
+**Pendências.**
+
+1. Sarah executar `git push -u origin main` e aprovar a janela do GitHub.
+2. Entrar na Cloudflare e conectar o repositório em Pages — build command vazio,
+   output directory `site`.
+3. Conferir a primeira execução automática do workflow.
+4. O cron do GitHub é fixo em UTC; se voltar o horário de verão, corrigir os dois
+   horários em `.github/workflows/coletar.yml`.
