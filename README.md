@@ -295,3 +295,37 @@ nome do arquivo refletindo o filtro. A conferência da regra de suspensão passo
 1. A estrela guarda no navegador. Se um dia o portal ganhar login, vale migrar
    os favoritos para a conta.
 2. Conferir a primeira execução agendada da coleta, às 6h ou às 18h.
+
+### 10/09/2026 — Chamada de sentido nas novidades
+
+**Responsável:** Claude Code, a partir de sugestão recebida por Sarah.
+
+**Motivo.** O "Antes / Agora" é exato, mas obriga quem lê a traduzir sozinho o
+que a mudança significa. A sugestão foi acrescentar uma chamada curta antes do
+detalhe, dizendo por que aquela novidade importa.
+
+**Arquivos.** Em `site/index.html`, nova função `significadoDaNovidade`, que
+classifica cada linha do registro de alterações a partir do campo alterado e do
+valor novo, e reaproveita as mesmas expressões já usadas na regra de suspensão.
+O cartão de novidade passa a abrir pela chamada, com a faixa lateral na cor do
+nível, e o "Antes / Agora" continua abaixo, para conferência.
+
+Quatro níveis, e a cor acompanha o sentido:
+
+| Chamada | Quando | Nível |
+| --- | --- | --- |
+| ⚠️ Suspensão determinada / alterada | apareceu ou mudou o registro de suspensão | alerta |
+| ⚠️ Precedente sobrestado / Incidente admitido | a situação passou a sobrestar | alerta |
+| ✅ Trânsito em julgado, cancelamento, repercussão negada, suspensão encerrada | a suspensão deixou de valer | alívio |
+| 📌 Tese publicada, acórdão publicado, mérito julgado | conteúdo novo a ler | atenção |
+| 🆕 Novo precedente / novo julgado | entrou na base | atenção |
+| ✏️ Questão reescrita, área reclassificada, andamento, cadastro | ajuste sem efeito prático | neutro |
+
+**Validação.** Conferido na tela com as alterações reais da última coleta: as
+quatro categorias aparecem com a cor certa, e a chamada de suspensão puxa a
+faixa vermelha do cartão. A conferência da regra de suspensão passou.
+
+**Dados.** Nenhuma mudança na coleta nem na base.
+
+**Pendências.** Nenhuma nova. Se as novidades crescerem muito, vale um filtro
+por tipo de chamada — mostrar só os alertas, por exemplo.

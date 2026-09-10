@@ -244,6 +244,11 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .dia-titulo:first-child{margin-top:0}
 .dia-titulo h3{font-family:var(--serif);font-size:16px;margin:0;font-weight:600}
 .dia-titulo span{font-family:var(--mono);font-size:12px;color:var(--tinta-3)}
+.chamada{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;border-radius:4px;padding:2px 9px;border:1px solid}
+.chamada.n-ALTO{background:var(--critico-fraco);color:var(--critico);border-color:var(--critico)}
+.chamada.n-MEDIO{background:var(--atencao-fraco);color:var(--atencao);border-color:var(--atencao)}
+.chamada.n-BAIXO{background:var(--seguro-fraco);color:var(--seguro);border-color:var(--seguro)}
+.chamada.n-NEUTRO{background:var(--superficie-2);color:var(--tinta-2);border-color:var(--borda-forte)}
 .diff{font-size:.87rem;color:var(--tinta-2);white-space:pre-wrap;overflow-wrap:anywhere;margin:0;max-height:6.5em;overflow:hidden}
 .fontes{display:flex;flex-direction:column;gap:8px}
 .fonte-item{border:1px solid var(--borda);border-left:3px solid var(--seguro);border-radius:var(--raio);background:var(--superficie);padding:12px 14px;display:flex;flex-direction:column;gap:6px}
@@ -1756,6 +1761,59 @@ function rotuloNovidade(campo) {
   return String(campo);
 }
 
+/**
+ * O que aquela alteração significa na prática.
+ *
+ * O registro bruto diz qual campo mudou e de que valor para qual. Isso é exato,
+ * mas obriga quem lê a traduzir sozinho. A chamada faz essa tradução: diz se a
+ * novidade acende um alerta — suspensão nova —, se alivia — suspensão encerrada,
+ * trânsito, cancelamento —, se é conteúdo a ler — tese, acórdão — ou se é
+ * ajuste de cadastro. O "Antes / Agora" continua embaixo, para conferência.
+ */
+function significadoDaNovidade(linha) {
+  var campo = norm(linha[3] || '');
+  var antes = norm(linha[4] || '');
+  var agora = norm(linha[5] || '');
+  var registro = achar(linha[1]);
+  var informativo = registro && registro.tipo === 'Informativo';
+
+  if (campo === 'cadastro' || !campo) {
+    return informativo
+      ? { icone: '🆕', texto: 'Novo julgado', nivel: 'MEDIO' }
+      : { icone: '🆕', texto: 'Novo precedente', nivel: 'MEDIO' };
+  }
+
+  if (campo === 'registro sobre suspensao') {
+    if (!agora || RE_SEM_SUSPENSAO.test(agora)) {
+      return { icone: '✅', texto: 'Suspensão encerrada', nivel: 'BAIXO' };
+    }
+    return antes
+      ? { icone: '⚠️', texto: 'Suspensão alterada', nivel: 'ALTO' }
+      : { icone: '⚠️', texto: 'Suspensão determinada', nivel: 'ALTO' };
+  }
+
+  if (campo === 'situacao na fonte') {
+    if (/cancelad/.test(agora)) return { icone: '✅', texto: 'Precedente cancelado', nivel: 'BAIXO' };
+    if (/nao ha repercussao geral/.test(agora)) return { icone: '✅', texto: 'Repercussão geral negada', nivel: 'BAIXO' };
+    if (/transit/.test(agora)) return { icone: '✅', texto: 'Trânsito em julgado', nivel: 'BAIXO' };
+    if (/acordao[^.]{0,40}publicad/.test(agora)) return { icone: '📌', texto: 'Acórdão publicado', nivel: 'BAIXO' };
+    if (/julgad/.test(agora)) return { icone: '📌', texto: 'Mérito julgado', nivel: 'MEDIO' };
+    if (/sobrestad|suspens/.test(agora)) return { icone: '⚠️', texto: 'Precedente sobrestado', nivel: 'ALTO' };
+    if (/afetad|admitid|analisada preliminar/.test(agora)) return { icone: '⚠️', texto: 'Incidente admitido', nivel: 'MEDIO' };
+    if (/prejudicad|baixado|extinto|rejeitad/.test(agora)) return { icone: '✅', texto: 'Incidente prejudicado', nivel: 'BAIXO' };
+    return { icone: '📌', texto: 'Mudou a situação', nivel: 'MEDIO' };
+  }
+
+  if (campo === 'tese / destaque') return { icone: '📌', texto: 'Tese publicada', nivel: 'MEDIO' };
+  if (campo === 'transito em julgado') return { icone: '✅', texto: 'Trânsito em julgado', nivel: 'BAIXO' };
+  if (campo === 'publicacao') return { icone: '📌', texto: 'Acórdão publicado', nivel: 'BAIXO' };
+  if (campo === 'julgamento') return { icone: '📌', texto: 'Julgamento realizado', nivel: 'MEDIO' };
+  if (campo === 'questao') return { icone: '✏️', texto: 'Questão reescrita na fonte', nivel: 'NEUTRO' };
+  if (campo === 'area') return { icone: '✏️', texto: 'Área reclassificada', nivel: 'NEUTRO' };
+  if (campo === 'processos e datas') return { icone: '✏️', texto: 'Andamento atualizado', nivel: 'NEUTRO' };
+  return { icone: '✏️', texto: 'Atualização de cadastro', nivel: 'NEUTRO' };
+}
+
 function abaNovidades() {
   el('rail').hidden = true;
   el('rail').innerHTML = '';
@@ -1790,10 +1848,14 @@ function abaNovidades() {
         h += '<div class="dia-titulo"><h3>' + esc(dataBR(d)) + '</h3><span>' +
           numero(filtradas.filter(function (x) { return diaLocal(x[0]) === d; }).length) + ' registros</span></div>';
       }
-      h += '<article class="ficha r-BAIXO">' +
+      var sentido = significadoDaNovidade(l);
+      h += '<article class="ficha' + (sentido.nivel === 'NEUTRO' ? '' : ' r-' + sentido.nivel) + '">' +
         '<button class="ficha-abrir" data-reg="' + esc(l[1]) + '" type="button" aria-label="' +
-          esc('Abrir a ficha de ' + l[2]) + '"></button>' +
-        '<span class="ficha-topo"><span class="ident">' + esc(l[2]) + '</span>' +
+          esc(sentido.texto + ' — ' + l[2]) + '"></button>' +
+        '<span class="ficha-topo">' +
+        '<span class="chamada n-' + sentido.nivel + '"><span aria-hidden="true">' + sentido.icone +
+          '</span>' + esc(sentido.texto) + '</span>' +
+        '<span class="ident">' + esc(l[2]) + '</span>' +
         '<span class="etiqueta">' + esc(rotuloNovidade(l[3])) + '</span></span>' +
         (l[4] ? '<p class="diff"><strong>Antes:</strong> ' + esc(corta(l[4], 300)) + '</p>' : '') +
         '<p class="diff">' + (l[4] ? '<strong>Agora:</strong> ' : '') + esc(corta(l[5], 320)) + '</p>' +
