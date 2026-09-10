@@ -151,6 +151,12 @@ button,input,select{font:inherit;color:inherit}
 .alcance-item[aria-pressed="true"]{background:var(--acento-fraco);border-color:var(--acento)}
 .alcance-item .n{font-family:var(--mono);font-size:21px;font-weight:600;line-height:1.15;font-variant-numeric:tabular-nums}
 .alcance-item .r{font-size:12.5px;color:var(--tinta-2);line-height:1.35}
+.alcance-item.grupo-total{border-left-style:dashed}
+.alcance-item.grupo-estagio{border-left-color:var(--borda-forte)}
+.alcance-item.grupo-estagio .n{color:var(--tinta-2)}
+.alcance-item.grupo-total{border-left-style:dashed}
+.alcance-item.grupo-estagio{border-left-color:var(--borda-forte)}
+.alcance-item.grupo-estagio .n{color:var(--tinta-2)}
 .alcance-item.g-alto{border-left-color:var(--critico)} .alcance-item.g-alto .n{color:var(--critico)}
 .alcance-item.g-medio{border-left-color:var(--atencao)} .alcance-item.g-medio .n{color:var(--atencao)}
 .alcance-item.g-baixo{border-left-color:var(--seguro)} .alcance-item.g-baixo .n{color:var(--seguro)}
@@ -226,7 +232,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .procedencia{font-size:12.5px;color:var(--tinta-3);margin:12px 0 0}
 .dados.definicoes{grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px 28px}
 .legenda .dado{grid-column:1/-1}
-.legenda-item dt{display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13.5px;color:var(--tinta);font-weight:600;margin-bottom:3px}
+.legenda-item dt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;text-transform:none;letter-spacing:0;font-size:13.5px;color:var(--tinta);font-weight:600;margin-bottom:3px}
 .amostra{display:inline-block;width:46px;height:19px;border:1px solid var(--borda);border-left:3px solid var(--borda-forte);border-radius:3px;background:var(--superficie);flex-shrink:0}
 .amostra.r-ALTO{border-left-color:var(--critico)}
 .amostra.r-MEDIO{border-left-color:var(--atencao)}
@@ -474,15 +480,20 @@ var ALCANCES = [
 var ESTAGIOS_JULGADOS = { 'Julgado': 1, 'Acórdão publicado': 1, 'Trânsito em julgado': 1 };
 
 var DESTAQUES = [
-  { chave: 'nacional', rotulo: 'Suspensão nacional', nivel: 'alto',
+  { chave: 'nacional', rotulo: 'Suspensão nacional', nivel: 'alto', grupo: 'tipo',
+    ajuda: 'Alcança os processos sobre a mesma questão em todo o país — art. 1.035, § 5º, e art. 1.037, II, do CPC.',
     testa: function (r) { return r._emVigor && r._alcance === 'NACIONAL'; } },
-  { chave: 'estadual', rotulo: 'Suspensão estadual', nivel: 'alto',
+  { chave: 'estadual', rotulo: 'Suspensão estadual', nivel: 'alto', grupo: 'tipo',
+    ajuda: 'Restrita ao território do Estado, típica do IRDR — art. 982, I, do CPC.',
     testa: function (r) { return r._emVigor && r._alcance === 'ESTADUAL'; } },
-  { chave: 'recursal', rotulo: 'Apenas em fase recursal', nivel: 'medio',
+  { chave: 'recursal', rotulo: 'Apenas em fase recursal', nivel: 'medio', grupo: 'tipo',
+    ajuda: 'Alcança recursos especiais, extraordinários e agravos. O processo em primeiro grau segue seu curso.',
     testa: function (r) { return r._emVigor && r._alcance === 'RECURSAL'; } },
-  { chave: 'suspensos', rotulo: 'Suspensos', nivel: 'alto',
+  { chave: 'suspensos', rotulo: 'Todos os suspensos', nivel: 'alto', grupo: 'total',
+    ajuda: 'A soma dos três tipos acima: tudo que está com suspensão em vigor, qualquer que seja o alcance.',
     testa: function (r) { return r._emVigor && (r._alcance === 'NACIONAL' || r._alcance === 'ESTADUAL' || r._alcance === 'RECURSAL'); } },
-  { chave: 'julgados', rotulo: 'Julgados', nivel: 'baixo',
+  { chave: 'julgados', rotulo: 'Julgados', nivel: 'baixo', grupo: 'estagio',
+    ajuda: 'Outro eixo: precedentes com mérito julgado, acórdão publicado ou trânsito em julgado. Não fala de suspensão.',
     testa: function (r) { return ESTAGIOS_JULGADOS[r._situacao] === 1; } }
 ];
 
@@ -1062,7 +1073,8 @@ function painelDestaques(itens) {
     var n = 0;
     itens.forEach(function (r) { if (g.testa(r)) n++; });
     var ligado = estado.destaque === g.chave;
-    h += '<button class="alcance-item g-' + g.nivel + '" type="button" data-destaque="' + g.chave + '" ' +
+    h += '<button class="alcance-item g-' + g.nivel + ' grupo-' + g.grupo + '" type="button" ' +
+      'data-destaque="' + g.chave + '" title="' + esc(g.ajuda) + '" ' +
       'aria-pressed="' + (ligado ? 'true' : 'false') + '">' +
       '<span class="n">' + numero(n) + '</span><span class="r">' + esc(g.rotulo) + '</span></button>';
   });
@@ -1940,6 +1952,16 @@ function abaAjuda() {
   el('rail').hidden = true;
   el('rail').innerHTML = '';
 
+  /** Mostra a chamada de verdade ao lado do que ela quer dizer. */
+  function chamadaExemplo(nivel, icone, primeira, segunda, texto) {
+    return '<div class="dado legenda-item"><dt>' +
+      '<span class="chamada n-' + nivel + '"><span aria-hidden="true">' + icone + '</span>' +
+      esc(primeira) + '</span>' +
+      '<span class="chamada n-' + nivel + '"><span aria-hidden="true">' + icone + '</span>' +
+      esc(segunda) + '</span>' +
+      '</dt><dd>' + esc(texto) + '</dd></div>';
+  }
+
   function faixa(nivel, titulo, texto) {
     return '<div class="dado legenda-item"><dt><span class="amostra r-' + nivel + '"></span>' +
       esc(titulo) + '</dt><dd>' + esc(texto) + '</dd></div>';
@@ -1965,6 +1987,34 @@ function abaAjuda() {
         '<dd>Tribunal de origem, espécie do precedente e área do Juizado a que a matéria corresponde.</dd></div>' +
     '</dl></section>' +
 
+    '<section class="secao"><h2>Os blocos do topo</h2>' +
+      '<p class="texto-juridico">Os três primeiros são tipos de suspensão e se excluem entre si — ' +
+      'o que muda é até onde a ordem alcança. O quarto não é um quarto tipo: é a soma dos três, ' +
+      'um atalho para ver de uma vez tudo que está sobrestado. O quinto é de outro eixo e não fala ' +
+      'de suspensão, e sim de estágio.</p><dl class="dados definicoes">' +
+      campo('Suspensão nacional', 'Alcança os processos sobre a mesma questão em todo o país.') +
+      campo('Suspensão estadual', 'Restrita ao território do Estado.') +
+      campo('Apenas em fase recursal', 'Alcança só os recursos; o processo em primeiro grau segue.') +
+      campo('Todos os suspensos', 'A soma dos três anteriores.') +
+      campo('Julgados', 'Mérito julgado, acórdão publicado ou trânsito em julgado.') +
+    '</dl></section>' +
+        '<section class="secao"><h2>As chamadas das novidades</h2>' +
+      '<p class="texto-juridico">Na aba “Novidades”, cada alteração abre por uma chamada que diz o que ' +
+      'ela significa na prática, e a faixa lateral do cartão acompanha esse sentido. O detalhe do que ' +
+      'mudou — o “Antes / Agora” — continua logo abaixo, para conferência.</p><dl class="dados legenda">' +
+      chamadaExemplo('ALTO', '⚠️', 'Suspensão determinada', 'Suspensão alterada',
+        'Surgiu ou mudou a ordem de suspensão. É a novidade que pode impedir o julgamento de processo compatível.') +
+      chamadaExemplo('ALTO', '⚠️', 'Precedente sobrestado', 'Incidente admitido',
+        'A situação passou a sobrestar, ou o incidente foi admitido e passa a suspender.') +
+      chamadaExemplo('BAIXO', '✅', 'Suspensão encerrada', 'Trânsito em julgado',
+        'A suspensão deixou de valer — por trânsito em julgado, cancelamento, repercussão geral negada ou incidente prejudicado.') +
+      chamadaExemplo('MEDIO', '📌', 'Tese publicada', 'Acórdão publicado',
+        'Há conteúdo novo para ler: a tese foi firmada, o acórdão saiu, o mérito foi julgado.') +
+      chamadaExemplo('MEDIO', '🆕', 'Novo precedente', 'Novo julgado',
+        'O registro entrou na base agora, vindo da consulta às fontes oficiais.') +
+      chamadaExemplo('NEUTRO', '✏️', 'Atualização de cadastro', 'Área reclassificada',
+        'Ajuste sem efeito prático: a fonte reescreveu a questão, corrigiu a área, atualizou o andamento.') +
+    '</dl></section>' +
     '<section class="secao"><h2>Alcance da suspensão</h2><dl class="dados definicoes">' +
       campo('Suspensão nacional',
         'Determinação que alcança os processos sobre a mesma questão em todo o país — art. 1.035, § 5º, e art. 1.037, II, do Código de Processo Civil.') +

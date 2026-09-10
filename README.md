@@ -329,3 +329,36 @@ faixa vermelha do cartão. A conferência da regra de suspensão passou.
 
 **Pendências.** Nenhuma nova. Se as novidades crescerem muito, vale um filtro
 por tipo de chamada — mostrar só os alertas, por exemplo.
+
+### 10/09/2026 — Os blocos do topo e as chamadas passam a estar no guia
+
+**Responsável:** Claude Code, a partir de dúvida levantada por Sarah.
+
+**Motivo.** Sarah perguntou qual era a diferença entre "Suspensão nacional",
+"Suspensão estadual" e "Suspensos". A pergunta é a prova do defeito: cinco caixas
+iguais lado a lado sugerem cinco categorias paralelas, quando as três primeiras
+são tipos que se excluem, a quarta é a soma delas e a quinta é de outro eixo.
+
+**Arquivos.** Em `site/index.html`:
+
+- O quarto bloco passou de "Suspensos" para **"Todos os suspensos"**, com borda
+  tracejada; o de "Julgados" perdeu a cor de alcance, porque não fala de
+  suspensão. Cada bloco ganhou explicação ao passar o cursor.
+- Nova seção do guia, **"Os blocos do topo"**, dizendo em uma frase que os três
+  primeiros se excluem, o quarto é a soma e o quinto é estágio.
+- Nova seção do guia, **"As chamadas das novidades"**, com os selos renderizados
+  ao lado do que cada um significa — do mesmo jeito que a legenda faz com as
+  faixas coloridas.
+- Criado `.gitattributes` com `eol=lf`. O repositório é editado no Windows e a
+  coleta roda no Linux; sem isso, cada checkout trocava LF por CRLF, os arquivos
+  apareciam inteiros como alterados e qualquer edição que procurasse trecho de
+  várias linhas falhava — o que de fato aconteceu nesta sessão.
+
+**Validação.** Conferido na tela: os três tipos somam exatamente o total do
+quarto bloco (15 + 57 + 13 = 85). As doze chamadas aparecem no guia com a cor
+certa. Uma duplicação da seção "Os blocos do topo", causada por uma tentativa de
+edição que falhou pela questão do CRLF, foi encontrada e removida.
+
+**Dados.** Nenhuma mudança na coleta nem na base.
+
+**Pendências.** Nenhuma nova.
