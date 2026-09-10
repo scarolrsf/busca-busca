@@ -362,3 +362,41 @@ edição que falhou pela questão do CRLF, foi encontrada e removida.
 **Dados.** Nenhuma mudança na coleta nem na base.
 
 **Pendências.** Nenhuma nova.
+
+### 10/09/2026 — Favoritos: link compartilhável e limpeza da lista
+
+**Responsável:** Claude Code, a pedido de Sarah.
+
+**Motivo.** Sarah perguntou se não seria melhor um login, para que cada pessoa
+tivesse os próprios favoritos. A resposta foi que já é assim — a lista fica no
+`localStorage` de cada navegador e ninguém mais a vê —, e que login exigiria
+servidor, banco e tratamento de dado pessoal, inclusive o registro de quais
+temas cada magistrado acompanha, o que muda a natureza do piloto. Ficou
+decidido resolver os dois problemas práticos sem cadastro.
+
+**Arquivos.** Em `site/index.html`:
+
+- **"Copiar link da minha lista"** monta um endereço com os identificadores no
+  fragmento — a parte depois do `#`, que o navegador não envia a servidor
+  nenhum. Serve para levar a lista a outra máquina e para passar uma seleção
+  pronta a um colega.
+- Quem abre um link desses vê os precedentes **com a estrela vazia**, um aviso
+  de que vieram pelo endereço, e o botão "Guardar os N que vieram pelo link".
+  Nada é gravado sem ato da pessoa: dá para guardar todos ou escolher um a um.
+- **"Limpar meus favoritos"**, com confirmação, para o caso de computador
+  compartilhado no cartório — o único em que outra pessoa veria a lista, por
+  ser o mesmo perfil do mesmo navegador.
+- A mensagem de lista vazia passou a dizer que a lista é só de quem marcou.
+
+**Validação.** Ciclo completo conferido na tela: marcar três, copiar o link,
+apagar o armazenamento simulando outra pessoa, abrir o link — os três aparecem
+com estrela vazia e aviso —, guardar todos, e o endereço se limpa sozinho. A
+limpeza pergunta antes e esvazia a lista. A conferência da regra de suspensão
+passou.
+
+**Dados.** Nada é gravado fora do navegador de quem consulta. O portal continua
+sem servidor e sem dado pessoal.
+
+**Pendências.** Se o portal for adotado institucionalmente, o login natural é o
+SSO do próprio tribunal, com o jurídico ciente do tratamento de dados — e não
+uma senha criada por este projeto.

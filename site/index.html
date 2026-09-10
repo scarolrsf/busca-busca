@@ -240,6 +240,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .paradigma{border-top:1px dotted var(--borda);padding-top:12px;margin-top:12px}
 .paradigma:first-child{border-top:0;padding-top:0;margin-top:0}
 .paradigma-num{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--acento);margin:0 0 8px}
+.acoes-favoritos{margin-bottom:16px}
 .acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
 .botao-copiar{border:1px solid var(--acento);background:var(--superficie);color:var(--acento);border-radius:var(--raio);padding:7px 13px;cursor:pointer;font-size:13.5px;font-weight:500;transition:background .12s,color .12s}
 .botao-copiar:hover{background:var(--acento-fraco)}
@@ -442,6 +443,7 @@ var estado = {
   limite: PAGINA,
   registroId: null,
   destaque: '',        // bloco selecionado no painel do topo
+  favsRecebidos: [],   // favoritos que chegaram pelo endereço, ainda não guardados
   numero: '',          // filtro detalhado: número do precedente
   texto: '',           // filtro detalhado: palavras na questão ou na tese
   dia: ''
@@ -1741,9 +1743,42 @@ function ficha(r) {
 
 var ULTIMO_RESULTADO = [];
 
+/**
+ * Link com a lista embutida.
+ *
+ * Os identificadores vão no fragmento do endereço — a parte depois do "#", que
+ * o navegador não envia a servidor nenhum. É o que permite levar a lista para
+ * outro computador, ou passar uma seleção pronta a um colega, sem cadastro e
+ * sem que o portal guarde nada de ninguém.
+ */
+function linkDosFavoritos() {
+  if (!FAVORITOS.length) return '';
+  return window.location.origin + window.location.pathname +
+    '#/?aba=favoritos&favs=' + FAVORITOS.map(encodeURIComponent).join(',');
+}
+
+function acoesDosFavoritos(recebidosPendentes) {
+  var h = '<div class="acoes acoes-favoritos">';
+  if (FAVORITOS.length) {
+    h += '<button type="button" class="botao-copiar" id="copiar-link-favoritos">Copiar link da minha lista</button>' +
+      '<button type="button" class="limpar-tudo" id="limpar-favoritos">Limpar meus favoritos</button>';
+  }
+  if (recebidosPendentes.length) {
+    h += '<button type="button" class="botao-copiar" id="guardar-recebidos">Guardar os ' +
+      numero(recebidosPendentes.length) + ' que vieram pelo link</button>';
+  }
+  return h + '</div>';
+}
+
 function abaFavoritos() {
+  // O que veio por link aparece junto, com a estrela vazia: dá para conferir
+  // antes de guardar, e para guardar só alguns.
+  var recebidosPendentes = estado.favsRecebidos.filter(function (id) { return !ehFavorito(id); });
+  var mostrar = {};
+  FAVORITOS.concat(estado.favsRecebidos).forEach(function (id) { mostrar[id] = true; });
+
   var guardados = BASE.temas.concat(BASE.informativos)
-    .filter(function (r) { return ehFavorito(r.id); });
+    .filter(function (r) { return mostrar[r.id]; });
 
   if (!guardados.length) {
     el('rail').hidden = true;
@@ -1752,12 +1787,26 @@ function abaFavoritos() {
       '<p><strong>Nenhum precedente guardado ainda.</strong></p>' +
       '<p>Toque na estrela ao lado de qualquer resultado para guardá-lo aqui — ' +
       'serve para reunir os temas que você acompanha de perto.</p>' +
-      '<p>A lista fica neste navegador: não acompanha você em outro computador, ' +
-      'e some se os dados de navegação forem limpos.</p></div>';
+      '<p>A lista fica neste navegador e é só sua: ninguém mais a vê. Em troca, ' +
+      'ela não acompanha você em outro computador, e some se os dados de navegação ' +
+      'forem limpos. Depois de marcar alguns, o botão “Copiar link da minha lista” ' +
+      'permite levá-la para outra máquina.</p></div>';
     ULTIMO_RESULTADO = [];
     return;
   }
+
   abaRegistros(guardados, 'favorito', 'favoritos');
+
+  // As ações entram acima da lista, logo depois do seletor de competência.
+  var painel = el('conteudo').querySelector('.escopo');
+  if (painel) painel.insertAdjacentHTML('afterend', acoesDosFavoritos(recebidosPendentes));
+  if (recebidosPendentes.length) {
+    el('conteudo').querySelector('.acoes-favoritos').insertAdjacentHTML('beforebegin',
+      '<p class="aviso a-MEDIO"><span aria-hidden="true">!</span><span>' +
+      '<strong>' + numero(recebidosPendentes.length) + ' precedentes vieram pelo endereço.</strong>' +
+      'Eles aparecem aqui com a estrela vazia e ainda não estão guardados neste navegador. ' +
+      'Marque um por um, ou guarde todos de uma vez.</span></p>');
+  }
 }
 
 /* -------------------------------------------------------- aba: novidades */
@@ -2096,6 +2145,9 @@ function paraURL() {
   if (estado.ordem !== 'relevancia') p.push('ordem=' + estado.ordem);
   if (estado.dia) p.push('dia=' + estado.dia);
   if (estado.destaque) p.push('bloco=' + estado.destaque);
+  if (estado.favsRecebidos.length) {
+    p.push('favs=' + estado.favsRecebidos.map(encodeURIComponent).join(','));
+  }
   if (estado.numero) p.push('num=' + encodeURIComponent(estado.numero));
   if (estado.texto.trim()) p.push('texto=' + encodeURIComponent(estado.texto.trim()));
   Object.keys(estado.filtros).forEach(function (c) {
@@ -2118,6 +2170,7 @@ function deURL() {
   estado.ordem = 'relevancia';
   estado.dia = '';
   estado.destaque = '';
+  estado.favsRecebidos = [];
   estado.numero = '';
   estado.texto = '';
   (partes[1] || '').split('&').filter(Boolean).forEach(function (par) {
@@ -2130,6 +2183,7 @@ function deURL() {
     else if (k === 'ordem') estado.ordem = v;
     else if (k === 'dia') estado.dia = v;
     else if (k === 'bloco') estado.destaque = v;
+    else if (k === 'favs') estado.favsRecebidos = v.split(',').map(decodeURIComponent).filter(Boolean);
     else if (k === 'num') estado.numero = v;
     else if (k === 'texto') estado.texto = v;
     else if (v) estado.filtros[k] = v.split('|');
@@ -2305,6 +2359,26 @@ function ligar() {
     }
 
     if (alvo.id === 'baixar-planilha') return baixarPlanilha(ULTIMO_RESULTADO);
+
+    if (alvo.id === 'copiar-link-favoritos') return copiar(linkDosFavoritos(), alvo);
+
+    if (alvo.id === 'guardar-recebidos') {
+      estado.favsRecebidos.forEach(function (id) { if (!ehFavorito(id)) FAVORITOS.push(id); });
+      guardar('favoritos', JSON.stringify(FAVORITOS));
+      estado.favsRecebidos = [];
+      anunciar('Favoritos guardados neste navegador.');
+      return aplicar();
+    }
+
+    if (alvo.id === 'limpar-favoritos') {
+      if (!window.confirm('Remover os ' + FAVORITOS.length + ' precedentes guardados neste navegador? ' +
+          'A lista some e não há como desfazer.')) return;
+      FAVORITOS.length = 0;
+      guardar('favoritos', '[]');
+      estado.favsRecebidos = [];
+      anunciar('Favoritos removidos.');
+      return aplicar();
+    }
     if (alvo.id === 'previa-fechar') return fecharPrevia();
     if (alvo.id === 'previa-copiar') return copiar(textoDaPrevia, alvo);
 
