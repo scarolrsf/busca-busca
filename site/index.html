@@ -376,18 +376,21 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
   .rodape{padding:4px 12px 32px}
 
   .escopo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
-  .escopo button{padding:7px 10px}
+  .escopo button{padding:7px 8px;font-size:12.5px}
   .alcance{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .alcance-item{padding:9px 10px}
 
-  .filtro-detalhado{flex-direction:column;align-items:stretch;gap:10px;padding:12px}
-  .campo-filtro.cresce{min-width:0}
+  /* Número e Espécie são curtos e cabem lado a lado; só o campo de palavras
+     e o botão de limpar ocupam a linha inteira. */
+  .filtro-detalhado{display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:10px;padding:12px}
+  .campo-filtro.cresce,.filtro-detalhado .limpar-tudo{grid-column:1/-1;min-width:0}
   .campo-filtro input,.campo-filtro select,.ordenar,.filtro-dia{font-size:16px;min-height:40px}
   #f-numero{width:100%}
   .filtro-detalhado .limpar-tudo{min-height:44px}
   .baixar{margin:6px 0 0;min-height:40px}
 
   .ficha{padding:12px}
+  .vazio{padding:24px 16px}
   .favorito{padding:7px}
   .detalhe-cabeca{padding:16px 14px}
   .detalhe-cabeca h1{font-size:1.28rem}
@@ -410,6 +413,11 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 @media (max-width:540px){
   .marca-sub{display:none}
   .marca-selo svg{width:38px;height:27px}
+}
+/* Telefone deitado: a faixa fixa comeria dois quintos dos 375 px de altura.
+   Ali ela rola junto com a página, e a busca volta com o topo. */
+@media (max-width:940px) and (max-height:520px){
+  .topo{position:static}
 }
 
 </style>

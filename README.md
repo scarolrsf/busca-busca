@@ -46,6 +46,7 @@ coleta/
   publicar.mjs       monta site/dados.json a partir da base
   conferir-regra.mjs confere a regra de suspensão contra a base inteira
   conferir-fontes.mjs mostra, no resumo da execução, quais fontes responderam
+  conferir-cadeia.mjs prova que o remendo do certificado do STF funciona
 
 dados/           a base entre uma coleta e outra, versionada
   temas-do-portal.json         precedentes e incidentes
@@ -54,7 +55,31 @@ dados/           a base entre uma coleta e outra, versionada
   fontes.json                  situação da última consulta a cada fonte
   conferencia.json             quando cada origem foi lida pela última vez
 work/            apoio local, fora do repositório (ver .gitignore)
+.claude/
+  launch.json    atalho de prévia local: sobe `serve site` na porta 4173
 ```
+
+### No telefone
+
+O portal é consultado no meio do expediente, e às vezes da tela do celular. O
+desenho parte da mesma folha em qualquer largura — não há versão reduzida do
+conteúdo, nem página separada —, mas abaixo de 700 px três coisas mudam:
+
+- **A faixa do topo quebra em duas linhas.** Marca e preferências dividem a
+  primeira; a busca, que é o que mais se usa no telefone, ocupa a segunda
+  inteira. Em uma linha só ela pedia 503 px de largura mínima, e o excedente
+  empurrava a página para o lado: o texto saía pela direita e era preciso
+  arrastar na horizontal para ler cada linha.
+- **O texto deixa de ser justificado.** Numa coluna de 350 px a justificação
+  abre rios de espaço branco entre as palavras, e nem a hifenização os fecha.
+- **Os campos de digitação vão a 16 px e os alvos de toque a 44 px.** O Safari
+  do iPhone dá zoom em qualquer campo com fonte menor que 16 px, e sair do zoom
+  depois é manual. Os 44 px são o mínimo confortável para o dedo — mais
+  generoso que os 24 px que o WCAG exige do ponteiro.
+
+Abaixo de 540 px o subtítulo da marca sai: ele repete o que as abas já dizem. E
+com o telefone deitado a faixa do topo deixa de ser fixa, porque ali ela comeria
+dois quintos da altura da tela.
 
 ## Rodar a coleta à mão
 
@@ -198,6 +223,129 @@ inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
 
+### 10/09/2026 (noite) — A coleta agendada rodou; o conserto do STF, não
+
+**Responsável:** Claude Code, a pedido de Sarah.
+
+**A primeira execução agendada aconteceu.** O cron das 18h07 disparou às 21:18
+UTC — onze minutos de fila, dentro do esperado para o agendador do GitHub —,
+rodou, commitou sozinha e disparou a publicação. Três fontes atualizaram
+normalmente. Encerra a pendência de nunca ter havido execução automática.
+
+**Mas as duas fontes do STF falharam com o mesmo erro de antes.** O defeito é
+meu, em duas camadas.
+
+No código: a expressão que lê o endereço do intermediário no certificado estava
+gravada como `/CA Issuers - URI:(S+)/` em vez de `(\S+)` — a barra invertida foi
+comida na edição. Procurava a letra "S" literal, nunca casava, e a âncora nunca
+era obtida. Continua sendo sintaxe válida, então nada acusou.
+
+Na conferência, que é o erro mais grave: a entrada de mais cedo deu isso por
+conferido apontando `CURL_CA_BUNDLE` para um arquivo vazio, supondo reproduzir o
+runner. **Não reproduz.** O curl do Windows usa o Schannel, que ignora essa
+variável — medido: com ela vazia, um site de cadeia completa responde 302; com
+`--cacert` vazio, sai com erro 60. As requisições passavam porque o Windows
+validava normalmente. Um teste que não podia falhar não é teste, e essa entrada
+foi corrigida no lugar onde a afirmação falsa estava.
+
+**O que mudou.**
+
+- A busca do intermediário não depende mais do `openssl` nem de casar expressão
+  regular contra texto feito para humano ler. Usa o módulo `tls` do Node, que
+  devolve a extensão do certificado já estruturada, num subprocesso síncrono. A
+  conversão DER→PEM é feita em JavaScript: um PEM é o DER em base64, e só.
+- Criado `coleta/conferir-cadeia.mjs`, que exercita o caminho de verdade — busca
+  o elo, confere que é certificado, e pede a página usando **só** esse elo como
+  âncora, via `--cacert`, que o Schannel respeita. Inclui o controle que faltava
+  da outra vez: um host de cadeia completa **precisa recusar** essa âncora; se
+  aceitasse, o `--cacert` estaria sendo ignorado e o resto não valeria nada.
+- Quando o remendo não dá certo, o motivo passa a viajar junto do erro até o
+  painel. Sem isso, cada diagnóstico custa doze horas.
+- A pista do corpo nas respostas de erro tinha o mesmo estrago de barra
+  invertida (`/s+/`) e não removia `<style>` — o que foi capturado do 403 do STJ
+  foi a folha de estilo da página de bloqueio. Corrigido, e agora com 200
+  caracteres de texto de verdade.
+- Varredura em todo o código atrás de outras regex com barra invertida comida:
+  nenhuma outra.
+
+**Validação.** `node coleta/conferir-cadeia.mjs` — cinco verificações, todas
+passaram, inclusive o controle. **A confirmação em produção continua dependendo
+da próxima execução agendada.** A diferença é que agora o teste local exercita o
+caminho, o que antes não acontecia.
+
+**Pendências.** O 403 do STJ segue em aberto: daqui a fonte responde 200, e só a
+próxima execução dirá o que a página de bloqueio traz, agora que a pista é
+legível.
+
+### 10/09/2026 — O portal passa a caber no telefone
+
+**Responsável:** Claude Code, a pedido de Sarah ("quero um design responsivo,
+analisa como fica no celular e ajusta").
+
+**Motivo.** Aberto o portal numa tela de 375 px — um iPhone comum — a página
+inteira estava deslocada para o lado. A faixa do topo punha marca, campo de
+busca e preferências em uma linha só, e essa linha pedia **503 px de largura
+mínima**: 128 px a mais do que a tela. O navegador não corta o excedente, ele
+cria rolagem horizontal na página toda, de modo que cada linha de texto acabava
+fora da vista à direita e o campo de busca ficava com 80 px úteis. Nada disso
+aparece no computador, onde sobra largura.
+
+**O que mudou.**
+
+1. **A faixa do topo quebra em duas linhas abaixo de 700 px.** Marca e
+   preferências na primeira, busca na segunda, inteira. Abaixo de 540 px o
+   subtítulo da marca sai — ele repete o que as abas já dizem — e o selo encolhe
+   de 44 para 38 px. Com o telefone deitado (altura até 520 px) a faixa deixa de
+   ser fixa: parada ali, ela comia dois quintos da tela.
+2. **O texto deixa de ser justificado no celular.** A justificação foi escolhida
+   para a coluna larga; em 350 px ela abre rios de espaço branco entre as
+   palavras, e a hifenização não dá conta. Vale para ementa, tese, questão,
+   avisos, diffs e o guia.
+3. **Campos de digitação a 16 px, alvos de toque a 44 px.** O Safari do iPhone
+   dá zoom em qualquer campo com fonte menor que 16 px e não desfaz sozinho; era
+   o caso dos filtros, do "ordenar por" e do filtro de dia. Os 44 px valem para
+   abas, botões de copiar, link da fonte, "carregar mais" e "voltar".
+4. **Menos rolagem antes do primeiro resultado.** O escopo vira três colunas de
+   largura igual; os cinco blocos de alcance, duas colunas; e o filtro detalhado
+   passa a uma grade com Número e Espécie lado a lado, e só o campo de palavras
+   ocupando a linha. São uns 70 px a menos de moldura: medida na base real, a
+   primeira ficha começa a 580 px do alto da página, contra 650 px antes.
+5. **A ficha aberta e a prévia respiram.** Padding de 24 para 14 px nas seções,
+   título de 1,4 para 1,28 rem, e o diálogo de prévia ocupa a largura da tela
+   com o botão "Copiar" inteiro, em vez dos 92 vw que sobravam de um desenho de
+   computador.
+6. **A aba escolhida rola sozinha para dentro da vista.** A barra de abas não
+   cabe inteira no telefone e rola na horizontal; sem isto, escolher uma aba
+   pelo endereço ou pelo botão do guia mudava a página sem mostrar o que fora
+   escolhido.
+7. **Três grades de largura mínima fixa** (`minmax(160px|200px|330px,1fr)`)
+   passaram a `minmax(min(…,100%),1fr)`. A de 330 px, usada no guia, estourava
+   a tela sozinha em qualquer telefone.
+
+**Arquivos.** `site/index.html` (bloco de CSS `celular`, ao fim da folha, e o
+trecho das abas em `desenha()`), `.claude/launch.json` (novo, prévia local),
+`README.md`.
+
+**Validação.** Prévia local (`serve site` na porta 4173), no navegador embutido
+do Claude Code, com a base real de 10/09/2026. Conferido em 375×812, 320×700,
+740×420 e 1280×800, nos temas claro e escuro, nas seis abas, na ficha aberta e
+nos dois diálogos: a largura de rolagem passou a ser igual à da tela em todas
+(era 503 px contra 375 px), e nenhum elemento ultrapassa a borda direita. O
+desenho de computador em 1280 px continua idêntico — trilho de filtros à
+esquerda, faixa em uma linha, texto justificado. **Não houve teste em aparelho
+real**: o que se testou foi a emulação de tamanho do Chromium, que não reproduz
+a barra do navegador do celular nem o zoom automático do iOS.
+
+**Dados e implantação.** Nada muda na coleta, na base ou no `dados.json`. É
+alteração só de apresentação; publica junto com o próximo envio ao repositório.
+
+**Pendências.**
+
+1. Conferir num aparelho de verdade, de preferência num iPhone, se o campo de
+   busca deixou mesmo de dar zoom ao receber o toque.
+2. A moldura antes do primeiro resultado ainda ocupa 580 px no telefone. Se incomodar no uso, o caminho é recolher o filtro detalhado atrás
+   de um botão "Filtrar", o que exige mexer no HTML gerado pelo JS.
+
 ### 10/09/2026 — Crescimento do repositório, repetição das fontes e ícone
 
 **Responsável:** Claude Code, a pedido de Sarah ("pode fazer tudo o que falta").
@@ -271,16 +419,19 @@ versionado.
 que 3 fontes não responderam. A coleta funcionava na máquina da Sarah, então o
 defeito só existia em produção, que é justamente onde ninguém olha.
 
-**Causa 1 — certificado do STF (resolvido).** `portal.stf.jus.br` e
-`www.stf.jus.br` enviam só o certificado próprio e omitem o intermediário. O
-Windows busca sozinho o elo que falta; o curl no Linux não. Daí
-`unable to get local issuer certificate` nas duas fontes do STF. O
-`coleta/ambiente.mjs` passou a ler o endereço do intermediário no próprio
-certificado, baixá-lo e repetir a requisição. Conferido localmente com o
-repositório de certificados esvaziado (`CURL_CA_BUNDLE` apontando para arquivo
-vazio), que reproduz a condição do runner: as duas fontes voltaram a responder
-200 — 4.920.647 e 9.339.018 bytes. **A confirmação em produção depende da
-próxima execução no Actions.**
+**Causa 1 — certificado do STF.** `portal.stf.jus.br` e `www.stf.jus.br` enviam
+só o certificado próprio e omitem o intermediário. O Windows busca sozinho o elo
+que falta; o curl no Linux não. Daí `unable to get local issuer certificate` nas
+duas fontes do STF. O `coleta/ambiente.mjs` passou a ler o endereço do
+intermediário no próprio certificado, baixá-lo e repetir a requisição.
+
+> **Correção de 10/09/2026, à noite.** Esta entrada afirmava que o conserto
+> fora conferido localmente apontando `CURL_CA_BUNDLE` para um arquivo vazio.
+> **Aquela conferência não valia.** O curl do Windows usa o Schannel, que ignora
+> essa variável: as requisições passavam porque o Windows validava normalmente,
+> e o caminho do remendo nunca chegou a ser exercitado. Ele estava quebrado, e a
+> coleta agendada das 18h falhou nas duas fontes do STF pelo mesmo motivo de
+> antes. Ver a entrada seguinte.
 
 **Causa 2 — HTTP 403 no informativo do STJ (em aberto).** `processo.stj.jus.br`
 responde 200 a partir do Brasil e 403 a partir do runner. Os dados abertos do

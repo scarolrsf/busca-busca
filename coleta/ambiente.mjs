@@ -78,35 +78,83 @@ function codigoDe(cabecalhosBrutos) {
   return Number((status.match(/\s(\d{3})\s?/) || [])[1] || 0);
 }
 
+/* Por que o remendo não deu certo, quando não dá. Sem isto, a única coisa que
+   chega ao painel é o erro de certificado do curl, que não diz em que passo a
+   busca do elo faltante parou — e cada diagnóstico custaria doze horas. */
+export const ANCORA_DIAGNOSTICO = {};
+
+/**
+ * O endereço do certificado intermediário, lido do próprio certificado que o
+ * servidor apresenta.
+ *
+ * Feito pelo módulo tls do Node, e não pelo openssl: assim não se depende de o
+ * binário existir no runner, nem de casar expressão regular contra texto feito
+ * para humano ler — foi exatamente esse casamento que falhou em produção sem
+ * dar sinal. O Node devolve a extensão já estruturada.
+ *
+ * Roda num subprocesso porque o tls é assíncrono e toda a coleta é síncrona.
+ */
+function enderecoDoIntermediario(host) {
+  const roteiro = [
+    "const tls = require('tls');",
+    "const host = process.argv[1];",
+    "let respondeu = false;",
+    "const encerrar = (texto) => {",
+    "  if (respondeu) return;",
+    "  respondeu = true;",
+    "  process.stdout.write(texto || '');",
+    "  s.destroy();",
+    "};",
+    "const s = tls.connect({ host: host, port: 443, servername: host, rejectUnauthorized: false }, () => {",
+    "  const cert = s.getPeerCertificate(true) || {};",
+    "  const aia = (cert.infoAccess || {})['CA Issuers - URI'] || [];",
+    "  encerrar(aia[0]);",
+    "});",
+    "s.on('error', () => encerrar(''));",
+    "s.setTimeout(20000, () => encerrar(''));"
+  ].join('\n');
+
+  const r = spawnSync(process.execPath, ['-e', roteiro, host],
+    { encoding: 'utf8', timeout: 30000 });
+  return String(r.stdout || '').trim();
+}
+
+/** DER para PEM sem openssl: um certificado em PEM é o DER em base64, e só. */
+function derParaPem(bruto) {
+  if (bruto.slice(0, 11).toString('latin1') === '-----BEGIN ') return bruto.toString('latin1');
+  const linhas = bruto.toString('base64').match(/.{1,64}/g) || [];
+  return '-----BEGIN CERTIFICATE-----\n' + linhas.join('\n') + '\n-----END CERTIFICATE-----\n';
+}
+
 function ancoraDaCadeia(host) {
   if (Object.prototype.hasOwnProperty.call(ANCORAS, host)) return ANCORAS[host];
   ANCORAS[host] = null;
   try {
-    const folha = spawnSync('openssl',
-      ['s_client', '-connect', host + ':443', '-servername', host],
-      { input: '', encoding: 'utf8', timeout: 30000 });
-    const texto = spawnSync('openssl', ['x509', '-noout', '-text'],
-      { input: String(folha.stdout || ''), encoding: 'utf8', timeout: 30000 });
-    const uri = (String(texto.stdout || '').match(/CA Issuers - URI:(S+)/) || [])[1];
-    if (!uri) return null;
+    const uri = enderecoDoIntermediario(host);
+    if (!/^https?:\/\//.test(uri)) {
+      ANCORA_DIAGNOSTICO[host] = 'o certificado não indica onde buscar o intermediário';
+      return null;
+    }
 
-    const der = path.join(TEMP, 'ca-' + host + '.der');
-    const pem = path.join(TEMP, 'ca-' + host + '.pem');
-    const baixa = spawnSync('curl', ['--silent', '--max-time', '30', '--location',
-      '--output', der, uri], { encoding: 'buffer' });
-    if (baixa.status !== 0 || !fs.existsSync(der) || !fs.statSync(der).size) return null;
+    const baixado = path.join(TEMP, 'ca-' + host.replace(/[^a-z0-9.-]/gi, '_'));
+    const baixa = spawnSync('curl', ['--silent', '--show-error', '--max-time', '30',
+      '--location', '--output', baixado, uri], { encoding: 'buffer' });
+    if (baixa.status !== 0 || !fs.existsSync(baixado) || !fs.statSync(baixado).size) {
+      ANCORA_DIAGNOSTICO[host] = 'não foi possível baixar o intermediário em ' + uri;
+      return null;
+    }
 
-    // O arquivo vem em DER; o curl só aceita âncora em PEM.
-    const converte = spawnSync('openssl',
-      ['x509', '-inform', 'DER', '-in', der, '-out', pem], { encoding: 'utf8', timeout: 30000 });
-    if (converte.status !== 0 || !fs.existsSync(pem)) return null;
-
+    const pem = baixado + '.pem';
+    fs.writeFileSync(pem, derParaPem(fs.readFileSync(baixado)));
     ANCORAS[host] = pem;
     return pem;
   } catch (e) {
+    ANCORA_DIAGNOSTICO[host] = 'erro ao buscar o intermediário: ' + (e && e.message);
     return null;
   }
 }
+
+export { ancoraDaCadeia };
 
 /**
  * Uma requisição, de forma síncrona. Devolve o corpo em Buffer, o código HTTP
@@ -172,8 +220,10 @@ export function buscar(url, opcoes) {
   }
 
   if (r.status !== 0) {
+    const host = (() => { try { return new URL(url).hostname; } catch (e) { return ''; } })();
+    const porque = ANCORA_DIAGNOSTICO[host] ? ' (remendo da cadeia: ' + ANCORA_DIAGNOSTICO[host] + ')' : '';
     throw new Error('Falha de rede ao consultar a fonte, em ' + TENTATIVAS + ' tentativas: ' +
-      String(r.stderr || '').slice(0, 300));
+      String(r.stderr || '').slice(0, 300) + porque);
   }
 
   const linhas = brutos.split(/\r?\n/);
@@ -199,8 +249,14 @@ export function resposta(url, opcoes) {
     // chegam ao painel como o mesmo "HTTP 403", e não há como distinguir.
     let pista = '';
     try {
-      pista = fs.readFileSync(r.arquivo, 'utf8').replace(/<[^>]*>/g, ' ')
-        .replace(/s+/g, ' ').trim().slice(0, 160);
+      pista = fs.readFileSync(r.arquivo, 'utf8')
+        // Sem tirar o <style> e o <script>, a "pista" vira a folha de estilo da
+        // página de erro — foi o que voltou da primeira vez, e não disse nada.
+        .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;?/gi, ' ')
+        .replace(/\s+/g, ' ')
+        .trim().slice(0, 200);
     } catch (e) { /* sem pista */ }
     throw new Error('A fonte respondeu HTTP ' + r.codigo + '.' + (pista ? ' Resposta: ' + pista : ''));
   }
