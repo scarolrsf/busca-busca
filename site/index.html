@@ -1,0 +1,2084 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Busca Busca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* ---------------------------------------------------------------------------
+   Busca Busca — precedentes, incidentes e informativos
+
+   Paleta creme. O papel fica num creme de baixa saturação (matiz ~55°) e as
+   superfícies sobem para um quase-branco quente, de modo que a ficha se
+   destaque do fundo sem precisar de sombra pesada. A tinta é um marrom-grafite
+   da mesma família quente, o que evita o contraste duro do preto sobre creme.
+
+   As cores com significado ficam distantes entre si no círculo cromático, para
+   não se confundirem sobre um fundo quente:
+     acento  índigo  ~215°  — o que é interativo (links, números, seleção)
+     crítico vermelho ~10°  — suspensão que alcança o primeiro grau
+     atenção âmbar    ~38°  — suspensão limitada ou alcance a confirmar
+     seguro  verde   ~145°  — sem suspensão registrada
+   O âmbar é o vizinho mais próximo do creme, por isso sua versão clara é mais
+   saturada que o papel: é o que mantém a etiqueta legível sobre a ficha.
+
+   Tipos: Source Serif 4 (texto jurídico), IBM Plex Sans (interface),
+   IBM Plex Mono (números de tema, processo e data).
+--------------------------------------------------------------------------- */
+:root{
+  --papel:#e9dec7; --superficie:#f8f2e3; --superficie-2:#f0e7d3;
+  --borda:#d8caab; --borda-forte:#bfad89;
+  --tinta:#2b2418; --tinta-2:#5c523d; --tinta-3:#7d7057;
+  --acento:#27496d; --acento-forte:#1b3550; --acento-fraco:#d7e2ee;
+  --critico:#9c2f26; --critico-fraco:#f2d5cc;
+  --atencao:#8a5717; --atencao-fraco:#efdcaf;
+  --seguro:#3a6b48; --seguro-fraco:#d8e6ce;
+  --realce:#f7dd8e; --sobre-acento:#f8f2e3;
+  --sombra:0 1px 2px rgba(60,48,28,.05),0 10px 28px -20px rgba(60,48,28,.35);
+  --raio:6px;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --papel:#1b1813; --superficie:#241f18; --superficie-2:#2c261d;
+    --borda:#3a3226; --borda-forte:#544a39;
+    --tinta:#f0e8d8; --tinta-2:#c3b8a2; --tinta-3:#948976;
+    --acento:#93b7db; --acento-forte:#bcd4ea; --acento-fraco:#22303f;
+    --critico:#e9968b; --critico-fraco:#3b221d;
+    --atencao:#dcb069; --atencao-fraco:#3a2c15;
+    --seguro:#8fc196; --seguro-fraco:#1e3222;
+    --realce:#5d4a15; --sobre-acento:#1b1813;
+    --sombra:0 1px 2px rgba(0,0,0,.45),0 10px 28px -20px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --papel:#1b1813; --superficie:#241f18; --superficie-2:#2c261d;
+  --borda:#3a3226; --borda-forte:#544a39;
+  --tinta:#f0e8d8; --tinta-2:#c3b8a2; --tinta-3:#948976;
+  --acento:#93b7db; --acento-forte:#bcd4ea; --acento-fraco:#22303f;
+  --critico:#e9968b; --critico-fraco:#3b221d;
+  --atencao:#dcb069; --atencao-fraco:#3a2c15;
+  --seguro:#8fc196; --seguro-fraco:#1e3222;
+  --realce:#5d4a15; --sobre-acento:#1b1813;
+  --sombra:0 1px 2px rgba(0,0,0,.45),0 10px 28px -20px rgba(0,0,0,.9);
+}
+/* ------------------------------------------------------- ergonomia de base
+   O texto de leitura é dimensionado em rem, e o controle A− / A / A+ move a
+   raiz. Assim a escolha vale na página inteira, e quem já aumentou a fonte no
+   navegador continua respeitado. A moldura — barras, etiquetas, números — fica
+   em px: crescer junto só faria o cabeçalho comer a tela.
+
+   Alvos de clique seguem o mínimo de 24x24 px do WCAG 2.2 (2.5.8); abaixo
+   disso a taxa de erro sobe muito para quem tem limitação motora. */
+:root{font-size:15px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--sans);font-size:1rem;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--acento)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--acento);outline-offset:2px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* -------------------------------------------------------------- cabeçalho */
+.topo{position:sticky;top:0;z-index:30;background:var(--superficie);border-bottom:1px solid var(--borda)}
+.topo-faixa{max-width:1260px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:18px}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;flex-shrink:0;border:0;background:none;cursor:pointer;padding:0}
+/* ------------------------------------------------------------- logotipo
+   Dois círculos iguais, um por "Busca". Onde eles se cruzam nasce a lente —
+   a mesma forma que a óptica chama de lente e a lógica chama de interseção:
+   o ponto em que o seu processo e o precedente tratam da mesma questão. É o
+   que o portal faz, e é o que o nome repetido já diz. O eixo vertical marca
+   o encontro; o segundo "Busca" do texto vem no tom de acento, como um eco
+   que finalmente pousa sobre a resposta. */
+.marca-selo{flex-shrink:0;display:flex}
+.marca-selo svg{width:44px;height:31px;overflow:visible}
+.bb-aro{fill:none;stroke:var(--tinta-2);stroke-width:2}
+.bb-lente{fill:var(--acento)}
+.bb-letra{font-family:var(--serif);font-size:13.5px;font-weight:600;fill:var(--sobre-acento);letter-spacing:0}
+.marca-nome{font-family:var(--serif);font-size:17px;font-weight:600;line-height:1.1;display:block;text-align:left;letter-spacing:-.015em}
+.marca-nome .eco{color:var(--acento);margin-left:.28em}
+.marca-sub{font-size:10.5px;color:var(--tinta-3);text-transform:uppercase;letter-spacing:.09em;display:block;text-align:left}
+.busca{flex:1;position:relative;min-width:0}
+.busca input{width:100%;padding:10px 40px 10px 38px;border:1px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie-2);transition:border-color .12s,box-shadow .12s}
+.busca input:focus{outline:none;border-color:var(--acento);box-shadow:0 0 0 3px var(--acento-fraco);background:var(--superficie)}
+.busca-lupa{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--tinta-3);pointer-events:none;display:flex}
+.busca-dica{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:11px;color:var(--tinta-3);border:1px solid var(--borda);border-radius:4px;padding:1px 6px;background:var(--superficie)}
+.busca input:not(:placeholder-shown)~.busca-dica{display:none}
+.busca-limpar{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--tinta-3);cursor:pointer;width:28px;height:28px;border-radius:4px;display:none}
+.busca input:not(:placeholder-shown)~.busca-limpar{display:block}
+.abas{max-width:1260px;margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto}
+.aba{border:0;background:none;min-height:34px;padding:9px 12px 11px;cursor:pointer;color:var(--tinta-2);border-bottom:2px solid transparent;white-space:nowrap;font-size:14px}
+.aba:hover{color:var(--tinta)}
+.aba[aria-selected="true"]{color:var(--acento);border-bottom-color:var(--acento);font-weight:600}
+.alerta-aba{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--critico);margin-left:6px;vertical-align:2px}
+.alerta-aba[hidden]{display:none}
+
+/* ----------------------------------------------------------------- layout */
+.pagina{max-width:1260px;margin:0 auto;padding:20px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:24px;align-items:start}
+.pagina.solo{grid-template-columns:minmax(0,1fr)}
+/* Em tela estreita os resultados vêm primeiro; os filtros descem para o fim. */
+@media (max-width:940px){
+  .pagina{grid-template-columns:minmax(0,1fr)}
+  .rail{position:static;max-height:none;order:2;border-top:1px solid var(--borda);padding-top:16px}
+  #conteudo{order:1}
+}
+.rail{position:sticky;top:106px;display:flex;flex-direction:column;gap:18px;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:4px}
+.grupo-titulo{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--tinta-3);margin:0 0 8px;font-weight:600}
+.opcoes{display:flex;flex-direction:column;gap:1px}
+.opcao{display:flex;align-items:center;gap:8px;min-height:26px;padding:5px 6px;border-radius:4px;cursor:pointer;font-size:.9rem;color:var(--tinta-2)}
+.opcao:hover{background:var(--superficie-2);color:var(--tinta)}
+.opcao input{accent-color:var(--acento);margin:0;flex-shrink:0}
+.opcao .rot{flex:1;min-width:0}
+.opcao .qtd{font-family:var(--mono);font-size:11.5px;color:var(--tinta-3);font-variant-numeric:tabular-nums}
+.opcao.ativa{color:var(--tinta);font-weight:500}
+.limpar-tudo{border:1px solid var(--borda);background:var(--superficie);border-radius:var(--raio);padding:7px 10px;cursor:pointer;font-size:13px;color:var(--tinta-2)}
+.limpar-tudo:hover{border-color:var(--borda-forte);color:var(--tinta)}
+
+/* ------------------------------------------------- escopo e painel de risco */
+.escopo{display:inline-flex;border:1px solid var(--borda-forte);border-radius:var(--raio);overflow:hidden;background:var(--superficie);margin-bottom:14px}
+.escopo button{border:0;background:none;padding:7px 16px;cursor:pointer;font-size:13.5px;color:var(--tinta-2);border-right:1px solid var(--borda);display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-height:44px;justify-content:center}
+.escopo button:last-child{border-right:0}
+.escopo button[aria-pressed="true"]{background:var(--acento-forte);color:var(--sobre-acento);font-weight:600}
+.escopo .n{font-family:var(--mono);font-size:11px;font-variant-numeric:tabular-nums;opacity:.75;font-weight:400}
+.alcance{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.alcance-item{text-align:left;border:1px solid var(--borda);border-left:3px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie);padding:9px 12px;cursor:pointer;display:flex;flex-direction:column;gap:1px}
+.alcance-item:hover{border-color:var(--borda-forte)}
+.alcance-item[aria-pressed="true"]{background:var(--acento-fraco);border-color:var(--acento)}
+.alcance-item .n{font-family:var(--mono);font-size:21px;font-weight:600;line-height:1.15;font-variant-numeric:tabular-nums}
+.alcance-item .r{font-size:12.5px;color:var(--tinta-2);line-height:1.35}
+.alcance-item.g-alto{border-left-color:var(--critico)} .alcance-item.g-alto .n{color:var(--critico)}
+.alcance-item.g-medio{border-left-color:var(--atencao)} .alcance-item.g-medio .n{color:var(--atencao)}
+.alcance-item.g-baixo{border-left-color:var(--seguro)} .alcance-item.g-baixo .n{color:var(--seguro)}
+
+/* --------------------------------------------------------------- listagem */
+.filtro-detalhado{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;border:1px solid var(--borda);background:var(--superficie);border-radius:var(--raio);padding:12px 14px;margin-bottom:16px}
+.campo-filtro{display:flex;flex-direction:column;gap:4px}
+.campo-filtro.cresce{flex:1;min-width:220px}
+.campo-filtro label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta-3);font-weight:600}
+.campo-filtro input,.campo-filtro select{border:1px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie-2);padding:7px 10px;font-size:13.5px;min-height:32px}
+.campo-filtro input:focus,.campo-filtro select:focus{outline:none;border-color:var(--acento);box-shadow:0 0 0 3px var(--acento-fraco);background:var(--superficie)}
+#f-numero{width:110px;font-family:var(--mono)}
+.filtro-detalhado .limpar-tudo{min-height:32px}
+.barra-lista{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.contagem{font-size:.9rem;color:var(--tinta-2)}
+.contagem strong{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.ordenar{border:1px solid var(--borda);background:var(--superficie);border-radius:var(--raio);padding:5px 8px;font-size:13px}
+.fichas{display:flex;flex-direction:column;gap:8px}
+.ficha{position:relative;width:100%;text-align:left;background:var(--superficie);border:1px solid var(--borda);border-left:3px solid var(--borda-forte);border-radius:var(--raio);padding:12px 14px;cursor:pointer;display:flex;flex-direction:column;gap:7px;transition:border-color .12s,box-shadow .12s}
+.ficha:hover{border-color:var(--borda-forte);box-shadow:var(--sombra)}
+.ficha-abrir{position:absolute;inset:0;width:100%;height:100%;border:0;background:none;cursor:pointer;border-radius:var(--raio);padding:0}
+.ficha-pe{position:relative;z-index:2}
+.fonte-min{margin-left:auto;font-size:12.5px;text-decoration:none;border-bottom:1px solid transparent;white-space:nowrap}
+.fonte-min:hover{border-bottom-color:currentColor}
+.ficha.r-ALTO{border-left-color:var(--critico)}
+.ficha.r-MEDIO{border-left-color:var(--atencao)}
+.ficha.r-BAIXO{border-left-color:var(--seguro)}
+.ficha-topo{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ident{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--acento)}
+.sigla{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;border:1px solid var(--borda-forte);border-radius:3px;padding:1px 5px;color:var(--tinta-2)}
+.questao{font-family:var(--serif);font-size:1.07rem;line-height:1.42;margin:0;text-wrap:pretty}
+.tese-curta{font-family:var(--serif);font-size:.97rem;line-height:1.55;color:var(--tinta-2);margin:0}
+.ficha-pe{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.estado{display:inline-flex;border-radius:4px;overflow:hidden;border:1px solid var(--borda-forte);font-size:11.5px;line-height:1.75}
+.estado span{padding:1px 8px;white-space:nowrap}
+.estado .j{background:var(--superficie-2);color:var(--tinta-2)}
+.estado .s{border-left:1px solid var(--borda-forte);font-weight:600}
+.estado .s.n-ALTO{background:var(--critico-fraco);color:var(--critico)}
+.estado .s.n-MEDIO{background:var(--atencao-fraco);color:var(--atencao)}
+.estado .s.n-BAIXO{background:var(--seguro-fraco);color:var(--seguro)}
+.etiqueta{font-size:11.5px;color:var(--tinta-3);background:var(--superficie-2);border-radius:3px;padding:1px 7px}
+mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
+.vazio{border:1px dashed var(--borda-forte);border-radius:var(--raio);padding:34px 24px;text-align:center;color:var(--tinta-2)}
+.vazio p{margin:0 0 4px}
+.mais{margin-top:12px;width:100%;border:1px solid var(--borda);background:var(--superficie);border-radius:var(--raio);padding:10px;cursor:pointer;color:var(--acento);font-weight:500}
+.mais:hover{border-color:var(--acento)}
+
+/* ------------------------------------------------------------------ ficha */
+.voltar{border:0;background:none;color:var(--acento);cursor:pointer;padding:4px 0;margin-bottom:8px;font-size:13.5px}
+.detalhe{background:var(--superficie);border:1px solid var(--borda);border-radius:var(--raio);overflow:hidden}
+.detalhe-cabeca{padding:20px 24px;border-bottom:1px solid var(--borda);border-top:3px solid var(--borda-forte);display:flex;flex-direction:column;gap:10px}
+.detalhe-cabeca.r-ALTO{border-top-color:var(--critico)}
+.detalhe-cabeca.r-MEDIO{border-top-color:var(--atencao)}
+.detalhe-cabeca.r-BAIXO{border-top-color:var(--seguro)}
+.detalhe-cabeca h1{font-family:var(--serif);font-size:1.4rem;line-height:1.32;margin:0;font-weight:600;text-wrap:balance}
+.aviso{display:flex;gap:10px;align-items:flex-start;border-radius:var(--raio);padding:10px 12px;font-size:.9rem;line-height:1.5}
+.aviso.a-ALTO{background:var(--critico-fraco);color:var(--critico)}
+.aviso.a-MEDIO{background:var(--atencao-fraco);color:var(--atencao)}
+.aviso.a-BAIXO{background:var(--seguro-fraco);color:var(--seguro)}
+.aviso strong{display:block}
+.aviso-extra{display:block;margin-top:6px}
+.secao{padding:18px 24px;border-bottom:1px solid var(--borda)}
+.secao:last-child{border-bottom:0}
+.secao h2{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--tinta-3);margin:0 0 8px;font-weight:600}
+.texto-juridico{font-family:var(--serif);font-size:1.03rem;line-height:1.62;white-space:pre-wrap;margin:0;text-wrap:pretty}
+.dados{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px 20px;margin:0}
+.dado{display:flex;flex-direction:column;gap:2px}
+.dado dt{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta-3)}
+.dado dd{margin:0;font-size:.94rem}
+.dado dd.mono{font-family:var(--mono);font-size:12.5px;white-space:pre-wrap;line-height:1.5}
+.link-fonte{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--borda-forte);border-radius:var(--raio);padding:7px 12px;text-decoration:none;font-size:13.5px}
+.link-fonte:hover{border-color:var(--acento);background:var(--acento-fraco)}
+.procedencia{font-size:12.5px;color:var(--tinta-3);margin:12px 0 0}
+.dados.definicoes{grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px 28px}
+.legenda .dado{grid-column:1/-1}
+.legenda-item dt{display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13.5px;color:var(--tinta);font-weight:600;margin-bottom:3px}
+.amostra{display:inline-block;width:46px;height:19px;border:1px solid var(--borda);border-left:3px solid var(--borda-forte);border-radius:3px;background:var(--superficie);flex-shrink:0}
+.amostra.r-ALTO{border-left-color:var(--critico)}
+.amostra.r-MEDIO{border-left-color:var(--atencao)}
+.amostra.r-BAIXO{border-left-color:var(--seguro)}
+.paradigma{border-top:1px dotted var(--borda);padding-top:12px;margin-top:12px}
+.paradigma:first-child{border-top:0;padding-top:0;margin-top:0}
+.paradigma-num{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--acento);margin:0 0 8px}
+.acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.botao-copiar{border:1px solid var(--acento);background:var(--superficie);color:var(--acento);border-radius:var(--raio);padding:7px 13px;cursor:pointer;font-size:13.5px;font-weight:500;transition:background .12s,color .12s}
+.botao-copiar:hover{background:var(--acento-fraco)}
+.botao-copiar.copiado{background:var(--seguro-fraco);border-color:var(--seguro);color:var(--seguro)}
+
+/* ------------------------------------------------------ novidades e fontes */
+.dia-titulo{display:flex;align-items:baseline;gap:10px;margin:22px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--borda)}
+.dia-titulo:first-child{margin-top:0}
+.dia-titulo h3{font-family:var(--serif);font-size:16px;margin:0;font-weight:600}
+.dia-titulo span{font-family:var(--mono);font-size:12px;color:var(--tinta-3)}
+.diff{font-size:.87rem;color:var(--tinta-2);white-space:pre-wrap;overflow-wrap:anywhere;margin:0;max-height:6.5em;overflow:hidden}
+.fontes{display:flex;flex-direction:column;gap:8px}
+.fonte-item{border:1px solid var(--borda);border-left:3px solid var(--seguro);border-radius:var(--raio);background:var(--superficie);padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.fonte-item.falha{border-left-color:var(--critico)}
+.fonte-cabeca{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.fonte-cabeca strong{font-size:14.5px}
+.fonte-estado{font-size:11.5px;font-weight:600;border-radius:3px;padding:1px 8px;background:var(--seguro-fraco);color:var(--seguro)}
+.fonte-item.falha .fonte-estado{background:var(--critico-fraco);color:var(--critico)}
+.fonte-nota{font-size:.87rem;color:var(--tinta-2);margin:0}
+.fonte-linha{font-size:12.5px;color:var(--tinta-3);font-family:var(--mono);font-variant-numeric:tabular-nums}
+.filtro-dia{border:1px solid var(--borda-forte);background:var(--superficie);border-radius:var(--raio);padding:6px 9px;font-size:13px}
+
+/* --------------------------------------------------------------- rodapé */
+.rodape{max-width:1260px;margin:0 auto;padding:4px 20px 40px}
+.selo-fonte{border:1px solid var(--borda);border-radius:var(--raio);padding:10px 14px;background:var(--superficie);color:var(--tinta-3);font-size:.84rem;line-height:1.6}
+.selo-fonte strong{color:var(--tinta-2)}
+
+/* Texto corrido justificado, com hifenização: sem ela, o português justificado
+   abre rios de espaço branco entre as palavras. Títulos e rótulos seguem à esquerda. */
+.texto-juridico,.questao,.tese-curta,.diff,.dado dd,.aviso span,.vazio p,.fonte-nota,.selo-fonte{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
+.detalhe-cabeca h1,.edicao-titulo h3,.dia-titulo h3{text-align:left;hyphens:manual}
+/* --------------------------------------------------- controles do usuário */
+.pular{position:absolute;left:-9999px;top:8px;z-index:80;background:var(--acento-forte);color:var(--sobre-acento);padding:10px 16px;border-radius:var(--raio);text-decoration:none;font-weight:500}
+.pular:focus{left:12px}
+.preferencias{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.grupo-botoes{display:inline-flex;border:1px solid var(--borda-forte);border-radius:var(--raio);overflow:hidden;background:var(--superficie)}
+.grupo-botoes button{border:0;background:none;cursor:pointer;color:var(--tinta-2);min-width:30px;height:30px;padding:0 6px;font-family:var(--serif);font-size:14px;line-height:1;border-right:1px solid var(--borda);display:inline-flex;align-items:center;justify-content:center;gap:1px}
+.grupo-botoes button:last-child{border-right:0}
+.grupo-botoes button:hover{background:var(--superficie-2);color:var(--tinta)}
+.grupo-botoes .menos,.grupo-botoes .mais-sinal{font-family:var(--sans);font-size:10px;line-height:1}
+.grupo-botoes .mais-sinal{font-size:12px}
+.botao-tema{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--borda-forte);background:var(--superficie);color:var(--tinta-2);border-radius:var(--raio);height:30px;padding:0 11px;cursor:pointer;font-size:12.5px;white-space:nowrap}
+.botao-tema:hover{background:var(--superficie-2);color:var(--tinta)}
+.icone-tema{width:13px;height:13px;border-radius:50%;border:1.6px solid currentColor;background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
+@media (max-width:820px){.botao-tema span:last-child{display:none}.botao-tema{padding:0 8px}}
+.ao-topo{position:fixed;right:18px;bottom:18px;z-index:40;border:1px solid var(--borda-forte);background:var(--superficie);color:var(--tinta-2);border-radius:var(--raio);padding:10px 14px;cursor:pointer;font-size:13px;box-shadow:var(--sombra)}
+.ao-topo:hover{border-color:var(--acento);color:var(--acento)}
+.carregando{padding:60px 20px;text-align:center;color:var(--tinta-2)}
+.erro-fixo{position:fixed;left:12px;right:12px;bottom:12px;z-index:60;background:var(--critico-fraco);color:var(--critico);border:1px solid var(--critico);border-radius:var(--raio);padding:11px 42px 11px 13px;font-size:13px;line-height:1.5;box-shadow:var(--sombra)}
+.erro-fixo strong{display:block;margin-bottom:2px}
+.erro-fixo code{font-family:var(--mono);font-size:12px;overflow-wrap:anywhere}
+.erro-fixo button{position:absolute;right:6px;top:6px;border:0;background:none;color:inherit;cursor:pointer;font-size:15px;padding:2px 7px;line-height:1}
+</style>
+</head>
+<body>
+
+<a class="pular" href="#conteudo">Pular para os resultados</a>
+
+<header class="topo">
+  <div class="topo-faixa">
+    <button class="marca" id="ir-inicio" type="button">
+      <span class="marca-selo" aria-hidden="true">
+        <svg viewBox="0 0 46 32" role="img">
+          <defs>
+            <clipPath id="bb-lente"><circle cx="17" cy="16" r="12.6"></circle></clipPath>
+          </defs>
+          <g clip-path="url(#bb-lente)">
+            <circle cx="29" cy="16" r="12.6" class="bb-lente"></circle>
+          </g>
+          <circle cx="17" cy="16" r="12.6" class="bb-aro"></circle>
+          <circle cx="29" cy="16" r="12.6" class="bb-aro"></circle>
+          <text x="23" y="16.6" class="bb-letra" text-anchor="middle" dominant-baseline="central">B</text>
+        </svg>
+      </span>
+      <span>
+        <span class="marca-nome">Busca<span class="eco">Busca</span></span>
+        <span class="marca-sub">precedentes / incidentes / informativos</span>
+      </span>
+    </button>
+    <div class="busca">
+      <span class="busca-lupa" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="4.6"></circle><path d="M10.5 10.5 14 14"></path></svg>
+      </span>
+      <label class="oculto" for="campo-busca">Pesquisar precedentes, incidentes e informativos</label>
+      <input id="campo-busca" type="search" autocomplete="off" spellcheck="false" placeholder="Tema 1169, IRDR 73, plano de saúde, servidor temporário…">
+      <kbd class="busca-dica">/</kbd>
+      <button class="busca-limpar" id="limpar-busca" type="button" aria-label="Limpar pesquisa">✕</button>
+    </div>
+
+    <div class="preferencias">
+      <div class="grupo-botoes" role="group" aria-label="Tamanho do texto">
+        <button type="button" id="texto-menor" aria-label="Diminuir o tamanho do texto">A<span class="menos">−</span></button>
+        <button type="button" id="texto-padrao" aria-label="Tamanho de texto padrão">A</button>
+        <button type="button" id="texto-maior" aria-label="Aumentar o tamanho do texto">A<span class="mais-sinal">+</span></button>
+      </div>
+      <button type="button" class="botao-tema" id="alternar-tema" aria-live="polite">
+        <span class="icone-tema" aria-hidden="true"></span>
+        <span id="rotulo-tema">Tema do sistema</span>
+      </button>
+    </div>
+  </div>
+  <nav class="abas" role="tablist" aria-label="Seções">
+    <button class="aba" role="tab" data-aba="temas" aria-selected="true">Temas e incidentes</button>
+    <button class="aba" role="tab" data-aba="informativos" aria-selected="false">Informativos</button>
+    <button class="aba" role="tab" data-aba="novidades" aria-selected="false">Novidades</button>
+    <button class="aba" role="tab" data-aba="fontes" aria-selected="false">Fontes e atualização<span class="alerta-aba" id="alerta-fontes" hidden></span></button>
+    <button class="aba" role="tab" data-aba="ajuda" aria-selected="false">Como usar</button>
+  </nav>
+</header>
+
+<main class="pagina solo" id="pagina" aria-label="Consulta">
+  <aside class="rail" id="rail" aria-label="Filtros" hidden></aside>
+  <div id="conteudo" tabindex="-1"><p class="carregando">Carregando a base…</p></div>
+</main>
+
+<p class="oculto" id="anuncio" role="status" aria-live="polite"></p>
+
+<button class="ao-topo" id="ao-topo" type="button" hidden>
+  <span aria-hidden="true">↑</span> Voltar ao topo
+</button>
+
+<footer class="rodape"><div class="selo-fonte" id="selo-fonte"></div></footer>
+
+<script>
+'use strict';
+(function () {
+
+var BASE = null;
+var PAGINA = 25;
+
+var estado = {
+  aba: 'temas',
+  termo: '',
+  escopo: 'juizado',      // 'juizado' | 'comum' | 'todos'
+  filtros: {},
+  ordem: 'relevancia',
+  limite: PAGINA,
+  registroId: null,
+  destaque: '',        // bloco selecionado no painel do topo
+  numero: '',          // filtro detalhado: número do precedente
+  texto: '',           // filtro detalhado: palavras na questão ou na tese
+  dia: ''
+};
+
+var CURADO = 'Selecionado na planilha inicial';
+
+/* A base guarda de onde cada registro veio, com o vocabulário de quem mantém o
+   portal. Na tela vale o nome que o consulente reconhece. */
+var ROTULOS_PUBLICOS = {
+  'Selecionado na planilha inicial': 'Seleção dos Juizados',
+  'Planilha inicial': 'Seleção dos Juizados',
+  'Possível pertinência — classificação automática ampla': 'Incluído pela coleta automática',
+  'Importado — não conferido': 'Sem conferência automática'
+};
+
+function rotuloPublico(valor) {
+  if (!valor) return '—';
+  return ROTULOS_PUBLICOS[valor] || String(valor);
+}
+
+/* Alcance da suspensão: o eixo que decide o risco de nulidade ao sentenciar. */
+var ALCANCES = [
+  { chave: 'NACIONAL', rotulo: 'Suspensão nacional', nivel: 'ALTO' },
+  { chave: 'ESTADUAL', rotulo: 'Suspensão estadual', nivel: 'ALTO' },
+  { chave: 'RECURSAL', rotulo: 'Apenas em fase recursal', nivel: 'MEDIO' },
+  // Reúne dois casos sob o mesmo rótulo: a fonte informou que não há
+  // determinação, ou a fonte é omissa. Em nenhum dos dois existe determinação
+  // de suspensão nesta base, e nos dois convém conferir antes de sentenciar —
+  // por isso a faixa âmbar. A ficha diz qual dos dois casos é.
+  { chave: 'NAO_DETERMINADA', rotulo: 'Suspensão não determinada', nivel: 'MEDIO' }
+];
+
+/* Os cinco blocos do topo. Não são uma divisão da base: são atalhos para o que
+   o usuário procura com mais frequência, e por isso podem se sobrepor. */
+var ESTAGIOS_JULGADOS = { 'Julgado': 1, 'Acórdão publicado': 1, 'Trânsito em julgado': 1 };
+
+var DESTAQUES = [
+  { chave: 'nacional', rotulo: 'Suspensão nacional', nivel: 'alto',
+    testa: function (r) { return r._emVigor && r._alcance === 'NACIONAL'; } },
+  { chave: 'estadual', rotulo: 'Suspensão estadual', nivel: 'alto',
+    testa: function (r) { return r._emVigor && r._alcance === 'ESTADUAL'; } },
+  { chave: 'recursal', rotulo: 'Apenas em fase recursal', nivel: 'medio',
+    testa: function (r) { return r._emVigor && r._alcance === 'RECURSAL'; } },
+  { chave: 'suspensos', rotulo: 'Suspensos', nivel: 'alto',
+    testa: function (r) { return r._emVigor && (r._alcance === 'NACIONAL' || r._alcance === 'ESTADUAL' || r._alcance === 'RECURSAL'); } },
+  { chave: 'julgados', rotulo: 'Julgados', nivel: 'baixo',
+    testa: function (r) { return ESTAGIOS_JULGADOS[r._situacao] === 1; } }
+];
+
+/* ------------------------------------------------------------ filtro detalhado
+   Complementa a busca do topo em vez de repeti-la: o número isola um precedente
+   pelo identificador, a espécie escreve na mesma faceta da coluna da esquerda —
+   um estado só, mostrado em dois lugares — e o campo de texto procura apenas na
+   questão e na tese, sem o ruído das observações e dos andamentos. */
+
+function casaNumero(r) {
+  var n = String(estado.numero || '').replace(/\D/g, '');
+  if (!n) return true;
+  var numero = String(r.numero || '').replace(/\D/g, '');
+  return numero === n || numero.indexOf(n) === 0;
+}
+
+function casaTexto(r) {
+  var termos = norm(estado.texto || '').split(/\s+/).filter(function (t) { return t.length > 1; });
+  if (!termos.length) return true;
+  var alvo = norm([r.questao, r.tese].join(' '));
+  for (var i = 0; i < termos.length; i++) if (alvo.indexOf(termos[i]) < 0) return false;
+  return true;
+}
+
+function especiesDisponiveis(lista) {
+  var vistos = {};
+  lista.forEach(function (r) { if (r.tipo) vistos[r.tipo] = true; });
+  return Object.keys(vistos).sort();
+}
+
+function filtroDetalhado(lista) {
+  var especieAtual = (estado.filtros.tipo || [])[0] || '';
+  var algum = estado.numero || estado.texto || especieAtual;
+  return '<form class="filtro-detalhado" id="filtro-detalhado" onsubmit="return false">' +
+    '<div class="campo-filtro">' +
+      '<label for="f-numero">Número</label>' +
+      '<input id="f-numero" type="text" inputmode="numeric" autocomplete="off" placeholder="1169" value="' +
+        esc(estado.numero || '') + '">' +
+    '</div>' +
+    '<div class="campo-filtro">' +
+      '<label for="f-especie">Espécie</label>' +
+      '<select id="f-especie"><option value="">Todas as espécies</option>' +
+        especiesDisponiveis(lista).map(function (t) {
+          return '<option value="' + esc(t) + '"' + (especieAtual === t ? ' selected' : '') + '>' + esc(t) + '</option>';
+        }).join('') +
+      '</select>' +
+    '</div>' +
+    '<div class="campo-filtro cresce">' +
+      '<label for="f-texto">Palavras na questão ou na tese</label>' +
+      '<input id="f-texto" type="text" autocomplete="off" placeholder="prescrição, honorários, plano de saúde…" value="' +
+        esc(estado.texto || '') + '">' +
+    '</div>' +
+    (algum ? '<button type="button" class="limpar-tudo" id="limpar-detalhado">Limpar</button>' : '') +
+  '</form>';
+}
+
+function destaque(chave) {
+  for (var i = 0; i < DESTAQUES.length; i++) if (DESTAQUES[i].chave === chave) return DESTAQUES[i];
+  return null;
+}
+
+var AVISO = {
+  ALTO: { t: 'Há ordem de suspensão de abrangência ampla.', c: 'Confira o alcance, as exceções e a data no documento de origem antes de sentenciar processo compatível. Julgar em desacordo com a determinação pode gerar nulidade.' },
+  MEDIO: { t: 'Suspensão de alcance limitado ou não delimitado no registro.', c: 'A determinação atinge apenas recursos, ou o texto coletado não descreve o alcance de forma conclusiva. Confira a fonte antes de aplicar.' },
+  NAO_DETERMINADA: { t: 'Não há determinação de suspensão registrada nesta base.', c: 'A fonte informou o campo e nele não consta ordem de suspensão. A tese firmada, quando houver, continua vinculando o julgamento.' },
+  BAIXO: { t: 'Sem suspensão em vigor.', c: 'Este precedente não impede o julgamento de processo sobre a mesma matéria.' }
+};
+
+/* ============================================================= preferências
+   Tema e tamanho do texto ficam guardados no navegador de quem consulta —
+   ninguém deveria reajustar a tela a cada visita. O armazenamento local pode
+   estar bloqueado (janela anônima, política do órgão), então toda leitura e
+   escrita vai protegida: sem preferência guardada, o portal simplesmente
+   segue o sistema.
+   =========================================================================== */
+
+var TEMAS = [
+  { valor: 'sistema', rotulo: 'Tema do sistema' },
+  { valor: 'light', rotulo: 'Tema claro' },
+  { valor: 'dark', rotulo: 'Tema escuro' }
+];
+
+var TAMANHOS = [13.5, 15, 16.5, 18, 20];   // px na raiz; 15 é o padrão
+
+function guardar(chave, valor) {
+  try { window.localStorage.setItem('bb-' + chave, valor); } catch (e) { /* sem persistência */ }
+}
+
+function lembrar(chave) {
+  try { return window.localStorage.getItem('bb-' + chave); } catch (e) { return null; }
+}
+
+function aplicarTema(valor) {
+  var raiz = document.documentElement;
+  if (valor === 'light' || valor === 'dark') raiz.setAttribute('data-theme', valor);
+  else raiz.removeAttribute('data-theme');
+  var rotulo = document.getElementById('rotulo-tema');
+  for (var i = 0; i < TEMAS.length; i++) {
+    if (TEMAS[i].valor === valor && rotulo) {
+      rotulo.textContent = TEMAS[i].rotulo;
+      var botao = document.getElementById('alternar-tema');
+      if (botao) botao.setAttribute('title', TEMAS[i].rotulo + ' — clique para trocar');
+    }
+  }
+  guardar('tema', valor);
+}
+
+function aplicarTamanho(px) {
+  document.documentElement.style.fontSize = px + 'px';
+  guardar('tamanho', String(px));
+}
+
+function iniciarPreferencias() {
+  var tema = lembrar('tema');
+  aplicarTema(tema === 'light' || tema === 'dark' ? tema : 'sistema');
+
+  var tamanho = Number(lembrar('tamanho'));
+  aplicarTamanho(TAMANHOS.indexOf(tamanho) >= 0 ? tamanho : 15);
+
+  document.getElementById('alternar-tema').addEventListener('click', function () {
+    var atual = lembrar('tema') || 'sistema';
+    var i = 0;
+    for (var k = 0; k < TEMAS.length; k++) if (TEMAS[k].valor === atual) i = k;
+    aplicarTema(TEMAS[(i + 1) % TEMAS.length].valor);
+  });
+
+  function passo(delta) {
+    var atual = Number(lembrar('tamanho')) || 15;
+    var i = TAMANHOS.indexOf(atual);
+    if (i < 0) i = 1;
+    aplicarTamanho(TAMANHOS[Math.max(0, Math.min(TAMANHOS.length - 1, i + delta))]);
+  }
+  document.getElementById('texto-menor').addEventListener('click', function () { passo(-1); });
+  document.getElementById('texto-maior').addEventListener('click', function () { passo(1); });
+  document.getElementById('texto-padrao').addEventListener('click', function () { aplicarTamanho(15); });
+
+  var aoTopo = document.getElementById('ao-topo');
+  aoTopo.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('campo-busca').focus();
+  });
+  window.addEventListener('scroll', function () {
+    aoTopo.hidden = window.scrollY < 600;
+  }, { passive: true });
+}
+
+/* ------------------------------------------------------------- utilidades */
+
+function el(id) { return document.getElementById(id); }
+
+/** Conta o resultado para quem navega por leitor de tela. */
+function anunciar(texto) {
+  var caixa = el('anuncio');
+  if (caixa) caixa.textContent = texto;
+}
+
+/**
+ * Falha silenciosa é o pior resultado num piloto: o usuário clica, nada
+ * acontece e não há o que relatar. Qualquer erro não tratado aparece na tela
+ * com a mensagem original, que pode ser copiada e enviada.
+ */
+function mostrarErro(mensagem) {
+  var caixa = el('erro-fixo');
+  if (!caixa) {
+    caixa = document.createElement('div');
+    caixa.id = 'erro-fixo';
+    caixa.className = 'erro-fixo';
+    caixa.setAttribute('role', 'alert');
+    document.body.appendChild(caixa);
+  }
+  caixa.innerHTML = '<strong>Algo falhou nesta página.</strong>' +
+    '<code>' + esc(mensagem) + '</code>' +
+    '<button type="button" id="fechar-erro" aria-label="Fechar aviso">✕</button>';
+  var fechar = el('fechar-erro');
+  if (fechar) fechar.onclick = function () { caixa.remove(); };
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('error', function (ev) {
+    mostrarErro((ev && ev.message ? ev.message : 'erro desconhecido') +
+      (ev && ev.lineno ? ' (linha ' + ev.lineno + ')' : ''));
+  });
+  window.addEventListener('unhandledrejection', function (ev) {
+  var r = ev && ev.reason;
+    mostrarErro(r && r.message ? r.message : String(r));
+  });
+}
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function norm(s) {
+  return String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+}
+
+var EQUIV = { a: '[aàáâãä]', e: '[eèéêë]', i: '[iìíîï]', o: '[oòóôõö]', u: '[uùúûü]', c: '[cç]', n: '[nñ]' };
+
+function reDestaque(ts) {
+  var partes = ts.filter(function (t) { return t.length > 2; }).map(function (t) {
+    return t.split('').map(function (ch) {
+      return EQUIV[ch] || ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }).join('');
+  });
+  return partes.length ? new RegExp('(' + partes.join('|') + ')', 'gi') : null;
+}
+
+function destaca(txt, re) {
+  var s = esc(txt);
+  return re ? s.replace(re, '<mark>$1</mark>') : s;
+}
+
+function corta(txt, n) {
+  var t = String(txt || '').replace(/\s+/g, ' ').trim();
+  return t.length > n ? t.slice(0, n).replace(/\s\S*$/, '') + '…' : t;
+}
+
+function numero(n) { return Number(n || 0).toLocaleString('pt-BR'); }
+
+function urlSegura(s) {
+  try {
+    var u = new URL(s);
+    return u.protocol === 'https:' || u.protocol === 'http:' ? u.href : '';
+  } catch (e) { return ''; }
+}
+
+function dataBR(s, comHora) {
+  if (!s) return '';
+  if (/^\d{2}\/\d{2}\/\d{4}/.test(s)) return String(s);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s.split('-').reverse().join('/');
+  if (/^\d{4}-\d{2}-\d{2}T/.test(s)) {
+    var op = { timeZone: 'America/Sao_Paulo', dateStyle: 'short' };
+    if (comHora) op.timeStyle = 'short';
+    return new Intl.DateTimeFormat('pt-BR', op).format(new Date(s));
+  }
+  return String(s);
+}
+
+function diaLocal(s) {
+  return /^\d{4}-\d{2}-\d{2}T/.test(s)
+    ? new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(s))
+    : String(s).slice(0, 10);
+}
+
+/* -------------------------------------------------- classificação derivada */
+
+/** "Tema 1169", "IRDR 73", "IUJ 0001", "Informativo STJ 900". */
+function titulo(r) {
+  if (r.tipo === 'Informativo') return String(r.numero);
+  if (r.tipo === 'IUJ') return 'IUJ ' + r.numero;
+  if (r.tipo === 'Repetitivo' || r.tipo === 'Repercussão geral') return 'Tema ' + r.numero;
+  return r.tipo + ' ' + r.numero;
+}
+
+/**
+ * Data mais recente do próprio andamento — trânsito, publicação ou julgamento.
+ * É o que ordena "mais recentes"; a data da coleta não diz nada ao usuário.
+ */
+function dataPrincipal(r) {
+  var achadas = String([r.transito, r.publicacao, r.julgamento].join(' ')).match(/\d{2}\/\d{2}\/\d{4}/g) || [];
+  var iso = achadas.map(function (d) { return d.slice(6) + '-' + d.slice(3, 5) + '-' + d.slice(0, 2); }).sort();
+  return iso.length ? iso[iso.length - 1] : '';
+}
+
+/** As 30+ redações de "situação" nas fontes reduzidas ao estágio processual. */
+function grupoSituacao(r) {
+  var s = norm(r.situacao);
+  if (!s) return 'Sem registro';
+  if (s.indexOf('nao ha repercussao geral') >= 0) return 'Repercussão geral negada';
+  if (s.indexOf('cancelad') >= 0) return 'Cancelado';
+  if (s.indexOf('transit') >= 0) return 'Trânsito em julgado';
+  if (s.indexOf('revisad') >= 0) return 'Revisado';
+  // O STF escreve "Acórdão de Repercussão Geral publicado" e "Acórdão de mérito
+  // publicado"; procurar a expressão exata "acórdão publicado" não alcança nenhuma.
+  if (/acordao[^.]{0,40}publicad/.test(s)) return 'Acórdão publicado';
+  if (s.indexOf('julgad') >= 0 || s.indexOf('em julgamento') >= 0) return 'Julgado';
+  if (s.indexOf('sobrestad') >= 0 || s.indexOf('suspens') >= 0 || s.indexOf('suspender') >= 0) return 'Sobrestado';
+  if (s.indexOf('vinculad') >= 0) return 'Vinculado a outro tema';
+  if (s.indexOf('afetad') >= 0 || s.indexOf('admitid') >= 0 || s.indexOf('aguardando') >= 0 ||
+      s.indexOf('analisada preliminar') >= 0) return 'Afetado / admitido';
+  if (s.indexOf('prejudicad') >= 0 || s.indexOf('baixado') >= 0 || s.indexOf('extinto') >= 0 ||
+      s.indexOf('rejeitad') >= 0 || s.indexOf('sem processo ativo') >= 0) return 'Prejudicado / baixado';
+  if (s.indexOf('destaque') >= 0) return 'Destaque publicado';
+  if (s.indexOf('importado') >= 0 || s.indexOf('nao conferido') >= 0) return 'Sem conferência automática';
+  return 'Outra situação';
+}
+
+/**
+ * Área do Juizado. O rótulo da fonte resolve a maior parte, mas o RUPE e o
+ * cadastro do STF entregam quase tudo como "transversal" — nesses casos a área
+ * sai do próprio texto do tema, que quase sempre denuncia a matéria.
+ */
+function grupoArea(r) {
+  var a = norm(r.area);
+  if (a.indexOf('criminal') >= 0 || a.indexOf('penal') >= 0) return 'Criminal';
+  if (a.indexOf('fazenda') >= 0) return 'Fazenda Pública';
+  if (a && a.indexOf('transversal') < 0 && a.indexOf('conferir') < 0) return 'Cível';
+  return areaPorTexto(r);
+}
+
+var RE_CRIMINAL = /(direito penal|processual penal|criminal|\bcrime|pronuncia|execucao penal|habeas corpus|contravenc|dosimetria|regime prisional|maria da penha|lei de drogas|inquerito policial|reincidenc|pena privativa)/;
+var RE_CIVEL = /(consumidor|plano de saude|seguro|dpvat|cartao de credito|emprestimo consignado|instituicao financeira|contrato bancario|banco|condominio|locacao|telefonia|energia eletrica|companhia aerea|transporte aereo|inscricao indevida|dano moral|usucapiao|alienacao fiduciaria|incorporac|compra e venda)/;
+var RE_FAZENDA = /(servidor|militar|fazenda publica|tributari|\bicms|\biss\b|\bipva|\biptu|imposto|contribuic|taxa |execucao fiscal|previdenci|aposentador|pensao por morte|auxilio-|auxilio |gratificac|adicional|vencimento|remunerac|subsidio|precatorio|requisicao de pequeno valor|concurso publico|administrativ|municipi|estado de minas|erario|improbidade|licitac|desapropriac|saude publica|ensino|educacao basica)/;
+
+function areaPorTexto(r) {
+  var t = norm([r.questao, r.observacoes, r.tese].join(' '));
+  if (RE_CRIMINAL.test(t)) return 'Criminal';
+  if (RE_CIVEL.test(t)) return 'Cível';
+  if (RE_FAZENDA.test(t)) return 'Fazenda Pública';
+  return 'Cível';
+}
+
+/* Negativas explícitas: a fonte diz que não suspendeu, ou revogou a suspensão. */
+var RE_SEM_SUSPENSAO = /(nao suspender|nao suspensao|pela nao suspensao|nao ha suspensao|nao foi determinada a suspensao|nao ha determinacao de suspensao|sem determinacao de suspensao|nao houve determinacao|manutencao do tramite|tramite normal|nao deve obstar|sem suspensao|suspensao revogada|suspensao cessada|suspensao levantada|cessada a suspensao|levantada a suspensao)/;
+
+/* Alcance declarado como nacional, qualquer que seja o tribunal. */
+var RE_NACIONAL = /(territorio nacional|em todo o territorio|em todo o pais|ambito nacional|suspensao nacional|todo o pais)/;
+
+/* Suspensão que atinge o processo em si, e não apenas os recursos. */
+var RE_PROCESSOS = /(suspensao dos processos|suspensao do processamento|processos pendentes|processos em curso|individuais e coletivos|individuais ou coletivos|acoes sobre o tema|368 f|art 982|artigo 982|primeira instancia|1 instancia|primeiro grau|juizados|turmas recursais|todos os processos|tramitam no estado|tramitem no estado|tramitam neste estado|neste tribunal de justica|estado de minas gerais)/;
+
+/* Suspensão limitada à via recursal. */
+var RE_RECURSAL = /(recurso especial|recursos especiais|recurso extraordinario|recursos extraordinarios|resps e aresps|aresps|agravo em recurso|agravos em recurso|segunda instancia|segundo grau|fase recursal|256 l|vice-presidencia|vice presidencia)/;
+
+/**
+ * Alcance da suspensão, lido do texto que a fonte publica.
+ *
+ * A distinção entre nacional e estadual raramente está escrita: vem do tribunal
+ * que determinou. Suspensão de processos decidida em repetitivo do STJ ou em
+ * repercussão geral do STF alcança o país (art. 1.037, II, do CPC); a mesma
+ * ordem num IRDR do TJMG alcança o Estado (art. 982, I). Quando o texto fala em
+ * suspensão sem dizer o alcance, o portal adota o alcance mais amplo compatível
+ * com o tribunal — num sistema que existe para evitar nulidade, o erro seguro é
+ * o que manda conferir, não o que libera.
+ */
+function grupoSuspensao(r) {
+  var s = norm(r.suspensao).replace(/[^a-z0-9]+/g, ' ').trim();
+  if (!s) return 'NAO_DETERMINADA';
+  if (RE_SEM_SUSPENSAO.test(s)) return 'NAO_DETERMINADA';
+  if (RE_NACIONAL.test(s)) return 'NACIONAL';
+
+  var amplo = r.tribunal === 'TJMG' ? 'ESTADUAL' : 'NACIONAL';
+  if (RE_PROCESSOS.test(s)) return amplo;
+  if (RE_RECURSAL.test(s)) return 'RECURSAL';
+  if (/suspens|sobrestad/.test(s)) return amplo;
+  return 'NAO_DETERMINADA';
+}
+
+function rotuloAlcance(chave) {
+  for (var i = 0; i < ALCANCES.length; i++) if (ALCANCES[i].chave === chave) return ALCANCES[i].rotulo;
+  return chave;
+}
+
+function nivelAlcance(chave) {
+  for (var i = 0; i < ALCANCES.length; i++) if (ALCANCES[i].chave === chave) return ALCANCES[i].nivel;
+  return 'BAIXO';
+}
+
+/** Um precedente cancelado não impede julgamento, ainda que o texto cite suspensão. */
+/**
+ * Até quando vale a suspensão.
+ *
+ * Não é o trânsito em julgado que a encerra, e o marco muda conforme o rito:
+ *
+ * - Repetitivo do STJ e repercussão geral do STF: publicado o acórdão
+ *   paradigma, os processos sobrestados retomam o curso para julgamento com
+ *   aplicação da tese (art. 1.040, III, do CPC). A eficácia vinculante começa
+ *   na publicação e não depende do trânsito.
+ *
+ * - IRDR, IAC e incidentes correlatos: a suspensão cessa se não for interposto
+ *   recurso especial ou extraordinário contra o acórdão do incidente (art. 982,
+ *   § 5º). Interposto o recurso, ele tem efeito suspensivo por lei (art. 987,
+ *   § 1º) e a suspensão persiste — até o julgamento do recurso, também sem
+ *   necessidade de aguardar o trânsito (STJ, REsp 1.869.867-SC).
+ *
+ * Cláusula expressa em sentido diverso prevalece sobre a regra geral.
+ */
+function encerrado(r) {
+  var g = grupoSituacao(r);
+  if (g === 'Cancelado' || g === 'Repercussão geral negada' ||
+      g === 'Prejudicado / baixado' || g === 'Trânsito em julgado') return true;
+  if (g !== 'Acórdão publicado') return false;
+
+  if (/ate o transito em julgado/.test(norm(r.suspensao))) return false;
+  if (r.tipo === 'Repetitivo' || r.tipo === 'Repercussão geral') return true;
+  return pendencias(r) === 'Nenhuma registrada';
+}
+
+function risco(r) {
+  if (encerrado(r)) return 'BAIXO';
+  return nivelAlcance(grupoSuspensao(r));
+}
+
+
+/* Competência do Juizado Especial.
+   A triagem já feita vale como resposta; os IUJ vêm da Turma Recursal, logo são
+   do Juizado por definição; no resto, o texto da fonte costuma dizer quando a
+   controvérsia é de Juizado — cita a Lei 9.099, a 12.153, a 10.259, a Turma
+   Recursal ou o próprio Juizado. Sem nenhum desses sinais, o registro fica em
+   "Justiça comum", que aqui significa "não identificado como de Juizado". */
+var RE_JUIZADO = /(juizado especial|juizados especiais|turma recursal|turmas recursais|turma de uniformizacao|lei 9 ?099|9099|lei 12 ?153|12153|lei 10 ?259|10259)/;
+
+function competenciaJuizado(r) {
+  if (r._curado) return true;
+  if (r.tipo === 'IUJ') return true;
+  var t = norm([r.questao, r.tese, r.observacoes, r.area, r.situacao].join(' ')).replace(/[.]/g, ' ');
+  return RE_JUIZADO.test(t);
+}
+
+/* Índice de busca e campos derivados, calculados uma única vez. */
+function prepararRegistro(r) {
+  r._titulo = titulo(r);
+  r._situacao = grupoSituacao(r);
+  r._area = grupoArea(r);
+  r._alcance = grupoSuspensao(r);
+  r._emVigor = !encerrado(r);   // suspensão cessa com trânsito, cancelamento ou RG negada
+  r._risco = risco(r);
+  r._data = dataPrincipal(r);
+  r._curado = r.pertinencia === CURADO;
+  r._juizado = competenciaJuizado(r);
+  r._verificado = Boolean(r.verificadoEm);
+  r._busca = norm([r._titulo, r.tipo, r.tribunal, r.numero, r.questao, r.tese,
+    r.area, r.situacao, r.processos, r.observacoes, r.suspensao].join(' '));
+  return r;
+}
+
+/* ------------------------------------------------------------------ busca */
+
+function termos() {
+  return norm(estado.termo).split(/\s+/).filter(function (t) { return t.length > 1; });
+}
+
+function casa(r, ts) {
+  for (var i = 0; i < ts.length; i++) if (r._busca.indexOf(ts[i]) < 0) return false;
+  return true;
+}
+
+function pontos(r, ts) {
+  var p = 0;
+  var ident = norm(r._titulo);
+  var identCompacto = ident.replace(/\s+/g, '');
+  var questao = norm(r.questao);
+  var tese = norm(r.tese);
+  ts.forEach(function (t) {
+    if (ident === t || identCompacto === t.replace(/\s+/g, '')) p += 400;
+    else if (ident.indexOf(t) >= 0) p += 120;
+    if (questao.indexOf(t) >= 0) p += 25;
+    if (tese.indexOf(t) >= 0) p += 12;
+  });
+  if (r._curado) p += 30;
+  return p;
+}
+
+/* ---------------------------------------------------------------- filtros */
+
+function ativo(campo, valor) {
+  var f = estado.filtros[campo];
+  return !!(f && f.indexOf(valor) >= 0);
+}
+
+function alterna(campo, valor) {
+  var f = estado.filtros[campo] || [];
+  var i = f.indexOf(valor);
+  if (i >= 0) f.splice(i, 1); else f.push(valor);
+  if (f.length) estado.filtros[campo] = f; else delete estado.filtros[campo];
+  estado.limite = PAGINA;
+  aplicar();
+}
+
+function passa(r, campos, ignorar) {
+  for (var i = 0; i < campos.length; i++) {
+    var campo = campos[i];
+    if (campo === ignorar) continue;
+    var sel = estado.filtros[campo];
+    if (!sel || !sel.length) continue;
+    if (sel.indexOf(r[campo]) < 0) return false;
+  }
+  return true;
+}
+
+function contar(itens, campo) {
+  var m = {};
+  itens.forEach(function (r) {
+    var v = r[campo];
+    if (v) m[v] = (m[v] || 0) + 1;
+  });
+  return m;
+}
+
+/* --------------------------------------------------------- desenho: rail */
+
+function grupoHtml(titulo, campo, mapa) {
+  var chaves = Object.keys(mapa).sort(function (a, b) {
+    return mapa[b] - mapa[a] || a.localeCompare(b, 'pt-BR');
+  });
+  chaves = chaves.filter(function (c) { return mapa[c] || ativo(campo, c); });
+  if (chaves.length < 2 && !ativo(campo, chaves[0])) return '';
+  var h = '<section><h2 class="grupo-titulo">' + esc(titulo) + '</h2><div class="opcoes">';
+  chaves.forEach(function (c) {
+    var lig = ativo(campo, c);
+    h += '<label class="opcao' + (lig ? ' ativa' : '') + '">' +
+      '<input type="checkbox" data-campo="' + esc(campo) + '" data-valor="' + esc(c) + '"' + (lig ? ' checked' : '') + '>' +
+      '<span class="rot">' + esc(c) + '</span><span class="qtd">' + numero(mapa[c] || 0) + '</span></label>';
+  });
+  return h + '</div></section>';
+}
+
+/* Cada faceta conta considerando os demais filtros ativos, menos ela mesma. */
+function desenhaRail(itens, grupos, campos) {
+  var h = '';
+  grupos.forEach(function (g) {
+    var base = itens.filter(function (r) { return passa(r, campos, g.campo); });
+    h += grupoHtml(g.titulo, g.campo, contar(base, g.campo));
+  });
+  if (Object.keys(estado.filtros).length) {
+    h += '<button class="limpar-tudo" id="limpar-filtros" type="button">Limpar filtros</button>';
+  }
+  el('rail').innerHTML = h;
+  el('rail').hidden = !h;
+}
+
+/* ------------------------------------------------------- desenho: fichas */
+
+function pilula(r) {
+  // Sem suspensão em vigor não há o que indicar: julgado de informativo, que não é
+  // objeto de suspensão, e precedente encerrado, cujo sobrestamento já cessou,
+  // mostram apenas a situação.
+  if (r.tipo === 'Informativo' || !r._emVigor) {
+    return '<span class="estado"><span class="j">' + esc(r._situacao) + '</span></span>';
+  }
+  return '<span class="estado"><span class="j">' + esc(r._situacao) + '</span>' +
+    '<span class="s n-' + r._risco + '">' + esc(rotuloAlcance(r._alcance)) + '</span></span>';
+}
+
+/** Só mostra a etiqueta de tipo quando ela não repete o identificador. */
+function etiquetaTipo(r) {
+  if (norm(r._titulo).indexOf(norm(r.tipo)) === 0) return '';
+  return '<span class="sigla">' + esc(r.tipo) + '</span>';
+}
+
+/**
+ * Link para o documento de origem, sempre em nova aba: quem está conferindo um
+ * precedente não pode perder a lista de resultados ao sair para o tribunal.
+ */
+function linkFonte(url, rotulo) {
+  var limpo = urlSegura(url);
+  if (!limpo) return '';
+  return '<a class="fonte-min" href="' + esc(limpo) + '" target="_blank" rel="noopener noreferrer">' +
+    esc(rotulo || 'Fonte oficial') + ' <span aria-hidden="true">↗</span>' +
+    '<span class="oculto"> (abre em nova aba)</span></a>';
+}
+
+/**
+ * O cartão inteiro abre a ficha, por um botão invisível que cobre a área — e o
+ * link da fonte fica acima dele, para continuar clicável por conta própria.
+ */
+function cartao(r, re) {
+  return '<article class="ficha r-' + r._risco + '">' +
+    '<button class="ficha-abrir" data-reg="' + esc(r.id) + '" type="button" aria-label="' +
+      esc('Abrir a ficha de ' + r._titulo) + '"></button>' +
+    '<span class="ficha-topo">' +
+      '<span class="ident">' + destaca(r._titulo, re) + '</span>' +
+      '<span class="sigla">' + esc(r.tribunal) + '</span>' +
+      etiquetaTipo(r) +
+    '</span>' +
+    '<p class="questao">' + destaca(corta(r.questao, 240), re) + '</p>' +
+    (r.tese ? '<p class="tese-curta">' + destaca(corta(r.tese, 240), re) + '</p>' : '') +
+    '<span class="ficha-pe">' + pilula(r) + '<span class="etiqueta">' + esc(r._area) + '</span>' +
+      linkFonte(r.fonte) + '</span>' +
+  '</article>';
+}
+
+function painelDestaques(itens) {
+  var h = '<div class="alcance">';
+  DESTAQUES.forEach(function (g) {
+    var n = 0;
+    itens.forEach(function (r) { if (g.testa(r)) n++; });
+    var ligado = estado.destaque === g.chave;
+    h += '<button class="alcance-item g-' + g.nivel + '" type="button" data-destaque="' + g.chave + '" ' +
+      'aria-pressed="' + (ligado ? 'true' : 'false') + '">' +
+      '<span class="n">' + numero(n) + '</span><span class="r">' + esc(g.rotulo) + '</span></button>';
+  });
+  return h + '</div>';
+}
+
+var ESCOPOS = [
+  { chave: 'todos', rotulo: 'Todos' },
+  { chave: 'comum', rotulo: 'Justiça comum' },
+  { chave: 'juizado', rotulo: 'Juizado Especial' }
+];
+
+function noEscopoAtual(r) {
+  if (estado.escopo === 'juizado') return r._juizado;
+  if (estado.escopo === 'comum') return !r._juizado;
+  return true;
+}
+
+function escopoHtml(lista) {
+  var nJuizado = 0;
+  lista.forEach(function (r) { if (r._juizado) nJuizado++; });
+  var contagens = { todos: lista.length, juizado: nJuizado, comum: lista.length - nJuizado };
+  return '<div class="escopo" role="group" aria-label="Competência">' +
+    ESCOPOS.map(function (e) {
+      return '<button type="button" data-escopo="' + e.chave + '" aria-pressed="' +
+        (estado.escopo === e.chave) + '">' + e.rotulo +
+        '<span class="n">' + numero(contagens[e.chave]) + '</span></button>';
+    }).join('') + '</div>';
+}
+
+/* ------------------------------------------------------------- ordenação */
+
+var ORDENS = [
+  { chave: 'stj', rotulo: 'STJ primeiro' },
+  { chave: 'stf', rotulo: 'STF primeiro' },
+  { chave: 'tjmg', rotulo: 'TJMG primeiro' },
+  { chave: 'recentes', rotulo: 'mais recentes' },
+  { chave: 'antigos', rotulo: 'mais antigos' }
+];
+
+var PESO_RISCO = { ALTO: 0, MEDIO: 1, BAIXO: 2 };
+
+/** Critério de desempate comum: risco, seleção da planilha, tribunal, número. */
+function desempate(a, b) {
+  return PESO_RISCO[a._risco] - PESO_RISCO[b._risco] ||
+    (b._curado ? 1 : 0) - (a._curado ? 1 : 0) ||
+    a.tribunal.localeCompare(b.tribunal, 'pt-BR') ||
+    String(a.numero).localeCompare(String(b.numero), 'pt-BR', { numeric: true });
+}
+
+function ordenar(lista, ts) {
+  var ordem = estado.ordem;
+  if (ordem === 'relevancia' && !ts.length) ordem = 'recentes';
+
+  if (ordem === 'relevancia') {
+    lista.sort(function (a, b) { return pontos(b, ts) - pontos(a, ts) || desempate(a, b); });
+  } else if (ordem === 'stj' || ordem === 'stf' || ordem === 'tjmg') {
+    var alvo = ordem.toUpperCase();
+    lista.sort(function (a, b) {
+      return (a.tribunal === alvo ? 0 : 1) - (b.tribunal === alvo ? 0 : 1) || desempate(a, b);
+    });
+  } else if (ordem === 'recentes' || ordem === 'antigos') {
+    // Sem data conhecida o registro vai para o fim, nos dois sentidos.
+    // Em "recentes", a data maior vem primeiro: se a < b, a desce na lista.
+    var sinal = ordem === 'recentes' ? 1 : -1;
+    lista.sort(function (a, b) {
+      if (!a._data !== !b._data) return a._data ? -1 : 1;
+      if (a._data !== b._data) return a._data < b._data ? sinal : -sinal;
+      return desempate(a, b);
+    });
+  } else {
+    lista.sort(desempate);
+  }
+}
+
+function seletorOrdem(ts) {
+  var opcoes = ts.length
+    ? [{ chave: 'relevancia', rotulo: 'relevância' }].concat(ORDENS)
+    : ORDENS;
+  var atual = estado.ordem;
+  if (atual === 'relevancia' && !ts.length) atual = 'recentes';
+  return '<label class="contagem">Ordenar por <select class="ordenar" id="ordenar">' +
+    opcoes.map(function (o) {
+      return '<option value="' + o.chave + '"' + (atual === o.chave ? ' selected' : '') + '>' + o.rotulo + '</option>';
+    }).join('') + '</select></label>';
+}
+
+/* --------------------------------------------------------- aba: registros */
+
+function abaRegistros(lista, rotuloSingular, rotuloPlural) {
+  var ts = termos();
+  var re = reDestaque(ts);
+  var campos = ['tribunal', 'tipo', '_area', '_situacao'];
+
+  var achados = lista.filter(function (r) { return casa(r, ts) && casaNumero(r) && casaTexto(r); });
+  var noEscopo = achados.filter(noEscopoAtual);
+
+  var comFacetas = noEscopo.filter(function (r) { return passa(r, campos); });
+  var bloco = destaque(estado.destaque);
+  var filtrados = bloco ? comFacetas.filter(bloco.testa) : comFacetas;
+
+  ordenar(filtrados, ts);
+
+  desenhaRail(noEscopo, [
+    { titulo: 'Tribunal', campo: 'tribunal' },
+    { titulo: 'Tipo de precedente', campo: 'tipo' },
+    { titulo: 'Área do Juizado', campo: '_area' },
+    { titulo: 'Estágio do julgamento', campo: '_situacao' }
+  ], campos);
+
+  var visiveis = filtrados.slice(0, estado.limite);
+
+  var h = escopoHtml(achados) + painelDestaques(comFacetas) + filtroDetalhado(noEscopo) +
+    '<div class="barra-lista"><span class="contagem"><strong>' + numero(filtrados.length) + '</strong> ' +
+      (filtrados.length === 1 ? rotuloSingular : rotuloPlural) +
+      (bloco ? ' em “' + esc(bloco.rotulo) + '”' : '') +
+      (estado.termo ? ' para “' + esc(estado.termo) + '”' : '') + '</span>' +
+    seletorOrdem(ts) + '</div>';
+
+  if (!filtrados.length) {
+    h += '<div class="vazio"><p><strong>Nenhum registro encontrado.</strong></p>' +
+      '<p>Tente o número do tema (<em>1169</em>), a sigla (<em>IRDR 73</em>) ou uma palavra da matéria.</p></div>';
+  } else {
+    h += '<div class="fichas">' + visiveis.map(function (r) { return cartao(r, re); }).join('') + '</div>';
+    if (filtrados.length > visiveis.length) {
+      h += '<button class="mais" id="ver-mais" type="button">Mostrar mais ' +
+        numero(Math.min(PAGINA, filtrados.length - visiveis.length)) + ' de ' +
+        numero(filtrados.length - visiveis.length) + ' restantes</button>';
+    }
+  }
+
+  // O seletor de competência já mostra as três contagens; a faixa era repetição.
+  el('conteudo').innerHTML = h;
+  anunciar(numero(filtrados.length) + ' ' +
+    (filtrados.length === 1 ? rotuloSingular : rotuloPlural) + ' na lista.');
+}
+
+/* =========================================================== textos prontos
+   Três textos, montados só com o que a fonte publicou — nada aqui é redigido
+   pelo portal além da moldura. O que veio da fonte entra entre aspas e sem
+   retoque, para que a citação seja conferível contra o documento de origem.
+   =========================================================================== */
+
+var COMARCA = 'Vespasiano';
+
+var NOME_RITO = {
+  'Repetitivo': 'submetido ao rito dos recursos especiais repetitivos',
+  'Repercussão geral': 'com repercussão geral reconhecida',
+  'IRDR': 'incidente de resolução de demandas repetitivas',
+  'IUJ': 'incidente de uniformização de jurisprudência',
+  'IAC': 'incidente de assunção de competência',
+  'GR': 'grupo de recursos representativos da controvérsia',
+  'Informativo': 'julgado divulgado no informativo de jurisprudência'
+};
+
+var RITO_EMENTA = {
+  'Repetitivo': 'RECURSO ESPECIAL REPETITIVO',
+  'Repercussão geral': 'REPERCUSSÃO GERAL',
+  'IRDR': 'INCIDENTE DE RESOLUÇÃO DE DEMANDAS REPETITIVAS',
+  'IUJ': 'INCIDENTE DE UNIFORMIZAÇÃO DE JURISPRUDÊNCIA',
+  'IAC': 'INCIDENTE DE ASSUNÇÃO DE COMPETÊNCIA',
+  'GR': 'GRUPO DE RECURSOS REPRESENTATIVOS',
+  'Informativo': 'INFORMATIVO DE JURISPRUDÊNCIA'
+};
+
+var RAZAO_SUSPENSAO = {
+  NACIONAL: 'com determinação de suspensão nacional dos processos que versem sobre a mesma matéria',
+  ESTADUAL: 'com determinação de suspensão dos processos que tramitam no Estado sobre a mesma matéria',
+  RECURSAL: 'com determinação de suspensão dos recursos sobre a mesma matéria'
+};
+
+/** Campos de data trazem "processo: dd/mm/aaaa" em várias linhas; pega a última. */
+function ultimaData(valor) {
+  var achadas = String(valor || '').match(/\d{2}\/\d{2}\/\d{4}/g);
+  if (!achadas) return '';
+  var iso = achadas.map(function (d) { return d.slice(6) + d.slice(3, 5) + d.slice(0, 2) + '|' + d; }).sort();
+  return iso[iso.length - 1].split('|')[1];
+}
+
+function hojeBR() {
+  var d = new Date();
+  return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
+}
+
+function limpaCitacao(texto) {
+  return String(texto || '').replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').replace(/^["“”]|["“”]$/g, '').trim();
+}
+
+function textoEmenta(r) {
+  var cabeca = [
+    (r._titulo + ' DO ' + r.tribunal).toUpperCase(),
+    RITO_EMENTA[r.tipo] || String(r.tipo).toUpperCase(),
+    String(r._area).toUpperCase(),
+    String(r._situacao).toUpperCase()
+  ].filter(function (x) { return x && x !== 'OUTRA SITUAÇÃO' && x !== 'SEM REGISTRO'; });
+  if (r._emVigor && r._alcance !== 'NAO_DETERMINADA') cabeca.push(rotuloAlcance(r._alcance).toUpperCase());
+
+  var itens = [];
+  var n = 0;
+  if (r.questao) itens.push(++n + '. Questão submetida a julgamento: "' + limpaCitacao(r.questao) + '"');
+  if (r.tese) itens.push(++n + '. Tese firmada: "' + limpaCitacao(r.tese) + '"');
+
+  var datas = [];
+  if (ultimaData(r.julgamento)) datas.push('julgamento em ' + ultimaData(r.julgamento));
+  if (ultimaData(r.publicacao)) datas.push('acórdão publicado em ' + ultimaData(r.publicacao));
+  if (ultimaData(r.transito)) datas.push('trânsito em julgado em ' + ultimaData(r.transito));
+  itens.push(++n + '. Estágio: ' + (limpaCitacao(r.situacao) || r._situacao) +
+    (datas.length ? ' — ' + datas.join('; ') : '') + '.');
+
+  if (r._emVigor) {
+    itens.push(++n + '. Suspensão: ' + (r._alcance !== 'NAO_DETERMINADA'
+      ? rotuloAlcance(r._alcance).toLowerCase() + ', conforme registro da fonte oficial'
+      : 'não há determinação de suspensão registrada na fonte') + '.');
+  }
+
+  var rodape = '(' + r.tribunal + ', ' + r._titulo +
+    (r.processos ? ', ' + limpaCitacao(r.processos).slice(0, 120) : '') + '. ' +
+    'Texto extraído de ' + (r.origem || 'fonte oficial') + ', consultado em ' + hojeBR() + '.)';
+
+  return 'EMENTA\n\n' + cabeca.join('. ') + '.\n\n' + itens.join('\n\n') + '\n\n' + rodape +
+    (r.fonte ? '\n' + r.fonte : '');
+}
+
+function textoDespacho(r) {
+  var qualificacao = [NOME_RITO[r.tipo] || String(r.tipo).toLowerCase()];
+  if (RAZAO_SUSPENSAO[r._alcance]) qualificacao.push(RAZAO_SUSPENSAO[r._alcance]);
+
+  return 'Vistos, etc.\n' +
+    'Considerando que o processo em análise adequa-se ao disposto no ' + r._titulo + ' do ' + r.tribunal +
+    ', ' + qualificacao.join(', ') +
+    ', cuja hipótese em análise é a de "' + limpaCitacao(r.questao) + '", ' +
+    'suspendo o curso do presente feito até o pronunciamento definitivo do tribunal.\n' +
+    'Este despacho/decisão é válido como ofício, caso necessário.\n' +
+    'Intimações e providências necessárias.\n' +
+    'Cumpra-se.\n' +
+    COMARCA + ', data da assinatura eletrônica.';
+}
+
+function textoTese(r) {
+  var datas = [];
+  if (ultimaData(r.julgamento)) datas.push('Julgamento em ' + ultimaData(r.julgamento) + '.');
+  if (ultimaData(r.publicacao)) datas.push('Acórdão publicado em ' + ultimaData(r.publicacao) + '.');
+  if (ultimaData(r.transito)) datas.push('Trânsito em julgado em ' + ultimaData(r.transito) + '.');
+  if (!datas.length) datas.push('A fonte não informa as datas de julgamento e de trânsito em julgado.');
+
+  return r._titulo + ' do ' + r.tribunal + ' — tese firmada\n\n' +
+    '"' + limpaCitacao(r.tese) + '"\n\n' +
+    datas.join(' ') + '\n' +
+    (r.fonte ? r.fonte : '');
+}
+
+/** Copia para a área de transferência, com alternativa para contextos restritos. */
+function copiar(texto, botao) {
+  function avisar(ok) {
+    var original = botao.getAttribute('data-rotulo') || botao.textContent;
+    botao.setAttribute('data-rotulo', original);
+    botao.textContent = ok ? '✓ Copiado' : 'Não foi possível copiar';
+    botao.classList.toggle('copiado', ok);
+    setTimeout(function () {
+      botao.textContent = botao.getAttribute('data-rotulo');
+      botao.classList.remove('copiado');
+    }, 2200);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(texto).then(function () { avisar(true); }, function () { avisar(copiarAntigo(texto)); });
+  } else {
+    avisar(copiarAntigo(texto));
+  }
+}
+
+/* execCommand continua sendo o único caminho quando a página roda sem origem
+   segura — arquivo aberto do disco, painel em sandbox. */
+function copiarAntigo(texto) {
+  try {
+    var campo = document.createElement('textarea');
+    campo.value = texto;
+    campo.setAttribute('readonly', '');
+    campo.style.position = 'fixed';
+    campo.style.top = '-1000px';
+    document.body.appendChild(campo);
+    campo.select();
+    var ok = document.execCommand('copy');
+    campo.remove();
+    return ok;
+  } catch (e) { return false; }
+}
+
+function botoesCopiar(r) {
+  var botoes = [{ acao: 'ementa', rotulo: 'Copiar ementa' }];
+  if (r._emVigor && r._alcance !== 'NAO_DETERMINADA') botoes.push({ acao: 'despacho', rotulo: 'Copiar despacho' });
+  if (r.tese) botoes.push({ acao: 'tese', rotulo: 'Copiar tese firmada' });
+  return '<div class="acoes">' + botoes.map(function (b) {
+    return '<button class="botao-copiar" type="button" data-copiar="' + b.acao + '">' + b.rotulo + '</button>';
+  }).join('') + '</div>';
+}
+
+/* ================================================= leitura dos campos brutos
+   As fontes entregam o andamento numa linha só, separada por barras verticais
+   e cheia de abreviações de cartório: "Classe: 600 - IRDR - Cv", "Suspensão
+   Geral: N". Aqui isso vira uma lista de rótulo e valor, por extenso.
+   =========================================================================== */
+
+var EXPANSOES = [
+  [/\bIRDR\b/g, 'Incidente de Resolução de Demandas Repetitivas'],
+  [/\bIAC\b/g, 'Incidente de Assunção de Competência'],
+  [/\bIUJ\b/g, 'Incidente de Uniformização de Jurisprudência'],
+  [/\bAREsp\b/g, 'Agravo em Recurso Especial'],
+  [/\bREsp\b/g, 'Recurso Especial'],
+  [/\bARE\b/g, 'Agravo em Recurso Extraordinário'],
+  [/\bRE\b/g, 'Recurso Extraordinário'],
+  [/\bED\b/g, 'Embargos de Declaração'],
+  [/\bAgInt\b/g, 'Agravo Interno'],
+  [/(-\s*)Cv\b/g, '$1Cível'],
+  [/(-\s*)Cr\b/g, '$1Criminal'],
+  [/(-\s*)Fz\b/g, '$1Fazenda Pública']
+];
+
+function expandir(texto) {
+  var t = String(texto == null ? '' : texto).trim();
+  if (t === 'N') return 'Não';
+  if (t === 'S') return 'Sim';
+  for (var i = 0; i < EXPANSOES.length; i++) t = t.replace(EXPANSOES[i][0], EXPANSOES[i][1]);
+  return t;
+}
+
+/* Mesma etiqueta, coisas diferentes: a fonte diz "Data última atualização"
+   tanto para o processo paradigma quanto para o tema, e as duas datas divergem
+   na mesma ficha. Cada uma passa a dizer a que se refere. */
+var ROTULOS_CAMPO = {
+  'data de admissao': 'Admissão',
+  'julgado em': 'Julgamento',
+  'acordao publicado em': 'Acórdão publicado',
+  'transito em julgado': 'Trânsito em julgado',
+  'embargos de declaracao': 'Embargos de declaração',
+  'orgao julgador': 'Órgão julgador',
+  'suspensao geral': 'Suspensão geral',
+  'referencia legislativa': 'Referência legislativa'
+};
+
+function rotuloCampo(bruto, sufixo) {
+  var k = norm(String(bruto).trim());
+  if (k === 'data ultima atualizacao') return 'Última atualização ' + sufixo;
+  return ROTULOS_CAMPO[k] || String(bruto).trim();
+}
+
+/** Converte "Rótulo: valor | Rótulo: valor" numa lista de pares. */
+function paresDaLinha(linha, sufixo) {
+  var pares = [];
+  String(linha).split('|').forEach(function (parte) {
+    var corte = parte.indexOf(':');
+    if (corte < 0) {
+      if (parte.trim()) pares.push({ rotulo: '', valor: expandir(parte) });
+      return;
+    }
+    pares.push({
+      rotulo: rotuloCampo(parte.slice(0, corte), sufixo),
+      valor: expandir(parte.slice(corte + 1)) || '—'
+    });
+  });
+  return pares;
+}
+
+function listaDePares(pares) {
+  return '<dl class="dados">' + pares.map(function (p) {
+    return '<div class="dado"><dt>' + esc(p.rotulo || 'Registro') + '</dt><dd>' + esc(p.valor) + '</dd></div>';
+  }).join('') + '</dl>';
+}
+
+function blocoProcessos(r) {
+  var linhas = String(r.processos).split('\n').filter(function (l) { return l.trim(); });
+  return linhas.map(function (linha) {
+    var pares = paresDaLinha(linha, 'do processo');
+    var cabeca = pares.length && /paradigma|processo/i.test(pares[0].rotulo) ? pares.shift() : null;
+    return '<div class="paradigma">' +
+      (cabeca ? '<p class="paradigma-num">' + esc(cabeca.valor) + '</p>' : '') +
+      listaDePares(pares) + '</div>';
+  }).join('');
+}
+
+function blocoObservacoes(r) {
+  var linhas = String(r.observacoes).split('\n').filter(function (l) { return l.trim(); });
+  var todosPares = linhas.every(function (l) { return /^[^:]{2,40}:/.test(l.trim()); });
+  if (!todosPares) return '<p class="texto-juridico">' + esc(expandir(r.observacoes)) + '</p>';
+  return listaDePares(linhas.map(function (l) {
+    var corte = l.indexOf(':');
+    return { rotulo: rotuloCampo(l.slice(0, corte), 'do tema'), valor: expandir(l.slice(corte + 1)) || '—' };
+  }));
+}
+
+/* Pendências que a fonte anota junto da situação e mudam o que se pode fazer. */
+var PENDENCIAS = [
+  [/\bAREsp\s+pendente/i, 'Agravo em Recurso Especial pendente'],
+  [/\bARE\s+pendente/i, 'Agravo em Recurso Extraordinário pendente'],
+  [/\bREsp\s+pendente|recurso especial pendente/i, 'Recurso Especial pendente'],
+  [/\bRE\s+pendente|recurso extraordin[áa]rio pendente/i, 'Recurso Extraordinário pendente'],
+  [/\bED\s+pendentes?|embargos de declara[çc][ãa]o pendentes?/i, 'Embargos de declaração pendentes'],
+  [/agravo interno pendente/i, 'Agravo interno pendente'],
+  [/aguardando pronunciamento/i, 'Aguardando pronunciamento do tribunal superior'],
+  [/sobrestad/i, 'Sobrestado']
+];
+
+/**
+ * A dúvida mais natural de quem lê a ficha: o precedente já foi julgado e o
+ * acórdão publicado — por que ainda consta suspensão? Porque julgamento não é
+ * trânsito em julgado. A ordem de sobrestamento costuma valer "até decisão
+ * definitiva", e enquanto pende recurso o incidente não se encerrou.
+ */
+/**
+ * Por que este precedente não suspende. São razões diferentes, e dizer a errada
+ * é pior do que não dizer nada: o mesmo aviso verde não pode servir para um
+ * precedente cancelado e para outro cuja suspensão cessou com a publicação do
+ * acórdão.
+ */
+function motivoEncerramento(r) {
+  var g = r._situacao;
+  if (g === 'Cancelado') return 'O precedente foi cancelado e não produz efeitos.';
+  if (g === 'Repercussão geral negada') {
+    return 'O Supremo Tribunal Federal não reconheceu repercussão geral, e a matéria segue nas instâncias ordinárias.';
+  }
+  if (g === 'Prejudicado / baixado') return 'O incidente perdeu o objeto ou foi baixado sem julgamento de mérito.';
+  if (!norm(r.suspensao)) return 'Não consta determinação de suspensão para este precedente.';
+  if (g === 'Trânsito em julgado') return 'A suspensão registrada cessou com o trânsito em julgado.';
+  if (r.tipo === 'Repetitivo' || r.tipo === 'Repercussão geral') {
+    return 'A suspensão cessou com a publicação do acórdão paradigma: os processos sobrestados retomam ' +
+      'o curso para julgamento com aplicação da tese (art. 1.040, III, do Código de Processo Civil).';
+  }
+  return 'A suspensão cessou: publicado o acórdão do incidente, não consta recurso especial ou ' +
+    'extraordinário pendente contra o julgamento (art. 982, § 5º, do Código de Processo Civil).';
+}
+
+function avisoDe(r) {
+  if (!r._emVigor) return { t: 'Sem suspensão em vigor.', c: motivoEncerramento(r) };
+  if (r._alcance === 'NAO_DETERMINADA') return AVISO.NAO_DETERMINADA;
+  return AVISO[r._risco];
+}
+
+function porqueContinuaSuspenso(r) {
+  if (!r._emVigor || r._alcance === 'NAO_DETERMINADA') return '';
+
+  if (r._situacao === 'Julgado') {
+    return 'O mérito já foi julgado, mas o acórdão ainda não foi publicado. É a publicação do ' +
+      'acórdão paradigma que faz os processos sobrestados retomarem o curso (art. 1.040, III, ' +
+      'do Código de Processo Civil).';
+  }
+
+  if (r._situacao === 'Acórdão publicado') {
+    var texto = 'O acórdão já foi publicado, mas a suspensão persiste enquanto pender recurso ' +
+      'especial ou extraordinário contra o julgamento do incidente, que tem efeito suspensivo por ' +
+      'lei (art. 982, § 5º, e art. 987, § 1º, do Código de Processo Civil).';
+    var pend = pendencias(r);
+    if (pend !== 'Nenhuma registrada') texto += ' Consta ' + pend.toLowerCase() + '.';
+    return texto;
+  }
+  return '';
+}
+
+function pendencias(r) {
+  var t = [r.situacao, r.observacoes].join(' ');
+  var achadas = [];
+  PENDENCIAS.forEach(function (p) {
+    if (p[0].test(t) && achadas.indexOf(p[1]) < 0) achadas.push(p[1]);
+  });
+  return achadas.length ? achadas.join('; ') : 'Nenhuma registrada';
+}
+
+/* ------------------------------------------------------------ aba: ficha */
+
+function campo(rotulo, valor, mono) {
+  if (!valor) return '';
+  return '<div class="dado"><dt>' + esc(rotulo) + '</dt><dd' + (mono ? ' class="mono"' : '') + '>' +
+    esc(valor) + '</dd></div>';
+}
+
+function ficha(r) {
+  el('rail').hidden = true;
+  el('rail').innerHTML = '';
+  var a = avisoDe(r);
+  var fonte = urlSegura(r.fonte);
+
+  var h = '<button class="voltar" id="voltar" type="button">← Voltar aos resultados</button>' +
+    '<article class="detalhe"><header class="detalhe-cabeca r-' + r._risco + '">' +
+      '<div class="ficha-topo">' +
+        '<span class="ident">' + esc(r._titulo) + '</span>' +
+        '<span class="sigla">' + esc(r.tribunal) + '</span>' +
+        etiquetaTipo(r) +
+        '<span class="etiqueta">' + esc(r._area) + '</span>' +
+        '</div>' +
+      '<h1>' + esc(r.questao || r._titulo) + '</h1>' +
+      '<div>' + pilula(r) + '</div>' +
+      (r.tipo === 'Informativo' ? '' :
+        '<div class="aviso a-' + r._risco + '"><span aria-hidden="true">' +
+        (r._risco === 'BAIXO' ? '✓' : '!') + '</span><span><strong>' + esc(a.t) + '</strong>' + esc(a.c) +
+        (porqueContinuaSuspenso(r) ? '<span class="aviso-extra">' + esc(porqueContinuaSuspenso(r)) + '</span>' : '') +
+        '</span></div>') +
+      botoesCopiar(r) +
+    '</header>';
+
+  if (r.tese) {
+    h += '<section class="secao"><h2>Tese / destaque</h2><p class="texto-juridico">' + esc(r.tese) + '</p></section>';
+  }
+  if (r.suspensao) {
+    h += '<section class="secao"><h2>' +
+      (r._emVigor ? 'Registro sobre suspensão' : 'Suspensão que vigorou') +
+      '</h2><p class="texto-juridico">' + esc(r.suspensao) + '</p></section>';
+  }
+
+  h += '<section class="secao"><h2>Situação e datas</h2><dl class="dados">' +
+    campo('Situação', r._situacao) +
+    campo('Pendências identificadas', pendencias(r)) +
+    campo('Julgamento', r.julgamento, true) +
+    campo('Publicação do acórdão', r.publicacao, true) +
+    campo('Trânsito em julgado', r.transito, true) +
+    '</dl></section>';
+
+  if (r.processos) {
+    h += '<section class="secao"><h2>Processos paradigma</h2>' + blocoProcessos(r) + '</section>';
+  }
+  if (r.observacoes) {
+    h += '<section class="secao"><h2>Observações</h2>' + blocoObservacoes(r) + '</section>';
+  }
+
+  h += '<section class="secao">' +
+    (fonte ? '<a class="link-fonte" href="' + esc(fonte) + '" target="_blank" rel="noopener noreferrer">Fonte oficial ↗<span class="oculto"> (abre em nova aba)</span></a>' : '') +
+    '<p class="procedencia">Origem: ' + esc(r.origem || '—') + ' · ' + esc(r.pertinencia || '—') +
+      (r.verificadoEm ? ' · Última conferência automática em ' + esc(dataBR(r.verificadoEm, true)) : ' · Sem conferência automática registrada') +
+    '</p>' +
+    '<p class="procedencia">Os campos reproduzem o que a fonte publicou na data da consulta. A conferência automática não certifica a completude da fonte.</p>' +
+    '</section></article>';
+
+  el('conteudo').innerHTML = h;
+  window.scrollTo(0, 0);
+}
+
+/* -------------------------------------------------------- aba: novidades */
+
+/**
+ * O registro de alterações guarda o vocabulário da coleta — "Cadastro",
+ * "Inclusão na base", "Primeira conferência". Isso interessa a quem mantém o
+ * portal, não a quem consulta: na tela sai o que mudou no precedente.
+ */
+function rotuloNovidade(campo) {
+  var c = norm(campo);
+  if (!c || c === 'cadastro') return 'Novo no portal';
+  return String(campo);
+}
+
+function abaNovidades() {
+  el('rail').hidden = true;
+  el('rail').innerHTML = '';
+
+  var linhas = BASE.alteracoes || [];
+  var dias = {};
+  linhas.forEach(function (l) { dias[diaLocal(l[0])] = true; });
+  var listaDias = Object.keys(dias).sort().reverse();
+
+  var filtradas = estado.dia ? linhas.filter(function (l) { return diaLocal(l[0]) === estado.dia; }) : linhas;
+  var visiveis = filtradas.slice(0, estado.limite);
+
+  var h = '<div class="barra-lista"><span class="contagem">' +
+    '<strong>' + numero(BASE.totalAlteracoes || filtradas.length) + '</strong> alterações registradas pelo monitoramento. ' +
+    'Exibindo as ' + numero(linhas.length) + ' mais recentes.</span>' +
+    '<label class="contagem">Dia <select class="filtro-dia" id="filtro-dia">' +
+      '<option value="">todos os dias</option>' +
+      listaDias.map(function (d) {
+        return '<option value="' + esc(d) + '"' + (estado.dia === d ? ' selected' : '') + '>' + esc(dataBR(d)) + '</option>';
+      }).join('') +
+    '</select></label></div>';
+
+  if (!visiveis.length) {
+    h += '<div class="vazio"><p><strong>Sem alterações neste dia.</strong></p>' +
+      '<p>Veja em “Fontes e atualização” se alguma consulta falhou.</p></div>';
+  } else {
+    var diaAtual = '';
+    visiveis.forEach(function (l) {
+      var d = diaLocal(l[0]);
+      if (d !== diaAtual) {
+        diaAtual = d;
+        h += '<div class="dia-titulo"><h3>' + esc(dataBR(d)) + '</h3><span>' +
+          numero(filtradas.filter(function (x) { return diaLocal(x[0]) === d; }).length) + ' registros</span></div>';
+      }
+      h += '<article class="ficha r-BAIXO">' +
+        '<button class="ficha-abrir" data-reg="' + esc(l[1]) + '" type="button" aria-label="' +
+          esc('Abrir a ficha de ' + l[2]) + '"></button>' +
+        '<span class="ficha-topo"><span class="ident">' + esc(l[2]) + '</span>' +
+        '<span class="etiqueta">' + esc(rotuloNovidade(l[3])) + '</span></span>' +
+        (l[4] ? '<p class="diff"><strong>Antes:</strong> ' + esc(corta(l[4], 300)) + '</p>' : '') +
+        '<p class="diff">' + (l[4] ? '<strong>Agora:</strong> ' : '') + esc(corta(l[5], 320)) + '</p>' +
+        (linkFonte(l[6]) ? '<span class="ficha-pe">' + linkFonte(l[6]) + '</span>' : '') +
+      '</article>';
+    });
+    if (filtradas.length > visiveis.length) {
+      h += '<button class="mais" id="ver-mais" type="button">Mostrar mais</button>';
+    }
+  }
+  el('conteudo').innerHTML = h;
+}
+
+/* ----------------------------------------------------------- aba: fontes */
+
+/**
+ * Momento da última coleta, calculado a partir das próprias consultas — nunca
+ * escrito à mão. Num painel cuja função é dizer se o dado está fresco, uma data
+ * fixa é pior do que data nenhuma.
+ */
+function ultimaColeta() {
+  var marcas = (BASE.fontes || []).map(function (f) { return f[1]; }).filter(Boolean).sort();
+  return marcas.length ? marcas[marcas.length - 1] : BASE.geradoEm;
+}
+
+function fontesComFalha() {
+  return (BASE.fontes || []).filter(function (f) { return !f[2]; });
+}
+
+function abaFontes() {
+  el('rail').hidden = true;
+  el('rail').innerHTML = '';
+  var fontes = BASE.fontes || [];
+  var falhas = fontesComFalha();
+
+  // As que falharam vêm primeiro: é por elas que alguém abre esta aba.
+  var ordenadas = fontes.slice().sort(function (a, b) {
+    return (a[2] ? 1 : 0) - (b[2] ? 1 : 0);
+  });
+
+  var h = '<article class="detalhe">' +
+    '<header class="detalhe-cabeca r-' + (falhas.length ? 'ALTO' : 'BAIXO') + '">' +
+      '<h1>' + (falhas.length
+        ? 'Há fonte sem consulta válida'
+        : 'Todos os tribunais foram consultados') + '</h1>' +
+      '<div class="aviso a-' + (falhas.length ? 'ALTO' : 'BAIXO') + '">' +
+        '<span aria-hidden="true">' + (falhas.length ? '!' : '✓') + '</span><span>' +
+        (falhas.length
+          ? '<strong>' + falhas.length + ' de ' + fontes.length +
+            ' fontes não responderam na última coleta.</strong>' +
+            'Os registros dessas fontes continuam sendo os da última consulta bem-sucedida — ' +
+            'não foram conferidos agora. Confira o site do tribunal antes de aplicar o que vier delas.'
+          : '<strong>As ' + fontes.length + ' fontes responderam na última coleta.</strong>' +
+            'Os registros do portal correspondem ao que os tribunais publicavam neste momento.') +
+      '</span></div>' +
+    '</header>' +
+    '<section class="secao"><h2>Atualização</h2><dl class="dados definicoes">' +
+      campo('Última coleta', dataBR(ultimaColeta(), true)) +
+      campo('Rotina', BASE.agenda || 'Não informada') +
+    '</dl></section>' +
+    '<section class="secao"><h2>Fontes consultadas</h2><div class="fontes">';
+
+  ordenadas.forEach(function (f) {
+    var ok = Boolean(f[2]);
+    var url = urlSegura(f[6]);
+    h += '<div class="fonte-item' + (ok ? '' : ' falha') + '">' +
+      '<div class="fonte-cabeca"><strong>' + esc(f[0]) + '</strong>' +
+        '<span class="fonte-estado">' + (ok ? 'Consultada' : 'Sem resposta') + '</span></div>' +
+      '<p class="fonte-nota">' + esc(f[5]) + '</p>' +
+      '<div class="fonte-linha">' + numero(f[4]) + ' registros · consulta em ' + esc(dataBR(f[1], true)) +
+        ' · última resposta ' + (ok ? esc(dataBR(f[2], true)) : 'nenhuma até agora') + '</div>' +
+      (url ? '<a class="link-fonte" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">Abrir a fonte ↗<span class="oculto"> (abre em nova aba)</span></a>' : '') +
+    '</div>';
+  });
+
+  el('conteudo').innerHTML = h + '</div></section></article>';
+}
+
+/* ------------------------------------------------------------ aba: ajuda */
+
+function abaAjuda() {
+  el('rail').hidden = true;
+  el('rail').innerHTML = '';
+
+  function faixa(nivel, titulo, texto) {
+    return '<div class="dado legenda-item"><dt><span class="amostra r-' + nivel + '"></span>' +
+      esc(titulo) + '</dt><dd>' + esc(texto) + '</dd></div>';
+  }
+
+  el('conteudo').innerHTML = '<article class="detalhe">' +
+    '<header class="detalhe-cabeca r-BAIXO"><h1>Guia de leitura</h1></header>' +
+
+    '<section class="secao"><h2>Legenda</h2><dl class="dados legenda">' +
+      faixa('ALTO', 'Faixa vermelha',
+        'Há suspensão em vigor que alcança os processos em primeiro grau. Antes de sentenciar processo sobre a mesma questão, confira o alcance e as exceções no documento de origem.') +
+      faixa('MEDIO', 'Faixa âmbar',
+        'A suspensão alcança apenas os recursos, ou não há determinação registrada. Convém conferir a fonte antes de aplicar.') +
+      faixa('BAIXO', 'Faixa verde',
+        'Não há suspensão em vigor: ou nunca houve determinação, ou ela já cessou — com a publicação do acórdão paradigma, com o julgamento do recurso contra o incidente, com o trânsito em julgado, com o cancelamento ou com a negativa de repercussão geral. O aviso na ficha diz qual é o caso.') +
+      '<div class="dado legenda-item"><dt>' +
+        '<span class="estado"><span class="j">Acórdão publicado</span>' +
+        '<span class="s n-ALTO">Suspensão nacional</span></span></dt>' +
+        '<dd>Os dois campos que definem o precedente: à esquerda a situação em que ele está; ' +
+        'à direita o alcance da suspensão. São independentes — um tema pode estar julgado e continuar suspenso.</dd></div>' +
+      '<div class="dado legenda-item"><dt><span class="sigla">STJ</span> ' +
+        '<span class="sigla">Repetitivo</span> <span class="etiqueta">Fazenda Pública</span></dt>' +
+        '<dd>Tribunal de origem, espécie do precedente e área do Juizado a que a matéria corresponde.</dd></div>' +
+    '</dl></section>' +
+
+    '<section class="secao"><h2>Alcance da suspensão</h2><dl class="dados definicoes">' +
+      campo('Suspensão nacional',
+        'Determinação que alcança os processos sobre a mesma questão em todo o país — art. 1.035, § 5º, e art. 1.037, II, do Código de Processo Civil.') +
+      campo('Suspensão estadual',
+        'Determinação restrita ao território do Estado, própria do incidente de resolução de demandas repetitivas — art. 982, I, do Código de Processo Civil.') +
+      campo('Apenas em fase recursal',
+        'A ordem alcança recursos especiais, extraordinários e agravos. O processo em primeiro grau segue seu curso.') +
+      campo('Suspensão não determinada',
+        'Não consta ordem de suspensão para o precedente. Vale conferir a fonte antes de sentenciar.') +
+    '</dl></section>' +
+
+    '<section class="secao"><h2>Até quando vale a suspensão</h2>' +
+      '<p class="texto-juridico">Não é o trânsito em julgado que encerra o sobrestamento, e o marco muda ' +
+      'conforme o rito.</p><dl class="dados definicoes">' +
+      campo('Repetitivo e repercussão geral',
+        'Publicado o acórdão paradigma, os processos sobrestados em primeiro e segundo graus retomam o curso para julgamento com aplicação da tese — art. 1.040, III, do Código de Processo Civil. A eficácia vinculante começa na publicação e não depende do trânsito em julgado.') +
+      campo('IRDR e incidentes correlatos',
+        'A suspensão cessa se não for interposto recurso especial ou extraordinário contra o acórdão do incidente — art. 982, § 5º. Interposto o recurso, ele tem efeito suspensivo por lei (art. 987, § 1º) e a suspensão persiste até o julgamento desse recurso, também sem necessidade de aguardar o trânsito em julgado.') +
+      campo('Cláusula expressa',
+        'Se a própria decisão fixar prazo diverso — por exemplo, suspensão até o trânsito em julgado —, prevalece o que ela determinou.') +
+      '</dl><p class="texto-juridico">Por isso um incidente com acórdão publicado pode continuar suspendendo ' +
+      'processos: a ficha indica, no campo “Pendências identificadas” e no aviso do topo, qual recurso está ' +
+      'pendente. Encerrada a suspensão, o rótulo deixa de aparecer — a tese firmada, no entanto, continua ' +
+      'vinculando o julgamento.</p></section>' +
+
+    '<section class="secao"><h2>Situação do precedente</h2><dl class="dados definicoes">' +
+      campo('Afetado / admitido', 'O incidente ou recurso foi admitido e aguarda julgamento.') +
+      campo('Sobrestado', 'O julgamento está suspenso à espera de pronunciamento de tribunal superior.') +
+      campo('Julgado', 'O mérito foi julgado; o acórdão ainda não foi publicado.') +
+      campo('Acórdão publicado', 'O acórdão foi publicado e a tese pode ser consultada.') +
+      campo('Trânsito em julgado', 'Não cabe mais recurso. A tese é definitiva.') +
+      campo('Repercussão geral negada', 'O Supremo não reconheceu repercussão geral; a matéria segue nas instâncias ordinárias.') +
+      campo('Cancelado', 'O precedente foi cancelado e não produz efeitos.') +
+      campo('Vinculado a outro tema', 'A controvérsia passou a ser tratada em outro precedente.') +
+      campo('Prejudicado / baixado', 'O incidente perdeu objeto ou foi baixado sem julgamento de mérito.') +
+      campo('Destaque publicado', 'Julgado divulgado em informativo de jurisprudência.') +
+    '</dl></section>' +
+
+    '<section class="secao"><h2>Competência</h2><dl class="dados definicoes">' +
+      campo('Juizado Especial',
+        'Precedentes cuja matéria tramita nos Juizados Especiais Cíveis, Criminais e da Fazenda Pública, além dos incidentes de uniformização da Turma Recursal.') +
+      campo('Justiça comum',
+        'Precedentes em que a fonte não indica competência de Juizado. A classificação decorre do que a fonte publica e não afirma, por si, a incompetência do Juizado.') +
+      campo('Todos', 'A base inteira, das três origens, sem recorte de competência.') +
+    '</dl></section>' +
+
+    '<section class="secao"><h2>Textos para copiar</h2><dl class="dados definicoes">' +
+      campo('Copiar ementa',
+        'Ementa no padrão de jurisprudência, com a questão submetida a julgamento, a tese, a situação e a fonte. Os trechos da fonte vão entre aspas, sem alteração.') +
+      campo('Copiar despacho',
+        'Minuta de despacho de sobrestamento, com a citação do precedente e a hipótese em análise. Aparece quando há suspensão em vigor.') +
+      campo('Copiar tese firmada',
+        'Somente a tese e as datas de julgamento, publicação e trânsito em julgado. Aparece quando há tese.') +
+    '</dl></section>' +
+
+    '<section class="secao"><h2>Atalhos</h2><dl class="dados definicoes">' +
+      campo('Barra ( / )', 'Leva o cursor ao campo de pesquisa, de qualquer ponto da página.') +
+      campo('Esc', 'Limpa a pesquisa ou retorna da ficha para a lista.') +
+      campo('Endereço da página', 'Guarda a pesquisa, os filtros e a competência escolhida. O endereço pode ser copiado e enviado a outra pessoa.') +
+      campo('A− A A+', 'Ajusta o tamanho do texto. A escolha fica guardada neste navegador.') +
+    '</dl></section>' +
+
+    '<section class="secao"><h2>Antes de aplicar</h2><p class="texto-juridico">' +
+      'Os campos reproduzem o que os tribunais publicaram na data da última consulta, e a classificação de ' +
+      'área e de alcance é feita a partir desse texto. A ficha de cada precedente traz o texto integral e o ' +
+      'link para o documento de origem: é ele que deve ser conferido antes de aplicar a informação a um ' +
+      'processo. A aba “Fontes e atualização” mostra quando cada tribunal foi consultado com sucesso.' +
+    '</p></section>' +
+    '</article>';
+}
+
+/* --------------------------------------------------------------- roteador */
+
+function paraURL() {
+  var p = [];
+  if (estado.aba !== 'temas') p.push('aba=' + estado.aba);
+  if (estado.termo.trim()) p.push('q=' + encodeURIComponent(estado.termo.trim()));
+  if (estado.escopo !== 'juizado') p.push('escopo=' + estado.escopo);
+  if (estado.ordem !== 'relevancia') p.push('ordem=' + estado.ordem);
+  if (estado.dia) p.push('dia=' + estado.dia);
+  if (estado.destaque) p.push('bloco=' + estado.destaque);
+  if (estado.numero) p.push('num=' + encodeURIComponent(estado.numero));
+  if (estado.texto.trim()) p.push('texto=' + encodeURIComponent(estado.texto.trim()));
+  Object.keys(estado.filtros).forEach(function (c) {
+    p.push(encodeURIComponent(c) + '=' + encodeURIComponent(estado.filtros[c].join('|')));
+  });
+  return (estado.registroId ? '#/r/' + encodeURIComponent(estado.registroId) : '#/') +
+    (p.length ? '?' + p.join('&') : '');
+}
+
+function deURL() {
+  var h = '';
+  try { h = String(window.location.hash || '').replace(/^#\/?/, ''); } catch (e) { h = ''; }
+  var partes = h.split('?');
+  var m = partes[0].match(/^r\/(.+)$/);
+  estado.registroId = m ? decodeURIComponent(m[1]) : null;
+  estado.filtros = {};
+  estado.termo = '';
+  estado.aba = 'temas';
+  estado.escopo = 'juizado';
+  estado.ordem = 'relevancia';
+  estado.dia = '';
+  estado.destaque = '';
+  estado.numero = '';
+  estado.texto = '';
+  (partes[1] || '').split('&').filter(Boolean).forEach(function (par) {
+    var i = par.indexOf('=');
+    var k = decodeURIComponent(i < 0 ? par : par.slice(0, i));
+    var v = decodeURIComponent(i < 0 ? '' : par.slice(i + 1));
+    if (k === 'q') estado.termo = v;
+    else if (k === 'aba') estado.aba = v;
+    else if (k === 'escopo') estado.escopo = v;
+    else if (k === 'ordem') estado.ordem = v;
+    else if (k === 'dia') estado.dia = v;
+    else if (k === 'bloco') estado.destaque = v;
+    else if (k === 'num') estado.numero = v;
+    else if (k === 'texto') estado.texto = v;
+    else if (v) estado.filtros[k] = v.split('|');
+  });
+}
+
+/**
+ * Guardar a consulta no endereço é uma conveniência, não um requisito: quando o
+ * arquivo é aberto direto do disco ou dentro de um painel em sandbox, o
+ * navegador recusa history.replaceState. Nesse caso o portal desiste de
+ * sincronizar o endereço e segue funcionando — o que não pode é o clique falhar.
+ */
+var enderecoSincronizavel = true;
+
+/* O conteúdo é redesenhado a cada tecla; sem isto, o cursor saltaria para fora
+   do campo do filtro no meio da digitação. */
+function comFocoPreservado(desenhar) {
+  var ativo = document.activeElement;
+  var id = ativo && ativo.id ? ativo.id : '';
+  var pos = null;
+  try { pos = ativo ? ativo.selectionStart : null; } catch (e) { pos = null; }
+  desenhar();
+  if (!id) return;
+  var novo = document.getElementById(id);
+  if (!novo || !novo.focus) return;
+  novo.focus();
+  try { if (pos != null && novo.setSelectionRange) novo.setSelectionRange(pos, pos); } catch (e) { /* select não aceita */ }
+}
+
+function aplicar() {
+  if (enderecoSincronizavel) {
+    try {
+      var alvo = paraURL();
+      if (window.location.hash !== alvo) window.history.replaceState(null, '', alvo);
+    } catch (e) {
+      enderecoSincronizavel = false;
+    }
+  }
+  comFocoPreservado(desenha);
+}
+
+function achar(id) {
+  var listas = [BASE.temas, BASE.informativos];
+  for (var i = 0; i < listas.length; i++) {
+    for (var j = 0; j < listas[i].length; j++) if (listas[i][j].id === id) return listas[i][j];
+  }
+  return null;
+}
+
+function desenha() {
+  var c = el('campo-busca');
+  // Reescrever o campo enquanto alguém digita apagaria o espaço recém-teclado:
+  // só sincroniza quando a mudança veio de outro lugar (endereço, botão, atalho).
+  if (c.value !== estado.termo && document.activeElement !== c) c.value = estado.termo;
+
+  var abas = document.querySelectorAll('.aba');
+  for (var i = 0; i < abas.length; i++) {
+    abas[i].setAttribute('aria-selected', abas[i].getAttribute('data-aba') === estado.aba ? 'true' : 'false');
+  }
+
+  if (estado.registroId) {
+    var r = achar(estado.registroId);
+    if (r) ficha(r);
+    else {
+      el('conteudo').innerHTML = '<div class="vazio"><p><strong>Registro não encontrado.</strong></p>' +
+        '<p>Ele pode ter saído da base na última conferência.</p></div>';
+      el('rail').hidden = true;
+    }
+  } else if (estado.aba === 'informativos') abaRegistros(BASE.informativos, 'julgado', 'julgados');
+  else if (estado.aba === 'novidades') abaNovidades();
+  else if (estado.aba === 'fontes') abaFontes();
+  else if (estado.aba === 'ajuda') abaAjuda();
+  else abaRegistros(BASE.temas, 'precedente', 'precedentes');
+
+  el('pagina').classList.toggle('solo', el('rail').hidden);
+}
+
+/* ---------------------------------------------------------------- eventos */
+
+function ligar() {
+  var c = el('campo-busca');
+  var t;
+  c.addEventListener('input', function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      estado.termo = c.value;
+      estado.limite = PAGINA;
+      estado.registroId = null;
+      aplicar();
+    }, 140);
+  });
+
+  var atrasoFiltro;
+  document.addEventListener('input', function (ev) {
+    var alvo = ev.target;
+    if (alvo.id !== 'f-numero' && alvo.id !== 'f-texto') return;
+    clearTimeout(atrasoFiltro);
+    var qual = alvo.id, valor = alvo.value;
+    atrasoFiltro = setTimeout(function () {
+      if (qual === 'f-numero') estado.numero = valor; else estado.texto = valor;
+      estado.limite = PAGINA;
+      estado.registroId = null;
+      aplicar();
+    }, 180);
+  });
+
+  el('limpar-busca').addEventListener('click', function () {
+    c.value = '';
+    estado.termo = '';
+    estado.registroId = null;
+    aplicar();
+    c.focus();
+  });
+
+  el('ir-inicio').addEventListener('click', function () {
+    try { window.location.hash = '#/'; } catch (e) { enderecoSincronizavel = false; }
+    deURL();
+    c.value = '';
+    estado.aba = 'temas';
+    estado.termo = '';
+    estado.filtros = {};
+    estado.escopo = 'juizado';
+    estado.destaque = '';
+    estado.registroId = null;
+    estado.limite = PAGINA;
+    c.value = '';
+    desenha();
+  });
+
+  document.addEventListener('click', function (ev) {
+    var alvo = ev.target;
+    if (!alvo || !alvo.closest) return;
+
+    var aba = alvo.closest('.aba');
+    if (aba) {
+      estado.aba = aba.getAttribute('data-aba');
+      estado.filtros = {};
+      estado.destaque = '';
+      estado.limite = PAGINA;
+      estado.registroId = null;
+      return aplicar();
+    }
+
+    var copia = alvo.closest('[data-copiar]');
+    if (copia) {
+      var reg = achar(estado.registroId);
+      if (!reg) return;
+      var acao = copia.getAttribute('data-copiar');
+      var texto = acao === 'despacho' ? textoDespacho(reg)
+        : acao === 'tese' ? textoTese(reg)
+        : textoEmenta(reg);
+      return copiar(texto, copia);
+    }
+
+    var ficha = alvo.closest('[data-reg]');
+    if (ficha) { estado.registroId = ficha.getAttribute('data-reg'); return aplicar(); }
+
+    var tile = alvo.closest('[data-destaque]');
+    if (tile) {
+      var chave = tile.getAttribute('data-destaque');
+      estado.destaque = estado.destaque === chave ? '' : chave;
+      estado.limite = PAGINA;
+      return aplicar();
+    }
+
+    var esc2 = alvo.closest('[data-escopo]');
+    if (esc2) {
+      estado.escopo = esc2.getAttribute('data-escopo');
+      estado.limite = PAGINA;
+      return aplicar();
+    }
+
+    if (alvo.id === 'ver-mais') { estado.limite += PAGINA; return aplicar(); }
+    if (alvo.id === 'voltar') { estado.registroId = null; return aplicar(); }
+    if (alvo.id === 'limpar-filtros') { estado.filtros = {}; estado.destaque = ''; return aplicar(); }
+    if (alvo.id === 'limpar-detalhado') {
+      estado.numero = '';
+      estado.texto = '';
+      delete estado.filtros.tipo;
+      estado.limite = PAGINA;
+      return aplicar();
+    }
+  });
+
+  document.addEventListener('change', function (ev) {
+    var a = ev.target;
+    if (a.getAttribute && a.getAttribute('data-campo')) {
+      return alterna(a.getAttribute('data-campo'), a.getAttribute('data-valor'));
+    }
+    if (a.id === 'ordenar') { estado.ordem = a.value; return aplicar(); }
+    if (a.id === 'f-especie') {
+      // escreve na mesma faceta da coluna da esquerda: um estado, duas vistas
+      if (a.value) estado.filtros.tipo = [a.value]; else delete estado.filtros.tipo;
+      estado.limite = PAGINA;
+      return aplicar();
+    }
+    if (a.id === 'filtro-dia') { estado.dia = a.value; estado.limite = PAGINA; return aplicar(); }
+  });
+
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === '/' && document.activeElement !== c) {
+      ev.preventDefault();
+      c.focus();
+      c.select();
+    } else if (ev.key === 'Escape') {
+      if (estado.registroId) { estado.registroId = null; aplicar(); }
+      else if (estado.termo) { c.value = ''; estado.termo = ''; aplicar(); }
+    }
+  });
+
+  window.addEventListener('hashchange', function () { deURL(); desenha(); });
+}
+
+/* --------------------------------------------------------------- arranque */
+
+function iniciar(dados) {
+  BASE = dados;
+  BASE.temas = (dados.temas || []).map(prepararRegistro);
+  BASE.informativos = (dados.informativos || []).map(prepararRegistro);
+
+  // O ponto vermelho na aba só aparece quando há o que olhar lá.
+  var falhas = fontesComFalha();
+  var alerta = el('alerta-fontes');
+  if (alerta) {
+    alerta.hidden = falhas.length === 0;
+    alerta.setAttribute('title', falhas.length + ' fonte(s) sem resposta na última coleta');
+  }
+
+  el('selo-fonte').innerHTML =
+    '<strong>Última coleta:</strong> ' + esc(dataBR(ultimaColeta(), true)) + '. ' +
+    (falhas.length
+      ? '<strong>' + falhas.length + ' fonte(s) não responderam</strong> — os registros delas são os da última consulta bem-sucedida. '
+      : 'Todos os tribunais responderam. ') +
+    'Os registros de suspensão podem conter histórico e delimitações: confira o documento indicado antes de aplicar a informação a um processo.';
+
+  deURL();
+  ligar();
+  desenha();
+}
+
+function falhar(e) {
+  el('conteudo').innerHTML = '<div class="vazio"><p><strong>Não foi possível carregar a base.</strong></p><p>' +
+    esc(e && e.message ? e.message : e) + '</p><p>Recarregue a página ou verifique a aba “Fontes e atualização”.</p></div>';
+}
+
+/* Fora do navegador — no build — nada é iniciado: o arquivo apenas entrega as
+   funções de classificação, para que a regra de suspensão seja conferida contra
+   a base inteira a cada atualização. */
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    prepararRegistro: prepararRegistro,
+    grupoSituacao: grupoSituacao,
+    grupoSuspensao: grupoSuspensao,
+    grupoArea: grupoArea,
+    pendencias: pendencias,
+    encerrado: encerrado,
+    risco: risco,
+    rotuloAlcance: rotuloAlcance,
+    motivoEncerramento: motivoEncerramento,
+    avisoDe: avisoDe
+  };
+} else {
+  iniciarPreferencias();
+
+    fetch('./dados.json')
+      .then(function (r) { if (!r.ok) throw new Error('Prévia indisponível.'); return r.json(); })
+      .then(iniciar)
+      .catch(falhar);
+}
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Arquivos de apoio ao desenvolvimento: amostras baixadas das fontes, usadas
+# para rodar a coleta sem rede. São dezenas de megabytes e podem ser baixados
+# de novo a qualquer momento — não pertencem ao repositório.
+work/
+
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+
+# Derivado de dados/ pelo passo de publicação da Cloudflare.
+site/dados.json

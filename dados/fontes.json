@@ -1,0 +1,56 @@
+[
+ [
+  "STJ — temas e processos",
+  "2026-09-10T11:16:58.064Z",
+  "2026-09-10T11:16:58.064Z",
+  "Consulta concluída",
+  "1495",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "https://dadosabertos.web.stj.jus.br/dataset/4238da2f-c07b-4c1a-b345-4402accacdcf/resource/df29da13-7d6b-41ba-ad96-cd1a5bbd191c/download/temas.csv"
+ ],
+ [
+  "TJMG — IUJ",
+  "2026-09-10T11:17:01.281Z",
+  "2026-09-10T11:17:01.281Z",
+  "Consulta concluída",
+  "48",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "https://www.tjmg.jus.br/portal-tjmg/institucional/juizados-especiais/turma-recursal/"
+ ],
+ [
+  "TJMG — IRDR, IAC e GR",
+  "2026-09-10T11:17:03.764Z",
+  "2026-09-10T11:17:03.764Z",
+  "Consulta concluída",
+  "172",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "https://rupe.tjmg.jus.br/rupe/justica/publico/bnpr/consultarIrdrIacAdmitidos.rupe"
+ ],
+ [
+  "STJ — informativos",
+  "2026-09-10T11:17:23.270Z",
+  "2026-09-10T11:17:23.270Z",
+  "Consulta concluída",
+  "15",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "https://processo.stj.jus.br/jurisprudencia/externo/informativo/"
+ ],
+ [
+  "STF — repercussão geral",
+  "2026-09-10T11:17:24.630Z",
+  "2026-09-10T11:17:24.630Z",
+  "Consulta concluída",
+  "1481",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
+ ],
+ [
+  "STF — informativos",
+  "2026-09-10T11:17:56.341Z",
+  "2026-09-10T11:17:56.341Z",
+  "Consulta concluída",
+  "1012",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "https://portal.stf.jus.br/textos/verTexto.asp?servico=informativoSTF"
+ ]
+]
