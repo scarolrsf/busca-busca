@@ -116,6 +116,9 @@ O site é publicado pela Cloudflare Pages a cada alteração no repositório:
 - **Build command** — nenhum
 - **Build output directory** — `site`
 
+O `site/dados.json` é versionado pela própria coleta, então não há passo de
+build: qualquer hospedagem estática publica a pasta `site` como está.
+
 A coleta precisa de permissão de escrita no repositório, já declarada no
 workflow (`permissions: contents: write`).
 

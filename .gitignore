@@ -8,5 +8,3 @@ node_modules/
 .DS_Store
 Thumbs.db
 
-# Derivado de dados/ pelo passo de publicação da Cloudflare.
-site/dados.json
