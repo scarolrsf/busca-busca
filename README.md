@@ -223,6 +223,28 @@ inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
 
+### 10/09/2026 — © no rodapé
+
+**Responsável:** Muse Spark, a pedido de Sarah.
+
+**Motivo.** Assinar a autoria no próprio portal, passo imediato da proteção
+decidida na conversa sobre copyright (o registro formal no INPI fica como
+passo seguinte, fora do código).
+
+**O que mudou.** Em `site/index.html`: a linha do rodapé passa a
+"© 2026 — Projeto por Sarah Carolina". Só texto, na classe `.credito` já
+criada.
+
+**Arquivos.** `site/index.html`, `README.md`.
+
+**Validação.** `node coleta/publicar.mjs` passa com a base intacta e a
+conferência da regra de suspensão verde.
+
+**Dados.** Nenhuma mudança na coleta nem na base.
+
+**Pendências.** Registro do programa no INPI (e-Software) e decisão sobre
+arquivo LICENSE — ambos fora do código, a cargo de Sarah.
+
 ### 10/09/2026 — Assinatura no rodapé
 
 **Responsável:** Muse Spark, a pedido de Sarah ("coloque no final da página:
