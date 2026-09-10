@@ -251,3 +251,47 @@ coleta dispara uma nova publicação.
 pelo workflow, com a base coletada às 08h41. O `enablement` foi removido: o
 token do workflow não pode criar o site do Pages, e a origem foi definida à mão
 em Settings → Pages como "GitHub Actions".
+
+### 10/09/2026 — Planilha de relatório, prévia antes de copiar, favoritos e convite ao guia
+
+**Responsável:** Claude Code, a pedido de Sarah.
+
+**Motivo.** Quatro pedidos: exportar relatório conforme os filtros, ver o
+despacho e as ementas antes de copiar, guardar precedentes numa aba própria e
+apontar o guia de leitura a quem chega pela primeira vez.
+
+**Arquivos.** Tudo em `site/index.html`.
+
+- **Planilha.** Botão "Baixar planilha" na barra de resultados. Exporta o recorte
+  exato que está na tela — mesma busca, escopo, filtros, bloco e ordem. Formato
+  CSV com separador ponto e vírgula e marca de codificação no início: sem os
+  dois, o Excel em português abre tudo numa coluna só e com acentos quebrados. O
+  nome do arquivo descreve o recorte, para não confundir dois relatórios. A
+  coluna do alcance chama-se "Alcance registrado", e não "da suspensão", porque
+  aparece também em precedente cuja suspensão já cessou — a coluna seguinte diz
+  se está em vigor.
+- **Prévia.** Os três botões de texto passaram a abrir o conteúdo por inteiro
+  numa janela, com a cópia dentro dela. Despacho vai para dentro de processo;
+  copiar às cegas é convite a colar texto errado.
+- **Favoritos.** Estrela em cada resultado e na ficha, e aba "Meus favoritos"
+  que reaproveita a listagem inteira — busca, filtros, blocos, ordenação e
+  planilha valem lá do mesmo jeito. A lista fica no navegador de quem consulta,
+  o que a tela diz na mensagem de lista vazia: não acompanha a pessoa em outro
+  computador.
+- **Convite ao guia.** Janela na primeira visita apontando "Como usar", com o
+  essencial em dois parágrafos. Aparece uma vez por navegador, e não aparece
+  quando a pessoa chega por link direto para um precedente ou uma busca — nesses
+  casos ela veio atrás de algo específico.
+
+**Validação.** Testado no site servido localmente: pop-up abre na primeira
+visita e não volta; três favoritos guardados e listados na aba; prévia do
+despacho e da ementa com o texto correto; planilha gerada com cabeçalho, aspas e
+nome do arquivo refletindo o filtro. A conferência da regra de suspensão passou.
+
+**Dados.** Nenhuma mudança na coleta nem na base.
+
+**Pendências.**
+
+1. A estrela guarda no navegador. Se um dia o portal ganhar login, vale migrar
+   os favoritos para a conta.
+2. Conferir a primeira execução agendada da coleta, às 6h ou às 18h.

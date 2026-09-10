@@ -281,6 +281,32 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 @media (max-width:820px){.botao-tema span:last-child{display:none}.botao-tema{padding:0 8px}}
 .ao-topo{position:fixed;right:18px;bottom:18px;z-index:40;border:1px solid var(--borda-forte);background:var(--superficie);color:var(--tinta-2);border-radius:var(--raio);padding:10px 14px;cursor:pointer;font-size:13px;box-shadow:var(--sombra)}
 .ao-topo:hover{border-color:var(--acento);color:var(--acento)}
+
+/* ------------------------------------------------------------- favoritos */
+.favorito{border:0;background:none;cursor:pointer;color:var(--tinta-3);padding:4px;line-height:0;border-radius:4px;margin-left:auto;position:relative;z-index:2;display:inline-flex}
+.favorito:hover{color:var(--atencao);background:var(--superficie-2)}
+.favorito svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7}
+.favorito[aria-pressed="true"]{color:var(--atencao)}
+.favorito[aria-pressed="true"] svg{fill:currentColor}
+.ficha-pe .fonte-min{margin-left:0}
+
+/* ------------------------------------------------- prévia antes de copiar */
+.previa{border:1px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie);color:var(--tinta);padding:0;max-width:min(780px,92vw);width:100%;box-shadow:var(--sombra)}
+.previa::backdrop{background:rgba(20,15,5,.45)}
+.previa-cabeca{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--borda)}
+.previa-cabeca h2{font-family:var(--serif);font-size:1.05rem;margin:0;font-weight:600}
+.previa-cabeca button{border:0;background:none;color:var(--tinta-3);cursor:pointer;font-size:15px;width:30px;height:30px;border-radius:4px}
+.previa-cabeca button:hover{background:var(--superficie-2);color:var(--tinta)}
+.previa-texto{margin:0;padding:18px;max-height:min(56vh,520px);overflow:auto;white-space:pre-wrap;font-family:var(--serif);font-size:.98rem;line-height:1.6;text-align:justify;-webkit-hyphens:auto;hyphens:auto;background:var(--superficie-2)}
+.previa-pe{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;border-top:1px solid var(--borda)}
+.previa-nota{font-size:12.5px;color:var(--tinta-3)}
+.boas-vindas-corpo{padding:18px;font-family:var(--serif);font-size:1rem;line-height:1.6;text-align:justify;-webkit-hyphens:auto;hyphens:auto}
+.boas-vindas-corpo p{margin:0 0 12px}
+.boas-vindas-corpo p:last-child{margin-bottom:0}
+
+/* ---------------------------------------------------------- exportação */
+.baixar{border:1px solid var(--borda-forte);background:var(--superficie);color:var(--tinta-2);border-radius:var(--raio);padding:5px 11px;cursor:pointer;font-size:13px;margin-left:10px}
+.baixar:hover{border-color:var(--acento);color:var(--acento)}
 .carregando{padding:60px 20px;text-align:center;color:var(--tinta-2)}
 .erro-fixo{position:fixed;left:12px;right:12px;bottom:12px;z-index:60;background:var(--critico-fraco);color:var(--critico);border:1px solid var(--critico);border-radius:var(--raio);padding:11px 42px 11px 13px;font-size:13px;line-height:1.5;box-shadow:var(--sombra)}
 .erro-fixo strong{display:block;margin-bottom:2px}
@@ -338,6 +364,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
   <nav class="abas" role="tablist" aria-label="Seções">
     <button class="aba" role="tab" data-aba="temas" aria-selected="true">Temas e incidentes</button>
     <button class="aba" role="tab" data-aba="informativos" aria-selected="false">Informativos</button>
+    <button class="aba" role="tab" data-aba="favoritos" aria-selected="false">Meus favoritos</button>
     <button class="aba" role="tab" data-aba="novidades" aria-selected="false">Novidades</button>
     <button class="aba" role="tab" data-aba="fontes" aria-selected="false">Fontes e atualização<span class="alerta-aba" id="alerta-fontes" hidden></span></button>
     <button class="aba" role="tab" data-aba="ajuda" aria-selected="false">Como usar</button>
@@ -354,6 +381,37 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 <button class="ao-topo" id="ao-topo" type="button" hidden>
   <span aria-hidden="true">↑</span> Voltar ao topo
 </button>
+
+<dialog class="previa boas-vindas" id="boas-vindas" aria-labelledby="boas-vindas-titulo">
+  <div class="previa-cabeca">
+    <h2 id="boas-vindas-titulo">Antes de começar</h2>
+    <button type="button" id="boas-vindas-fechar" aria-label="Fechar">✕</button>
+  </div>
+  <div class="boas-vindas-corpo">
+    <p>Este buscador separa duas coisas que os tribunais publicam numa frase só:
+      <strong>em que situação está o precedente</strong> e <strong>até onde alcança a
+      suspensão</strong>. É essa diferença que decide se um processo pode ou não ser
+      sentenciado agora.</p>
+    <p>A faixa colorida à esquerda de cada resultado resume esse risco. O guia
+      explica a legenda, o que significa cada estágio e até quando a suspensão vale.</p>
+  </div>
+  <div class="previa-pe">
+    <span class="previa-nota">Você pode reabrir o guia a qualquer momento em “Como usar”.</span>
+    <button type="button" class="botao-copiar" id="boas-vindas-guia">Ver o guia de leitura</button>
+  </div>
+</dialog>
+
+<dialog class="previa" id="previa" aria-labelledby="previa-titulo">
+  <div class="previa-cabeca">
+    <h2 id="previa-titulo"></h2>
+    <button type="button" id="previa-fechar" aria-label="Fechar a prévia">✕</button>
+  </div>
+  <pre class="previa-texto" id="previa-texto" tabindex="0"></pre>
+  <div class="previa-pe">
+    <span class="previa-nota" id="previa-nota"></span>
+    <button type="button" class="botao-copiar" id="previa-copiar">Copiar</button>
+  </div>
+</dialog>
 
 <footer class="rodape"><div class="selo-fonte" id="selo-fonte"></div></footer>
 
@@ -989,7 +1047,7 @@ function cartao(r, re) {
     '<p class="questao">' + destaca(corta(r.questao, 240), re) + '</p>' +
     (r.tese ? '<p class="tese-curta">' + destaca(corta(r.tese, 240), re) + '</p>' : '') +
     '<span class="ficha-pe">' + pilula(r) + '<span class="etiqueta">' + esc(r._area) + '</span>' +
-      linkFonte(r.fonte) + '</span>' +
+      linkFonte(r.fonte) + botaoFavorito(r.id) + '</span>' +
   '</article>';
 }
 
@@ -1102,6 +1160,7 @@ function abaRegistros(lista, rotuloSingular, rotuloPlural) {
   var filtrados = bloco ? comFacetas.filter(bloco.testa) : comFacetas;
 
   ordenar(filtrados, ts);
+  ULTIMO_RESULTADO = filtrados;   // é este recorte que a planilha exporta
 
   desenhaRail(noEscopo, [
     { titulo: 'Tribunal', campo: 'tribunal' },
@@ -1117,7 +1176,10 @@ function abaRegistros(lista, rotuloSingular, rotuloPlural) {
       (filtrados.length === 1 ? rotuloSingular : rotuloPlural) +
       (bloco ? ' em “' + esc(bloco.rotulo) + '”' : '') +
       (estado.termo ? ' para “' + esc(estado.termo) + '”' : '') + '</span>' +
-    seletorOrdem(ts) + '</div>';
+    seletorOrdem(ts) +
+    (filtrados.length
+      ? '<button class="baixar" id="baixar-planilha" type="button">Baixar planilha</button>'
+      : '') + '</div>';
 
   if (!filtrados.length) {
     h += '<div class="vazio"><p><strong>Nenhum registro encontrado.</strong></p>' +
@@ -1135,6 +1197,129 @@ function abaRegistros(lista, rotuloSingular, rotuloPlural) {
   el('conteudo').innerHTML = h;
   anunciar(numero(filtrados.length) + ' ' +
     (filtrados.length === 1 ? rotuloSingular : rotuloPlural) + ' na lista.');
+}
+
+/* ============================================================== favoritos
+   Sem login, o único lugar possível é o navegador de quem consulta. Isso tem
+   uma consequência que a tela precisa dizer: a lista não acompanha a pessoa
+   de um computador para outro.
+   =========================================================================== */
+
+var FAVORITOS = (function () {
+  try {
+    var guardado = window.localStorage.getItem('bb-favoritos');
+    return guardado ? JSON.parse(guardado) : [];
+  } catch (e) { return []; }
+})();
+
+function ehFavorito(id) {
+  return FAVORITOS.indexOf(id) >= 0;
+}
+
+function alternarFavorito(id) {
+  var i = FAVORITOS.indexOf(id);
+  if (i >= 0) FAVORITOS.splice(i, 1); else FAVORITOS.push(id);
+  guardar('favoritos', JSON.stringify(FAVORITOS));
+}
+
+function botaoFavorito(id) {
+  var marcado = ehFavorito(id);
+  return '<button class="favorito" type="button" data-fav="' + esc(id) + '" aria-pressed="' + marcado + '" ' +
+    'title="' + (marcado ? 'Remover dos favoritos' : 'Guardar nos favoritos') + '">' +
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8-4.2-4.1 5.9-.9z" ' +
+    'stroke-linejoin="round"></path></svg>' +
+    '<span class="oculto">' + (marcado ? 'Remover dos favoritos' : 'Guardar nos favoritos') + '</span>' +
+    '</button>';
+}
+
+/* ================================================== prévia antes de copiar
+   O despacho vai para dentro de um processo. Copiar às cegas é convite a
+   colar texto errado, então o botão passa a abrir o texto por inteiro, e a
+   cópia acontece depois de lido.
+   =========================================================================== */
+
+var textoDaPrevia = '';
+
+function abrirPrevia(titulo, texto, nota) {
+  textoDaPrevia = texto;
+  el('previa-titulo').textContent = titulo;
+  el('previa-texto').textContent = texto;
+  el('previa-nota').textContent = nota || '';
+  var caixa = el('previa');
+  if (caixa.showModal) caixa.showModal(); else caixa.setAttribute('open', '');
+  el('previa-texto').focus();
+}
+
+function fecharPrevia() {
+  var caixa = el('previa');
+  if (caixa.close) caixa.close(); else caixa.removeAttribute('open');
+}
+
+/* ==================================================== planilha de relatório
+   Exporta exatamente o que está na tela — a mesma busca, o mesmo escopo, os
+   mesmos filtros e a mesma ordem. Separador ponto e vírgula e marca de
+   codificação no início: sem os dois, o Excel em português abre o arquivo com
+   tudo numa coluna só e os acentos quebrados.
+   =========================================================================== */
+
+var COLUNAS = [
+  ['Identificador', r => r._titulo],
+  ['Tribunal', r => r.tribunal],
+  ['Espécie', r => r.tipo],
+  ['Área do Juizado', r => r._area],
+  ['Situação', r => r._situacao],
+  ['Pendências identificadas', r => (r.tipo === 'Informativo' ? '' : pendencias(r))],
+  ['Alcance registrado', r => (r.tipo === 'Informativo' ? '' : rotuloAlcance(r._alcance))],
+  ['Suspensão em vigor', r => (r.tipo === 'Informativo' ? '' : (r._emVigor && r._alcance !== 'NAO_DETERMINADA' ? 'Sim' : 'Não'))],
+  ['Questão submetida a julgamento', r => r.questao],
+  ['Tese firmada', r => r.tese],
+  ['Julgamento', r => ultimaData(r.julgamento)],
+  ['Publicação do acórdão', r => ultimaData(r.publicacao)],
+  ['Trânsito em julgado', r => ultimaData(r.transito)],
+  ['Processos', r => r.processos],
+  ['Fonte oficial', r => r.fonte]
+];
+
+function celulaCsv(valor) {
+  var s = String(valor == null ? '' : valor).replace(/\s+/g, ' ').trim();
+  return '"' + s.replace(/"/g, '""') + '"';
+}
+
+function planilhaDe(lista) {
+  var linhas = [COLUNAS.map(c => celulaCsv(c[0])).join(';')];
+  lista.forEach(function (r) {
+    linhas.push(COLUNAS.map(function (c) { return celulaCsv(c[1](r)); }).join(';'));
+  });
+  return '﻿' + linhas.join('\r\n') + '\r\n';
+}
+
+/** Descreve o recorte no nome do arquivo, para não confundir dois relatórios. */
+function nomeDoRelatorio() {
+  var partes = ['busca-busca'];
+  if (estado.aba === 'favoritos') partes.push('favoritos');
+  else if (estado.aba === 'informativos') partes.push('informativos');
+  if (estado.escopo === 'juizado') partes.push('juizado-especial');
+  if (estado.escopo === 'comum') partes.push('justica-comum');
+  var bloco = destaque(estado.destaque);
+  if (bloco) partes.push(norm(bloco.rotulo).replace(/[^a-z0-9]+/g, '-'));
+  if (estado.termo.trim()) partes.push(norm(estado.termo).replace(/[^a-z0-9]+/g, '-').slice(0, 30));
+  var d = new Date();
+  partes.push(d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2));
+  return partes.join('-').replace(/-+/g, '-') + '.csv';
+}
+
+function baixarPlanilha(lista) {
+  var conteudo = planilhaDe(lista);
+  var arquivo = new Blob([conteudo], { type: 'text/csv;charset=utf-8' });
+  var url = URL.createObjectURL(arquivo);
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = nomeDoRelatorio();
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  anunciar('Planilha com ' + numero(lista.length) + ' registros baixada.');
 }
 
 /* =========================================================== textos prontos
@@ -1293,7 +1478,7 @@ function botoesCopiar(r) {
   if (r.tese) botoes.push({ acao: 'tese', rotulo: 'Copiar tese firmada' });
   return '<div class="acoes">' + botoes.map(function (b) {
     return '<button class="botao-copiar" type="button" data-copiar="' + b.acao + '">' + b.rotulo + '</button>';
-  }).join('') + '</div>';
+  }).join('') + botaoFavorito(r.id) + '</div>';
 }
 
 /* ================================================= leitura dos campos brutos
@@ -1531,6 +1716,31 @@ function ficha(r) {
 
   el('conteudo').innerHTML = h;
   window.scrollTo(0, 0);
+}
+
+/* ----------------------------------------------------- aba: meus favoritos
+   Reaproveita a listagem inteira — busca, filtros, blocos, ordenação e a
+   planilha valem aqui do mesmo jeito. O que muda é o conjunto de partida. */
+
+var ULTIMO_RESULTADO = [];
+
+function abaFavoritos() {
+  var guardados = BASE.temas.concat(BASE.informativos)
+    .filter(function (r) { return ehFavorito(r.id); });
+
+  if (!guardados.length) {
+    el('rail').hidden = true;
+    el('rail').innerHTML = '';
+    el('conteudo').innerHTML = '<div class="vazio">' +
+      '<p><strong>Nenhum precedente guardado ainda.</strong></p>' +
+      '<p>Toque na estrela ao lado de qualquer resultado para guardá-lo aqui — ' +
+      'serve para reunir os temas que você acompanha de perto.</p>' +
+      '<p>A lista fica neste navegador: não acompanha você em outro computador, ' +
+      'e some se os dados de navegação forem limpos.</p></div>';
+    ULTIMO_RESULTADO = [];
+    return;
+  }
+  abaRegistros(guardados, 'favorito', 'favoritos');
 }
 
 /* -------------------------------------------------------- aba: novidades */
@@ -1877,6 +2087,7 @@ function desenha() {
       el('rail').hidden = true;
     }
   } else if (estado.aba === 'informativos') abaRegistros(BASE.informativos, 'julgado', 'julgados');
+  else if (estado.aba === 'favoritos') abaFavoritos();
   else if (estado.aba === 'novidades') abaNovidades();
   else if (estado.aba === 'fontes') abaFontes();
   else if (estado.aba === 'ajuda') abaAjuda();
@@ -1959,8 +2170,31 @@ function ligar() {
       var texto = acao === 'despacho' ? textoDespacho(reg)
         : acao === 'tese' ? textoTese(reg)
         : textoEmenta(reg);
-      return copiar(texto, copia);
+      var titulo = (acao === 'despacho' ? 'Despacho' : acao === 'tese' ? 'Tese firmada' : 'Ementa') +
+        ' — ' + reg._titulo;
+      var nota = acao === 'despacho'
+        ? 'Confira o alcance da suspensão na fonte antes de assinar.'
+        : 'Os trechos entre aspas vêm da fonte, sem alteração.';
+      return abrirPrevia(titulo, texto, nota);
     }
+
+    var fav = alvo.closest('[data-fav]');
+    if (fav) {
+      var idFav = fav.getAttribute('data-fav');
+      alternarFavorito(idFav);
+      // Redesenhar a lista inteira a cada estrela faria a página saltar sob o
+      // cursor. Fora da aba de favoritos, só a própria estrela muda de estado.
+      if (estado.aba === 'favoritos') return aplicar();
+      var marcado = ehFavorito(idFav);
+      fav.setAttribute('aria-pressed', String(marcado));
+      fav.setAttribute('title', marcado ? 'Remover dos favoritos' : 'Guardar nos favoritos');
+      anunciar(marcado ? 'Guardado nos favoritos.' : 'Removido dos favoritos.');
+      return;
+    }
+
+    if (alvo.id === 'baixar-planilha') return baixarPlanilha(ULTIMO_RESULTADO);
+    if (alvo.id === 'previa-fechar') return fecharPrevia();
+    if (alvo.id === 'previa-copiar') return copiar(textoDaPrevia, alvo);
 
     var ficha = alvo.closest('[data-reg]');
     if (ficha) { estado.registroId = ficha.getAttribute('data-reg'); return aplicar(); }
@@ -2007,6 +2241,16 @@ function ligar() {
     if (a.id === 'filtro-dia') { estado.dia = a.value; estado.limite = PAGINA; return aplicar(); }
   });
 
+  // A prévia e as boas-vindas fecham com Esc por conta do <dialog>; o botão
+  // de fechar e a ida ao guia precisam de ligação própria.
+  el('boas-vindas-fechar').addEventListener('click', function () { fecharBoasVindas(); });
+  el('boas-vindas-guia').addEventListener('click', function () {
+    fecharBoasVindas();
+    estado.aba = 'ajuda';
+    estado.registroId = null;
+    aplicar();
+  });
+
   document.addEventListener('keydown', function (ev) {
     if (ev.key === '/' && document.activeElement !== c) {
       ev.preventDefault();
@@ -2016,6 +2260,16 @@ function ligar() {
       if (estado.registroId) { estado.registroId = null; aplicar(); }
       else if (estado.termo) { c.value = ''; estado.termo = ''; aplicar(); }
     }
+  });
+
+  // Clique no fundo escuro fecha o diálogo, como se espera de uma janela modal.
+  ['previa', 'boas-vindas'].forEach(function (id) {
+    var caixa = el(id);
+    if (!caixa) return;
+    caixa.addEventListener('click', function (ev) {
+      if (ev.target === caixa) { if (id === 'boas-vindas') fecharBoasVindas(); else fecharPrevia(); }
+    });
+    caixa.addEventListener('close', function () { if (id === 'boas-vindas') guardar('guia-visto', 'sim'); });
   });
 
   window.addEventListener('hashchange', function () { deURL(); desenha(); });
@@ -2046,6 +2300,22 @@ function iniciar(dados) {
   deURL();
   ligar();
   desenha();
+  convidarAoGuia();
+}
+
+/* Só na primeira visita deste navegador: um aviso que reaparece toda vez vira
+   obstáculo, não ajuda. Quem já leu entra direto. */
+function convidarAoGuia() {
+  if (lembrar('guia-visto') === 'sim') return;
+  if (estado.registroId || estado.termo) return;   // veio por um link direto
+  var caixa = el('boas-vindas');
+  if (caixa && caixa.showModal) caixa.showModal();
+}
+
+function fecharBoasVindas() {
+  guardar('guia-visto', 'sim');
+  var caixa = el('boas-vindas');
+  if (caixa && caixa.close) caixa.close();
 }
 
 function falhar(e) {
