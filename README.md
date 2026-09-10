@@ -246,3 +246,8 @@ coleta dispara uma nova publicação.
    só houve execução manual.
 2. A Cloudflare Pages continua uma alternativa, caso se prefira domínio próprio
    e cache mais próximo do usuário. Não é necessária para o site funcionar.
+
+**No ar em 10/09/2026:** https://scarolrsf.github.io/busca-busca/ — publicado
+pelo workflow, com a base coletada às 08h41. O `enablement` foi removido: o
+token do workflow não pode criar o site do Pages, e a origem foi definida à mão
+em Settings → Pages como "GitHub Actions".
