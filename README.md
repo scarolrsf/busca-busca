@@ -122,10 +122,18 @@ pedido. Por isso a repetição acontece em dois níveis:
   resposta, não soluço.
 - Em `regras.js`, em volta da fonte inteira: três tentativas de buscar,
   reconhecer e comparar. É esse nível que salva o caso do 200 com página errada,
-  e vale para as seis fontes.
+  e vale para as seis fontes. Aqui também um 403 ou 404 encerra a fonte na
+  primeira tentativa: o código HTTP viaja junto do erro, e só 408, 429 e 5xx
+  são repetidos.
 
-Uma fonte só é dada como falha depois que as três tentativas falharem, e o que
-fica anotado é o último erro.
+Uma falha sem código — rede, tempo esgotado, página irreconhecível — só é dada
+como falha depois das três tentativas. Uma resposta de recusa é registrada na
+hora. O que fica anotado é o último erro, e o detalhe da fonte diz quantas
+tentativas houve.
+
+Insistir em quem recusa não é neutro: o portal com firewall conta as batidas.
+Em 11/09/2026, três fontes bloqueadas vezes três tentativas, em duas execuções
+seguidas, derrubaram também a quarta, que até então respondia.
 
 ### Certificado do STF
 
@@ -223,6 +231,67 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — Quem recusa não é repetido: fim das três batidas no 403
+
+**Responsável:** Muse Spark, a pedido de Sarah (após a leitura dos avisos da
+coleta das 6h).
+
+**Motivo.** As duas execuções manuais da manhã terminaram em verde com avisos.
+Na primeira (commit `2bf8aa4`), três fontes responderam HTTP 403: STJ —
+informativos (desafio de verificação automática), STF — repercussão geral e
+STF — informativos (`403 Forbidden` puro). Na segunda, dois minutos depois
+(commit `984e7bd`), o STJ — temas e processos, que respondera na primeira,
+também passou a 403, com a página "oops! Página não encontrada" do portal —
+assinatura de firewall, não de endereço errado. Restaram as duas fontes do
+TJMG.
+
+As quatro URLs foram conferidas da máquina da Sarah no mesmo momento e
+responderam **200** — inclusive o CSV de dados abertos do STJ, com 2,5 MB. O
+bloqueio é do endereço de saída do GitHub Actions, não das fontes nem do
+reconhecimento. Duas notas relacionadas: no STF o erro mudou de natureza — era
+`curl (60) SSL certificate problem` e passou a 403, ou seja, o remendo de
+âncora de certificado funcionou e o obstáculo agora é outro; e a repetição em
+volta da fonte batia três vezes mesmo em 403, o que ajuda a explicar por que o
+STJ, alvo de nove requisições em três minutos, acabou entrando no bloqueio.
+
+**O que mudou.** A repetição passa a distinguir soluço de recusa.
+
+- `ambiente.mjs`: o erro de resposta não-200 leva junto o código HTTP
+  (`erro.codigoHttp`). Sem isso, quem repete só tinha a mensagem em texto.
+- `regras.js`: novo `vaiAdiantarRepetirFonte_`. Erro sem código (rede, tempo
+  esgotado, página irreconhecível, 200 com página errada) continua com três
+  tentativas; 408, 429 e 5xx também. Um 403 ou 404 encerra a fonte na primeira.
+  O detalhe gravado passa a dizer o número real de tentativas ("Em 1
+  tentativa:" / "Em 3 tentativas:").
+
+O efeito prático: uma fonte bloqueada custa 1 requisição por execução em vez de
+3, e a coleta não gasta 15 s de espera por fonte recusada. A proteção que
+existia continua inteira — é ela que salva o caso do STF que responde 200 com
+página de erro, e esse caso não traz código.
+
+**Arquivos.** `coleta/ambiente.mjs`, `coleta/regras.js`, `README.md` (seção
+"Quando o tribunal oscila").
+
+**Validação.** Local, sem tocar na base. Seis casos exercitados contra
+`executarFonte_` com o ambiente simulado: 403 e 404 → 1 tentativa, 0 esperas;
+429, 503, "200 com página errada" e falha de rede → 3 tentativas, 2 esperas;
+sucesso na 2ª tentativa após falha sem código → "Consulta concluída". Depois,
+o caminho real e completo, com o erro nascendo em `ambiente.mjs` e sendo lido
+dentro do `vm` de `regras.js`: um 404 verdadeiro (página inexistente no GitHub)
+resultou em **1 requisição** e no registro "Em 1 tentativa: A fonte respondeu
+HTTP 404". Nenhuma consulta real às seis fontes foi disparada por esta
+entrega — a próxima janela de coleta é a primeira confirmação em produção.
+
+**Dados.** Nenhuma mudança na base nem no site. O que muda é quantas vezes uma
+fonte recusada é consultada e o texto do detalhe em `dados/fontes.json`.
+
+**Pendências.** O bloqueio em si continua: STF (duas fontes) e STJ —
+informativos seguem sem resposta a partir do GitHub Actions, com os registros
+da última consulta bem-sucedida preservados. Esta entrega reduz o dano e para
+de agravá-lo; não restabelece o acesso. Os caminhos que restam são espaçar as
+fontes do mesmo host dentro da execução ou coletar essas fontes de fora do
+GitHub — decisão de Sarah.
 
 ### 11/09/2026 — Vigia da coleta: issue e e-mail quando a janela pula
 

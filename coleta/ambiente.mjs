@@ -258,7 +258,11 @@ export function resposta(url, opcoes) {
         .replace(/\s+/g, ' ')
         .trim().slice(0, 200);
     } catch (e) { /* sem pista */ }
-    throw new Error('A fonte respondeu HTTP ' + r.codigo + '.' + (pista ? ' Resposta: ' + pista : ''));
+    // O código vai junto do erro: quem repete precisa saber se houve resposta
+    // do servidor — e qual — para não insistir no que já foi respondido.
+    const erro = new Error('A fonte respondeu HTTP ' + r.codigo + '.' + (pista ? ' Resposta: ' + pista : ''));
+    erro.codigoHttp = r.codigo;
+    throw erro;
   }
   return {
     getResponseCode: () => r.codigo,

@@ -67,12 +67,32 @@ function coletarInformativosSTF_(){executarFonte_('STF — informativos',PILOTO.
    veio o que foi pedido. Como isso pode acontecer em qualquer uma das seis, a
    repetição fica aqui, em volta da operação inteira: buscar, reconhecer e
    comparar. Só a última falha é registrada; se alguma tentativa der certo, a
-   fonte conta como consultada, porque foi. */
+   fonte conta como consultada, porque foi.
+
+   Repetir, porém, só faz sentido quando o que falhou pode dar certo da segunda
+   vez. Um 403 ou um 404 é resposta: o servidor disse o que tinha a dizer, e
+   insistir não muda a resposta — só repete a batida, o que em portal com
+   firewall ajuda a prolongar o bloqueio. Foi o que se viu em 11/09/2026, com
+   STF e STJ negando o endereço do GitHub Actions: três tentativas por fonte,
+   três fontes, duas execuções seguidas, e o STJ, que respondia, passou a negar
+   também. Então a repetição aqui vale para o que é passageiro — erro de rede,
+   tempo esgotado, 429, 5xx e a página errada que chega com 200, que nem código
+   de erro traz. */
 const TENTATIVAS_POR_FONTE=3;
+/* Sem código, o erro não veio do servidor: é rede, leitura ou reconhecimento —
+   e esses podem dar certo na tentativa seguinte. Com código, repete-se apenas o
+   que o próprio servidor apresenta como transitório. */
+function vaiAdiantarRepetirFonte_(e){
+  const codigo=e&&e.codigoHttp;
+  if(!codigo)return true;
+  if(codigo===408||codigo===429)return true;
+  return codigo>=500&&codigo<600;
+}
 function executarFonte_(name,url,fn){
-  let ultimo=null;
+  let ultimo=null,feitas=0;
   for(let t=1;t<=TENTATIVAS_POR_FONTE;t++){
     const time=new Date().toISOString();
+    feitas=t;
     try{
       const count=fn();
       registrarFonte_(name,time,time,'Consulta concluída',count,'Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.',url);
@@ -80,11 +100,12 @@ function executarFonte_(name,url,fn){
       return;
     }catch(e){
       ultimo=e;
+      if(!vaiAdiantarRepetirFonte_(e)){console.error(name+': '+e.message+' — resposta do servidor, não soluço; sem repetir.');break;}
       if(t<TENTATIVAS_POR_FONTE){console.error(name+': '+e.message+' — repetindo.');esperar_(t*5000);}
     }
   }
   const fim=new Date().toISOString();
-  registrarFonte_(name,fim,'','Falha / cobertura pendente',0,'Em '+TENTATIVAS_POR_FONTE+' tentativas: '+String(ultimo&&ultimo.message||ultimo).slice(0,1400),url);
+  registrarFonte_(name,fim,'','Falha / cobertura pendente',0,'Em '+feitas+(feitas===1?' tentativa: ':' tentativas: ')+String(ultimo&&ultimo.message||ultimo).slice(0,1400),url);
   console.error(name+': '+(ultimo&&ultimo.message));
 }
 function atualizarRegistros_(sheetName,incoming,origin){
