@@ -398,6 +398,62 @@ inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
 
+### 11/09/2026 — O dia das novidades vira calendário
+
+**Responsável:** Claude Code, a pedido de Sarah ("troque a lista suspensa por um
+calendário que me permita selecionar o dia").
+
+**Motivo.** O filtro de dia da aba "Novidades" era um `<select>` com uma opção
+por dia coletado. Para chegar a 8 de setembro era preciso abrir a lista e ler
+data por data, e nada ali dizia se naquele dia havia alguma coisa: a lista só
+tinha os dias com registro, mas sem a forma de um mês não se enxergava o
+intervalo, nem os buracos. Com a base crescendo uma coleta a cada doze horas, a
+lista só piora.
+
+**O que mudou.** Em `site/index.html`, apenas na interface:
+
+- O `<select class="filtro-dia">` deu lugar a um botão `#abrir-calendario`, que
+  mostra o dia em vigor ("todos os dias", ou a data em monoespaçada), e
+  a um painel `#calendario` com a grade do mês.
+- `diasComAlteracao()` monta, uma vez por desenho, um mapa `dia → { total,
+  nivel }`. O nível é o mais grave do dia, pela mesma escala das chamadas
+  (ALTO > MEDIO > BAIXO > NEUTRO), e vira um ponto sob o número: vermelho para
+  suspensão nova, âmbar para mudança de situação, verde para o que se encerrou,
+  cinza para ajuste de cadastro.
+- Dias sem registro continuam clicáveis, e não desligados. A tela de vazio já
+  existia e passou a nomear o dia — "Sem alterações em 04/09/2026." —, o que
+  responde à pergunta que a lista suspensa não deixava nem fazer.
+- `‹` e `›` folheiam o mês e só vão até os meses que têm registro; folhear
+  redesenha a grade sozinha, sem redesenhar a lista atrás. Esc fecha e devolve o
+  foco ao botão; clique fora fecha; setas andam pela grade (a semana são sete
+  células), Home e End vão ao primeiro e ao último dia do mês.
+- O mês aberto é estado de tela e fica fora do endereço. O parâmetro `dia=`
+  continua o mesmo, então links já compartilhados abrem no dia certo.
+- No guia ("Como usar"), a seção "As chamadas das novidades" ganhou um parágrafo
+  sobre o calendário e o que o ponto significa.
+- Abaixo de 700 px o painel desce pela esquerda — encostado na margem direita
+  ele sairia da tela —, as células vão a 38 px e as setas de mês a 36 px.
+
+**Validação.** Prévia local em `npx serve site`, com a base real de 11/09/2026
+(5.329 alterações, 1.200 exibidas). Conferido: abrir e fechar pelo botão, por
+Esc e por clique fora; escolher 10/09 (1.199 registros) e 04/09 (sem registro,
+com a mensagem nomeando o dia); "Todos os dias" limpando o filtro; o endereço
+`#/?aba=novidades&dia=2026-09-10` abrindo já filtrado e com o dia marcado na
+grade; teclado abrindo em hoje e andando com ←, ↑. Como a base real só tem
+setembro, o folhear de meses foi conferido numa cópia temporária da página com
+duas alterações sintéticas em julho e agosto — julho mostrou o ponto vermelho,
+agosto o verde, e `‹` desligou ao chegar no mês mais antigo. A cópia foi
+apagada. Tema claro e escuro, e largura de 375 px, conferidos em tela.
+
+**Dados.** Nada. A coleta, a base e `site/dados.json` não foram tocados; a
+mudança é de interface e não altera nenhum arquivo de `dados/`.
+
+**Implantação.** Publica com o site, na próxima alteração do repositório.
+
+**Pendências.** O calendário não tem atalho para "últimos 7 dias" nem para um
+intervalo — o filtro segue sendo de um dia só, como era. Se a base passar a
+cobrir muitos meses, vale um seletor de mês/ano no lugar do folhear de um em um.
+
 ### 11/09/2026 — O endereço do CSV do STJ passa a ser perguntado, não presumido
 
 **Responsável:** Muse Spark, a pedido de Sarah (perguntaram a ela se o projeto

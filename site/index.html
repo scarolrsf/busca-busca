@@ -289,7 +289,45 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .fonte-item.falha .fonte-estado{background:var(--critico-fraco);color:var(--critico)}
 .fonte-nota{font-size:.87rem;color:var(--tinta-2);margin:0}
 .fonte-linha{font-size:12.5px;color:var(--tinta-3);font-family:var(--mono);font-variant-numeric:tabular-nums}
-.filtro-dia{border:1px solid var(--borda-forte);background:var(--superficie);border-radius:var(--raio);padding:6px 9px;font-size:13px}
+/* ------------------------------------------------------ calendário do dia
+   O dia das novidades era uma lista suspensa: para chegar a 8 de setembro era
+   preciso ler data por data, sem saber se ali havia alguma coisa. O calendário
+   devolve a forma em que a data já é pensada — a semana, o mês — e diz, num
+   ponto sob o número, o tom do que houve naquele dia: vermelho quando entrou
+   suspensão, âmbar quando mudou a situação de um precedente, verde quando algo
+   se encerrou, cinza quando foi ajuste de cadastro. Dia sem ponto é dia sem
+   alteração registrada — continua clicável, e a tela diz que não houve nada.
+--------------------------------------------------------------------------- */
+.campo-dia{position:relative;display:inline-flex;align-items:center;gap:7px}
+.abre-calendario{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--borda-forte);background:var(--superficie);color:var(--tinta);border-radius:var(--raio);padding:5px 10px;font-size:13px;cursor:pointer;min-height:32px}
+.abre-calendario:hover{border-color:var(--acento)}
+.abre-calendario[aria-expanded="true"]{border-color:var(--acento);box-shadow:0 0 0 3px var(--acento-fraco)}
+.abre-calendario .escolha.data{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:500}
+.abre-calendario .seta{color:var(--tinta-3);font-size:9px;line-height:1}
+.calendario{position:absolute;z-index:40;top:calc(100% + 6px);right:0;width:252px;background:var(--superficie);border:1px solid var(--borda-forte);border-radius:var(--raio);box-shadow:var(--sombra);padding:10px}
+.calendario-topo{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px}
+.calendario-topo strong{font-size:13px;font-weight:600}
+.mes-passo{width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--borda);background:var(--superficie-2);color:var(--tinta-2);border-radius:var(--raio);cursor:pointer;font-size:15px;line-height:1;padding:0}
+.mes-passo:hover:not(:disabled){border-color:var(--acento);color:var(--acento)}
+.mes-passo:disabled{opacity:.35;cursor:default}
+.semana,.grade{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.semana{margin-bottom:2px}
+.semana span{text-align:center;font-size:10.5px;font-weight:600;color:var(--tinta-3)}
+.dia-vago{height:30px}
+.dia-cel{height:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:1px solid transparent;background:none;border-radius:4px;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--tinta-3);cursor:pointer;padding:0}
+.dia-cel.tem{color:var(--tinta);font-weight:500}
+.dia-cel:hover{background:var(--superficie-2);border-color:var(--borda-forte)}
+.dia-cel.hoje{border-color:var(--borda-forte);border-style:dashed}
+.dia-cel.escolhido{background:var(--acento);border-color:var(--acento);color:var(--sobre-acento)}
+.dia-cel .ponto{width:4px;height:4px;border-radius:50%;background:transparent}
+.dia-cel.tem .ponto{background:var(--tinta-3)}
+.dia-cel.tem.n-ALTO .ponto{background:var(--critico)}
+.dia-cel.tem.n-MEDIO .ponto{background:var(--atencao)}
+.dia-cel.tem.n-BAIXO .ponto{background:var(--seguro)}
+.dia-cel.escolhido .ponto{background:var(--sobre-acento)}
+.todos-dias{width:100%;margin-top:8px;border:1px solid var(--borda);background:var(--superficie-2);border-radius:var(--raio);padding:7px;font-size:12.5px;color:var(--acento);cursor:pointer}
+.todos-dias:hover{border-color:var(--acento)}
+.todos-dias[aria-current="true"]{background:var(--acento-fraco);border-color:var(--acento);font-weight:600}
 
 /* --------------------------------------------------------------- rodapé */
 .rodape{max-width:1260px;margin:0 auto;padding:4px 20px 40px}
@@ -392,7 +430,15 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
      e o botão de limpar ocupam a linha inteira. */
   .filtro-detalhado{display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:10px;padding:12px}
   .campo-filtro.cresce,.filtro-detalhado .limpar-tudo{grid-column:1/-1;min-width:0}
-  .campo-filtro input,.campo-filtro select,.ordenar,.filtro-dia{font-size:16px;min-height:40px}
+  .campo-filtro input,.campo-filtro select,.ordenar,.abre-calendario{font-size:16px;min-height:40px}
+
+  /* No telefone o campo do dia pode estar encostado na margem esquerda: o
+     calendário desce por ali, e não pela direita, para não sair da tela. */
+  .calendario{left:0;right:auto;width:min(296px,calc(100vw - 24px))}
+  .dia-cel,.dia-vago{height:38px}
+  .dia-cel{font-size:13.5px}
+  .mes-passo{width:36px;height:36px}
+  .todos-dias{min-height:40px}
   #f-numero{width:100%}
   .filtro-detalhado .limpar-tudo{min-height:44px}
   .baixar{margin:6px 0 0;min-height:40px}
@@ -1990,14 +2036,131 @@ function significadoDaNovidade(linha) {
   return { icone: '✏️', texto: 'Atualização de cadastro', nivel: 'NEUTRO' };
 }
 
+/* ------------------------------------------------------- calendário do dia */
+
+var MESES_PT = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+  'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+var INICIAIS_SEMANA = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+var NOMES_SEMANA = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira',
+  'quinta-feira', 'sexta-feira', 'sábado'];
+var PESO_NIVEL = { NEUTRO: 0, BAIXO: 1, MEDIO: 2, ALTO: 3 };
+
+/* O que há em cada dia, e o tom do dia. O tom é o do registro mais grave que
+   caiu ali: uma única suspensão nova pinta o ponto de vermelho, porque é por
+   ela que alguém volta a um dia já lido. */
+var DIAS_NOVIDADES = {};
+
+/* Mês aberto na grade. É estado de tela, não de consulta: fica fora do
+   endereço, porque o que se compartilha é o dia escolhido, não a folha do
+   calendário em que alguém parou de folhear. */
+var mesDoCalendario = '';
+var calendarioAberto = false;
+
+function diasComAlteracao(linhas) {
+  var porDia = {};
+  linhas.forEach(function (l) {
+    var d = diaLocal(l[0]);
+    var nivel = significadoDaNovidade(l).nivel;
+    var dia = porDia[d] || (porDia[d] = { total: 0, nivel: 'NEUTRO' });
+    dia.total++;
+    if (PESO_NIVEL[nivel] > PESO_NIVEL[dia.nivel]) dia.nivel = nivel;
+  });
+  return porDia;
+}
+
+function mesDe(dia) { return String(dia).slice(0, 7); }
+
+function mesVizinho(mes, passo) {
+  var d = new Date(Number(mes.slice(0, 4)), Number(mes.slice(5, 7)) - 1 + passo, 1);
+  return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2);
+}
+
+/** O dia de hoje em Brasília — o mesmo fuso com que as alterações são agrupadas. */
+function hojeNoPortal() { return diaLocal(new Date().toISOString()); }
+
+/**
+ * O mês em que o calendário deve abrir: o do dia escolhido, ou o mais recente
+ * da base. O dia pode chegar pelo endereço, escrito à mão ou truncado numa
+ * cópia: só vale como mês de abertura se tiver a forma de uma data.
+ */
+function mesInicial() {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(estado.dia)) return mesDe(estado.dia);
+  var dias = Object.keys(DIAS_NOVIDADES).sort();
+  return mesDe(dias.length ? dias[dias.length - 1] : hojeNoPortal());
+}
+
+/**
+ * A grade de um mês. Os dias sem registro ficam clicáveis, e não desligados:
+ * a tela já sabe dizer "sem alterações neste dia", e poder escolher um dia
+ * qualquer é o que separa um calendário de uma lista com outra roupa. O que
+ * muda é o peso — dia com alteração vem em tinta cheia e com ponto.
+ */
+function corpoDoCalendario() {
+  var mes = mesDoCalendario;
+  var dias = Object.keys(DIAS_NOVIDADES).sort();
+  var anterior = mesVizinho(mes, -1);
+  var seguinte = mesVizinho(mes, 1);
+  var temAnterior = dias.length > 0 && anterior >= mesDe(dias[0]);
+  var temSeguinte = dias.length > 0 && seguinte <= mesDe(dias[dias.length - 1]);
+  var nome = MESES_PT[Number(mes.slice(5, 7)) - 1];
+
+  var h = '<div class="calendario-topo">' +
+    '<button type="button" class="mes-passo" data-passo="-1" data-mes="' + esc(anterior) + '"' +
+      (temAnterior ? '' : ' disabled') + ' aria-label="Mês anterior">‹</button>' +
+    '<strong id="calendario-mes">' + esc(nome.charAt(0).toUpperCase() + nome.slice(1)) +
+      ' de ' + esc(mes.slice(0, 4)) + '</strong>' +
+    '<button type="button" class="mes-passo" data-passo="1" data-mes="' + esc(seguinte) + '"' +
+      (temSeguinte ? '' : ' disabled') + ' aria-label="Mês seguinte">›</button>' +
+  '</div>';
+
+  h += '<div class="semana" aria-hidden="true">' +
+    INICIAIS_SEMANA.map(function (s) { return '<span>' + s + '</span>'; }).join('') + '</div>';
+
+  var ano = Number(mes.slice(0, 4));
+  var m = Number(mes.slice(5, 7));
+  var vagas = new Date(ano, m - 1, 1).getDay();
+  var total = new Date(ano, m, 0).getDate();
+  var hoje = hojeNoPortal();
+  var grade = '';
+  for (var v = 0; v < vagas; v++) grade += '<span class="dia-vago"></span>';
+  for (var d = 1; d <= total; d++) {
+    var iso = mes + '-' + (d < 10 ? '0' : '') + d;
+    var info = DIAS_NOVIDADES[iso];
+    var quanto = info
+      ? numero(info.total) + (info.total === 1 ? ' alteração' : ' alterações')
+      : 'sem alterações';
+    grade += '<button type="button" class="dia-cel' + (info ? ' tem n-' + info.nivel : '') +
+      (iso === hoje ? ' hoje' : '') + (estado.dia === iso ? ' escolhido' : '') +
+      '" data-dia="' + iso + '"' + (estado.dia === iso ? ' aria-current="date"' : '') +
+      ' aria-label="' + esc(dataBR(iso) + ', ' + NOMES_SEMANA[new Date(ano, m - 1, d).getDay()] +
+        ', ' + quanto) + '">' + d + '<span class="ponto"></span></button>';
+  }
+  h += '<div class="grade">' + grade + '</div>';
+
+  return h + '<button type="button" class="todos-dias" id="todos-os-dias" aria-current="' +
+    (estado.dia ? 'false' : 'true') + '">Todos os dias</button>';
+}
+
+function campoDoDia() {
+  var rotulo = estado.dia ? dataBR(estado.dia) : 'todos os dias';
+  return '<div class="campo-dia contagem"><span>Dia</span>' +
+    '<button type="button" class="abre-calendario" id="abrir-calendario" aria-haspopup="dialog"' +
+      ' aria-controls="calendario" aria-expanded="' + (calendarioAberto ? 'true' : 'false') + '"' +
+      ' aria-label="Dia mostrado: ' + esc(rotulo) + '. Abrir o calendário">' +
+      '<span aria-hidden="true">📅</span>' +
+      '<span class="escolha' + (estado.dia ? ' data' : '') + '">' + esc(rotulo) + '</span>' +
+      '<span class="seta" aria-hidden="true">▼</span></button>' +
+    '<div class="calendario" id="calendario" role="dialog" aria-label="Escolher o dia"' +
+      (calendarioAberto ? '' : ' hidden') + '>' + corpoDoCalendario() + '</div></div>';
+}
+
 function abaNovidades() {
   el('rail').hidden = true;
   el('rail').innerHTML = '';
 
   var linhas = BASE.alteracoes || [];
-  var dias = {};
-  linhas.forEach(function (l) { dias[diaLocal(l[0])] = true; });
-  var listaDias = Object.keys(dias).sort().reverse();
+  DIAS_NOVIDADES = diasComAlteracao(linhas);
+  if (!mesDoCalendario) mesDoCalendario = mesInicial();
 
   var filtradas = estado.dia ? linhas.filter(function (l) { return diaLocal(l[0]) === estado.dia; }) : linhas;
   var visiveis = filtradas.slice(0, estado.limite);
@@ -2005,15 +2168,14 @@ function abaNovidades() {
   var h = '<div class="barra-lista"><span class="contagem">' +
     '<strong>' + numero(BASE.totalAlteracoes || filtradas.length) + '</strong> alterações registradas pelo monitoramento. ' +
     'Exibindo as ' + numero(linhas.length) + ' mais recentes.</span>' +
-    '<label class="contagem">Dia <select class="filtro-dia" id="filtro-dia">' +
-      '<option value="">todos os dias</option>' +
-      listaDias.map(function (d) {
-        return '<option value="' + esc(d) + '"' + (estado.dia === d ? ' selected' : '') + '>' + esc(dataBR(d)) + '</option>';
-      }).join('') +
-    '</select></label></div>';
+    campoDoDia() + '</div>';
 
   if (!visiveis.length) {
-    h += '<div class="vazio"><p><strong>Sem alterações neste dia.</strong></p>' +
+    // Com o calendário, qualquer dia pode ser escolhido — inclusive um em que
+    // nada mudou. Dizer qual é o dia evita a dúvida de ter clicado errado.
+    h += '<div class="vazio"><p><strong>' + (estado.dia
+        ? 'Sem alterações em ' + esc(dataBR(estado.dia)) + '.'
+        : 'Sem alterações registradas.') + '</strong></p>' +
       '<p>Veja em “Fontes e atualização” se alguma consulta falhou.</p></div>';
   } else {
     var diaAtual = '';
@@ -2165,7 +2327,11 @@ function abaAjuda() {
         '<section class="secao"><h2>As chamadas das novidades</h2>' +
       '<p class="texto-juridico">Na aba “Novidades”, cada alteração abre por uma chamada que diz o que ' +
       'ela significa na prática, e a faixa lateral do cartão acompanha esse sentido. O detalhe do que ' +
-      'mudou — o “Antes / Agora” — continua logo abaixo, para conferência.</p><dl class="dados legenda">' +
+      'mudou — o “Antes / Agora” — continua logo abaixo, para conferência.</p>' +
+      '<p class="texto-juridico">O botão “Dia”, no alto da lista, abre um calendário. O ponto sob o ' +
+      'número marca os dias que tiveram alteração, na cor do registro mais grave daquele dia — as ' +
+      'mesmas cores da legenda abaixo. Dia sem ponto pode ser escolhido do mesmo jeito; a tela então ' +
+      'diz que ali não houve alteração.</p><dl class="dados legenda">' +
       chamadaExemplo('ALTO', '⚠️', 'Suspensão determinada', 'Suspensão alterada',
         'Surgiu ou mudou a ordem de suspensão. É a novidade que pode impedir o julgamento de processo compatível.') +
       chamadaExemplo('ALTO', '⚠️', 'Precedente sobrestado', 'Incidente admitido',
@@ -2397,6 +2563,47 @@ function desenha() {
 
 /* ---------------------------------------------------------------- eventos */
 
+/**
+ * Abrir e fechar o calendário mexe só no calendário. Redesenhar a aba inteira
+ * a cada abertura jogaria a lista de alterações para o topo e apagaria o foco
+ * do teclado — o que se vê é a grade aparecer sobre a página parada.
+ */
+function abrirCalendario() {
+  var cal = el('calendario');
+  if (!cal) return;
+  calendarioAberto = true;
+  mesDoCalendario = mesInicial();
+  cal.innerHTML = corpoDoCalendario();
+  cal.hidden = false;
+  el('abrir-calendario').setAttribute('aria-expanded', 'true');
+  // O foco entra na grade pelo dia escolhido — ou, sem escolha, por hoje.
+  var entrada = cal.querySelector('.dia-cel.escolhido') || cal.querySelector('.dia-cel.hoje') ||
+    cal.querySelector('.dia-cel.tem') || cal.querySelector('.dia-cel');
+  if (entrada) entrada.focus();
+}
+
+function fecharCalendario(devolverFoco) {
+  calendarioAberto = false;
+  var cal = el('calendario');
+  if (cal) cal.hidden = true;
+  var botao = el('abrir-calendario');
+  if (!botao) return;
+  botao.setAttribute('aria-expanded', 'false');
+  if (devolverFoco) botao.focus();
+}
+
+function redesenharCalendario(passo) {
+  var cal = el('calendario');
+  if (!cal) return;
+  cal.innerHTML = corpoDoCalendario();
+  // O botão que foi clicado deixou de existir; o foco volta para o equivalente
+  // no mês novo, ou para o outro sentido quando este chegou ao fim da base.
+  var volta = cal.querySelector('.mes-passo[data-passo="' + passo + '"]:not([disabled])') ||
+    cal.querySelector('.mes-passo:not([disabled])') || cal.querySelector('.dia-cel');
+  if (volta) volta.focus();
+  anunciar(cal.querySelector('#calendario-mes').textContent);
+}
+
 function ligar() {
   var c = el('campo-busca');
   var t;
@@ -2450,6 +2657,41 @@ function ligar() {
   document.addEventListener('click', function (ev) {
     var alvo = ev.target;
     if (!alvo || !alvo.closest) return;
+
+    /* Clique fora do campo do dia fecha o calendário. Vem antes de tudo porque
+       os tratadores abaixo saem com return, e o calendário não pode ficar
+       aberto por cima de uma ficha que acabou de ser escolhida. */
+    if (calendarioAberto && !alvo.closest('.campo-dia')) fecharCalendario();
+
+    if (alvo.closest('#abrir-calendario')) {
+      if (calendarioAberto) return fecharCalendario();
+      return abrirCalendario();
+    }
+
+    var celDia = alvo.closest('[data-dia]');
+    if (celDia) {
+      estado.dia = celDia.getAttribute('data-dia');
+      estado.limite = PAGINA;
+      calendarioAberto = false;
+      anunciar('Mostrando as alterações de ' + dataBR(estado.dia) + '.');
+      return aplicar();
+    }
+
+    if (alvo.id === 'todos-os-dias') {
+      estado.dia = '';
+      estado.limite = PAGINA;
+      calendarioAberto = false;
+      anunciar('Mostrando as alterações de todos os dias.');
+      return aplicar();
+    }
+
+    // Folhear o mês não muda a consulta: redesenha só a grade, e a lista de
+    // alterações atrás dela fica onde estava.
+    var passo = alvo.closest('[data-mes]');
+    if (passo) {
+      mesDoCalendario = passo.getAttribute('data-mes');
+      return redesenharCalendario(passo.getAttribute('data-passo'));
+    }
 
     var aba = alvo.closest('.aba');
     if (aba) {
@@ -2558,7 +2800,25 @@ function ligar() {
       estado.limite = PAGINA;
       return aplicar();
     }
-    if (a.id === 'filtro-dia') { estado.dia = a.value; estado.limite = PAGINA; return aplicar(); }
+  });
+
+  /* Setas andam pela grade do mês. A grade é contínua e começa no domingo, de
+     modo que uma semana é exatamente sete células — subir e descer funciona
+     sem contar dia de semana. O mês não vaza para o vizinho: quem quer outro
+     mês usa ‹ e ›, que é onde a mudança fica visível. */
+  document.addEventListener('keydown', function (ev) {
+    var cel = ev.target;
+    if (!calendarioAberto || !cel || !cel.getAttribute || !cel.getAttribute('data-dia')) return;
+    var passos = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+    if (!(ev.key in passos) && ev.key !== 'Home' && ev.key !== 'End') return;
+    ev.preventDefault();
+    var celulas = Array.prototype.slice.call(el('calendario').querySelectorAll('[data-dia]'));
+    var i = celulas.indexOf(cel);
+    var destino = ev.key === 'Home' ? 0
+      : ev.key === 'End' ? celulas.length - 1
+      : i + passos[ev.key];
+    if (destino < 0 || destino >= celulas.length) return;
+    celulas[destino].focus();
   });
 
   // A prévia e as boas-vindas fecham com Esc por conta do <dialog>; o botão
@@ -2577,7 +2837,10 @@ function ligar() {
       c.focus();
       c.select();
     } else if (ev.key === 'Escape') {
-      if (estado.registroId) { estado.registroId = null; aplicar(); }
+      // O calendário é o que está por cima: fecha primeiro, e devolve o foco
+      // ao botão que o abriu.
+      if (calendarioAberto) fecharCalendario(true);
+      else if (estado.registroId) { estado.registroId = null; aplicar(); }
       else if (estado.termo) { c.value = ''; estado.termo = ''; aplicar(); }
     }
   });
