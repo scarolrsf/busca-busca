@@ -347,6 +347,13 @@ máquina: WAF liberou, total "961", 3 fichas (RE 605533/sjur418770, RE
 657718/sjur436062, RE 1366243/sjur514534), guardadas em
 `dados/jurisprudencia-stf.json`.
 
+Depois de conciliado, o resultado publicado foi exercitado de novo, com os
+coletores e a publicação neutralizados: desligada, a prova não roda e não
+escreve nada; ligada com o navegador indisponível, ela anota "Prova falhou" no
+arquivo da prova, a coleta segue e o processo sai com 0; em nenhum dos dois
+`fontes.json` é tocado. A queda por ordem de declaração foi reproduzida à parte
+antes do conserto, para confirmar que derrubava mesmo o processo inteiro.
+
 **Dados.** A base ganhou `dados/jurisprudencia-stf.json` (bruto da prova, fora
 do `publicar.mjs`); TEMAS, INFORMATIVOS e FONTES seguem o regime das seis
 fontes, sem linha nova.
