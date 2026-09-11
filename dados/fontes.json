@@ -1,17 +1,17 @@
 [
  [
   "STJ — temas e processos",
-  "2026-09-11T09:18:23.802Z",
-  "2026-09-11T09:15:36.055Z",
-  "Falha / cobertura pendente",
-  "0",
-  "Em 3 tentativas: A fonte respondeu HTTP 403. Resposta: oops! P&aacute;gina n&atilde;o encontrada. Verifique se o endere&ccedil;o digitado est&aacute; correto ou clique para acessar a p&aacute;gina inicial do STJ. Se desejar, entre em contato com o nosso s",
+  "2026-09-11T09:39:55.853Z",
+  "2026-09-11T09:39:55.853Z",
+  "Consulta concluída",
+  "1495",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://dadosabertos.web.stj.jus.br/dataset/4238da2f-c07b-4c1a-b345-4402accacdcf/resource/df29da13-7d6b-41ba-ad96-cd1a5bbd191c/download/temas.csv"
  ],
  [
   "TJMG — IUJ",
-  "2026-09-11T09:18:24.120Z",
-  "2026-09-11T09:18:24.120Z",
+  "2026-09-11T09:39:58.708Z",
+  "2026-09-11T09:39:58.708Z",
   "Consulta concluída",
   "48",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-09-11T09:18:25.577Z",
-  "2026-09-11T09:18:25.577Z",
+  "2026-09-11T09:39:59.971Z",
+  "2026-09-11T09:39:59.971Z",
   "Consulta concluída",
   "172",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,29 +28,29 @@
  ],
  [
   "STJ — informativos",
-  "2026-09-11T09:19:04.401Z",
+  "2026-09-11T09:40:21.456Z",
   "2026-09-10T17:35:54.289Z",
   "Falha / cobertura pendente",
   "0",
-  "Em 3 tentativas: A fonte respondeu HTTP 403. Resposta: oops! P&aacute;gina n&atilde;o encontrada. Verifique se o endere&ccedil;o digitado est&aacute; correto ou clique para acessar a p&aacute;gina inicial do STJ. Se desejar, entre em contato com o nosso s",
+  "Em 1 tentativa: A fonte respondeu HTTP 403. Resposta: Verifica&ccedil;&atilde;o autom&aacute;tica em andamento. Aguarde a verifica&ccedil;&atilde;o autom&aacute;tica. Caso n&atilde;o seja redirecionado, responda ao desafio abaixo. Enable JavaScript and c",
   "https://processo.stj.jus.br/jurisprudencia/externo/informativo/"
  ],
  [
   "STF — repercussão geral",
-  "2026-09-11T09:19:23.287Z",
+  "2026-09-11T09:40:23.228Z",
   "2026-09-10T17:35:55.662Z",
   "Falha / cobertura pendente",
   "0",
-  "Em 3 tentativas: A fonte respondeu HTTP 403. Resposta: 403 Forbidden 403 Forbidden",
+  "Em 1 tentativa: A fonte respondeu HTTP 403. Resposta: 403 Forbidden 403 Forbidden",
   "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
  ],
  [
   "STF — informativos",
-  "2026-09-11T09:19:41.832Z",
+  "2026-09-11T09:40:24.674Z",
   "2026-09-10T17:36:29.301Z",
   "Falha / cobertura pendente",
   "0",
-  "Em 3 tentativas: A fonte respondeu HTTP 403. Resposta: 403 Forbidden 403 Forbidden",
+  "Em 1 tentativa: A fonte respondeu HTTP 403. Resposta: 403 Forbidden 403 Forbidden",
   "https://portal.stf.jus.br/textos/verTexto.asp?servico=informativoSTF"
  ]
 ]
