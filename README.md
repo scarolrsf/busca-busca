@@ -49,6 +49,9 @@ coleta/
   conferir-fontes.mjs mostra, no resumo da execução, quais fontes responderam
   conferir-cadeia.mjs prova que o remendo do certificado do STF funciona
   jurisprudencia-stf.mjs segunda via do STF pelo navegador (desligada por padrão)
+  complemento.mjs    a coleta feita daqui: atualiza, coleta e envia
+
+coletar-aqui.cmd  dois cliques para rodar o complemento no Windows
 
 espelho/         segunda via para o STJ, publicada na Cloudflare
   worker.js      refaz o pedido, só GET, só os dois endereços do STJ
@@ -98,6 +101,31 @@ Consulta as seis fontes, atualiza `dados/` e gera `site/dados.json`. Depois:
 ```bash
 npx --yes serve site
 ```
+
+### Coleta na máquina da Sarah
+
+O STF nega o endereço do GitHub Actions, e nenhuma segunda via de rede o
+alcança: o espelho devolve 526 pelo certificado incompleto. Daqui ele responde.
+Então a coleta que traz o STF é a de sempre, rodada deste computador — não há
+truque nenhum, só um lugar que o tribunal aceita.
+
+Dois cliques em **`coletar-aqui.cmd`**, na raiz do projeto. Ele atualiza a
+pasta com o que houver de novo no GitHub, consulta os seis tribunais, mostra o
+que mudou e envia. Se nada mudou, não envia nada e diz isso. Se o envio
+esbarrar numa coleta agendada que commitou no meio do caminho, ele reencaixa e
+tenta uma vez; não dando certo, para e avisa — a coleta fica gravada aqui, sem
+risco de perda.
+
+Para ver o que mudaria sem enviar: `node coleta/complemento.mjs --sem-enviar`.
+
+O commit começa com "Coleta de DD/MM/AAAA", igual ao da coleta agendada, de
+propósito: é assim que o vigia reconhece que a base foi atualizada no dia. A
+origem fica no fim da mensagem.
+
+**Isto não substitui a coleta agendada**, que continua rodando às 6h07 e 18h07
+e trazendo o que o GitHub alcança — TJMG sempre, STJ pelo espelho. O
+complemento é o que acrescenta o STF, e vale a pena rodá-lo quando o portal
+precisar do STF em dia.
 
 ## As seis fontes
 
@@ -313,6 +341,50 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — Coleta na máquina da Sarah, em dois cliques
+
+**Responsável:** Muse Spark, a pedido de Sarah (quer os informativos recentes e
+os precedentes suspensos do STF, e não uma busca por tema).
+
+**Motivo.** O pedido esclareceu o alvo. A busca por tema, montada mais cedo,
+pesquisa acórdão por palavra-chave, um assunto por vez: não varre o que é novo.
+O que responde ao pedido são as duas fontes oficiais do STF, que a coleta já
+sabe ler — 1.482 temas de repercussão geral, 60 deles com registro de
+suspensão, e 1.012 informativos. O problema nunca foi como coletar o STF, e sim
+de onde: do GitHub Actions ele nega; desta máquina ele responde. Faltava tornar
+isso fácil de rodar, porque quatro comandos na ordem certa não são coisa que se
+peça a quem quer só o dado em dia.
+
+**O que mudou.** Nada na coleta: as regras, as fontes e a base seguem as
+mesmas.
+
+- `coleta/complemento.mjs` (novo): atualiza a pasta com o que houver de novo no
+  GitHub, chama `executar.mjs`, mostra o que mudou e envia. Sem mudança, não
+  commita. Empurrão recusado por commit concorrente é reencaixado uma vez; não
+  dando certo, para e avisa, com a coleta gravada aqui. Recusa-se a agir quando
+  há trabalho dos dois lados que não se encaixa sozinho — isso é conferência à
+  mão. `--sem-enviar` mostra o que mudaria e para.
+- `coletar-aqui.cmd` (novo): os dois cliques no Windows.
+- `README.md`: inventário, seção "Coleta na máquina da Sarah" e esta entrada.
+
+O commit do complemento começa com "Coleta de DD/MM/AAAA", igual ao da coleta
+agendada, de propósito: é assim que o vigia reconhece que a base foi atualizada
+no dia — e foi mesmo. A origem fica no fim da mensagem.
+
+**Validação.** Execução real das seis fontes desta máquina, com `--sem-enviar`:
+todas responderam, o STF inclusive (1.482 temas em 25s, 1.012 informativos em
+3s), `fontesComFalha` vazio, 45 segundos no total. Só carimbos de data mudaram,
+porque o conteúdo já viera na coleta local das 10h20 UTC — e o passo "nada
+mudou" foi exercitado por isso mesmo. O envio foi exercitado na sequência, em
+execução separada.
+
+**Dados.** Sem mudança de conteúdo nesta entrega; o que muda é a frequência com
+que o STF fica em dia, que passa a depender de rodar isto.
+
+**Pendências.** Decidir se o complemento roda sozinho num horário (Agendador de
+Tarefas do Windows, com o computador ligado) ou se fica nos dois cliques. O
+espelho do STJ continua esperando a publicação do Worker.
 
 ### 11/09/2026 — Segunda via do STF pelo navegador, desligada por padrão
 
