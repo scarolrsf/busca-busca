@@ -295,6 +295,24 @@ function situacaoSTF_(texto){
  resto=resto.replace(/\s+/g,' ').trim();
  return {merito:merito,data:data,processual:resto};
 }
+/* A tabela do STF traz uma data colada à situação, e não diz o que ela é — mas
+   a situação diz. "Trânsito em Julgado ... 22/02/2025" é data de trânsito;
+   "Acórdão de mérito publicado ... 06/09/2025" é data de publicação do acórdão.
+   Onde a situação não disser ("Mérito julgado", "Cancelado", "Analisada
+   Preliminar"), o campo fica vazio: a data continua registrada em observações,
+   com a etiqueta literal da fonte, e inventar um rótulo seria pior que não ter.
+
+   A data literal permanece em observações mesmo quando mapeada. O campo é a
+   nossa leitura; a observação é o que a fonte escreveu — num buscador de
+   precedentes, as duas coisas merecem caber. */
+function datasDaSituacaoSTF_(situacao,data){
+ const vazio={julgamento:'',publicacao:'',transito:''};
+ if(!data)return vazio;
+ const s=normalizar_(situacao);
+ if(s.indexOf('transit')>=0)return {julgamento:'',publicacao:'',transito:data};
+ if(/acordao[^.]{0,40}publicad/.test(s))return {julgamento:'',publicacao:data,transito:''};
+ return vazio;
+}
 function parseTemasSTF_(html){
  const inicio=html.indexOf('<table');if(inicio<0)throw Error('Tabela "Todos os temas" não localizada na página do STF.');
  const tabela=html.slice(inicio,html.indexOf('</table>',inicio));
@@ -311,14 +329,18 @@ function parseTemasSTF_(html){
   const href=(celulas[1].match(/href="(verAndamentoProcesso\.asp[^"]+)"/i)||[])[1]||'';
   const situacao=situacaoSTF_(t[4]);
   const leading=t[2].split('\n')[0].trim();
+  // A mesma frase que vai para o campo `situacao`, para que a leitura da data
+  // seja feita sobre exatamente o que fica gravado na base.
+  const situacaoTexto=[situacao.processual,situacao.merito].filter(Boolean).join(' — ')||'Sem situação informada';
+  const datas=datasDaSituacaoSTF_(situacaoTexto,situacao.data);
   registros.push({
    id:'STF-TEMA-'+numero,tribunal:'STF',tipo:'Repercussão geral',numero:numero,
    // Alguns temas recém-afetados entram na tabela sem título e sem descrição.
    questao:limpaSTF_(descricao)||limpaSTF_(titulo)||('Tema '+numero+' — o STF ainda não publicou a descrição da controvérsia.'),
    area:classificarArea_(assuntos+' '+titulo+' '+descricao),
-   situacao:[situacao.processual,situacao.merito].filter(Boolean).join(' — ')||'Sem situação informada',
+   situacao:situacaoTexto,
    suspensao:'',
-   julgamento:'',publicacao:'',transito:'',
+   julgamento:datas.julgamento,publicacao:datas.publicacao,transito:datas.transito,
    tese:'',
    fonte:href?'https://portal.stf.jus.br/jurisprudenciaRepercussao/'+entidades_(href):PILOTO.stf,
    origem:'STF — repercussão geral',

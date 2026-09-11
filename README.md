@@ -190,7 +190,11 @@ como **painéis Qlik Sense** em `transparencia.stf.jus.br` — inclusive o de
 repercussão geral, que é onde mora a marca de suspensão nacional. Painel Qlik
 se consulta pela tela, com exportação de CSV feita a mão; o que existe por trás
 é a interface interna do Qlik, sem contrato público. Serve como **conferência
-manual**, não como fonte automática.
+manual**, não como fonte automática — com um refinamento verificado em
+11/09/2026 (ver histórico): a exportação pode ser dirigida por um navegador de
+verdade na máquina da Sarah, baixando sozinha os CSVs e só lançando no portal
+quando houver mudança. Continua não sendo API oficial, e continua fora do
+GitHub Actions.
 
 Existe também uma API interna no aplicativo de jurisprudência do STF
 (`POST /api/search/search`), usada pelo próprio front-end do site. Ela não é
@@ -352,7 +356,15 @@ intermediário não cobra manutenção.
 3. **Informativos.** O endereço em HTML por edição saiu do ar. O que existe é a
    planilha oficial `Dados_InformativosSTF.xlsx`. São importadas as edições a
    partir de `PILOTO.stfInfoEdicaoMinima`.
-4. **Suspensão nacional.** O portal do STF só a mostra em painel interativo e na
+4. **Datas.** A tabela prende uma data à situação e não diz o que ela é — mas a
+   situação diz: "Trânsito em Julgado … 22/02/2025" é trânsito; "Acórdão de
+   mérito publicado … 06/09/2025" é publicação. `datasDaSituacaoSTF_` faz essa
+   leitura e preenche o campo correspondente. Onde a situação não disser
+   ("Mérito julgado", "Cancelado"), o campo fica vazio — a data continua em
+   observações, com a etiqueta literal da fonte, e inventar rótulo seria pior
+   que não ter. A data literal permanece em observações mesmo quando mapeada: o
+   campo é a nossa leitura, a observação é o que a fonte escreveu.
+5. **Suspensão nacional.** O portal do STF só a mostra em painel interativo e na
    ficha de cada leading case — 2,6 MB por tema, sem suporte a `Range`. A saída
    está na lista de resultados da pesquisa de repercussão geral
    (`listarProcesso.asp`), que traz a mesma marca ao lado da situação de cada
@@ -424,6 +436,123 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — As datas do STF saem de "observações" e viram data
+
+**Responsável:** Muse Spark, a pedido de Sarah (confirmou a leitura do STF por
+raspagem; o buraco apareceu ao medir o que a raspagem já trazia).
+
+**Motivo.** Nenhum dos 1.482 temas do STF tinha data preenchida, enquanto os do
+STJ tinham. Não era falta na fonte: a data estava sendo raspada e jogada em
+`observações`, como texto livre. A prudência de origem se entende — a tabela do
+STF prende uma data à situação sem dizer o que ela é —, mas a própria situação
+diz: "Trânsito em Julgado … 22/02/2025" é trânsito; "Acórdão de mérito
+publicado … 06/09/2025" é publicação. O efeito prático do buraco: ordenar por
+"mais recentes" deixava os 1.482 temas do STF de fora, por não terem data que
+ordenasse, e as fichas mostravam linhas de data vazias.
+
+**O que mudou.**
+
+- `coleta/regras.js`: `datasDaSituacaoSTF_` lê a situação e devolve a data no
+  campo certo — trânsito, publicação, ou nenhum. `parseTemasSTF_` passa a
+  gravá-la. A data literal continua em observações com a etiqueta da fonte: o
+  campo é a nossa leitura, a observação é o que o tribunal escreveu.
+- `dados/temas-do-portal.json`: correção única dos 1.397 registros que já
+  existiam — 1.251 com trânsito, 146 com publicação. Feita **fora** do fluxo da
+  coleta, de propósito: passar por `atualizarRegistros_` marcaria 1.397
+  precedentes como alterados hoje, e a aba "Novidades" diria que os tribunais
+  mexeram neles. Não mexeram; nós é que passamos a ler o que já estava na
+  página. ALTERACOES é registro do que o tribunal faz.
+
+Ficam sem data 26 temas cuja situação não diz o que a data é ("Mérito julgado",
+"Cancelado", "Analisada Preliminar") e 59 que não trazem data na fonte.
+
+**O que não mudou, e foi conferido antes de mexer.** Os campos de data são
+usados em quatro lugares do portal — a ordenação por mais recentes, as linhas
+da ficha e duas frases descritivas. **Nenhum deles é a regra de suspensão**, que
+lê a situação. Depois da correção, a conferência da regra passou e a contagem
+por alcance ficou idêntica à de antes: ESTADUAL 100, RECURSAL 44, NÃO
+DETERMINADA 1.298, NACIONAL 111. Nenhuma classificação jurídica mudou.
+
+**Validação.** Ensaio da correção antes de gravar (1.397 = 1.251 + 146,
+batendo com a medição feita na base). Depois de gravar, `alteracoes.json`
+continuou com 5.329 entradas — nenhuma novidade falsa. `publicar.mjs`, que roda
+a conferência da regra, passou. E o teste que importava: o coletor do STF
+rodado de verdade contra uma cópia da base corrigida deixou `alteracoes` em
+5.329 — raspador e base concordam, sem diferença nenhuma. Nessa execução o
+portal do STF oscilou duas vezes (0 linhas; depois tabela não localizada) e a
+repetição em volta da fonte segurou, entregando os 1.482 na terceira tentativa.
+
+**Dados.** 1.397 registros do STF ganharam data; nenhum campo foi apagado;
+nenhuma entrada nova em ALTERACOES.
+
+**Pendências.** Os 197 temas do STF ainda sem tese seguem na fila normal da
+coleta, que completa até 200 por execução. Registrada também uma observação de
+conduta: várias coletas completas num mesmo dia, somadas às buscas de
+jurisprudência, deixaram o portal do STF oscilando — vale espaçar as execuções
+à mão.
+
+### 11/09/2026 — Corte Aberta verificado: dá para baixar sozinho todo dia, pelo navegador
+
+**Responsável:** Muse Spark, a pedido de Sarah (verificar a corte aberta do
+STF e dizer se dá para conferir todo dia se mudou, baixar sozinho, ler e
+lançar no portal quando houver atualização).
+
+**O que foi verificado.** A página
+`transparencia.stf.jus.br/extensions/dados_abertos/dados_abertos.html`, aba
+"Dados abertos" do programa Corte Aberta. O aviso "Saiba mais" diz que **as
+bases são atualizadas diariamente**, exceto Informação à Sociedade (sob
+demanda) e Omissão Inconstitucional (mensal) — e que os filtros do painel
+refletem no download, de modo que o completo exige remover os filtros. Para
+este portal interessam três bases da seção Repercussão Geral: **Temas** (todos,
+desde a Emenda Regimental 21/2007), **Suspensão nacional** e
+**Representativo da controvérsia** — o mesmo dado que hoje vem de
+`todostemas.asp` + `listarProcesso.asp`. Cada base tem dicionário de dados
+`.ods` em endereço direto no `www.stf.jus.br`.
+
+**Como o download funciona, por dentro.** Nenhum xlsx/csv tem endereço
+próprio: os 80+ links da tabela são `javascript:void(0)` que disparam a
+exportação do motor Qlik (`app.getObject(id).exportData({format: OOXML ou
+CSV_C, download: true})`), com um aplicativo Qlik por grupo de bases — o da
+repercussão geral em produção é `d00163a8-3179-4450-8084-c0e1ca3daf49`, objetos
+`hEKeEY` (temas), `jVYfQXL` (suspensão nacional) e `XJAVRS` (representativo),
+mapeados em `qliksense.js`/`exportManager.js`. Ou seja: **não há URL de
+arquivo para o curl baixar; é preciso um navegador de verdade** que abra a
+página, aguarde a conexão ao Qlik e acione os botões oficiais de exportação —
+o mesmo padrão da segunda via da jurisprudência (`jurisprudencia-stf.mjs` com
+Playwright). Chamar a API interna do motor sem passar pela página seria leitura
+não contratada, como já registrado para a API da jurisprudência; o caminho
+correto é dirigir os links que o tribunal oferece.
+
+**Rede.** Com UA completo de navegador o `transparencia.stf.jus.br` responde
+200 (e entrega cookie de sessão Qlik); com UA curto, 403 — o mesmo gesto de
+WAF que bloqueia o GitHub Actions no portal antigo. Conclusão: a rotina diária
+mora **na máquina da Sarah, junto à tarefa `BuscaBusca-ColetaSTF` das 9h**,
+não no Actions.
+
+**Desenho proposto (não implementado).** Novo `coleta/corte-aberta.mjs`:
+abre a página sem filtro, baixa os 3 CSVs da repercussão geral, compara o hash
+com o dia anterior em `work/` e, só havendo mudança, converte para o esquema
+de TEMAS (o CSV de suspensão nacional vira a marca de suspensão, auditando a
+que hoje vem da lista `listarProcesso.asp`), roda `conferir-regra.mjs` e
+publica pelo caminho existente. Sem mudança, nada é commitado. Primeira fase
+em paralelo como auditoria, sem desligar `todostemas.asp`; a troca de fonte
+só depois de N dias batendo.
+
+**Arquivos.** `README.md` (este parágrafo de refinamento e esta entrada).
+Nenhum código alterado; JS do tribunal lido, não copiado para o repositório.
+
+**Validação.** Leitura real da página e dos quatro JS do mashup
+(`qliksense.js`, `qlikManager.js`, `uiManager.js`, `exportManager.js`),
+com os IDs de app e objetos conferidos no código-fonte. Sem download de CSV
+ainda — a prova de vida com navegador fica para a implementação.
+
+**Dados.** Nenhuma mudança na base nem no site.
+
+**Pendências.** Decisão de Sarah: (1) implementar o `corte-aberta.mjs` nesta
+máquina; (2) se entra como auditoria paralela primeiro (recomendado) ou como
+fonte direta; (3) ler os três dicionários `.ods` da repercussão geral antes
+de codificar, para mapear as colunas.
 
 ### 11/09/2026 — Espelho publicado; e o STF não tem API para o que precisamos
 
