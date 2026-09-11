@@ -65621,5 +65621,25 @@
   "processos": "RE 1563095",
   "atualizadoEm": "2026-09-10T17:36:29.105Z",
   "anotacaoManual": ""
+ },
+ {
+  "id": "STF-TEMA-1482",
+  "tribunal": "STF",
+  "tipo": "Repercussão geral",
+  "numero": "1482",
+  "questao": "Tema 1482 — o STF ainda não publicou a descrição da controvérsia.",
+  "area": "Transversal / a conferir",
+  "situacao": "Em julgamento",
+  "suspensao": "",
+  "julgamento": "",
+  "publicacao": "",
+  "transito": "",
+  "tese": "",
+  "fonte": "https://portal.stf.jus.br/jurisprudenciaRepercussao/verAndamentoProcesso.asp?incidente=7375225&numeroProcesso=1570444&classeProcesso=ARE&numeroTema=1482",
+  "origem": "STF — repercussão geral",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "Título: \nRelator: MINISTRO PRESIDENTE\nAssuntos: 13537-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Partes e Procuradores | Sucumbência | Honorários Advocatícios | Sucumbenciais\n9163-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Liquidação / Cumprimento / Execução | Penhora / Depósito/ Avaliação\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
+  "processos": "ARE 1570444",
+  "atualizadoEm": "2026-09-11T10:16:50.497Z"
  }
 ]
