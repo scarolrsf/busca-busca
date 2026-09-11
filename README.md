@@ -492,13 +492,41 @@ Não é o trânsito em julgado que a encerra, e o marco muda conforme o rito:
   do CPC), e enquanto pendentes não se pode afirmar que recurso "não foi
   interposto", que é a condição do art. 982, § 5º. O TJMG narra isso no campo de
   suspensão — não na situação —, e é lá que a regra vai buscar.
+- **Acórdão de repercussão geral publicado não é acórdão paradigma.** O STF usa
+  as duas expressões na mesma coluna, e elas dizem o contrário uma da outra:
+  "acórdão de mérito publicado" encerra a suspensão (art. 1.040, III);
+  "acórdão de repercussão geral publicado" é o reconhecimento da repercussão
+  geral, com o mérito pendente — o momento em que a suspensão nacional é
+  determinada (art. 1.035, § 5º, e art. 1.037, II). Por isso são duas situações
+  distintas no portal, e só a primeira encerra. A exceção é o acórdão que
+  **nega** a repercussão geral: aí o tema acaba e a matéria volta às instâncias
+  ordinárias.
 - **Cláusula expressa** em sentido diverso prevalece sobre a regra geral.
 
 Essa regra vive num lugar só — as funções de classificação do `site/index.html` —
 e é aplicada a todo registro no momento de exibir. A cada coleta,
 `coleta/conferir-regra.mjs` carrega essas mesmas funções e as roda sobre a base
-inteira, conferindo cinco invariantes. Uma atualização que quebre a regra faz a
+inteira, conferindo nove invariantes. Uma atualização que quebre a regra faz a
 coleta falhar em vez de chegar à tela.
+
+### O prazo que a determinação declarou
+
+O TJMG às vezes registra a prorrogação com prazo certo — "pelo prazo máximo de
+60 (sessenta) dias", "por mais 180 dias". Vencido o prazo sem notícia posterior,
+a ficha traz um aviso âmbar com as três datas: quando foi prorrogada, por
+quantos dias e quando venceu.
+
+O aviso **não** muda a classificação, e isso é deliberado: a suspensão do
+incidente vale até o julgamento, de modo que prazo vencido não equivale a ordem
+levantada — tratá-lo assim seria o erro do IRDR 94 ao contrário, mandando
+sentenciar sob ordem viva. E ele se cala quando há qualquer data posterior ao
+início do prazo no mesmo texto, porque aí a última palavra não é o prazo: o
+IRDR 74 prorrogou por 180 dias e, meses depois, prorrogou de novo "até o
+trânsito em julgado da ADI", sem prazo em número. Lê-se prazo em algarismo; por
+extenso, não se lê — melhor calar do que adivinhar data em cima de decisão
+judicial. Medido em 11/09/2026: 4 registros declaram prazo, e o aviso aparece em
+2 deles.
+
 
 ## Publicar
 
@@ -525,6 +553,146 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — Acórdão de repercussão geral publicado deixa de encerrar a suspensão
+
+**Responsável:** Claude Code, a pedido de Sarah ("faça o que ainda está
+pendente"). O erro apareceu ao fechar uma pendência de outra entrega: a
+auditoria do Corte Aberta contra a base.
+
+**O erro, e ele era do mesmo tamanho do IRDR 94.** O CSV de suspensão nacional
+do Corte Aberta, baixado nesta máquina em 11/09/2026, lista **22 temas com
+"Suspensão Nacional Vigente"**. Conferidos um a um contra o portal, **todos os
+22 apareciam como "Sem suspensão em vigor", risco baixo** — a ficha dizia, em
+verde, que dava para sentenciar. Em 15 deles isso era simplesmente falso.
+
+**Causa.** O STF escreve duas coisas na mesma coluna de situação: "Acórdão de
+mérito publicado" e "Acórdão de Repercussão Geral publicado". `grupoSituacao`
+juntava as duas no grupo "Acórdão publicado" — havia até um comentário no
+código dizendo que a expressão exata não alcançaria nenhuma delas — e
+`encerrado()` aplicava a ambas o art. 1.040, III. Mas elas dizem o contrário
+uma da outra: o acórdão de mérito encerra a suspensão; o acórdão de repercussão
+geral é o **reconhecimento** da repercussão geral, com o mérito pendente, e é
+justamente o momento em que a suspensão nacional é determinada (art. 1.035,
+§ 5º, e art. 1.037, II). O portal lia o início da suspensão como se fosse o fim.
+
+**O que mudou.**
+
+- `site/index.html`: `grupoSituacao` separa as duas — "Acórdão publicado" só
+  para o mérito, e a situação nova **"Repercussão geral reconhecida"** para o
+  acórdão do reconhecimento. O acórdão que *nega* a repercussão geral continua
+  encerrando, e a ordem dos testes garante isso (8 temas hoje trazem as duas
+  frases: "Acórdão de Repercussão Geral publicado — Não há repercussão geral").
+- `site/index.html`: `porqueContinuaSuspenso` explica a situação nova citando os
+  artigos, e o guia "Como usar" ganhou a definição dela.
+- `site/index.html`: nesses temas, a data que a fonte prende à situação é a
+  publicação do acórdão **do reconhecimento** — o rótulo da ficha passa a dizer
+  isso, em vez de "Publicação do acórdão", que seria lido como o paradigma que
+  ainda não existe.
+- `coleta/conferir-regra.mjs`: invariante 9 — acórdão de repercussão geral
+  publicado, sem mérito publicado e sem trânsito, cancelamento ou negativa de
+  repercussão geral, não pode aparecer como encerrado.
+
+**Impacto, medido registro a registro sobre a base inteira (4.430 registros).**
+125 mudam de classificação, e nenhum outro: **15** vão de "encerrado / risco
+baixo" para **suspensão nacional em vigor, risco alto** — os temas 843, 1016,
+1192, 1198, 1252, 1271, 1290, 1297, 1329, 1389, 1404, 1417, 1423, 1443 e 1467;
+**110** vão para "suspensão não determinada", faixa âmbar — temas vivos, sem
+ordem registrada, onde convém conferir antes de sentenciar. Contagem por
+alcance: NACIONAL de 111 para 126; ESTADUAL 101 e RECURSAL 44, sem mudança; em
+vigor, de 1.554 para 1.679.
+
+**Os 7 que continuam encerrados, de propósito.** Dos 22 que o STF lista como
+vigentes, 7 já têm acórdão de mérito publicado (temas 372, 966, 976, 1031,
+1209, 1232 e 1455). Para esses o art. 1.040, III responde: publicado o
+paradigma, os sobrestados retomam o curso. O painel do STF só registra a
+revogação quando ela é formalizada; a lei não espera por isso. A divergência
+fica anotada aqui, e é conferível tema a tema.
+
+**Validação.** Comparação antes/depois sobre a base inteira, com as duas versões
+da regra carregadas lado a lado — 125 mudanças, todas na transição descrita,
+nenhuma em outro sentido. A conferência da regra passa com as nove invariantes.
+A invariante 9, rodada contra a versão anterior do portal, reprova 125 temas,
+entre eles os 15 nacionais: ela teria pegado o erro. No navegador, prévia local
+com a base de 11/09/2026 — o Tema 1467 mostra "Repercussão geral reconhecida",
+pílula "Suspensão nacional", aviso vermelho e a explicação com os artigos; o
+Tema 79, sem determinação, mostra a faixa âmbar; a data aparece como "Publicação
+do acórdão de repercussão geral"; e a situação nova entra na lista de filtros
+por estágio.
+
+**Dados.** Nenhuma alteração na base nem em ALTERACOES. A classificação é
+derivada na exibição, e nada do que o tribunal publicou foi reescrito.
+
+**Pendências.** Conferir, com os 7 temas na mão, se em algum deles a
+determinação de suspensão foi mantida por decisão posterior ao acórdão de
+mérito — seria cláusula expressa, e a regra já a respeita, mas só quando o texto
+a traz. A auditoria do Corte Aberta, agora diária, passa a ser o lugar onde uma
+divergência dessas aparece cedo.
+
+### 11/09/2026 — Pendências fechadas: prazo vencido na ficha, Corte Aberta diário e o trabalho que não estava no Git
+
+**Responsável:** Claude Code, a pedido de Sarah ("faça o que ainda está
+pendente"), varrendo as pendências registradas nas últimas entregas.
+
+**O trabalho que existia só no disco.** `MIGRACAO.md` e
+`coleta/corte-aberta.mjs` estavam descritos em entradas de histórico já
+commitadas, mas nunca tinham entrado no Git: viviam como arquivos soltos na
+máquina da Sarah, a um `git clean` de sumir, com o README afirmando que
+existiam. Foram commitados sem alteração de conteúdo. Junto, commitado também o
+trabalho concluído e validado de "Determinação sem ressalva de fase", que
+estava na árvore de trabalho com a entrada de histórico pronta — a conferência
+da regra foi rodada antes de gravar e bateu com os números daquela entrada.
+Nada foi enviado ao GitHub: a publicação continua sendo decisão da Sarah.
+
+**A varredura que o IRDR 94 pediu.** A pendência era conferir se outros
+incidentes registram recurso vivo com redação que os padrões não alcançam.
+Varridos os 124 incidentes encerrados: 31 mencionam embargos, recurso especial,
+extraordinário ou agravo, mas em 28 a situação é trânsito em julgado,
+cancelamento ou baixa — ali a suspensão acabou por si, e a menção é histórico do
+incidente. Restam 3 em "acórdão publicado", que é onde a inferência do art. 982,
+§ 5º, de fato opera: em dois (IRDR 82 e 89) os embargos já foram julgados, e
+encerrado está certo; o terceiro, o IRDR 93, registra efeito suspensivo
+prorrogado por 60 dias em 28/07/2025, vencido desde 26/09/2025. Nenhum caso novo
+do tipo IRDR 94. Registro de método: a primeira varredura acusou seis casos
+porque o padrão `embarg` casa com "Des**embarg**ador" — os três falsos positivos
+caíram com fronteira de palavra.
+
+**O prazo vencido virou aviso.** Do IRDR 93 saiu a leitura descrita na seção "O
+prazo que a determinação declarou": `prazoDaSuspensao` lê prazo em algarismo
+preso a uma data e a uma palavra de suspensão, e `avisoDePrazoVencido` põe as
+três datas na ficha sem mexer na classificação. `conferir-regra.mjs` ganhou a
+invariante 8, que reprova prazo lido pela metade — data ilegível, dias não
+positivos, fim antes do início.
+
+**Corte Aberta entra na rotina.** `coleta/agendado.cmd` — o que o Agendador do
+Windows roda às 9h — passa a chamar `corte-aberta.mjs --baixar` depois da
+coleta, ainda na fase de auditoria paralela: baixa os três CSVs, guarda em
+`work/` com hash e diz se mudaram desde ontem, sem tocar em `dados/` nem no
+site. O código de saída da coleta é guardado antes e devolvido ao Agendador no
+fim, de modo que falta de Playwright ou recusa do WAF do STF não derrubem a
+coleta do dia — falham sozinhas no log. Foi essa auditoria, rodada à mão hoje,
+que revelou o erro do acórdão de repercussão geral.
+
+**Validação.** `corte-aberta.mjs --autoteste`: 15 verificações, todas passam.
+Conferência da regra com as nove invariantes sobre a base inteira: sem falha.
+Invariante 8 exercitada por simulação — uma cópia do portal com a leitura de
+prazo quebrada de propósito foi reprovada, e a cópia, apagada. Fichas conferidas
+no navegador, em prévia local: IRDR 101 (em vigor) e IRDR 93 (encerrado) com o
+texto próprio de cada caso, e o IRDR 74 — que tem prorrogação posterior sem
+prazo em número — corretamente sem aviso nenhum.
+
+**Dados e implantação.** Nenhuma alteração na base. O `agendado.cmd` só passa a
+valer na próxima execução da tarefa, na máquina da Sarah.
+
+**Pendências que continuam, e são da Sarah.** (1) Cadastrar `ESPELHO_URL` e
+`ESPELHO_CHAVE` nos segredos do repositório — o `gh` não está instalado nesta
+máquina, e segredo não se cadastra a partir daqui de todo modo; feito isso,
+apagar `work/espelho-segredos.txt`. (2) Avisar a Turma Recursal sobre os três
+defeitos da planilha oficial — o IUJ 1.0000.25.219586-2/000 ausente, o número de
+Itaúna com um zero a menos e os 43 campos de julgamento com não-datas; a minuta
+do aviso está em `work/aviso-turma-recursal.md`, fora do Git. (3) Decidir,
+depois de alguns dias de auditoria batendo, se o Corte Aberta substitui
+`todostemas.asp` como fonte do STF.
 
 ### 11/09/2026 — Determinação sem ressalva de fase: "desde a determinação", não "não especificada"
 

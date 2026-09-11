@@ -955,8 +955,22 @@ function grupoSituacao(r) {
   if (s.indexOf('cancelad') >= 0) return 'Cancelado';
   if (s.indexOf('transit') >= 0) return 'Trânsito em julgado';
   if (s.indexOf('revisad') >= 0) return 'Revisado';
-  // O STF escreve "Acórdão de Repercussão Geral publicado" e "Acórdão de mérito
-  // publicado"; procurar a expressão exata "acórdão publicado" não alcança nenhuma.
+  /* Duas coisas diferentes com nome parecido, e a confusão entre elas era o
+     erro mais perigoso desta base.
+
+     "Acórdão de mérito publicado" é o fim da suspensão: publicado o acórdão
+     paradigma, os sobrestados retomam o curso (art. 1.040, III, do CPC).
+     "Acórdão de Repercussão Geral publicado" é quase o contrário — o Supremo
+     reconheceu a repercussão geral e o mérito continua pendente; é nesse
+     momento que o relator determina a suspensão nacional (art. 1.035, § 5º, e
+     art. 1.037, II). Tratar os dois como o mesmo "acórdão publicado" fazia o
+     portal dizer "sem suspensão em vigor" em tema com suspensão nacional viva.
+
+     Medido em 11/09/2026 contra o Corte Aberta do próprio STF: dos 22 temas
+     que o tribunal lista como suspensão nacional vigente, 15 apareciam aqui
+     como encerrados — todos por este motivo. */
+  if (/acordao de merito publicad/.test(s)) return 'Acórdão publicado';
+  if (/acordao de repercussao geral publicad/.test(s)) return 'Repercussão geral reconhecida';
   if (/acordao[^.]{0,40}publicad/.test(s)) return 'Acórdão publicado';
   if (s.indexOf('julgad') >= 0 || s.indexOf('em julgamento') >= 0) return 'Julgado';
   if (s.indexOf('sobrestad') >= 0 || s.indexOf('suspens') >= 0 || s.indexOf('suspender') >= 0) return 'Sobrestado';
@@ -1175,6 +1189,66 @@ function momentoDaSuspensao(r) {
      IMEDIATA, que é o tribunal dizendo isso com todas as letras; aqui quem diz
      é a lei, e a nota do bloco atribui a cada um o que é seu. */
   return 'DETERMINACAO';
+}
+
+/**
+ * O prazo que a própria determinação declarou.
+ *
+ * O art. 980 do CPC dá um ano ao incidente e, no parágrafo único, admite
+ * prorrogação — que o TJMG costuma registrar com prazo certo: "pelo prazo
+ * máximo de 60 (sessenta dias)", "por cento e oitenta dias". Vencido esse prazo
+ * sem notícia de outro, o texto da fonte deixa de responder sozinho. A
+ * suspensão do incidente vale até o julgamento, e prazo vencido não a levanta
+ * por si; mas quem vai decidir precisa saber que a última notícia escrita ali
+ * já passou da validade, e ir conferir o andamento.
+ *
+ * Lê-se só prazo em algarismo, presa a uma data e a uma palavra de suspensão.
+ * Prazo por extenso ("cento e oitenta dias") não se lê: é melhor não ler do que
+ * adivinhar data em cima de ordem judicial. Medido em 11/09/2026: 4 registros
+ * em 3.205 declaram prazo assim, e os quatro estão vencidos.
+ */
+var RE_PRAZO_DECLARADO = /(\d{2})\/(\d{2})\/(\d{4})([^.]{0,400}?)(?:pelo prazo(?: m[áa]ximo)? de|pelo per[íi]odo de|por)\s+(?:mais\s+)?(\d{1,3})\s*(?:\([^)]{0,30}\)?)?\s*dias/gi;
+
+function prazoDaSuspensao(r) {
+  var s = String(r.suspensao || '');
+  if (!s) return null;
+  var achado = null, m;
+  RE_PRAZO_DECLARADO.lastIndex = 0;
+  while ((m = RE_PRAZO_DECLARADO.exec(s))) {
+    /* O prazo tem de ser de suspensão. Data seguida de "por 30 dias" aparece
+       também em prazo de recurso e em prazo de vista, e nenhum dos dois diz
+       até quando os processos ficam parados. */
+    if (!/prorrog|suspens|sobrest/i.test(m[4])) continue;
+    var dia = Number(m[1]), mes = Number(m[2]), ano = Number(m[3]), dias = Number(m[5]);
+    if (!dias || mes < 1 || mes > 12 || dia < 1 || dia > 31) continue;
+    var fim = new Date(ano, mes - 1, dia + dias);
+    if (isNaN(fim.getTime())) continue;
+    if (!achado || fim > achado.fim) {
+      achado = { inicio: new Date(ano, mes - 1, dia), fim: fim, dias: dias, desde: m[1] + '/' + m[2] + '/' + m[3] };
+    }
+  }
+  if (!achado) return null;
+
+  /* Notícia posterior ao prazo derruba o aviso, e este é o ponto delicado da
+     leitura. O IRDR 74 prorrogou por 180 dias em 25/06/2025 e, em 27/11/2025,
+     prorrogou de novo "até o trânsito em julgado da ADI" — sem prazo em
+     número, que esta função não lê. Sem esta guarda, a ficha afirmaria que o
+     texto não traz prorrogação posterior tendo uma escrita ali. Havendo
+     qualquer data depois do início do prazo, a última palavra não é o prazo, e
+     o portal se cala em vez de errar.  */
+  var RE_DATA_SOLTA = /(\d{2})\/(\d{2})\/(\d{4})/g;
+  var posterior = false, d;
+  RE_DATA_SOLTA.lastIndex = 0;
+  while ((d = RE_DATA_SOLTA.exec(s))) {
+    var quando = new Date(Number(d[3]), Number(d[2]) - 1, Number(d[1]));
+    if (quando > achado.inicio) posterior = true;
+  }
+  return posterior ? null : achado;
+}
+
+function dataDoPrazo(d) {
+  var p = function (n) { return (n < 10 ? '0' : '') + n; };
+  return p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear();
 }
 
 function prepararRegistro(r) {
@@ -1928,6 +2002,13 @@ function porqueContinuaSuspenso(r) {
       'do Código de Processo Civil).';
   }
 
+  if (r._situacao === 'Repercussão geral reconhecida') {
+    return 'O Supremo reconheceu a repercussão geral e publicou o acórdão desse reconhecimento; ' +
+      'o mérito continua pendente. É nesse momento que a suspensão nacional é determinada ' +
+      '(art. 1.035, § 5º, e art. 1.037, II, do Código de Processo Civil), e ela só cessa com a ' +
+      'publicação do acórdão de mérito (art. 1.040, III).';
+  }
+
   if (r._situacao === 'Acórdão publicado') {
     var texto = 'O acórdão já foi publicado, mas a suspensão persiste enquanto pender recurso ' +
       'especial ou extraordinário contra o julgamento do incidente, que tem efeito suspensivo por ' +
@@ -2021,6 +2102,30 @@ function avisoDoMomento(r) {
 }
 
 /**
+ * A última prorrogação escrita na determinação já venceu.
+ *
+ * O aviso não muda a classificação, e é de propósito: a suspensão determinada
+ * em incidente vale até o julgamento (art. 980 e art. 982, § 5º, do CPC), de
+ * modo que prazo vencido não equivale a ordem levantada — tratá-lo assim seria
+ * o erro do IRDR 94 ao contrário, mandando sentenciar sob ordem viva. O que o
+ * aviso faz é dizer o que a fonte escreveu e até onde ela vai.
+ */
+function avisoDePrazoVencido(r) {
+  if (r.tipo === 'Informativo') return '';
+  var p = prazoDaSuspensao(r);
+  if (!p || p.fim >= new Date()) return '';
+  return '<div class="aviso a-MEDIO"><span aria-hidden="true">!</span><span>' +
+    '<strong>O prazo escrito na última prorrogação já venceu.</strong>' +
+    'A determinação registra que, em ' + esc(p.desde) + ', a suspensão foi prorrogada por ' +
+    p.dias + ' dias — prazo vencido em ' + esc(dataDoPrazo(p.fim)) + ' —, e o texto não traz ' +
+    'prorrogação posterior. ' +
+    (r._emVigor
+      ? 'A suspensão do incidente vale até o julgamento, e o prazo vencido não a levanta por si: esta ficha continua tratando a ordem como em vigor. Confira o andamento do incidente antes de decidir.'
+      : 'Esta ficha já trata a suspensão como encerrada. Ainda assim confira o andamento: prazo vencido não é ordem revogada, e o inverso também vale.') +
+    '</span></div>';
+}
+
+/**
  * Dois registros para o mesmo processo, porque a fonte digitou o número de
  * dois jeitos. O portal não funde nem esconde nenhum dos dois: identidade de
  * processo não se adivinha, e o que parece erro de digitação pode ser outro
@@ -2074,6 +2179,7 @@ function ficha(r) {
         (porqueContinuaSuspenso(r) ? '<span class="aviso-extra">' + esc(porqueContinuaSuspenso(r)) + '</span>' : '') +
         '</span></div>') +
       avisoDoMomento(r) +
+      avisoDePrazoVencido(r) +
       avisoDeDuplicidade(r) +
       avisoDeForaDaFonte(r) +
       botoesCopiar(r) +
@@ -2092,7 +2198,13 @@ function ficha(r) {
     campo('Situação', r._situacao) +
     campo('Pendências identificadas', pendencias(r)) +
     campoDeData('Julgamento', r.julgamento) +
-    campoDeData('Publicação do acórdão', r.publicacao) +
+    /* Em tema com repercussão geral reconhecida e mérito pendente, a data que
+       a fonte prende à situação é a da publicação do acórdão DO RECONHECIMENTO.
+       Sob o rótulo genérico ela seria lida como publicação do paradigma — que
+       é justamente o que ainda não houve. */
+    campoDeData(r._situacao === 'Repercussão geral reconhecida'
+      ? 'Publicação do acórdão de repercussão geral'
+      : 'Publicação do acórdão', r.publicacao) +
     campoDeData('Trânsito em julgado', r.transito) +
     '</dl></section>';
 
@@ -2591,6 +2703,7 @@ function abaAjuda() {
       campo('Afetado / admitido', 'O incidente ou recurso foi admitido e aguarda julgamento.') +
       campo('Sobrestado', 'O julgamento está suspenso à espera de pronunciamento de tribunal superior.') +
       campo('Julgado', 'O mérito foi julgado; o acórdão ainda não foi publicado.') +
+      campo('Repercussão geral reconhecida', 'O Supremo reconheceu a repercussão geral e publicou o acórdão do reconhecimento; o mérito continua pendente. É aqui que a suspensão nacional costuma ser determinada.') +
       campo('Acórdão publicado', 'O acórdão foi publicado e a tese pode ser consultada.') +
       campo('Trânsito em julgado', 'Não cabe mais recurso. A tese é definitiva.') +
       campo('Repercussão geral negada', 'O Supremo não reconheceu repercussão geral; a matéria segue nas instâncias ordinárias.') +
@@ -3139,6 +3252,7 @@ if (typeof module !== 'undefined' && module.exports) {
     motivoEncerramento: motivoEncerramento,
     avisoDe: avisoDe,
     momentoDaSuspensao: momentoDaSuspensao,
+    prazoDaSuspensao: prazoDaSuspensao,
     MOMENTO: MOMENTO
   };
 } else {

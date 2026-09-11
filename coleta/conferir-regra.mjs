@@ -102,6 +102,38 @@ export function conferirRegraDeSuspensao(dados, caminhoDoPortal) {
       }
     }
 
+    /* 8. Prazo declarado na determinação: quando a leitura acha um, ele tem de
+       ser inteiro — data de início legível, número de dias positivo e fim
+       depois do início. O aviso que nasce daí põe uma data em cima de decisão
+       judicial, e data errada ali é pior do que aviso nenhum. */
+    if (R.prazoDaSuspensao) {
+      const p = R.prazoDaSuspensao(r);
+      /* O portal roda dentro de um vm: a Data que vem de lá é de outro realm e
+         não passa por `instanceof Date`. Pergunta-se pelo comportamento. */
+      if (p && (typeof p.fim?.getTime !== 'function' || isNaN(p.fim.getTime()) || !(p.dias > 0) ||
+                p.fim <= p.inicio || !/^\d{2}\/\d{2}\/\d{4}$/.test(String(p.desde)))) {
+        falhas.push(r.id + ': prazo declarado ilegível (' + JSON.stringify(p) + ')');
+      }
+    }
+
+    /* 9. Acórdão de repercussão geral publicado não encerra nada. Ele é o
+       reconhecimento da repercussão geral, com o mérito pendente — e é o
+       momento em que a suspensão nacional é determinada (art. 1.035, § 5º, e
+       art. 1.037, II). Quem encerra é o acórdão de mérito (art. 1.040, III).
+       Enquanto os dois couberam no mesmo grupo "Acórdão publicado", 15 temas
+       que o próprio STF lista como suspensão nacional vigente apareciam no
+       portal como encerrados. */
+    const soRgPublicado = /ac[óo]rd[ãa]o de repercuss[ãa]o geral publicad/i.test(String(r.situacao || '')) &&
+      !/ac[óo]rd[ãa]o de m[ée]rito publicad/i.test(String(r.situacao || '')) &&
+      !/tr[âa]nsito|transitad|cancelad|prejudicad/i.test(String(r.situacao || '')) &&
+      /* "Acórdão de Repercussão Geral publicado — Não há repercussão geral" é o
+         acórdão que NEGA a repercussão geral: aí o tema acaba mesmo, e a
+         matéria volta às instâncias ordinárias. São 8 temas hoje. */
+      !/n[ãa]o h[áa] repercuss[ãa]o geral/i.test(String(r.situacao || ''));
+    if (soRgPublicado && encerrado) {
+      falhas.push(r.id + ': acórdão de repercussão geral publicado não encerra a suspensão — o mérito segue pendente (art. 1.035, § 5º, c/c art. 1.040, III)');
+    }
+
     if (!encerrado) {
       conta.porAlcance[r._alcance] = (conta.porAlcance[r._alcance] || 0) + 1;
     }
