@@ -1,8 +1,8 @@
 [
  [
   "STJ — temas e processos",
-  "2026-09-11T21:16:36.291Z",
-  "2026-09-11T21:16:36.291Z",
+  "2026-09-11T22:49:11.718Z",
+  "2026-09-11T22:49:11.718Z",
   "Consulta concluída",
   "1495",
   "O STJ publicou estes arquivos em 09/09/2026. Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -10,8 +10,8 @@
  ],
  [
   "TJMG — IUJ",
-  "2026-09-11T21:21:51.956Z",
-  "2026-09-11T21:21:51.956Z",
+  "2026-09-11T22:49:13.601Z",
+  "2026-09-11T22:49:13.601Z",
   "Consulta concluída",
   "48",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-09-11T21:21:53.227Z",
-  "2026-09-11T21:21:53.227Z",
+  "2026-09-11T22:49:15.783Z",
+  "2026-09-11T22:49:15.783Z",
   "Consulta concluída",
   "172",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,29 +28,29 @@
  ],
  [
   "STJ — informativos",
-  "2026-09-11T21:22:29.732Z",
-  "2026-09-11T12:00:19.557Z",
-  "Falha / cobertura pendente",
-  "0",
-  "Em 1 tentativa: A fonte respondeu HTTP 403. Resposta: Verifica&ccedil;&atilde;o autom&aacute;tica em andamento. Aguarde a verifica&ccedil;&atilde;o autom&aacute;tica. Caso n&atilde;o seja redirecionado, responda ao desafio abaixo. Enable JavaScript and c",
+  "2026-09-11T22:49:33.823Z",
+  "2026-09-11T22:49:33.823Z",
+  "Consulta concluída",
+  "15",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://processo.stj.jus.br/jurisprudencia/externo/informativo/"
  ],
  [
   "STF — repercussão geral",
-  "2026-09-11T21:22:31.474Z",
-  "2026-09-11T12:00:21.199Z",
-  "Falha / cobertura pendente",
-  "0",
-  "Em 1 tentativa: A fonte respondeu HTTP 403. Resposta: 403 Forbidden 403 Forbidden",
+  "2026-09-11T22:49:35.149Z",
+  "2026-09-11T22:49:35.149Z",
+  "Consulta concluída",
+  "1482",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
  ],
  [
   "STF — informativos",
-  "2026-09-11T21:22:33.019Z",
-  "2026-09-11T12:01:06.505Z",
-  "Falha / cobertura pendente",
-  "0",
-  "Em 1 tentativa: A fonte respondeu HTTP 403. Resposta: 403 Forbidden 403 Forbidden",
+  "2026-09-11T22:50:04.899Z",
+  "2026-09-11T22:50:04.899Z",
+  "Consulta concluída",
+  "1012",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://portal.stf.jus.br/textos/verTexto.asp?servico=informativoSTF"
  ]
 ]
