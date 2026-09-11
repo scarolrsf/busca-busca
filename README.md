@@ -12,11 +12,12 @@ suspensão que alcança o processo que estou para sentenciar?**
 
 ## Como funciona
 
-Três peças, todas gratuitas:
+Quatro peças, todas gratuitas:
 
 | Peça | Onde roda | Quando |
 | --- | --- | --- |
 | Coleta nas fontes oficiais | GitHub Actions | 6h07 e 18h07, horário de Brasília |
+| Vigia da coleta | GitHub Actions | 9h e 21h, horário de Brasília |
 | Base de dados | arquivos JSON no próprio repositório | a cada coleta |
 | Site | GitHub Pages | publica a cada alteração |
 
@@ -222,6 +223,46 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — Vigia da coleta: issue e e-mail quando a janela pula
+
+**Responsável:** Muse Spark, a pedido de Sarah (a coleta das 6h07 de hoje não
+rodou e nada avisou).
+
+**Motivo.** Uma coleta pulada não commita, então é silenciosa: o agendador do
+GitHub é de melhor esforço e às vezes atrasa horas ou pula a execução. A
+causa de hoje não está no `coletar.yml` (agendamento intacto) nem na plataforma
+(status operacional, sem incidentes) — foi o agendador.
+
+**O que mudou.** Novo `coleta/monitorar.mjs` + workflow `monitorar.yml`, às 9h
+e às 21h de Brasília (~3h de margem para os atrasos normais). Duas
+verificações, sobre a data de hoje em horário de Brasília:
+
+1. Existe commit "Coleta de DD/MM/AAAA"? Se não, a janela pulou — abre issue.
+2. Alguma fonte falha nos dois últimos commits de coleta? Uma falha isolada
+   é soluço e se resolve sozinha (o resumo da execução já avisa); só vira
+   issue quando persiste há ~12h.
+
+Com issue aberta, o trabalho termina em falha — a falha manda também o e-mail
+do GitHub. Quando normaliza, a issue fecha sozinha; se já houver issue aberta
+para o caso, nada é duplicado. Sem `GITHUB_TOKEN` (rodando à mão), só diz o
+veredito; `DATA_ESPERADA` permite testar a detecção contra outro dia.
+
+**Arquivos.** `coleta/monitorar.mjs` (novo), `.github/workflows/monitorar.yml`
+(novo), `README.md` (tabela "Como funciona" passa a quatro peças).
+
+**Validação.** Detecção exercitada localmente: hoje (11/09) acusa a falta do
+commit (saída 1) e, com `DATA_ESPERADA=10/09/2026`, acusa normalidade (saída
+0). Após o rebase, contra o histórico real: commit de hoje encontrado e 3
+fontes persistentes detectadas (STJ informativos, STF repercussão geral e STF
+informativos — STJ temas falhou só na última e ficou de fora, como desenhado).
+A criação de issue só acontece no Actions (`issues: write`) — primeira
+confirmação real na próxima janela.
+
+**Dados.** Nenhuma mudança na coleta nem na base.
+
+**Pendências.** Disparar hoje a coleta manualmente ("Run workflow" na aba
+Actions → Coleta), já que a janela das 6h foi perdida.
 
 ### 10/09/2026 — Reversão do limite de 68ch no texto jurídico
 
