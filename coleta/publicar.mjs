@@ -28,11 +28,57 @@ export function publicar() {
     delete copia.anotacaoManual;   // a conferência interna não vai ao ar
     const data = r.verificadoEm || conferencia[r.origem] || '';
     if (data) copia.verificadoEm = data; else delete copia.verificadoEm;
+    /* `verificadoEm` no registro só existe quando ele parou de aparecer na
+       fonte: `atualizarRegistros_` congela ali a data da última vez em que a
+       fonte o trouxe. Ficha com data velha, sozinha, não explica nada — quem
+       lê não sabe se a fonte inteira está parada ou se este registro saiu da
+       lista. O sinal vai explícito, e derivado: some quando a fonte voltar a
+       trazê-lo. */
+    if (r.verificadoEm && conferencia[r.origem] && r.verificadoEm !== conferencia[r.origem]) {
+      copia.foraDaFonte = r.verificadoEm;
+    }
     return copia;
   };
 
+  /* Duplicidade por erro de digitação na fonte.
+   *
+   * O TJMG publicou "2007816-54.2026.8.13.000" — três zeros onde o padrão CNJ
+   * pede quatro — para um processo que já constava com o número completo. Como
+   * identidade de processo não se adivinha, o coletor não juntou os dois: criou
+   * outro registro e anotou "identificador incompleto". Certo como regra, ruim
+   * como resultado: duas fichas do mesmo incidente, com situações diferentes.
+   *
+   * Aqui os dois se reconhecem pelo núcleo do número — as sete posições, o
+   * dígito e o ano, no padrão CNJ; ou o número do TJMG sem o sufixo do
+   * instrumento — e cada um passa a apontar o outro. Ninguém é fundido nem
+   * escondido: quem lê vê os dois números e decide. Medido em 11/09/2026 sobre
+   * a base inteira: um único grupo, nenhum falso positivo. */
+  const nucleoDoNumero = numero => {
+    const s = String(numero || '').replace(/\s+/g, '');
+    const cnj = s.match(/(\d{7}-\d{2}\.\d{4})/);
+    if (cnj) return 'cnj:' + cnj[1];
+    const tjmg = s.match(/(\d\.\d{4}\.\d{2}\.\d{6}-\d)/);
+    if (tjmg) return 'tjmg:' + tjmg[1];
+    return '';
+  };
+
+  const marcarDuplicidade = registros => {
+    const porNucleo = {};
+    registros.forEach(r => {
+      const k = nucleoDoNumero(r.numero);
+      if (k) (porNucleo[k] = porNucleo[k] || []).push(r);
+    });
+    Object.values(porNucleo).forEach(grupo => {
+      if (grupo.length < 2) return;
+      grupo.forEach(r => {
+        r.duplicidade = grupo.filter(o => o.id !== r.id).map(o => o.numero);
+      });
+    });
+    return registros;
+  };
+
   const dados = {
-    temas: base.ler('TEMAS DO PORTAL').map(paraOSite),
+    temas: marcarDuplicidade(base.ler('TEMAS DO PORTAL').map(paraOSite)),
     informativos: base.ler('INFORMATIVOS DO PORTAL').map(paraOSite),
     fontes: base.ler('FONTES'),
     alteracoes: historico.slice(-1200).reverse(),

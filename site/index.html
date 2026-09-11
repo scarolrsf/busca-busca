@@ -250,6 +250,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .dado dt{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta-3)}
 .dado dd{margin:0;font-size:.94rem}
 .dado dd.mono{font-family:var(--mono);font-size:12.5px;white-space:pre-wrap;line-height:1.5}
+.dado-nota{display:block;margin-top:.25rem;font-family:var(--sans);font-size:.82rem;color:var(--tinta-2);white-space:normal}
 .link-fonte{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--borda-forte);border-radius:var(--raio);padding:7px 12px;text-decoration:none;font-size:13.5px}
 .link-fonte:hover{border-color:var(--acento);background:var(--acento-fraco)}
 .procedencia{font-size:12.5px;color:var(--tinta-3);margin:12px 0 0}
@@ -1838,6 +1839,55 @@ function campo(rotulo, valor, mono) {
     esc(valor) + '</dd></div>';
 }
 
+/**
+ * Campo de data cujo conteúdo pode não ser data.
+ *
+ * A planilha de acompanhamento do TJMG traz "20", "71", "110" na coluna DATA DO
+ * JULGAMENTO — 43 registros, medidos em 11/09/2026. O erro é da fonte, e o
+ * valor não é apagado: este portal reproduz o que o tribunal publicou. Mas
+ * exibi-lo sob o rótulo "Julgamento", sem mais nada, faz parecer data e convida
+ * a erro de leitura. Então o valor fica, dizendo o que é.
+ */
+function campoDeData(rotulo, valor) {
+  if (!valor) return '';
+  if (ultimaData(valor) || /\d{4}-\d{2}-\d{2}/.test(String(valor))) return campo(rotulo, valor, true);
+  return '<div class="dado"><dt>' + esc(rotulo) + '</dt><dd class="mono">' + esc(valor) +
+    '<span class="dado-nota">A fonte oficial não publicou uma data aqui. ' +
+    'O valor é reproduzido como veio, e não deve ser lido como data.</span></dd></div>';
+}
+
+/**
+ * Dois registros para o mesmo processo, porque a fonte digitou o número de
+ * dois jeitos. O portal não funde nem esconde nenhum dos dois: identidade de
+ * processo não se adivinha, e o que parece erro de digitação pode ser outro
+ * processo. Mostra os dois números e devolve a decisão a quem lê.
+ */
+function avisoDeDuplicidade(r) {
+  if (!r.duplicidade || !r.duplicidade.length) return '';
+  var outros = r.duplicidade.map(function (n) { return '“' + n + '”'; }).join(', ');
+  return '<div class="aviso a-MEDIO"><span aria-hidden="true">!</span><span>' +
+    '<strong>Este processo consta na base com mais de um número.</strong>' +
+    'Além de “' + esc(r.numero) + '”, ele aparece como ' + esc(outros) + ' — sinal de ' +
+    'divergência de grafia na fonte oficial. As fichas podem trazer situações diferentes, ' +
+    'cada uma conforme a linha que lhe deu origem. Confira na fonte antes de citar.' +
+    '</span></div>';
+}
+
+/**
+ * O registro continua aqui, mas a fonte parou de listá-lo. A data de
+ * conferência dele congelou na última vez em que apareceu; sozinha, ela não
+ * distingue "a fonte inteira está parada" de "este registro saiu da lista".
+ */
+function avisoDeForaDaFonte(r) {
+  if (!r.foraDaFonte) return '';
+  return '<div class="aviso a-MEDIO"><span aria-hidden="true">!</span><span>' +
+    '<strong>A fonte oficial deixou de listar este registro.</strong>' +
+    'Ele foi visto pela última vez em ' + esc(dataBR(r.foraDaFonte, true)) + ' e é mantido aqui ' +
+    'com o conteúdo daquela data — nada é apagado quando a fonte para de trazer. ' +
+    'O que veio depois disso, se veio, não está refletido nesta ficha.' +
+    '</span></div>';
+}
+
 function ficha(r) {
   el('rail').hidden = true;
   el('rail').innerHTML = '';
@@ -1859,6 +1909,8 @@ function ficha(r) {
         (r._risco === 'BAIXO' ? '✓' : '!') + '</span><span><strong>' + esc(a.t) + '</strong>' + esc(a.c) +
         (porqueContinuaSuspenso(r) ? '<span class="aviso-extra">' + esc(porqueContinuaSuspenso(r)) + '</span>' : '') +
         '</span></div>') +
+      avisoDeDuplicidade(r) +
+      avisoDeForaDaFonte(r) +
       botoesCopiar(r) +
     '</header>';
 
@@ -1874,9 +1926,9 @@ function ficha(r) {
   h += '<section class="secao"><h2>Situação e datas</h2><dl class="dados">' +
     campo('Situação', r._situacao) +
     campo('Pendências identificadas', pendencias(r)) +
-    campo('Julgamento', r.julgamento, true) +
-    campo('Publicação do acórdão', r.publicacao, true) +
-    campo('Trânsito em julgado', r.transito, true) +
+    campoDeData('Julgamento', r.julgamento) +
+    campoDeData('Publicação do acórdão', r.publicacao) +
+    campoDeData('Trânsito em julgado', r.transito) +
     '</dl></section>';
 
   if (r.processos) {

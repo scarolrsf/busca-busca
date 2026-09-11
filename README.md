@@ -48,11 +48,14 @@ coleta/
   conferir-regra.mjs confere a regra de suspensão contra a base inteira
   conferir-fontes.mjs mostra, no resumo da execução, quais fontes responderam
   conferir-cadeia.mjs prova que o remendo do certificado do STF funciona
-  jurisprudencia-stf.mjs segunda via do STF pelo navegador (desligada por padrão)
-  complemento.mjs    a coleta feita daqui: atualiza, coleta e envia
+   jurisprudencia-stf.mjs segunda via do STF pelo navegador (desligada por padrão)
+   corte-aberta.mjs   baixa as 3 bases de RG do Corte Aberta (auditoria, fora da base)
+   complemento.mjs    a coleta feita daqui: atualiza, coleta e envia
   agendado.cmd       o que o Agendador do Windows executa todo dia, sem pause
 
 coletar-aqui.cmd  dois cliques para rodar o complemento no Windows
+
+MIGRACAO.md    mapa para migração de servidor, aba por aba; o estado atual continua aqui neste README
 
 espelho/         segunda via para o STJ, publicada na Cloudflare
   worker.js      refaz o pedido, só GET, só os dois endereços do STJ
@@ -332,6 +335,36 @@ a página mas não busca nada), e a extração lê `div.result-container` com
 também roda sozinho (`--tema`, `--limite`, `--headless`, `--json-out`) e traz
 um `--autoteste` sem rede que confere endereço, seletores e total.
 
+### Quando a fonte erra
+
+Tribunal também digita errado, e o portal precisa de uma posição sobre isso. A
+posição é: **não corrigir a fonte em silêncio, e não apresentar o erro como se
+fosse dado bom.** O valor fica visível, dizendo o que é.
+
+- **O mesmo processo com dois números.** O TJMG publicou
+  `2007816-54.2026.8.13.000` — três zeros onde o padrão CNJ pede quatro — para
+  um incidente que já constava com o número completo. Identidade de processo não
+  se adivinha: completar o zero acerta hoje e, algum dia, funde dois processos
+  distintos. Então o coletor não junta; cria o segundo registro e anota
+  "identificador incompleto". O que o portal acrescenta é o encontro entre eles:
+  na publicação, registros cujo núcleo do número coincide passam a apontar um
+  para o outro, e as duas fichas avisam. Quem lê vê os dois números e decide.
+  Isso importa: nesse caso as duas fichas davam respostas opostas sobre
+  suspensão — uma dizia que não havia ordem registrada, a outra que havia ordem
+  de abrangência ampla.
+- **Registro que some da lista.** Quando a fonte deixa de trazer um registro, ele
+  não é apagado: `atualizarRegistros_` congela nele a data da última vez em que
+  apareceu. Mas data velha, sozinha, não distingue "a fonte inteira está parada"
+  de "este registro saiu da lista". A ficha passa a dizer qual dos dois é.
+- **Não-data no campo de data.** A planilha do TJMG traz "20", "71", "110" na
+  coluna DATA DO JULGAMENTO — 43 registros em 11/09/2026. O valor é reproduzido,
+  porque é o que o tribunal publicou, mas sob aviso de que a fonte não publicou
+  data ali e aquilo não deve ser lido como data.
+
+Os três sinais são **derivados na publicação**, não gravados na base: somem
+sozinhos quando a fonte se corrige, e não geram entrada em "Novidades" — que é
+registro do que o tribunal faz, não do que nós passamos a enxergar.
+
 ### Certificado do STF
 
 Os dois endereços do STF enviam só o certificado deles e omitem o intermediário
@@ -436,6 +469,154 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — O portal passa a dizer quando a fonte erra
+
+**Responsável:** Muse Spark, a pedido de Sarah (perguntou por que o IUJ
+1.0000.25.219586-2/000 não aparece; a investigação achou outras três coisas).
+
+**A pergunta, respondida.** O IUJ 1.0000.25.219586-2/000 não consta em nenhum
+dos três lugares que o projeto lê: a planilha de acompanhamento da Turma
+Recursal (49 linhas válidas), a página da Turma Recursal e o RUPE. Não é
+omissão da coleta — o TJMG não o publica ali. Ou ainda não foi admitido, ou a
+planilha da Turma Recursal está incompleta; nesse segundo caso, vale avisá-los,
+porque a planilha é o instrumento oficial de acompanhamento.
+
+**O que a investigação encontrou.**
+
+1. **Duplicidade por erro de digitação.** `2007816-54.2026.8.13.000` (três
+   zeros) e `2007816-54.2026.8.13.0000` são o mesmo incidente — Leis
+   Complementares 162/2020 e 167/2021 de Itaúna. E as duas fichas davam
+   respostas **opostas** sobre suspensão: uma sem ordem registrada, outra com
+   ordem de abrangência ampla.
+2. **Sete IUJ com origem "Planilha inicial"**, que nenhuma coleta confirma. O
+   portal já dizia "Sem conferência automática registrada" neles; nada a fazer
+   além de registrar o entendimento.
+3. **Quarenta e três campos de data com não-data** — "20", "71", "110" —, todos
+   vindos assim da planilha do TJMG.
+
+**O que mudou.** Nada na coleta nem na base; os três sinais são derivados na
+publicação e no portal.
+
+- `coleta/publicar.mjs`: `nucleoDoNumero` agrupa registros cujo número coincide
+  no núcleo (padrão CNJ até o ano; ou número do TJMG sem o sufixo do
+  instrumento) e marca `duplicidade` em cada um, apontando o outro. Marca também
+  `foraDaFonte` quando a data congelada no registro difere da última leitura da
+  origem.
+- `site/index.html`: `avisoDeDuplicidade` e `avisoDeForaDaFonte` na ficha;
+  `campoDeData` exibe valor que não é data sob aviso, em vez de apresentá-lo sob
+  o rótulo "Julgamento" como se fosse.
+- `README.md`: seção "Quando a fonte erra" e esta entrada.
+
+**Por que derivado e não gravado.** Marcar isso na base geraria entrada em
+ALTERACOES e a aba "Novidades" diria que o tribunal mexeu no registro. Não
+mexeu. Além disso, sinal derivado some sozinho quando a fonte se corrige.
+
+**Validação.** Detecção medida antes de escrever: sobre os 3.205 registros, 55
+têm número de processo reconhecível e **um único grupo** tem mais de um membro —
+o de Itaúna. Nenhum falso positivo. Renderização conferida no navegador, na
+prévia local: as duas fichas de Itaúna mostram o aviso apontando uma para a
+outra; o campo "Julgamento 110" aparece com a ressalva; e o Tema 1373 do STF,
+com trânsito real, continua mostrando "22/02/2025" sem aviso nenhum. O sinal
+`foraDaFonte` não tem caso real hoje (nenhum registro congelado), então foi
+exercitado por simulação: congelei a data de um IUJ, publiquei, vi o aviso na
+ficha e reverti a base — `git status` limpo depois. A conferência da regra
+passou, e a contagem por alcance ficou idêntica.
+
+**Dados.** Nenhuma alteração na base. Nenhuma entrada nova em ALTERACOES.
+
+**Pendências.** Confirmar no sistema do TJMG se o IUJ 1.0000.25.219586-2/000 é
+incidente admitido e, sendo, avisar a Turma Recursal — tanto dele quanto do
+número com um zero a menos e das não-datas na coluna de julgamento. São erros da
+planilha oficial, e o portal só pode sinalizá-los.
+
+### 11/09/2026 — MIGRACAO.md: o mapa para passar o portal a outro servidor
+
+**Responsável:** Muse Spark, a pedido de Sarah (documento dentro da pasta,
+explicando tudo que o site faz, com quais ferramentas, de onde vêm as
+informações, em ordem de abas, para a migração sair com as pontas amarradas).
+
+**O que é.** Novo `MIGRACAO.md`, na raiz: fotografia operacional do sistema e
+passo a passo de reinstalação — o que o portal faz, pipeline coleta→base→site,
+tabela de ferramentas, as seis fontes e as vias paralelas, o site aba por aba
+(Temas e incidentes, Informativos, Favoritos, Novidades/calendário, Fontes e
+atualização, Como usar), estrutura de arquivos, tabela completa de segredos e
+variáveis, rotina, checklist de migração em 9 passos e o que não levar. Não é
+documento concorrente de estado: a regra de convivência está escrita no topo
+dele — o estado atual, as pendências e a história continuam aqui neste README,
+e em divergência vale este README, depois o código.
+
+**Como foi escrito.** Levantado do código, não da memória: abas e ordem em
+`site/index.html` (faixa comum, esquema do endereço após `#`, `localStorage`,
+seções do guia), papéis em `coleta/complemento.mjs`, horários em
+`.github/workflows/`, segredos nos workflows. Inclui o que nasceu em trabalho
+concorrente no mesmo dia: coleta local (`complemento.mjs`, `coletar-aqui.cmd`,
+tarefa `BuscaBusca-ColetaSTF`), espelho publicado, auditoria Corte Aberta e o
+calendário das novidades.
+
+**Arquivos.** `MIGRACAO.md` (novo), `README.md` (inventário e esta entrada).
+
+**Validação.** Releitura do documento contra o código (abas, parâmetros do
+endereço, chaves de `localStorage`, nomes de arquivos e horários); nenhuma
+mudança em coleta, base ou site.
+
+**Dados e implantação.** Nenhuma mudança. Publica junto com o próximo envio,
+como qualquer alteração.
+
+**Pendências.** Manter o mapa acompanhando o projeto: a regra permanente vale
+para ele — mudança que altere ferramenta, fonte, aba, segredo ou rotina rende
+atualização aqui e lá, na mesma entrega.
+
+### 11/09/2026 — Corte Aberta baixado de verdade: 3 CSVs, auditoria e um acerto de contagem
+
+**Responsável:** Muse Spark, a pedido de Sarah ("faça isso e vamos testar").
+
+**O que mudou.** Novo `coleta/corte-aberta.mjs`, no padrão da segunda via da
+jurisprudência (Playwright importado na hora, WAF respeitado, sem insistir):
+abre a página do Corte Aberta sem filtros, clica um por vez nos 3 links CSV
+da repercussão geral (`EXPORT-LINK-RG-TEMAS-CSV`,
+`EXPORT-LINK-RG-SUSPENSAO-NACIONAL-CSV`,
+`EXPORT-LINK-RG-REPRESENTATIVO-CONTROVERSIA-CSV`), guarda em
+`work/corte-aberta/` com hash em `hashes.json` e relata se mudou desde ontem.
+`--autoteste` roda sem rede nem navegador; `--baixar [--somente X]
+[--no-headless] [--dir]` faz a prova real. **Fase de auditoria paralela:
+não toca em `dados/` nem no site.**
+
+**O que o teste real trouxe.** Os três CSVs desceram nesta máquina:
+`rg-temas.csv` (14,5 MB, **1.483 registros**, 34 colunas, 12 de 12
+colunas-âncora do dicionário), `rg-suspensao-nacional.csv` (471 KB, 22
+registros) e `rg-representativo-controversia.csv` (2,8 MB, 201 registros).
+Os dicionários `.ods` oficiais foram lidos antes (Status Tema, Número tema,
+Título, Descrição, Tese, paradigma, relatores, situações, datas, ramo,
+assunto, **Situação Suspensão Nacional com Vigente/Cancelada + datas de
+determinação e revogação**).
+
+**Acerto no caminho.** A primeira contagem partiu por `\n` e achou 43.763
+"linhas" num arquivo de 1.483 registros: os campos longos (tese, decisões)
+trazem quebras dentro das aspas. `contarLinhasCsv` agora conta registros
+lógicos respeitando aspas, com teste dedicado no `--autoteste`.
+
+**Auditoria contra a base atual.** Universo idêntico: 1.482 temas lá e cá,
+zero ausentes dos dois lados. Dos 60 com marca de suspensão no portal, os 22
+vigentes do Corte Aberta estão todos marcados — **nenhuma suspensão vigente
+passa batido**. Os outros 38 são 37 "Cancelada" + 1 tema cancelado: a marca
+atual diz que *houve* determinação; o Corte Aberta diz se *continua valendo*,
+com datas. É estritamente melhor — e a decisão pendente é como exibir a
+suspensão cancelada (texto próprio? só histórico?).
+
+**Arquivos.** `coleta/corte-aberta.mjs` (novo), `README.md` (inventário e
+esta entrada). Os CSVs ficam em `work/` (fora do Git, confirmado no
+`git status`).
+
+**Validação.** `node --check` + `--autoteste` (15 verificações, todas
+passam) + 3 downloads reais + auditoria contra `dados/temas-do-portal.json`.
+Teste com amostras e consulta real, sem publicação: nada na base mudou.
+
+**Pendências.** (1) Ligar a rotina ao dia a dia (Agendador ou
+`complemento.mjs`) — hoje roda à mão; (2) decidir a exibição da suspensão
+cancelada e mapear as 34 colunas para o esquema de TEMAS, com
+`conferir-regra.mjs` verde, antes da troca de fonte; (3) repetir amanhã e
+conferir o "mudou desde ontem".
 
 ### 11/09/2026 — As datas do STF saem de "observações" e viram data
 
