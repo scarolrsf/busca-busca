@@ -17,6 +17,9 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { resposta, lerXlsxDeArquivo, lerCsv, armazenamento, limparTemporarios } from './ambiente.mjs';
 import { publicar } from './publicar.mjs';
+/* Importado, e não recopiado: o endereço da busca tem regra própria — é
+   `queryString`, não `termo=` — e duas cópias divergem no primeiro ajuste. */
+import { montarUrlBusca } from './jurisprudencia-stf.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BASE = armazenamento(path.join(RAIZ, 'dados'));
@@ -93,59 +96,60 @@ for (const nome of COLETORES) {
   console.log('   (' + ((Date.now() - inicio) / 1000).toFixed(0) + 's)');
 }
 
-/* Segunda via do STF, desligada por padrão (ver coleta/jurisprudencia-stf.mjs).
-   Exige navegador de verdade, que o runner agendado não tem — por isso só roda
-   quando JURISPRUDENCIA_STF=1, numa execução à mão. É prova de vida da via com
-   uma busca limitada, não coleta de conteúdo para o portal: o resultado bruto
-   vai para dados/jurisprudencia-stf.json e a tentativa é anotada em FONTES.
-   Uma falha aqui nunca derruba a coleta: anota-se e segue. */
-if (process.env.JURISPRUDENCIA_STF === '1') {
-  provarJurisprudenciaStf_();
-}
+/* O registro da prova fica no próprio arquivo dela, e não em FONTES.
+   FONTES é o painel das seis fontes oficiais do portal: uma sétima linha, que
+   só é atualizada em execução à mão, apareceria ao leitor como fonte do portal
+   com data velha, e o vigia da coleta a leria como fonte falhando há duas
+   janelas — abrindo issue todo dia por causa de uma prova opcional. */
+const TEMA_DA_PROVA = 'fornecimento de medicamentos';
 
 function provarJurisprudenciaStf_() {
   const nome = 'STF — jurisprudência (navegador)';
   const tentativa = new Date().toISOString();
   const prova = path.join(RAIZ, 'dados', 'jurisprudencia-stf.json');
+  const anotar = (registro) =>
+    fs.writeFileSync(prova, JSON.stringify(Object.assign({ fonte: nome, tentativa }, registro), null, 1));
   try {
     const r = spawnSync(process.execPath,
       [path.join(RAIZ, 'coleta', 'jurisprudencia-stf.mjs'),
-        '--tema', 'fornecimento de medicamentos', '--headless', '--limite', '3',
+        '--tema', TEMA_DA_PROVA, '--headless', '--limite', '3',
         '--json-out', prova],
       { encoding: 'utf8', timeout: 300000 });
     if (r.status !== 0) throw new Error('A prova de vida saiu com erro: ' + String(r.stderr || r.stdout || '').slice(0, 300));
     const resultado = JSON.parse(fs.readFileSync(prova, 'utf8'));
     if (resultado.bloqueadoWaf) throw new Error('WAF bloqueou o navegador; prova adiada para uso manual.');
-    const atuais = BASE.ler(TABELAS.fontes);
-    const linha = [nome, tentativa, tentativa, 'Consulta concluída',
-      String(resultado.itens.length),
-      'Prova de vida da segunda via: "' + resultado.termo + '" com ' + resultado.total +
-      ' resultado(s), ' + resultado.itens.length + ' ficha(s) guardada(s) em jurisprudencia-stf.json.',
-      montarUrlBuscaStf_(resultado.termo)];
-    const anterior = atuais.find(f => f[0] === nome);
-    if (anterior) atuais[atuais.indexOf(anterior)] = linha; else atuais.push(linha);
-    BASE.gravar(TABELAS.fontes, atuais);
-    const conferencia = Object.fromEntries(BASE.ler(TABELAS.conferencia).map(l => [l[0], l[1]]));
-    conferencia[nome] = tentativa;
-    BASE.gravar(TABELAS.conferencia,
-      Object.entries(conferencia).sort((a, b) => (a[0] < b[0] ? -1 : 1)));
-    console.log(nome + ': ' + resultado.itens.length + ' ficha(s) de ' + resultado.total + ' resultado(s).');
+    anotar(Object.assign({
+      situacao: 'Prova concluída',
+      url: montarUrlBusca(resultado.termo || TEMA_DA_PROVA)
+    }, resultado));
+    console.log(nome + ': ' + resultado.itens.length + ' ficha(s) de ' +
+      (resultado.total == null ? 'total não lido' : resultado.total + ' resultado(s)') + '.');
   } catch (e) {
-    const atuais = BASE.ler(TABELAS.fontes);
-    const anterior = atuais.find(f => f[0] === nome);
-    const linha = [nome, tentativa, (anterior && anterior[2]) || '', 'Falha / cobertura pendente',
-      '0', String(e.message || e).slice(0, 1400), BUSCA_JURISPRUDENCIA_STF_];
-    if (anterior) atuais[atuais.indexOf(anterior)] = linha; else atuais.push(linha);
-    BASE.gravar(TABELAS.fontes, atuais);
+    /* Sem BASE nem FONTES aqui: uma falha na prova não pode mudar o que o
+       portal mostra, nem acionar o vigia. Fica escrita no arquivo da prova. */
+    anotar({
+      situacao: 'Prova falhou',
+      detalhe: String(e.message || e).slice(0, 1400),
+      url: montarUrlBusca(TEMA_DA_PROVA),
+      itens: []
+    });
     console.error(nome + ': ' + e.message);
   }
 }
 
-const BUSCA_JURISPRUDENCIA_STF_ = 'https://jurisprudencia.stf.jus.br/pages/search';
-function montarUrlBuscaStf_(termo) {
-  return BUSCA_JURISPRUDENCIA_STF_ + '?base=acordaos&pesquisa_inteiro_teor=false&sinonimo=true' +
-    '&plural=true&radicais=false&buscaExata=true&page=1&pageSize=10' +
-    '&queryString=' + encodeURIComponent(termo) + '&sort=_score&sortBy=desc';
+/* Segunda via do STF, desligada por padrão (ver coleta/jurisprudencia-stf.mjs).
+   Exige navegador de verdade, que o runner agendado não tem — por isso só roda
+   quando JURISPRUDENCIA_STF=1, numa execução à mão. É prova de vida da via com
+   uma busca limitada, não coleta de conteúdo para o portal: o resultado bruto e
+   a situação da tentativa ficam em dados/jurisprudencia-stf.json.
+   Uma falha aqui nunca derruba a coleta: anota-se e segue.
+
+   A chamada vem depois das declarações de propósito: `const` não sobe como
+   `function`, e chamar antes deixaria o módulo com uma constante inacessível —
+   o erro cairia dentro do catch, que usaria a mesma constante e derrubaria a
+   coleta inteira, justamente o que este trecho promete nunca fazer. */
+if (process.env.JURISPRUDENCIA_STF === '1') {
+  provarJurisprudenciaStf_();
 }
 
 /* ------------------------------------------------ o que o site vai ler */

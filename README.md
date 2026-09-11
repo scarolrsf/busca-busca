@@ -186,11 +186,14 @@ agendado não tem, e navegador pede volume baixo. Por isso ela só roda com
 o STF responde. Sem a variável, a coleta se comporta exatamente como antes.
 
 Quando ligada, roda uma prova de vida limitada (uma busca, 3 fichas): o
-resultado bruto vai para `dados/jurisprudencia-stf.json` e a tentativa é
-anotada em `fontes.json` como "STF — jurisprudência (navegador)". Nada disso
-entra em TEMAS nem em INFORMATIVOS — o grão é outro (acórdãos, não temas de
-repercussão geral) — e uma falha aqui nunca derruba a coleta: anota-se e
-segue. Se o WAF bloquear, o módulo para e orienta o uso manual, sem insistir.
+resultado bruto e a situação da tentativa ficam em
+`dados/jurisprudencia-stf.json`, e só ali. Nada disso entra em TEMAS, em
+INFORMATIVOS nem em FONTES — o grão é outro (acórdãos, não temas de
+repercussão geral), e uma sétima linha em FONTES apareceria ao leitor como
+fonte do portal com data velha, além de o vigia a ler como fonte falhando há
+duas janelas e abrir issue todo dia por causa de uma prova opcional. Uma falha
+aqui nunca derruba a coleta: anota-se no arquivo da prova e segue. Se o WAF
+bloquear, o módulo para e orienta o uso manual, sem insistir.
 
 Dois detalhes que a medição corrigiu e valem para qualquer uso futuro: o
 parâmetro real da busca é `queryString` (um endereço montado com `termo=` abre
@@ -322,30 +325,38 @@ agendado.
   interface com espera ao WAF, o atalho manual do SCON/STJ e um `--autoteste`
   sem rede.
 - `coleta/executar.mjs`: quando `JURISPRUDENCIA_STF=1`, roda uma prova de vida
-  limitada (uma busca, 3 fichas) e guarda o bruto em
-  `dados/jurisprudencia-stf.json`, anotando a tentativa em FONTES como
-  "STF — jurisprudência (navegador)". Sem a variável, nada muda. Falha aqui
-  nunca derruba a coleta.
+  limitada (uma busca, 3 fichas) e guarda o bruto e a situação da tentativa em
+  `dados/jurisprudencia-stf.json`, sem tocar em FONTES (uma sétima linha ali
+  confundiria o painel das seis fontes e acionaria o vigia à toa). Sem a
+  variável, nada muda. A chamada vem depois das declarações, de propósito:
+  `const` não sobe como `function`, e chamar antes derrubou a coleta inteira
+  na primeira tentativa — justamente o que este trecho promete nunca fazer.
+  Falha aqui nunca derruba a coleta.
 - `.github/workflows/coletar.yml`: repassa `JURISPRUDENCIA_STF` (variável do
   repositório; vazia por padrão, logo desligada).
 - `README.md`: inventário, nova seção "Segunda via do STF" e esta entrada.
 
 **Validação.** `node --check` nos dois arquivos tocados e
 `node coleta/jurisprudencia-stf.mjs --autoteste`: 9 verificações, todas
-passaram, sem rede e sem navegador. Nenhuma consulta real foi disparada por
-esta entrega; o Playwright sequer está instalado nesta máquina. A confirmação
-da via em produção depende de uma execução à mão com `JURISPRUDENCIA_STF=1` e
-navegador instalado.
+passaram, sem rede e sem navegador. Na sequência, dois acertos em trabalho
+concorrente: `.first` virou `.first()` (no Playwright JS é método; o
+protótipo Python usava propriedade — era esse o erro que a primeira prova
+escondia atrás da queda acima) e o registro da prova saiu de FONTES para o
+próprio arquivo dela. Com isso, a primeira prova de vida real passou nesta
+máquina: WAF liberou, total "961", 3 fichas (RE 605533/sjur418770, RE
+657718/sjur436062, RE 1366243/sjur514534), guardadas em
+`dados/jurisprudencia-stf.json`.
 
-**Dados.** Nenhuma mudança na base nem no site. Quando ligada, a via cria
-`dados/jurisprudencia-stf.json` (bruto, fora do `publicar.mjs`) e uma linha
-nova em `fontes.json`/`conferencia.json`; TEMAS e INFORMATIVOS não são tocados.
+**Dados.** A base ganhou `dados/jurisprudencia-stf.json` (bruto da prova, fora
+do `publicar.mjs`); TEMAS, INFORMATIVOS e FONTES seguem o regime das seis
+fontes, sem linha nova.
 
-**Pendências.** Instalar o Playwright onde a prova for rodada (`npm i
-playwright`, `npx playwright install chromium`), definir
-`JURISPRUDENCIA_STF=1` nas variáveis do repositório ou só na execução manual,
-e rodar a primeira prova de vida. As mudanças do Claude Code seguem intactas
-como base — esta entrega só soma a via nova.
+**Pendências.** Definir `JURISPRUDENCIA_STF=1` nas variáveis do repositório ou
+só na execução manual, para as próximas provas. O Playwright com Chromium já
+está instalado nesta máquina (`npm i playwright --no-save`, fora do
+versionamento). As mudanças do Claude Code seguem intactas como base — esta
+entrega só soma a via nova, com o acerto concorrente conciliado sem
+sobrescrever.
 
 ### 11/09/2026 — Espelho para o STJ: o direto primeiro, a Cloudflare no 403
 

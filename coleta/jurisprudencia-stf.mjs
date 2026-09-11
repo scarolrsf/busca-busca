@@ -143,13 +143,13 @@ export async function buscarViaNavegador(termo, { headless = true, limite = 3, t
     if (bloqueado) {
       return { termo, url: page.url(), titulo, bloqueadoWaf: true, total: null, itens: [] };
     }
-    const campo = page.locator('input').first;
+    const campo = page.locator('input').first();
     await campo.click();
     await campo.fill(termo);
     await page.waitForTimeout(800);
     await campo.press('Enter');
     try {
-      await page.getByText(SELETORES.espera).first.waitFor({ timeout: 30000 });
+      await page.getByText(SELETORES.espera).first().waitFor({ timeout: 30000 });
     } catch (e) { /* sem o total, extrai-se o que renderizou */ }
     await page.waitForTimeout(4000);
 
@@ -162,15 +162,15 @@ export async function buscarViaNavegador(termo, { headless = true, limite = 3, t
     const itens = [];
     for (let i = 0; i < Math.min(quantas, limite); i++) {
       const ficha = page.locator(SELETORES.ficha).nth(i);
-      const numero = await ficha.locator(SELETORES.numero).first.innerText({ timeout: 3000 })
+      const numero = await ficha.locator(SELETORES.numero).first().innerText({ timeout: 3000 })
         .then(t => t.trim()).catch(() => null);
-      const detalhe = await ficha.locator(SELETORES.detalhe).first.getAttribute('href', { timeout: 3000 })
+      const detalhe = await ficha.locator(SELETORES.detalhe).first().getAttribute('href', { timeout: 3000 })
         .then(detalheAbsoluto).catch(() => null);
-      const acompanhamento = await ficha.locator(SELETORES.acompanhamento).first
+      const acompanhamento = await ficha.locator(SELETORES.acompanhamento).first()
         .getAttribute('href', { timeout: 3000 }).catch(() => null);
-      const cabecalho = await ficha.locator(SELETORES.cabecalho).first.innerText({ timeout: 3000 })
+      const cabecalho = await ficha.locator(SELETORES.cabecalho).first().innerText({ timeout: 3000 })
         .catch(() => '');
-      const selo = await ficha.locator(SELETORES.selo).first.innerText({ timeout: 3000 })
+      const selo = await ficha.locator(SELETORES.selo).first().innerText({ timeout: 3000 })
         .then(t => t.trim().slice(0, 200)).catch(() => null);
       const textos = await ficha.locator(SELETORES.textos).allInnerTexts().catch(() => []);
       const campos = analisarCabecalho(cabecalho);
