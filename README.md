@@ -158,12 +158,41 @@ Desligar a tarefa não quebra nada: a coleta agendada do GitHub continua, e o
 
 | Fonte | Como é lida |
 | --- | --- |
-| STJ — temas e processos | CSV de dados abertos |
+| STJ — temas e processos | CSV de dados abertos; endereço e data de publicação pela API do catálogo |
 | STJ — informativos | HTML da edição corrente |
 | TJMG — IRDR, IAC e GR | consulta paginada no RUPE, com cookie e POST |
 | TJMG — IUJ | planilha de acompanhamento da Turma Recursal |
 | STF — repercussão geral | tabela "Todos os temas" + lista com a marca de suspensão |
 | STF — informativos | planilha oficial de dados do Informativo |
+
+### Arquivo, API ou leitura de página
+
+Pergunta que o projeto precisa saber responder: metade das fontes vem por via
+estruturada, metade por leitura da página — e não por preferência, mas porque
+três tribunais não publicam aquele dado de outro jeito.
+
+| Via | Fontes | Registros |
+| --- | --- | --- |
+| API de dados abertos e arquivos oficiais | STJ — temas e processos; STF — informativos; TJMG — IUJ | 2.555 |
+| Leitura da página publicada | STF — repercussão geral; TJMG — RUPE; STJ — informativos | 1.669 |
+
+O catálogo de dados abertos do STJ é um CKAN, e a coleta usa a API dele para
+perguntar o endereço atual do CSV em vez de presumi-lo — o endereço carrega o
+identificador do arquivo publicado, e uma republicação com outro identificador
+quebraria a coleta em silêncio. A API também diz **quando o STJ publicou**, que
+é outra coisa que quando nós lemos: as duas datas aparecem no painel de fontes.
+
+Existe uma API interna no aplicativo de jurisprudência do STF
+(`POST /api/search/search`), usada pelo próprio front-end do site. Ela não é
+publicada nem oferecida a terceiros: usá-la seria mais estável que ler a tela,
+mas continuaria sendo leitura não contratada — não vira API oficial por
+devolver JSON. Fica registrado o achado, não a decisão de usá-la.
+
+O que sustenta a leitura de página aqui não é o meio, é a conduta: dados
+públicos por definição legal e sem dado pessoal; duas consultas por dia, uma
+requisição por vez; recusa respeitada (um 403 encerra a fonte na primeira
+tentativa); e nada forjado — nenhum token falsificado, nenhum desafio
+anti-robô resolvido por programa.
 
 Quando uma fonte não responde, **nada é apagado**: os registros dela continuam
 sendo os da última consulta bem-sucedida, a falha é anotada, e a aba "Fontes e
@@ -368,6 +397,48 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — O endereço do CSV do STJ passa a ser perguntado, não presumido
+
+**Responsável:** Muse Spark, a pedido de Sarah (perguntaram a ela se o projeto
+lê as fontes por leitura de página ou por API).
+
+**Motivo.** A pergunta expôs um risco silencioso. O endereço do CSV de dados
+abertos do STJ estava fixo no código, e ele carrega o identificador do arquivo
+publicado: republicado o conjunto com outro identificador, a coleta passaria a
+receber 404 e a maior fonte do portal cairia sem que nada no código estivesse
+errado. O catálogo do STJ é um CKAN, e CKAN tem API — dava para perguntar.
+
+**O que mudou.** Em `coleta/regras.js`:
+
+- `catalogoStj_()` consulta `package_show` e devolve os endereços de hoje de
+  `Temas.csv` e `Processos.csv`, mais a data em que o STJ os publicou. Falhando
+  a API, ou vindo diferente do esperado, valem os endereços fixos em `PILOTO` e
+  o detalhe da fonte diz isso — o conjunto continua sendo lido.
+- `anotarNaFonte_()`: uma fonte pode acrescentar uma frase ao detalhe que o
+  painel mostra. O STJ usa para dizer a data de publicação. Zerada a cada
+  tentativa, vazia nas demais fontes.
+- `README.md`: seção "Arquivo, API ou leitura de página", que responde à
+  pergunta com números.
+
+**O que não mudou, de propósito.** A data não serve para pular o download. Ler
+de novo é o que garante que a base bate com a fonte, e 2,5 MB duas vezes por dia
+não pesam. A ideia de economizar o download foi levantada por mim e descartada
+por isso.
+
+**Validação.** Duas execuções reais do coletor do STJ, contra uma cópia isolada
+da base. Com a API: 1.495 registros e detalhe "O STJ publicou estes arquivos em
+09/09/2026". Com o endereço da API trocado por um método inexistente: os mesmos
+1.495 registros pelos endereços fixos, e o detalhe dizendo que o catálogo não
+respondeu. Conferido também que o endereço devolvido pela API hoje é idêntico
+ao que estava fixo — a mudança é invisível agora e protetora depois.
+
+**Dados.** Sem mudança de conteúdo. O que muda é o detalhe da fonte STJ no
+painel, que passa a trazer a data de publicação ao lado da data de consulta.
+
+**Pendências.** As outras cinco fontes continuam com endereço fixo; só o STJ
+oferece catálogo com API. O espelho do STJ segue esperando a publicação do
+Worker.
 
 ### 11/09/2026 — Coleta na máquina da Sarah, em dois cliques
 

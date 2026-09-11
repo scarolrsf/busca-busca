@@ -27,9 +27,48 @@ const ROTULOS = ['ID','Tribunal','Tipo','Número / processo','Questão','Área',
 const HF = ['Fonte','Última tentativa','Último sucesso','Resultado','Registros lidos','Detalhe','URL'];
 const HH = ['Detectado em','ID','Identificação','Campo','Valor anterior','Valor novo','Fonte','Natureza'];
 
+/* O catálogo de dados abertos do STJ é um CKAN, e CKAN tem API. Vale usá-la por
+   dois motivos. O primeiro é durabilidade: o endereço do CSV carrega o
+   identificador do arquivo publicado, e republicar o conjunto com outro
+   identificador quebraria a coleta em silêncio — pela API, o endereço de hoje é
+   perguntado, não presumido. O segundo é que ela diz *quando* o STJ publicou,
+   que é coisa diferente de quando nós lemos, e é a data que interessa a quem
+   vai citar o precedente.
+
+   Não serve para pular o download: ler de novo é justamente o que garante que
+   a base bate com a fonte, e 2,5 MB duas vezes por dia não pesam. A data é
+   informação para o painel, não desculpa para não conferir.
+
+   Se a API não responder ou vier diferente do esperado, vale o endereço fixo em
+   PILOTO — o conjunto continua sendo lido, sem a data de publicação. */
+const CKAN_PRECEDENTES='https://dadosabertos.web.stj.jus.br/api/3/action/package_show?id=4238da2f-c07b-4c1a-b345-4402accacdcf';
+function catalogoStj_(){
+  try{
+    const j=JSON.parse(buscarTexto_(CKAN_PRECEDENTES));
+    if(!j||j.success!==true||!j.result||!Array.isArray(j.result.resources))return null;
+    const achar=nome=>j.result.resources.find(r=>String(r.name||'').trim().toLowerCase()===nome);
+    const temas=achar('temas.csv'),processos=achar('processos.csv');
+    if(!temas||!temas.url||!processos||!processos.url)return null;
+    // Os dois arquivos são republicados juntos; a data mais recente descreve o conjunto.
+    const quando=[temas.last_modified,processos.last_modified,j.result.metadata_modified]
+      .filter(Boolean).sort().pop();
+    return {temas:temas.url,processos:processos.url,publicado:dataDoIso_(quando)};
+  }catch(e){return null;}
+}
+function dataDoIso_(iso){
+  const m=String(iso||'').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m?m[3]+'/'+m[2]+'/'+m[1]:'';
+}
+
 // Apenas os dois métodos de leitura são públicos no aplicativo web.
 function coletarSTJ_(){executarFonte_('STJ — temas e processos',PILOTO.stjTemas,()=>{
-  const temas=csvObjetos_(buscarTexto_(PILOTO.stjTemas));const processos=csvObjetos_(buscarTexto_(PILOTO.stjProcessos));
+  const catalogo=catalogoStj_();
+  anotarNaFonte_(catalogo&&catalogo.publicado
+    ? 'O STJ publicou estes arquivos em '+catalogo.publicado+'.'
+    : 'O catálogo de dados abertos não respondeu; endereços fixos foram usados, e a data de publicação não pôde ser lida.');
+  const enderecoTemas=(catalogo&&catalogo.temas)||PILOTO.stjTemas;
+  const enderecoProcessos=(catalogo&&catalogo.processos)||PILOTO.stjProcessos;
+  const temas=csvObjetos_(buscarTexto_(enderecoTemas));const processos=csvObjetos_(buscarTexto_(enderecoProcessos));
   if(temas.length<100||!temas[0].sequencialPrecedente||!('situacao' in temas[0])||processos.length<100)throw Error('Estrutura ou volume do conjunto STJ inesperado; base anterior preservada.');
   const groups={};processos.forEach(p=>(groups[p.sequencialPrecedente]||(groups[p.sequencialPrecedente]=[])).push(p));
   const records=consolidarSTJ_(temas.filter(t=>t.tipoPrecedente==='Tema'||t.tipoPrecedente==='IAC')).map(t=>{
@@ -79,6 +118,11 @@ function coletarInformativosSTF_(){executarFonte_('STF — informativos',PILOTO.
    tempo esgotado, 429, 5xx e a página errada que chega com 200, que nem código
    de erro traz. */
 const TENTATIVAS_POR_FONTE=3;
+/* O que a fonte tem a dizer nesta execução além do de sempre — a data em que o
+   tribunal publicou, por exemplo. Fica no detalhe que o painel mostra, antes da
+   frase padrão. Vazio na maioria das fontes, e zerado a cada tentativa. */
+let observacaoDaFonte_='';
+function anotarNaFonte_(texto){observacaoDaFonte_=String(texto||'');}
 /* Sem código, o erro não veio do servidor: é rede, leitura ou reconhecimento —
    e esses podem dar certo na tentativa seguinte. Com código, repete-se apenas o
    que o próprio servidor apresenta como transitório. */
@@ -93,9 +137,12 @@ function executarFonte_(name,url,fn){
   for(let t=1;t<=TENTATIVAS_POR_FONTE;t++){
     const time=new Date().toISOString();
     feitas=t;
+    observacaoDaFonte_='';   // cada tentativa conta a sua própria história
     try{
       const count=fn();
-      registrarFonte_(name,time,time,'Consulta concluída',count,'Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.',url);
+      registrarFonte_(name,time,time,'Consulta concluída',count,
+        (observacaoDaFonte_?observacaoDaFonte_+' ':'')+
+        'Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.',url);
       console.log(name+': '+count+' registros processados.'+(t>1?' (na '+t+'ª tentativa)':''));
       return;
     }catch(e){
