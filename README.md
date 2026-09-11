@@ -182,11 +182,26 @@ identificador do arquivo publicado, e uma republicação com outro identificador
 quebraria a coleta em silêncio. A API também diz **quando o STJ publicou**, que
 é outra coisa que quando nós lemos: as duas datas aparecem no painel de fontes.
 
-Existe uma API interna no aplicativo de jurisprudência do STF
+**O STF não tem API para o que este projeto precisa.** Procurado em 11/09/2026:
+`dadosabertos.stf.jus.br` e `api.stf.jus.br` não existem (o nome nem resolve);
+`portal.stf.jus.br/dadosabertos/` devolve a casca do portal, não um catálogo. O
+programa de dados abertos do tribunal é o **Corte Aberta**, e ele é entregue
+como **painéis Qlik Sense** em `transparencia.stf.jus.br` — inclusive o de
+repercussão geral, que é onde mora a marca de suspensão nacional. Painel Qlik
+se consulta pela tela, com exportação de CSV feita a mão; o que existe por trás
+é a interface interna do Qlik, sem contrato público. Serve como **conferência
+manual**, não como fonte automática.
+
+Existe também uma API interna no aplicativo de jurisprudência do STF
 (`POST /api/search/search`), usada pelo próprio front-end do site. Ela não é
 publicada nem oferecida a terceiros: usá-la seria mais estável que ler a tela,
 mas continuaria sendo leitura não contratada — não vira API oficial por
-devolver JSON. Fica registrado o achado, não a decisão de usá-la.
+devolver JSON, e trocar uma leitura de página por outra não melhora a posição
+do projeto. Fica registrado o achado, não a decisão de usá-la.
+
+O **DataJud, do CNJ**, é API pública de verdade, com chave. Não serve aqui: é
+de dados processuais, não de temas de repercussão geral nem de ordens de
+suspensão.
 
 O que sustenta a leitura de página aqui não é o meio, é a conduta: dados
 públicos por definição legal e sem dado pessoal; duas consultas por dia, uma
@@ -246,6 +261,18 @@ combinada. Sem as duas variáveis configuradas — `ESPELHO_URL` e
 `ESPELHO_CHAVE`, ambas segredos do repositório — a coleta se comporta
 exatamente como se o espelho não existisse. É o caso de quem roda à mão e o de
 um fork. Para publicar ou trocar a chave, ver `espelho/wrangler.toml`.
+
+**Publicado em 11/09/2026** em `espelho-busca-busca.sarahcarolina37.workers.dev`,
+no plano gratuito.
+
+**O que a Cloudflare não é.** Ela não hospeda nada do portal e não aparece para
+quem consulta. O endereço oficial continua sendo
+`https://scarolrsf.github.io/busca-busca/`, servido pelo GitHub Pages; a coleta
+oficial continua sendo a do GitHub Actions; a base continua no repositório. O
+Worker é um leitor de recado: durante a coleta, e só quando o STJ recusa, ele
+busca um arquivo público e devolve os bytes como vieram. Nenhum dado do projeto
+passa a morar lá, e desligá-lo faz a coleta voltar ao que era antes — as fontes
+do STJ marcadas como falha até que o tribunal volte a aceitar o GitHub.
 
 Se o espelho também não trouxer, o que fica registrado em `dados/fontes.json` é
 a recusa **da fonte**, com uma nota de que a segunda via também falhou. A
@@ -397,6 +424,54 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — Espelho publicado; e o STF não tem API para o que precisamos
+
+**Responsável:** Muse Spark, a pedido de Sarah (publicar o Worker, mantendo
+link e rede oficiais no GitHub; e verificar se o STF oferece API).
+
+**O STF.** Procurado de verdade, não presumido. `dadosabertos.stf.jus.br` e
+`api.stf.jus.br` não resolvem; `portal.stf.jus.br/dadosabertos/` devolve a casca
+do portal (54 KB, a mesma página genérica que o tribunal serve com 200 quando
+não tem o que entregar). O programa de dados abertos é o **Corte Aberta**,
+entregue como painéis **Qlik Sense** em `transparencia.stf.jus.br` — inclusive
+o de repercussão geral, onde mora a marca de suspensão nacional. Painel Qlik se
+lê pela tela, com CSV exportado a mão: serve para conferência manual, não como
+fonte automática. Some-se a isso a API interna do aplicativo de jurisprudência
+(`POST /api/search/search`), que não é contratada com ninguém, e o **DataJud**
+do CNJ, que é API pública de verdade mas de dados processuais. Conclusão: a
+leitura da página publicada continua sendo, para o STF, o caminho certo — não
+por gosto, por falta de alternativa oferecida pelo tribunal.
+
+**O espelho.** Publicado no plano gratuito da Cloudflare como
+`espelho-busca-busca.sarahcarolina37.workers.dev`, com a chave gravada como
+segredo do Worker. Faltam os dois segredos do repositório para ele entrar em
+uso — enquanto não existirem, a coleta roda como antes.
+
+**O que a Cloudflare não é**, registrado a pedido de Sarah: o endereço oficial
+continua sendo o GitHub Pages, a coleta oficial continua sendo a do GitHub
+Actions, e a base continua no repositório. O Worker não hospeda nada do portal,
+não aparece a quem consulta, e desligá-lo devolve a coleta ao estado anterior.
+
+**Arquivos.** `README.md` (seção "Arquivo, API ou leitura de página", seção do
+espelho e esta entrada). Nenhum código alterado: o `worker.js` publicado é o
+mesmo já versionado.
+
+**Validação.** Contra o Worker publicado, seis casos: `temas.csv` com chave →
+200 com 2.578.086 bytes, exatamente o tamanho do download direto; informativos
+do STJ com chave → 200 com 421.167 bytes; sem chave → recusado; chave errada →
+recusado; chave certa com endereço do STF → recusado, nomeando o host; e o
+endereço montado exatamente como o `ambiente.mjs` o monta (base sem barra,
+`?url=` colado) → 200 com o mesmo tamanho e `content-type: text/csv`. A metade
+de cá já fora exercitada antes contra um espelho falso, com o mesmo contrato.
+
+**Dados.** Nenhuma mudança na base nem no site.
+
+**Pendências.** Cadastrar `ESPELHO_URL` e `ESPELHO_CHAVE` nos segredos do
+repositório — os valores estão em `work/espelho-segredos.txt`, fora do Git, para
+apagar depois de usados. A confirmação real vem na primeira coleta agendada do
+GitHub que levar 403 do STJ: o registro da execução dirá "403 no direto,
+refeito pelo espelho".
 
 ### 11/09/2026 — O dia das novidades vira calendário
 
