@@ -223,6 +223,28 @@ inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
 
+### 10/09/2026 — Reversão do limite de 68ch no texto jurídico
+
+**Responsável:** Muse Spark, a pedido de Sarah.
+
+**Motivo.** O `max-width:68ch` do polimento visual deixava os parágrafos do
+guia (ex. "Até quando vale a suspensão") terminando antes da borda da seção,
+com faixa vazia à direita. O aproveitamento da largura importa mais que a
+medida de leitura aqui.
+
+**O que mudou.** Em `site/index.html`: removido o `max-width` do
+`.texto-juridico`, voltando a ocupar a seção toda. O restante do polimento
+(hovers, seleção, pulso, pop da estrela, scrollbar) continua.
+
+**Arquivos.** `site/index.html`, `README.md`.
+
+**Validação.** `node coleta/publicar.mjs` passa com a base intacta e a
+conferência da regra de suspensão verde.
+
+**Dados.** Nenhuma mudança na coleta nem na base.
+
+**Pendências.** Nenhuma nova.
+
 ### 10/09/2026 — Arquivo LICENSE: todos os direitos reservados
 
 **Responsável:** Muse Spark, a pedido de Sarah (proteger a autoria, após a
