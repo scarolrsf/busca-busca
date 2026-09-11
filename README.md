@@ -49,6 +49,10 @@ coleta/
   conferir-fontes.mjs mostra, no resumo da execução, quais fontes responderam
   conferir-cadeia.mjs prova que o remendo do certificado do STF funciona
 
+espelho/         segunda via para o STJ, publicada na Cloudflare
+  worker.js      refaz o pedido, só GET, só os dois endereços do STJ
+  wrangler.toml  como publicar e quais segredos o repositório espera
+
 dados/           a base entre uma coleta e outra, versionada
   temas-do-portal.json         precedentes e incidentes
   informativos-do-portal.json  julgados divulgados em informativo
@@ -134,6 +138,33 @@ tentativas houve.
 Insistir em quem recusa não é neutro: o portal com firewall conta as batidas.
 Em 11/09/2026, três fontes bloqueadas vezes três tentativas, em duas execuções
 seguidas, derrubaram também a quarta, que até então respondia.
+
+### Espelho para o STJ
+
+O STJ nega o endereço de saída do GitHub Actions — ora com desafio anti-robô,
+ora com 403 seco. Medido em 11/09/2026, o mesmo pedido feito da rede da
+Cloudflare passa e devolve o arquivo inteiro. Daí o espelho: um Worker gratuito
+que refaz o pedido.
+
+**O direto vem sempre primeiro.** O espelho não é rota alternativa nem contorno
+preventivo: ele só entra depois de um 403 já recebido, e só para
+`processo.stj.jus.br` e `dadosabertos.web.stj.jus.br`. Quando a fonte responde,
+o Worker nem é tocado.
+
+O STF não está na lista, e não é esquecimento: pela Cloudflare ele devolve 526,
+porque omite o intermediário da cadeia (ver adiante). O remendo que resolve isso
+mora no `ambiente.mjs`, e um Worker não tem como reproduzi-lo — `fetch` ali não
+aceita âncora própria.
+
+Não é um proxy aberto: só GET, só aqueles dois endereços, e só com a chave
+combinada. Sem as duas variáveis configuradas — `ESPELHO_URL` e
+`ESPELHO_CHAVE`, ambas segredos do repositório — a coleta se comporta
+exatamente como se o espelho não existisse. É o caso de quem roda à mão e o de
+um fork. Para publicar ou trocar a chave, ver `espelho/wrangler.toml`.
+
+Se o espelho também não trouxer, o que fica registrado em `dados/fontes.json` é
+a recusa **da fonte**, com uma nota de que a segunda via também falhou. A
+mensagem do espelho nunca toma o lugar da resposta do tribunal.
 
 ### Certificado do STF
 
@@ -231,6 +262,46 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — Espelho para o STJ: o direto primeiro, a Cloudflare no 403
+
+**Responsável:** Muse Spark, a pedido de Sarah (escolheu o espelho depois da
+medição, para tirar o STJ da dependência de a máquina dela estar ligada).
+
+**Motivo.** Medido na entrega anterior: o STJ responde 200 pela rede da
+Cloudflare, inclusive com o desafio anti-robô ausente e o CSV no tamanho certo.
+O STF não, e por isso não entra.
+
+**O que mudou.**
+
+- `espelho/worker.js` (novo): Worker que refaz o pedido. Só GET, só
+  `processo.stj.jus.br` e `dadosabertos.web.stj.jus.br`, e só com a chave
+  combinada no cabeçalho `x-espelho-chave`. O corpo volta como veio — o
+  informativo do STJ é ISO-8859-1, e quem decide a codificação é quem lê.
+- `espelho/wrangler.toml` (novo): como publicar e quais segredos o repositório
+  espera.
+- `coleta/ambiente.mjs`: depois de um 403 — e só depois dele —, se o endereço
+  estiver na lista e os dois segredos existirem, o pedido é refeito pelo
+  espelho. Deu 200, segue a vida; não deu, o que se registra é a recusa da
+  fonte, acrescida de uma nota sobre a segunda via.
+- `.github/workflows/coletar.yml`: passa `ESPELHO_URL` e `ESPELHO_CHAVE` à
+  coleta.
+
+**Validação.** Local, com uma fonte falsa e um espelho falso em outro processo
+(a coleta é síncrona e bloquearia servidores no mesmo processo). Cinco casos:
+403 na fonte com espelho atendendo → HTTP 200, conteúdo do espelho, 1 batida em
+cada e a chave chegando; 403 nos dois → a recusa registrada é a da fonte, com a
+nota; fonte respondendo 200 → espelho não tocado; endereço fora da lista →
+espelho não tocado; sem segredos → espelho não tocado. Nenhuma consulta real ao
+STJ foi feita por esta entrega. O Worker ainda **não está publicado**: enquanto
+não estiver, os segredos não existem e a coleta roda como antes.
+
+**Dados.** Nenhuma mudança na base nem no site.
+
+**Pendências.** Publicar o Worker (`npx wrangler login`, `secret put CHAVE`,
+`deploy`) e cadastrar `ESPELHO_URL` e `ESPELHO_CHAVE` nos segredos do
+repositório. Só então a segunda via passa a valer, e a confirmação real vem na
+janela de coleta seguinte. O STF continua sem segunda via.
 
 ### 11/09/2026 — Medição: o espelho na Cloudflare cobre o STJ, não o STF
 

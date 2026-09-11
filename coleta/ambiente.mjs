@@ -72,6 +72,33 @@ function vaiAdiantarRepetir(saidaDoCurl, codigo) {
   return codigo === 429 || (codigo >= 500 && codigo < 600);
 }
 
+/*
+ * Espelho.
+ *
+ * O STJ nega o endereço de saída do GitHub Actions. Medido em 11/09/2026, o
+ * mesmo pedido feito da rede da Cloudflare passa, e devolve o arquivo inteiro.
+ * Então o caminho normal continua sendo o direto — sempre — e o espelho só
+ * entra quando a fonte recusa com 403. Não é contorno preventivo: é resposta a
+ * uma recusa já recebida.
+ *
+ * O STF não entra aqui. Pela Cloudflare ele devolve 526, porque omite o
+ * intermediário da cadeia de certificados; o remendo que resolve isso está
+ * logo acima, e um Worker não tem como reproduzi-lo.
+ *
+ * Sem os dois segredos configurados, nada disso acontece e a coleta se comporta
+ * exatamente como antes — é o caso de quem roda à mão, e o de um fork.
+ */
+const ESPELHO_URL = process.env.ESPELHO_URL || '';
+const ESPELHO_CHAVE = process.env.ESPELHO_CHAVE || '';
+const ESPELHO_HOSTS = (process.env.ESPELHO_HOSTS || 'processo.stj.jus.br,dadosabertos.web.stj.jus.br')
+  .split(',').map(h => h.trim()).filter(Boolean);
+
+function cabeNoEspelho(url, opcoes) {
+  if (!ESPELHO_URL || !ESPELHO_CHAVE) return false;
+  if (opcoes && opcoes.method === 'post') return false;  // o espelho só faz GET
+  try { return ESPELHO_HOSTS.includes(new URL(url).hostname); } catch (e) { return false; }
+}
+
 /** O código HTTP da última resposta, lido do arquivo de cabeçalhos do curl. */
 function codigoDe(cabecalhosBrutos) {
   const status = cabecalhosBrutos.split(/\r?\n/).filter(l => /^HTTP\//.test(l)).pop() || '';
@@ -226,6 +253,34 @@ export function buscar(url, opcoes) {
       String(r.stderr || '').slice(0, 300) + porque);
   }
 
+  /* O direto já respondeu, e respondeu recusando. Só agora o espelho entra.
+     Os arquivos da segunda tentativa são outros: se ela também falhar, o que
+     fica registrado é a recusa da fonte — não a mensagem do espelho. */
+  let notaEspelho = '';
+  let arquivo = corpo;
+  if (codigo === 403 && cabeNoEspelho(url, opcoes)) {
+    const corpoE = path.join(TEMP, 'esp-corpo-' + Math.random().toString(36).slice(2));
+    const cabE = path.join(TEMP, 'esp-cab-' + Math.random().toString(36).slice(2));
+    const alvo = ESPELHO_URL + (ESPELHO_URL.includes('?') ? '&' : '?') + 'url=' + encodeURIComponent(url);
+    const rE = spawnSync('curl', ['--silent', '--show-error', '--compressed', '--location',
+      '--max-time', String(opcoes.segundos || 180),
+      '--header', 'x-espelho-chave: ' + ESPELHO_CHAVE,
+      '--dump-header', cabE, '--output', corpoE, alvo],
+      { encoding: 'buffer', maxBuffer: 1024 * 1024 * 256 });
+
+    const brutosE = (!rE.error && fs.existsSync(cabE)) ? fs.readFileSync(cabE, 'latin1') : '';
+    const codigoE = codigoDe(brutosE);
+    if (rE.status === 0 && codigoE === 200) {
+      console.log('   ' + new URL(url).hostname + ': 403 no direto, refeito pelo espelho.');
+      brutos = brutosE;
+      codigo = codigoE;
+      arquivo = corpoE;
+    } else {
+      notaEspelho = ' O espelho também não trouxe: ' +
+        (rE.status !== 0 ? 'falha de rede' : 'HTTP ' + (codigoE || '?')) + '.';
+    }
+  }
+
   const linhas = brutos.split(/\r?\n/);
   const mapa = {};
   linhas.forEach(l => {
@@ -238,7 +293,7 @@ export function buscar(url, opcoes) {
     else mapa[chave] = valor;
   });
 
-  return { codigo, cabecalhos: mapa, arquivo: corpo, bytes: fs.statSync(corpo).size };
+  return { codigo, cabecalhos: mapa, arquivo, bytes: fs.statSync(arquivo).size, notaEspelho };
 }
 
 /** O objeto que as regras esperam receber de `buscarResposta_`. */
@@ -260,7 +315,8 @@ export function resposta(url, opcoes) {
     } catch (e) { /* sem pista */ }
     // O código vai junto do erro: quem repete precisa saber se houve resposta
     // do servidor — e qual — para não insistir no que já foi respondido.
-    const erro = new Error('A fonte respondeu HTTP ' + r.codigo + '.' + (pista ? ' Resposta: ' + pista : ''));
+    const erro = new Error('A fonte respondeu HTTP ' + r.codigo + '.' +
+      (pista ? ' Resposta: ' + pista : '') + (r.notaEspelho || ''));
     erro.codigoHttp = r.codigo;
     throw erro;
   }

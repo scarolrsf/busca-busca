@@ -33,7 +33,13 @@ jobs:
         with:
           node-version: '22'
 
+      # O espelho só é usado quando o STJ recusa com 403, e só para os dois
+      # endereços dele. Enquanto os segredos não existirem, ficam vazios e a
+      # coleta roda como sempre rodou — nada quebra por faltarem.
       - name: Consultar os tribunais
+        env:
+          ESPELHO_URL: ${{ secrets.ESPELHO_URL }}
+          ESPELHO_CHAVE: ${{ secrets.ESPELHO_CHAVE }}
         run: node --max-old-space-size=4096 coleta/executar.mjs
 
       - name: Conferir a resposta das fontes
