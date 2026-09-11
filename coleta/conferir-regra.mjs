@@ -66,6 +66,20 @@ export function conferirRegraDeSuspensao(dados, caminhoDoPortal) {
     const aviso = R.avisoDe(r);
     if (!aviso || !aviso.t || !aviso.c) falhas.push(r.id + ': aviso sem texto');
 
+    /* 6. "A partir de quando suspender" é resposta que a ficha dá em destaque:
+       precisa existir, e com as duas partes — o rótulo curto e a explicação.
+       Uma categoria nova sem texto chegaria à tela como caixa vazia. */
+    if (R.MOMENTO) {
+      const momento = R.MOMENTO[r._momento];
+      if (!momento || !momento.r || !momento.c) {
+        falhas.push(r.id + ': momento da suspensão sem rótulo ou sem explicação (' + r._momento + ')');
+      }
+      // Fase declarada só se sustenta se houver texto de suspensão para declará-la.
+      if (r._momento !== 'NAO_DITO' && !String(r.suspensao || '').trim()) {
+        falhas.push(r.id + ': momento "' + r._momento + '" sem texto de suspensão que o ampare');
+      }
+    }
+
     if (!encerrado) {
       conta.porAlcance[r._alcance] = (conta.porAlcance[r._alcance] || 0) + 1;
     }

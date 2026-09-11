@@ -425,6 +425,39 @@ Efeito colateral útil: `conferencia.json` muda a cada coleta, ainda que nada
 mais mude. Isso mantém o repositório ativo, e o GitHub desliga workflow agendado
 em repositório parado por 60 dias.
 
+## A partir de quando suspender
+
+O alcance responde *quais* processos a ordem atinge. Esta é outra pergunta:
+*de que ponto do processo em diante*. São dimensões independentes — há
+determinação nacional que só alcança recurso especial, e determinação estadual
+que só vale depois de encerrada a instrução —, e é a segunda que decide o que
+fazer com o processo que está na mesa.
+
+A ficha traz isso em bloco destacado, logo abaixo do aviso de risco, e a lista
+traz na pílula. Quatro respostas possíveis:
+
+| Resposta | Quando | Em vigor hoje |
+| --- | --- | --- |
+| **Só na fase recursal** | a determinação fala apenas de recursos especiais e extraordinários, de segunda instância ou de admissibilidade | 88 |
+| **Após encerrada a instrução probatória** | a determinação ressalva a instrução | 39 |
+| **Imediata** | a determinação manda suspender de imediato, sem ressalva de fase | 2 (ambos já encerrados) |
+| **Fase não especificada** | a determinação registrada não indica fase | 128 |
+
+Classifica-se só o que a determinação **diz**. Ordem sem ressalva fica como "não
+especificado" e remete ao documento: a lei faz a suspensão valer desde a
+determinação, mas o texto guardado aqui é quase sempre um extrato, e afirmar
+fase que a fonte não afirmou seria inventar.
+
+Duas armadilhas que a leitura evita, ambas medidas na base: "não aplicabilidade
+**imediata** da decisão do incidente" fala da eficácia do acórdão, não de quando
+suspender — por isso as marcas são expressões inteiras, não a palavra solta; e
+determinação que cita recurso **e também** primeiro grau não é de fase recursal,
+por isso a marca recursal só vale quando o texto não alcança o primeiro grau.
+
+`conferir-regra.mjs` ganhou a invariante 6: todo registro precisa de momento com
+rótulo e explicação, e fase declarada só se sustenta havendo texto de suspensão
+que a ampare.
+
 ## Até quando vale a suspensão
 
 Não é o trânsito em julgado que a encerra, e o marco muda conforme o rito:
@@ -469,6 +502,60 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — "A partir de quando suspender", em destaque
+
+**Responsável:** Muse Spark, a pedido de Sarah (três pedidos: destacar a fase a
+partir da qual suspender, atalho para provimentos do TJMG, e tirar a
+hifenização).
+
+**Motivo.** O portal dizia o alcance — quais processos a ordem atinge — e não
+dizia a fase. São perguntas diferentes, e a segunda é a que decide o que fazer
+com o processo na mesa: há determinação nacional que só alcança recurso
+especial, e determinação estadual que só vale depois de encerrada a instrução.
+Essa informação existia, perdida no meio do texto corrido da determinação.
+
+**O que mudou.**
+
+- `site/index.html`: `momentoDaSuspensao` classifica a fase a partir do texto da
+  determinação; `MOMENTO` guarda rótulo e explicação de cada uma; `avisoDoMomento`
+  põe o bloco em destaque na ficha, e a pílula da lista ganhou a fase — suprimida
+  quando repetiria o alcance ("apenas em fase recursal" + "só na fase recursal"
+  lado a lado era só ruído).
+- `site/index.html`: atalho **Provimentos** na faixa do topo, para a Consulta de
+  Atos Normativos do TJMG (`www8.tjmg.jus.br/institucional/at/pesquisa.jsf`,
+  endereço conferido). Abre em nova aba. Abaixo de 820 px o rótulo some por CSS
+  e o botão vira ícone, então o nome acessível vem de `aria-label`, que não
+  depende de estar visível.
+- `site/index.html`: hifenização automática desligada nos quatro blocos de texto
+  que a usavam, a pedido de Sarah — prejudicava a leitura.
+- `coleta/conferir-regra.mjs`: invariante 6, sobre o momento.
+- `README.md`: seção "A partir de quando suspender" e esta entrada.
+
+**O que não foi feito, e por quê.** Sarah pediu também atalho na ficha para o
+provimento citado no texto. Medi antes de construir: de 3.205 registros,
+**8** citam provimento, portaria ou resolução — e **nenhum** cita provimento do
+TJMG. As citações são de normas que são o *objeto* da controvérsia (Portaria
+655/93, Resolução 456/2000 da ANEEL), não de ato que rege a suspensão. Um atalho
+assim dispararia em 8 fichas e apontaria para o lugar errado na maioria delas.
+Fica o atalho fixo, que serve sempre.
+
+**Validação.** Categorias derivadas do corpus, não inventadas: levantei as
+expressões de fase que de fato ocorrem antes de escrever a regra. Distribuição
+conferida e auditada — 6 dos 88 "só na fase recursal" lidos um a um, todos
+falando apenas de recurso especial, segunda instância ou vice-presidência; e os
+8 registros que mencionam "imediat" conferidos um a um, com os 6 casos de "não
+aplicabilidade imediata" corretamente **fora** da categoria. Renderização vista
+no navegador, em desktop e em 375 px: bloco na ficha, pílula na lista sem
+repetir o alcance, atalho com nome acessível correto (`link "Consulta de Atos
+Normativos do TJMG (abre em nova aba)"`). A conferência da regra, agora com a
+invariante 6, passou sobre a base inteira.
+
+**Dados.** Nenhuma mudança na base. Tudo é derivado na exibição.
+
+**Pendências.** As 128 determinações sem fase declarada continuam remetendo ao
+documento de origem — não há o que extrair de um texto que não diz. Se o TJMG
+passar a publicar a fase em campo próprio, vale reler.
 
 ### 11/09/2026 — O portal passa a dizer quando a fonte erra
 
