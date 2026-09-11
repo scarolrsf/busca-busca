@@ -36,10 +36,16 @@ jobs:
       # O espelho só é usado quando o STJ recusa com 403, e só para os dois
       # endereços dele. Enquanto os segredos não existirem, ficam vazios e a
       # coleta roda como sempre rodou — nada quebra por faltarem.
+      #
+      # A segunda via do STF pelo navegador (coleta/jurisprudencia-stf.mjs)
+      # segue a mesma lógica: desligada por padrão, porque o runner agendado
+      # não tem navegador. Para ligá-la numa execução manual, basta definir a
+      # variável de repositório JURISPRUDENCIA_STF com valor 1.
       - name: Consultar os tribunais
         env:
           ESPELHO_URL: ${{ secrets.ESPELHO_URL }}
           ESPELHO_CHAVE: ${{ secrets.ESPELHO_CHAVE }}
+          JURISPRUDENCIA_STF: ${{ vars.JURISPRUDENCIA_STF }}
         run: node --max-old-space-size=4096 coleta/executar.mjs
 
       - name: Conferir a resposta das fontes

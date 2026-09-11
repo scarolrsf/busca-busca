@@ -13,6 +13,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { resposta, lerXlsxDeArquivo, lerCsv, armazenamento, limparTemporarios } from './ambiente.mjs';
 import { publicar } from './publicar.mjs';
@@ -90,6 +91,61 @@ for (const nome of COLETORES) {
   const inicio = Date.now();
   contexto[nome]();
   console.log('   (' + ((Date.now() - inicio) / 1000).toFixed(0) + 's)');
+}
+
+/* Segunda via do STF, desligada por padrão (ver coleta/jurisprudencia-stf.mjs).
+   Exige navegador de verdade, que o runner agendado não tem — por isso só roda
+   quando JURISPRUDENCIA_STF=1, numa execução à mão. É prova de vida da via com
+   uma busca limitada, não coleta de conteúdo para o portal: o resultado bruto
+   vai para dados/jurisprudencia-stf.json e a tentativa é anotada em FONTES.
+   Uma falha aqui nunca derruba a coleta: anota-se e segue. */
+if (process.env.JURISPRUDENCIA_STF === '1') {
+  provarJurisprudenciaStf_();
+}
+
+function provarJurisprudenciaStf_() {
+  const nome = 'STF — jurisprudência (navegador)';
+  const tentativa = new Date().toISOString();
+  const prova = path.join(RAIZ, 'dados', 'jurisprudencia-stf.json');
+  try {
+    const r = spawnSync(process.execPath,
+      [path.join(RAIZ, 'coleta', 'jurisprudencia-stf.mjs'),
+        '--tema', 'fornecimento de medicamentos', '--headless', '--limite', '3',
+        '--json-out', prova],
+      { encoding: 'utf8', timeout: 300000 });
+    if (r.status !== 0) throw new Error('A prova de vida saiu com erro: ' + String(r.stderr || r.stdout || '').slice(0, 300));
+    const resultado = JSON.parse(fs.readFileSync(prova, 'utf8'));
+    if (resultado.bloqueadoWaf) throw new Error('WAF bloqueou o navegador; prova adiada para uso manual.');
+    const atuais = BASE.ler(TABELAS.fontes);
+    const linha = [nome, tentativa, tentativa, 'Consulta concluída',
+      String(resultado.itens.length),
+      'Prova de vida da segunda via: "' + resultado.termo + '" com ' + resultado.total +
+      ' resultado(s), ' + resultado.itens.length + ' ficha(s) guardada(s) em jurisprudencia-stf.json.',
+      montarUrlBuscaStf_(resultado.termo)];
+    const anterior = atuais.find(f => f[0] === nome);
+    if (anterior) atuais[atuais.indexOf(anterior)] = linha; else atuais.push(linha);
+    BASE.gravar(TABELAS.fontes, atuais);
+    const conferencia = Object.fromEntries(BASE.ler(TABELAS.conferencia).map(l => [l[0], l[1]]));
+    conferencia[nome] = tentativa;
+    BASE.gravar(TABELAS.conferencia,
+      Object.entries(conferencia).sort((a, b) => (a[0] < b[0] ? -1 : 1)));
+    console.log(nome + ': ' + resultado.itens.length + ' ficha(s) de ' + resultado.total + ' resultado(s).');
+  } catch (e) {
+    const atuais = BASE.ler(TABELAS.fontes);
+    const anterior = atuais.find(f => f[0] === nome);
+    const linha = [nome, tentativa, (anterior && anterior[2]) || '', 'Falha / cobertura pendente',
+      '0', String(e.message || e).slice(0, 1400), BUSCA_JURISPRUDENCIA_STF_];
+    if (anterior) atuais[atuais.indexOf(anterior)] = linha; else atuais.push(linha);
+    BASE.gravar(TABELAS.fontes, atuais);
+    console.error(nome + ': ' + e.message);
+  }
+}
+
+const BUSCA_JURISPRUDENCIA_STF_ = 'https://jurisprudencia.stf.jus.br/pages/search';
+function montarUrlBuscaStf_(termo) {
+  return BUSCA_JURISPRUDENCIA_STF_ + '?base=acordaos&pesquisa_inteiro_teor=false&sinonimo=true' +
+    '&plural=true&radicais=false&buscaExata=true&page=1&pageSize=10' +
+    '&queryString=' + encodeURIComponent(termo) + '&sort=_score&sortBy=desc';
 }
 
 /* ------------------------------------------------ o que o site vai ler */

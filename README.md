@@ -48,6 +48,7 @@ coleta/
   conferir-regra.mjs confere a regra de suspensão contra a base inteira
   conferir-fontes.mjs mostra, no resumo da execução, quais fontes responderam
   conferir-cadeia.mjs prova que o remendo do certificado do STF funciona
+  jurisprudencia-stf.mjs segunda via do STF pelo navegador (desligada por padrão)
 
 espelho/         segunda via para o STJ, publicada na Cloudflare
   worker.js      refaz o pedido, só GET, só os dois endereços do STJ
@@ -166,6 +167,38 @@ Se o espelho também não trouxer, o que fica registrado em `dados/fontes.json` 
 a recusa **da fonte**, com uma nota de que a segunda via também falhou. A
 mensagem do espelho nunca toma o lugar da resposta do tribunal.
 
+### Segunda via do STF: a jurisprudência pelo navegador
+
+O portal antigo do STF nega o endereço do GitHub Actions com 403, e aí nem o
+remendo de certificado nem o espelho alcançam: o obstáculo é o firewall, não a
+cadeia (o espelho devolveria 526). A saída, medida em 11/09/2026, é outra porta
+do mesmo tribunal — a pesquisa de jurisprudência
+(`jurisprudencia.stf.jus.br/pages/search`) — aberta num Chromium de verdade,
+onde o desafio do WAF se resolve sozinho como num navegador comum. Com o tema
+"fornecimento de medicamentos" vieram 961 resultados, com os três primeiros
+extraídos por inteiro (RE 605533/Tema 262, RE 657718/Tema 500 e RE
+1366243/Tema 1234).
+
+**Desligada por padrão.** Exige Playwright com Chromium, que o runner
+agendado não tem, e navegador pede volume baixo. Por isso ela só roda com
+`JURISPRUDENCIA_STF=1` (variável do repositório, já passada à coleta no
+`coletar.yml`), numa execução à mão — em geral a da máquina da Sarah, de onde
+o STF responde. Sem a variável, a coleta se comporta exatamente como antes.
+
+Quando ligada, roda uma prova de vida limitada (uma busca, 3 fichas): o
+resultado bruto vai para `dados/jurisprudencia-stf.json` e a tentativa é
+anotada em `fontes.json` como "STF — jurisprudência (navegador)". Nada disso
+entra em TEMAS nem em INFORMATIVOS — o grão é outro (acórdãos, não temas de
+repercussão geral) — e uma falha aqui nunca derruba a coleta: anota-se e
+segue. Se o WAF bloquear, o módulo para e orienta o uso manual, sem insistir.
+
+Dois detalhes que a medição corrigiu e valem para qualquer uso futuro: o
+parâmetro real da busca é `queryString` (um endereço montado com `termo=` abre
+a página mas não busca nada), e a extração lê `div.result-container` com
+`p.jud-text` na ordem ementa, tema, tese. O `coleta/jurisprudencia-stf.mjs`
+também roda sozinho (`--tema`, `--limite`, `--headless`, `--json-out`) e traz
+um `--autoteste` sem rede que confere endereço, seletores e total.
+
 ### Certificado do STF
 
 Os dois endereços do STF enviam só o certificado deles e omitem o intermediário
@@ -262,6 +295,57 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — Segunda via do STF pelo navegador, desligada por padrão
+
+**Responsável:** Muse Spark, a pedido de Sarah (aplicar as mudanças do Claude
+Code, já neste repositório, juntamente com o protótipo validado da sessão
+compartilhada `opncd.ai/share/J87fpcTn`).
+
+**Motivo.** O STF nega o GitHub Actions com 403 nas duas fontes atuais, e as
+duas segundas vias existentes não o alcançam: o remendo de certificado resolve
+cadeia, não firewall, e o espelho devolveria 526 pelo mesmo defeito de cadeia.
+Na sessão compartilhada foi medida e validada outra porta do mesmo tribunal —
+a pesquisa de jurisprudência num Chromium real, onde o WAF se resolve sozinho
+— com 961 resultados para "fornecimento de medicamentos" e três fichas
+extraídas por inteiro. Esse conhecimento estava num protótipo Python fora do
+repositório; precisava morar na coleta oficial, sem mudar o comportamento
+agendado.
+
+**O que mudou.**
+
+- `coleta/jurisprudencia-stf.mjs` (novo): a via portada para Node, sem
+  dependência nova (o Playwright só é exigido na hora de navegar, via import
+  dinâmico). Traz o endereço de conferência manual (`queryString`, não
+  `termo=`), os seletores mapeados (`div.result-container`, `p.jud-text` na
+  ordem ementa/tema/tese, selo `app-badge`, total por regex), a busca via
+  interface com espera ao WAF, o atalho manual do SCON/STJ e um `--autoteste`
+  sem rede.
+- `coleta/executar.mjs`: quando `JURISPRUDENCIA_STF=1`, roda uma prova de vida
+  limitada (uma busca, 3 fichas) e guarda o bruto em
+  `dados/jurisprudencia-stf.json`, anotando a tentativa em FONTES como
+  "STF — jurisprudência (navegador)". Sem a variável, nada muda. Falha aqui
+  nunca derruba a coleta.
+- `.github/workflows/coletar.yml`: repassa `JURISPRUDENCIA_STF` (variável do
+  repositório; vazia por padrão, logo desligada).
+- `README.md`: inventário, nova seção "Segunda via do STF" e esta entrada.
+
+**Validação.** `node --check` nos dois arquivos tocados e
+`node coleta/jurisprudencia-stf.mjs --autoteste`: 9 verificações, todas
+passaram, sem rede e sem navegador. Nenhuma consulta real foi disparada por
+esta entrega; o Playwright sequer está instalado nesta máquina. A confirmação
+da via em produção depende de uma execução à mão com `JURISPRUDENCIA_STF=1` e
+navegador instalado.
+
+**Dados.** Nenhuma mudança na base nem no site. Quando ligada, a via cria
+`dados/jurisprudencia-stf.json` (bruto, fora do `publicar.mjs`) e uma linha
+nova em `fontes.json`/`conferencia.json`; TEMAS e INFORMATIVOS não são tocados.
+
+**Pendências.** Instalar o Playwright onde a prova for rodada (`npm i
+playwright`, `npx playwright install chromium`), definir
+`JURISPRUDENCIA_STF=1` nas variáveis do repositório ou só na execução manual,
+e rodar a primeira prova de vida. As mudanças do Claude Code seguem intactas
+como base — esta entrega só soma a via nova.
 
 ### 11/09/2026 — Espelho para o STJ: o direto primeiro, a Cloudflare no 403
 
