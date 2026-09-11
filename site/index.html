@@ -1921,12 +1921,43 @@ function porqueContinuaSuspenso(r) {
   return '';
 }
 
+/*
+ * Embargos de declaração ainda vivos contra o acórdão do incidente.
+ *
+ * O TJMG narra a marcha do incidente no campo de suspensão, e não na situação:
+ * é lá que aparece o recurso que segura o sobrestamento de pé. O IRDR 94 dizia,
+ * em 11/03/2026, que o relator "nos embargos de declaração interpostos,
+ * concedeu-lhes efeito suspensivo" e que "fica mantida a suspensão de todas as
+ * ações em tramitação no território mineiro" — e o portal, que só lia situação e
+ * observações, respondia "sem suspensão em vigor".
+ *
+ * Embargos opostos contra o acórdão interrompem o prazo do recurso especial e do
+ * extraordinário (art. 1.026 do CPC). Enquanto pendentes, não se pode afirmar
+ * que recurso "não foi interposto" — que é a condição do art. 982, § 5º, para a
+ * suspensão cessar. Concedido efeito suspensivo, com mais razão ainda.
+ *
+ * A leitura é pontual, e não o campo inteiro: quase todo texto de suspensão
+ * contém "sobrestado", e jogá-lo no laço geral acenderia pendência em toda a
+ * base.
+ */
+var RE_EMBARGOS_COM_EFEITO = /(efeito suspensivo aos embargos|concedeu-lhes efeito suspensivo|embargos.{0,40}com efeito suspensivo)/i;
+var RE_EMBARGOS_OPOSTOS = /embargos de declara[çc][ãa]o\s+(interpostos|opostos)/i;
+
 function pendencias(r) {
   var t = [r.situacao, r.observacoes].join(' ');
   var achadas = [];
   PENDENCIAS.forEach(function (p) {
     if (p[0].test(t) && achadas.indexOf(p[1]) < 0) achadas.push(p[1]);
   });
+  var s = String(r.suspensao || '');
+  if (RE_EMBARGOS_COM_EFEITO.test(s)) {
+    if (achadas.indexOf('Embargos de declaração com efeito suspensivo') < 0) {
+      achadas.push('Embargos de declaração com efeito suspensivo');
+    }
+  } else if (RE_EMBARGOS_OPOSTOS.test(s) &&
+             achadas.indexOf('Embargos de declaração pendentes') < 0) {
+    achadas.push('Embargos de declaração pendentes');
+  }
   return achadas.length ? achadas.join('; ') : 'Nenhuma registrada';
 }
 

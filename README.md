@@ -469,6 +469,11 @@ Não é o trânsito em julgado que a encerra, e o marco muda conforme o rito:
   extraordinário contra o acórdão do incidente (art. 982, § 5º). Interposto, o
   recurso tem efeito suspensivo por lei (art. 987, § 1º) e a suspensão persiste
   até o julgamento desse recurso, também sem aguardar o trânsito.
+- **Embargos de declaração vivos** contra o acórdão do incidente impedem a
+  cessação: eles interrompem o prazo do especial e do extraordinário (art. 1.026
+  do CPC), e enquanto pendentes não se pode afirmar que recurso "não foi
+  interposto", que é a condição do art. 982, § 5º. O TJMG narra isso no campo de
+  suspensão — não na situação —, e é lá que a regra vai buscar.
 - **Cláusula expressa** em sentido diverso prevalece sobre a regra geral.
 
 Essa regra vive num lugar só — as funções de classificação do `site/index.html` —
@@ -502,6 +507,54 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — IRDR 94: embargos vivos não deixam a suspensão cessar
+
+**Responsável:** Muse Spark, a pedido de Sarah, que apontou o erro: o IRDR 94
+tem determinação de suspensão renovada por causa dos embargos de declaração, e
+o portal dizia que não havia.
+
+**O erro, e ele era real.** O portal classificava o IRDR 94 como "Sem suspensão
+em vigor", risco baixo. A determinação, no campo de suspensão, diz o contrário
+com todas as letras: *"Em 11/03/2026, o relator do incidente, em decisão
+monocrática, nos embargos de declaração interpostos, concedeu-lhes efeito
+suspensivo, asseverando que 'fica mantida a suspensão de todas as ações em
+tramitação no território mineiro, de Primeira e Segunda Instância, na Justiça
+Comum e no Juizado Especial'"*. Era o erro mais grave que esta ferramenta pode
+cometer: dizer que se pode sentenciar quando há ordem em contrário.
+
+**Causa.** Duas falhas somadas. `pendencias()` lia apenas `situacao` e
+`observacoes` — e o TJMG narra a marcha do incidente no campo `suspensao`, que
+ela não lia. E o padrão de embargos exigia a palavra "pendentes"; o texto diz
+"embargos de declaração **interpostos**". Sem pendência reconhecida,
+`encerrado()` aplicava o art. 982, § 5º, e dava a suspensão por cessada.
+
+**O que mudou.** `site/index.html`: `pendencias()` passa a ler também o campo de
+suspensão, de forma pontual — dois padrões, "embargos com efeito suspensivo" e
+"embargos interpostos/opostos" —, e não o campo inteiro: quase todo texto de
+suspensão contém "sobrestado", e jogá-lo no laço geral acenderia pendência em
+toda a base. `conferir-regra.mjs` ganhou a invariante 7, que reprova a coleta se
+um incidente com embargos vivos e acórdão publicado aparecer como encerrado.
+
+**O que eu quase fiz de errado.** A primeira ideia foi mais ampla: tratar como
+vigente toda suspensão cujo texto dissesse "mantida" ou "prorrogada". A medição
+antes de aplicar mostrou que isso mudaria **13 registros, e 8 deles estão em
+trânsito em julgado** — onde a suspensão de fato acabou, e aquelas frases são
+narrativa histórica do incidente. A regra ampla teria ressuscitado suspensões
+extintas. Ficou a estreita, que é a que corresponde ao fundamento legal.
+
+**Validação.** Impacto medido registro a registro, comparando a classificação
+antes e depois sobre a base inteira: **1 mudança em 3.205** — o IRDR 94, de
+"sem suspensão" (risco baixo) para "suspensão estadual em vigor" (risco alto),
+com a pendência nomeada na ficha. A contagem por alcance foi de ESTADUAL 100
+para 101, e nenhum outro número mudou. A invariante 7 foi testada contra a regra
+antiga, simulada: reprovou, apontando o IRDR 94. Ficha conferida no navegador.
+
+**Dados.** Nenhuma alteração na base. A classificação é derivada na exibição.
+
+**Pendências.** Vale conferir se há outros incidentes em que o TJMG registre
+recurso vivo com redação que os padrões não alcancem. A varredura de hoje achou
+só este, mas a redação do tribunal varia.
 
 ### 11/09/2026 — "A partir de quando suspender", em destaque
 

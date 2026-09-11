@@ -66,6 +66,20 @@ export function conferirRegraDeSuspensao(dados, caminhoDoPortal) {
     const aviso = R.avisoDe(r);
     if (!aviso || !aviso.t || !aviso.c) falhas.push(r.id + ': aviso sem texto');
 
+    /* 7. Embargos de declaração vivos contra o acórdão do incidente impedem o
+       encerramento. Eles interrompem o prazo do especial e do extraordinário
+       (art. 1.026 do CPC), então não se pode afirmar que recurso "não foi
+       interposto" — a condição do art. 982, § 5º, para a suspensão cessar.
+       Foi assim que o IRDR 94 aparecia como "sem suspensão em vigor" tendo
+       determinação expressa em contrário. Vale para incidente, não para
+       repetitivo e repercussão geral, cuja cessação segue o art. 1.040, III. */
+    const embargosVivos = incidente &&
+      /(embargos de declara[çc][ãa]o\s+(interpostos|opostos)|efeito suspensivo aos embargos|concedeu-lhes efeito suspensivo)/i
+        .test(String(r.suspensao || ''));
+    if (embargosVivos && r._situacao === 'Acórdão publicado' && encerrado) {
+      falhas.push(r.id + ': embargos de declaração vivos contra o acórdão, não deveria ter cessado (art. 1.026 c/c art. 982, § 5º)');
+    }
+
     /* 6. "A partir de quando suspender" é resposta que a ficha dá em destaque:
        precisa existir, e com as duas partes — o rótulo curto e a explicação.
        Uma categoria nova sem texto chegaria à tela como caixa vazia. */
