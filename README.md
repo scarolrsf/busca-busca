@@ -232,6 +232,62 @@ inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
 
+### 11/09/2026 — Medição: o espelho na Cloudflare cobre o STJ, não o STF
+
+**Responsável:** Muse Spark, a pedido de Sarah (decidiu testar antes de montar).
+
+**Motivo.** Com STF e STJ negando o endereço do GitHub Actions, a pergunta era
+se dá para tentar primeiro pelo GitHub e, no 403, cair para uma segunda via.
+Entre as candidatas, a única automática era um espelho: um Worker gratuito da
+Cloudflare refazendo a requisição, de forma que a saída fosse por IP deles. Em
+vez de montar e descobrir depois, foi medido.
+
+**Como foi medido.** Um Worker de teste, no Playground da Cloudflare — que
+executa na borda deles sem exigir conta —, buscando as cinco URLs em questão.
+Não foi criada conta, nem publicado Worker, nem alterado nada no repositório.
+
+**O que se mediu.**
+
+| Fonte | GitHub Actions | Espelho Cloudflare | Máquina da Sarah |
+| --- | --- | --- | --- |
+| STJ — temas (CSV) | 403 intermitente | **200**, 2.578.086 bytes | 200 |
+| STJ — informativos | 403 (desafio anti-robô) | **200** | 200 |
+| STF — repercussão geral | 403 | **526** | 200 |
+| STF — informativos (página) | 403 | **526** | 200 |
+| STF — informativos (planilha) | — | **526** | 200 |
+
+O CSV do STJ veio pelo espelho com exatamente o mesmo tamanho que vem da
+máquina da Sarah, então é conteúdo, não página de erro. E o desafio anti-robô
+do STJ, que eu esperava ver de pé, não apareceu.
+
+**Por que o STF não passa.** O 526 da Cloudflare é *certificado inválido* — não
+é bloqueio. É o mesmo defeito da seção "Certificado do STF": o portal omite o
+intermediário. O `ambiente.mjs` remenda isso buscando o elo que falta e
+repetindo a requisição; um Worker não tem como, porque `fetch()` no Workers não
+aceita âncora própria nem ignora a verificação. O remendo que salvou o STF no
+GitHub Actions é justamente o que um espelho não consegue reproduzir. A
+conferência de cadeia do próprio projeto (`conferir-cadeia.mjs`) foi rodada no
+mesmo momento e passou nas cinco verificações, confirmando a leitura.
+
+**Conclusão.** O espelho cobriria 2 das 4 fontes caídas, ao custo de conta na
+Cloudflare, Worker publicado, segredo no GitHub e uma peça nova para manter — e
+o STF continuaria dependendo de outra via. Recomendação registrada: uma via
+alternativa só, a da máquina da Sarah, que cobre as quatro e reaproveita o
+remendo de certificado que já existe. Decisão de Sarah, ainda em aberto.
+
+**Confirmação em produção da entrega anterior.** A coleta das 6h40 (commit
+`671b8b3`) foi a primeira depois da mudança na repetição. As três fontes
+bloqueadas registraram "Em 1 tentativa", como desenhado, e o **STJ — temas
+voltou a responder** — o que sustenta a hipótese de que eram as batidas
+repetidas que o empurravam para dentro do bloqueio.
+
+**Arquivos.** Nenhum alterado além deste README.
+
+**Dados.** Nenhuma mudança na base nem no site.
+
+**Pendências.** Escolher a segunda via. Enquanto não houver, STF (duas fontes)
+e STJ — informativos seguem com os registros da última consulta bem-sucedida.
+
 ### 11/09/2026 — Quem recusa não é repetido: fim das três batidas no 403
 
 **Responsável:** Muse Spark, a pedido de Sarah (após a leitura dos avisos da
@@ -330,8 +386,9 @@ confirmação real na próxima janela.
 
 **Dados.** Nenhuma mudança na coleta nem na base.
 
-**Pendências.** Disparar hoje a coleta manualmente ("Run workflow" na aba
-Actions → Coleta), já que a janela das 6h foi perdida.
+**Pendências.** A janela das 6h afinal rodou (06h17 e 06h19, com atraso) —
+o disparo manual ficou desnecessário. Segue em aberto a confirmação real do
+monitor na próxima janela.
 
 ### 10/09/2026 — Reversão do limite de 68ch no texto jurídico
 
