@@ -50,6 +50,7 @@ coleta/
   conferir-cadeia.mjs prova que o remendo do certificado do STF funciona
   jurisprudencia-stf.mjs segunda via do STF pelo navegador (desligada por padrão)
   complemento.mjs    a coleta feita daqui: atualiza, coleta e envia
+  agendado.cmd       o que o Agendador do Windows executa todo dia, sem pause
 
 coletar-aqui.cmd  dois cliques para rodar o complemento no Windows
 
@@ -124,8 +125,34 @@ origem fica no fim da mensagem.
 
 **Isto não substitui a coleta agendada**, que continua rodando às 6h07 e 18h07
 e trazendo o que o GitHub alcança — TJMG sempre, STJ pelo espelho. O
-complemento é o que acrescenta o STF, e vale a pena rodá-lo quando o portal
-precisar do STF em dia.
+complemento é o que acrescenta o STF.
+
+#### Todo dia, sozinho
+
+Há uma tarefa no Agendador do Windows desta máquina, **`BuscaBusca-ColetaSTF`**,
+que roda `coleta/agendado.cmd` **todo dia às 9h**. Ela é marcada como "executar
+assim que possível depois de um horário perdido": com o computador desligado às
+9h, ela roda quando ele voltar, e não pula o dia.
+
+O que se vê: uma janela minimizada na barra de tarefas por menos de um minuto.
+O que fica: `work/coleta-agendada.log`, com data, hora e tudo o que aconteceu —
+fora do Git, como o resto de `work/`. Se uma coleta falhar de madrugada, o
+registro está lá de manhã.
+
+A tarefa roda só com a Sarah conectada, de propósito: rodar com o computador
+bloqueado exigiria guardar a senha dela no Windows, o que este projeto não faz.
+
+Para desligar, ligar de novo ou mudar o horário, é o Agendador de Tarefas do
+Windows (`taskschd.msc`), ou, no PowerShell:
+
+```powershell
+Disable-ScheduledTask -TaskName "BuscaBusca-ColetaSTF"
+Enable-ScheduledTask  -TaskName "BuscaBusca-ColetaSTF"
+Unregister-ScheduledTask -TaskName "BuscaBusca-ColetaSTF"
+```
+
+Desligar a tarefa não quebra nada: a coleta agendada do GitHub continua, e o
+`coletar-aqui.cmd` continua valendo para quando se quiser o STF na hora.
 
 ## As seis fontes
 
@@ -366,6 +393,12 @@ mesmas.
   há trabalho dos dois lados que não se encaixa sozinho — isso é conferência à
   mão. `--sem-enviar` mostra o que mudaria e para.
 - `coletar-aqui.cmd` (novo): os dois cliques no Windows.
+- `coleta/agendado.cmd` (novo): o que o Agendador executa. Sem `pause`, e com
+  registro em `work/coleta-agendada.log`, fora do Git.
+- Tarefa `BuscaBusca-ColetaSTF` no Agendador desta máquina, todo dia às 9h,
+  marcada para executar assim que possível depois de um horário perdido. Roda
+  como a Sarah conectada, nível limitado: rodar com o computador bloqueado
+  exigiria guardar a senha dela, o que este projeto não faz.
 - `README.md`: inventário, seção "Coleta na máquina da Sarah" e esta entrada.
 
 O commit do complemento começa com "Coleta de DD/MM/AAAA", igual ao da coleta
@@ -376,15 +409,22 @@ no dia — e foi mesmo. A origem fica no fim da mensagem.
 todas responderam, o STF inclusive (1.482 temas em 25s, 1.012 informativos em
 3s), `fontesComFalha` vazio, 45 segundos no total. Só carimbos de data mudaram,
 porque o conteúdo já viera na coleta local das 10h20 UTC — e o passo "nada
-mudou" foi exercitado por isso mesmo. O envio foi exercitado na sequência, em
-execução separada.
+mudou" não chegou a ser exercitado, porque sempre há carimbo de data a gravar.
+O envio foi exercitado em seguida, em execução
+separada: commit `8fea4b9`, enviado. E o ciclo inteiro pelo Agendador, com a
+tarefa disparada à mão para testar: coletou, commitou `751fc8a` e enviou
+sozinha, com tudo registrado em `work/coleta-agendada.log`.
 
 **Dados.** Sem mudança de conteúdo nesta entrega; o que muda é a frequência com
-que o STF fica em dia, que passa a depender de rodar isto.
+que o STF fica em dia. Consequência a registrar: como `fontes.json` grava a
+hora de cada tentativa, toda coleta produz diferença, e a tarefa diária vai
+render um commit por dia mesmo quando nenhum tribunal publicar nada — o mesmo
+que a coleta agendada do GitHub já faz duas vezes ao dia.
 
-**Pendências.** Decidir se o complemento roda sozinho num horário (Agendador de
-Tarefas do Windows, com o computador ligado) ou se fica nos dois cliques. O
-espelho do STJ continua esperando a publicação do Worker.
+**Pendências.** O espelho do STJ continua esperando a publicação do Worker.
+A tarefa do Agendador vive só nesta máquina: não está no repositório, e uma
+instalação em outro computador precisa cadastrá-la de novo (o comando está na
+seção "Todo dia, sozinho").
 
 ### 11/09/2026 — Segunda via do STF pelo navegador, desligada por padrão
 
