@@ -185,6 +185,21 @@ agendado não tem, e navegador pede volume baixo. Por isso ela só roda com
 `coletar.yml`), numa execução à mão — em geral a da máquina da Sarah, de onde
 o STF responde. Sem a variável, a coleta se comporta exatamente como antes.
 
+**Não crie essa variável no repositório.** Ela valeria também para as duas
+coletas agendadas, que rodam num servidor do GitHub sem navegador: a prova
+falharia duas vezes por dia e gravaria "Prova falhou" no arquivo dela,
+rendendo um commit de ruído a cada coleta. E, mesmo com navegador instalado
+lá, o endereço do GitHub é justamente o que o STF nega — não há motivo para
+tentar de lá. O lugar desta via é a máquina da Sarah, à mão:
+
+```bash
+node coleta/jurisprudencia-stf.mjs --tema "fornecimento de medicamentos"
+```
+
+Esse comando mostra o resultado na tela e **não toca na base** nem no site.
+A prova de vida gravada em arquivo (`JURISPRUDENCIA_STF=1 node
+coleta/executar.mjs`) só faz sentido quando se quer deixar registro dela.
+
 Quando ligada, roda uma prova de vida limitada (uma busca, 3 fichas): o
 resultado bruto e a situação da tentativa ficam em
 `dados/jurisprudencia-stf.json`, e só ali. Nada disso entra em TEMAS, em
