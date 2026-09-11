@@ -434,19 +434,36 @@ que só vale depois de encerrada a instrução —, e é a segunda que decide o 
 fazer com o processo que está na mesa.
 
 A ficha traz isso em bloco destacado, logo abaixo do aviso de risco, e a lista
-traz na pílula. Quatro respostas possíveis:
+traz na pílula. Cinco respostas possíveis:
 
 | Resposta | Quando | Em vigor hoje |
 | --- | --- | --- |
 | **Só na fase recursal** | a determinação fala apenas de recursos especiais e extraordinários, de segunda instância ou de admissibilidade | 88 |
 | **Após encerrada a instrução probatória** | a determinação ressalva a instrução | 39 |
-| **Imediata** | a determinação manda suspender de imediato, sem ressalva de fase | 2 (ambos já encerrados) |
-| **Fase não especificada** | a determinação registrada não indica fase | 128 |
+| **Imediata** | a determinação manda suspender de imediato, com todas as letras | 2 (ambos já encerrados) |
+| **Desde a determinação** | há determinação escrita e ela não ressalva fase alguma | 129 |
+| **Fase não especificada** | não há texto de determinação registrado para ler | 0 |
 
-Classifica-se só o que a determinação **diz**. Ordem sem ressalva fica como "não
-especificado" e remete ao documento: a lei faz a suspensão valer desde a
-determinação, mas o texto guardado aqui é quase sempre um extrato, e afirmar
-fase que a fonte não afirmou seria inventar.
+Classifica-se só o que a determinação **diz** — mas silêncio dentro de um texto
+que existe também é leitura, não invenção. Determinação registrada que não
+ressalva fase vale desde a determinação: suspenso o feito, é vedado praticar
+atos processuais, salvo os urgentes (art. 314 do CPC), e não há autorização para
+seguir até o fim da instrução — essa espera só se sustenta onde o próprio
+tribunal a ressalvou, que é a linha "após encerrada a instrução probatória". O
+que não se faz é afirmar *outra* fase que a fonte não afirmou; por isso o bloco
+remete ao documento de origem, cujo texto aqui é extrato e cuja ressalva
+prevalece sobre esta leitura.
+
+"Fase não especificada" fica reservado ao caso em que não há texto de suspensão
+nenhum — ausência de fonte, não silêncio dela. Como registro sem texto de
+suspensão também não tem alcance determinado, e o bloco só aparece havendo
+alcance, na prática essa resposta não chega à tela; ela existe para que a
+ausência tenha nome próprio em vez de virar afirmação.
+
+**Imediata** e **desde a determinação** dizem a mesma coisa ao leitor — para
+agora —, e a distinção é de autoria: na primeira quem manda é o tribunal, na
+segunda é a lei preenchendo o silêncio. Por isso levam a mesma faixa vermelha no
+bloco, e só a nota as separa.
 
 Duas armadilhas que a leitura evita, ambas medidas na base: "não aplicabilidade
 **imediata** da decisão do incidente" fala da eficácia do acórdão, não de quando
@@ -455,8 +472,9 @@ determinação que cita recurso **e também** primeiro grau não é de fase recu
 por isso a marca recursal só vale quando o texto não alcança o primeiro grau.
 
 `conferir-regra.mjs` ganhou a invariante 6: todo registro precisa de momento com
-rótulo e explicação, e fase declarada só se sustenta havendo texto de suspensão
-que a ampare.
+rótulo e explicação; fase declarada só se sustenta havendo texto de suspensão
+que a ampare; e, na recíproca, "não especificada" não pode conviver com texto de
+suspensão existente — havendo determinação escrita, a regra responde.
 
 ## Até quando vale a suspensão
 
@@ -507,6 +525,68 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 11/09/2026 — Determinação sem ressalva de fase: "desde a determinação", não "não especificada"
+
+**Responsável:** Muse Spark, a pedido de Sarah, que leu uma ficha com aviso de
+suspensão persistente logo acima de um bloco dizendo "fase não especificada" e
+perguntou se ali não deveria dizer que a suspensão é imediata.
+
+**O erro.** Os dois blocos respondem a perguntas diferentes — o aviso de cima diz
+*até quando* a suspensão dura, o bloco de baixo diz *de que fase em diante*
+suspender —, então não se contradiziam. Mas a resposta de baixo estava errada por
+omissão: `momentoDaSuspensao` só dizia "imediata" quando o texto trazia as
+expressões literais ("suspensão imediata", "suspender de imediato"), e jogava
+todo o resto em "fase não especificada". Medido na base de 11/09/2026, isso
+significava **2** registros classificados como imediatos contra **551** em "não
+especificada" — e, entre os que chegam à tela com suspensão em vigor, "não
+especificada" era a maioria: 128 de 255. Um bloco em destaque, no alto da ficha,
+que na maioria das vezes devolvia ao leitor a pergunta que ele foi lá fazer.
+
+E a omissão tinha consequência prática, que é o que motivou a mudança: Sarah
+perguntou se, havendo suspensão determinada, não haveria problema em aguardar
+também o fim da instrução probatória. Há. Suspenso o processo, é vedado praticar
+atos processuais, salvo os urgentes (art. 314 do CPC) — instrução em curso não é
+ato urgente, e prova colhida sob suspensão é ato praticado contra a determinação.
+A espera pelo fim da instrução só se sustenta onde o próprio tribunal a ressalvou.
+Um bloco que diz "fase não especificada" não desautoriza essa espera; um que diz
+"desde a determinação" desautoriza.
+
+**O que mudou.**
+
+- `site/index.html`: novo momento `DETERMINACAO` — rótulo "Desde a determinação",
+  com nota que cita o art. 314 do CPC, diz que não se aguarda o fim da instrução
+  e remete ao documento de origem, cuja ressalva prevalece. `momentoDaSuspensao`
+  passa a devolvê-lo quando há texto de determinação sem ressalva de fase.
+- `site/index.html`: `NAO_DITO` fica restrito à ausência de texto de suspensão —
+  ausência de fonte, não silêncio dela — e a nota foi reescrita nesse sentido.
+  `IMEDIATA` continua existindo para o tribunal que diz com todas as letras; a
+  diferença entre os dois é de autoria, e as duas levam a mesma faixa vermelha.
+- `site/index.html`: `momentoDaSuspensao` passa a aparar o texto antes de testar
+  se existe. A fonte traz célula com um espaço só — o STJ-TEMA-24 é assim —, e
+  sem isso um campo em branco viraria "desde a determinação". A invariante 6
+  pegou esse caso na primeira execução.
+- `coleta/conferir-regra.mjs`: invariante 6 ganhou a recíproca — "não
+  especificada" com texto de suspensão presente passa a ser falha de regra.
+- `README.md`: seção "A partir de quando suspender" refeita e esta entrada.
+
+**Validação.** Local, sobre a base versionada em `site/dados.json` (3.205
+registros, coleta de 11/09/2026): `conferirRegraDeSuspensao` roda sem falha.
+Distribuição do momento entre os registros com suspensão em vigor e alcance
+determinado — os que exibem o bloco: 129 "desde a determinação", 88 "só na fase
+recursal", 39 "após encerrada a instrução probatória", 0 "fase não especificada".
+Na base inteira: 557 `DETERMINACAO`, 362 `RECURSAL`, 42 `INSTRUCAO`, 2 `IMEDIATA`,
+3.467 `NAO_DITO` (registros sem texto de suspensão, que não exibem o bloco).
+Não houve consulta nova às fontes oficiais nem publicação — a mudança é de
+classificação e texto, e vale sobre os dados já coletados.
+
+**Dados e implantação.** Nenhuma alteração em `site/dados.json` nem no formato da
+coleta. Publica pelo fluxo normal do GitHub Pages ao gravar no repositório.
+
+**Pendências.** Os 129 registros que agora dizem "desde a determinação" derivam
+de silêncio do extrato, não de afirmação do tribunal. Se a conferência de algum
+documento de origem revelar ressalva de fase que o extrato cortou, é caso de
+corrigir o dado na fonte — a nota do bloco já avisa o leitor disso.
 
 ### 11/09/2026 — IRDR 94: embargos vivos não deixam a suspensão cessar
 

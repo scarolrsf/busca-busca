@@ -89,8 +89,16 @@ export function conferirRegraDeSuspensao(dados, caminhoDoPortal) {
         falhas.push(r.id + ': momento da suspensão sem rótulo ou sem explicação (' + r._momento + ')');
       }
       // Fase declarada só se sustenta se houver texto de suspensão para declará-la.
-      if (r._momento !== 'NAO_DITO' && !String(r.suspensao || '').trim()) {
+      const temTexto = Boolean(String(r.suspensao || '').trim());
+      if (r._momento !== 'NAO_DITO' && !temTexto) {
         falhas.push(r.id + ': momento "' + r._momento + '" sem texto de suspensão que o ampare');
+      }
+      /* E a recíproca: "não especificada" é resposta para ausência de fonte, não
+         para silêncio da fonte. Havendo determinação escrita, a regra legal
+         responde — deixar "não especificada" aí devolveria ao leitor a pergunta
+         que o portal existe para responder. */
+      if (r._momento === 'NAO_DITO' && temTexto) {
+        falhas.push(r.id + ': momento "não especificado" apesar de haver texto de suspensão a ler');
       }
     }
 
