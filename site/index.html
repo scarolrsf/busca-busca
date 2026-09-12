@@ -896,6 +896,26 @@ function destaca(txt, re) {
   return re ? s.replace(re, '<mark>$1</mark>') : s;
 }
 
+/**
+ * O corpo do cartão de novidade.
+ *
+ * No caso comum é o "Antes / Agora", que deixa a conferência à vista. No campo
+ * de data sem data, o valor da fonte não ajuda ninguém — "139" não diz nada a
+ * quem vai despachar —, e o que ajuda é a fase a partir da qual suspender.
+ */
+function corpoDaNovidade(l) {
+  var semData = novidadeSemData(l);
+  if (semData) {
+    var m = semData._momento && MOMENTO[semData._momento];
+    if (semData._emVigor && m && semData._alcance !== 'NAO_DETERMINADA') {
+      return '<p class="diff"><strong>Suspender a partir de:</strong> ' + esc(m.r) + '</p>';
+    }
+    return '<p class="diff">A fonte oficial não publicou data neste campo.</p>';
+  }
+  return (l[4] ? '<p class="diff"><strong>Antes:</strong> ' + esc(corta(l[4], 300)) + '</p>' : '') +
+    '<p class="diff">' + (l[4] ? '<strong>Agora:</strong> ' : '') + esc(corta(l[5], 320)) + '</p>';
+}
+
 function corta(txt, n) {
   var t = String(txt || '').replace(/\s+/g, ' ').trim();
   return t.length > n ? t.slice(0, n).replace(/\s\S*$/, '') + '…' : t;
@@ -1762,6 +1782,11 @@ var RAZAO_SUSPENSAO = {
 };
 
 /** Campos de data trazem "processo: dd/mm/aaaa" em várias linhas; pega a última. */
+/** Data de verdade, nos dois formatos que as fontes usam: dd/mm/aaaa e ISO. */
+function ehData(valor) {
+  return Boolean(ultimaData(valor) || /\d{4}-\d{2}-\d{2}/.test(String(valor || '')));
+}
+
 function ultimaData(valor) {
   var achadas = String(valor || '').match(/\d{2}\/\d{2}\/\d{4}/g);
   if (!achadas) return '';
@@ -2119,7 +2144,7 @@ function campo(rotulo, valor, mono) {
  */
 function campoDeData(rotulo, valor) {
   if (!valor) return '';
-  if (ultimaData(valor) || /\d{4}-\d{2}-\d{2}/.test(String(valor))) return campo(rotulo, valor, true);
+  if (ehData(valor)) return campo(rotulo, valor, true);
   /* Valor que não é data — "20", "71", "139" — vindo assim da planilha do TJMG.
      Mostrá-lo no lugar da data, em monoespaçada, fazia o número parecer
      resposta: a ficha anunciava "Julgamento 139" e só depois desmentia. A
@@ -2257,6 +2282,7 @@ function ficha(r) {
   h += '<section class="secao"><h2>Situação e datas</h2><dl class="dados">' +
     campo('Situação', r._situacao) +
     campo('Pendências identificadas', pendencias(r)) +
+    campoDeData('Admissão do incidente', r.admissao) +
     campoDeData('Julgamento', r.julgamento) +
     campoDeData('Publicação do acórdão', r.publicacao) +
     campoDeData('Trânsito em julgado', r.transito) +
@@ -2375,6 +2401,44 @@ function rotuloNovidade(campo) {
 }
 
 /**
+ * O que a situação da fonte significa, em uma chamada. Vive em função própria
+ * porque serve a dois lugares: a mudança de situação e o cartão de campo de
+ * data sem data, que passou a se apoiar no estágio do incidente.
+ */
+function sentidoDaSituacao(agora) {
+  if (/cancelad/.test(agora)) return { icone: '✅', texto: 'Precedente cancelado', nivel: 'BAIXO' };
+  if (/nao ha repercussao geral/.test(agora)) return { icone: '✅', texto: 'Repercussão geral negada', nivel: 'BAIXO' };
+  if (/transit/.test(agora)) return { icone: '✅', texto: 'Trânsito em julgado', nivel: 'BAIXO' };
+  if (/acordao[^.]{0,40}publicad/.test(agora)) return { icone: '📌', texto: 'Acórdão publicado', nivel: 'BAIXO' };
+  if (/julgad/.test(agora)) return { icone: '📌', texto: 'Mérito julgado', nivel: 'MEDIO' };
+  if (/sobrestad|suspens/.test(agora)) return { icone: '⚠️', texto: 'Precedente sobrestado', nivel: 'ALTO' };
+  if (/afetad|admitid|analisada preliminar/.test(agora)) return { icone: '⚠️', texto: 'Incidente admitido', nivel: 'MEDIO' };
+  if (/prejudicad|baixado|extinto|rejeitad/.test(agora)) return { icone: '✅', texto: 'Incidente prejudicado', nivel: 'BAIXO' };
+  return { icone: '📌', texto: 'Mudou a situação', nivel: 'MEDIO' };
+}
+
+/**
+ * Campo de data com valor que não é data, na aba "Novidades".
+ *
+ * A planilha da Turma Recursal traz "139", "20", "71" nas colunas de julgamento
+ * e de trânsito. O cartão anunciava "Julgamento realizado" e mostrava o número —
+ * noticiava um julgamento que não houve e oferecia, como conteúdo, um valor sem
+ * sentido. São 45 cartões assim.
+ *
+ * O que o cartão passa a dizer é o que se sabe de verdade: o estágio do
+ * incidente — com a data de admissão, que a planilha publica na coluna ADMISSÃO
+ * e que este portal antes ignorava — e, no corpo, a fase a partir da qual
+ * suspender, que é o que decide o que fazer com o processo na mesa. O número
+ * continua na ficha, dito como o que é.
+ */
+function novidadeSemData(linha) {
+  var campo = norm(linha[3] || '');
+  if (!/^(julgamento|publicacao|transito em julgado)$/.test(campo)) return null;
+  if (!linha[5] || ehData(linha[5])) return null;
+  return achar(linha[1]) || {};
+}
+
+/**
  * O que aquela alteração significa na prática.
  *
  * O registro bruto diz qual campo mudou e de que valor para qual. Isso é exato,
@@ -2405,16 +2469,16 @@ function significadoDaNovidade(linha) {
       : { icone: '⚠️', texto: 'Suspensão determinada', nivel: 'ALTO' };
   }
 
-  if (campo === 'situacao na fonte') {
-    if (/cancelad/.test(agora)) return { icone: '✅', texto: 'Precedente cancelado', nivel: 'BAIXO' };
-    if (/nao ha repercussao geral/.test(agora)) return { icone: '✅', texto: 'Repercussão geral negada', nivel: 'BAIXO' };
-    if (/transit/.test(agora)) return { icone: '✅', texto: 'Trânsito em julgado', nivel: 'BAIXO' };
-    if (/acordao[^.]{0,40}publicad/.test(agora)) return { icone: '📌', texto: 'Acórdão publicado', nivel: 'BAIXO' };
-    if (/julgad/.test(agora)) return { icone: '📌', texto: 'Mérito julgado', nivel: 'MEDIO' };
-    if (/sobrestad|suspens/.test(agora)) return { icone: '⚠️', texto: 'Precedente sobrestado', nivel: 'ALTO' };
-    if (/afetad|admitid|analisada preliminar/.test(agora)) return { icone: '⚠️', texto: 'Incidente admitido', nivel: 'MEDIO' };
-    if (/prejudicad|baixado|extinto|rejeitad/.test(agora)) return { icone: '✅', texto: 'Incidente prejudicado', nivel: 'BAIXO' };
-    return { icone: '📌', texto: 'Mudou a situação', nivel: 'MEDIO' };
+  if (campo === 'situacao na fonte') return sentidoDaSituacao(agora);
+
+  var semData = novidadeSemData(linha);
+  if (semData) {
+    if (semData.admissao && /admitid/.test(norm(semData.situacao))) {
+      return { icone: '⚠️', texto: 'Admitido em ' + dataBR(semData.admissao), nivel: 'MEDIO' };
+    }
+    return semData.situacao
+      ? sentidoDaSituacao(norm(semData.situacao))
+      : { icone: '✏️', texto: 'Atualização de cadastro', nivel: 'NEUTRO' };
   }
 
   if (campo === 'tese / destaque') return { icone: '📌', texto: 'Tese publicada', nivel: 'MEDIO' };
@@ -2585,9 +2649,8 @@ function abaNovidades() {
         '<span class="chamada n-' + sentido.nivel + '"><span aria-hidden="true">' + sentido.icone +
           '</span>' + esc(sentido.texto) + '</span>' +
         '<span class="ident">' + esc(l[2]) + '</span>' +
-        '<span class="etiqueta">' + esc(rotuloNovidade(l[3])) + '</span></span>' +
-        (l[4] ? '<p class="diff"><strong>Antes:</strong> ' + esc(corta(l[4], 300)) + '</p>' : '') +
-        '<p class="diff">' + (l[4] ? '<strong>Agora:</strong> ' : '') + esc(corta(l[5], 320)) + '</p>' +
+        (novidadeSemData(l) ? '' : '<span class="etiqueta">' + esc(rotuloNovidade(l[3])) + '</span>') + '</span>' +
+        corpoDaNovidade(l) +
         (linkFonte(l[6]) ? '<span class="ficha-pe">' + linkFonte(l[6]) + '</span>' : '') +
       '</article>';
     });

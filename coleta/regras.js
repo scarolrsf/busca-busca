@@ -22,8 +22,8 @@ const PILOTO = {
   stjInfo: 'https://processo.stj.jus.br/jurisprudencia/externo/informativo/',
   stfInfo: 'https://portal.stf.jus.br/textos/verTexto.asp?servico=informativoSTF'
 };
-const CAMPOS = ['id','tribunal','tipo','numero','questao','area','situacao','suspensao','julgamento','publicacao','transito','repercussaoGeral','dataDaTese','suspensaoNacionalDesde','tese','fonte','verificadoEm','origem','pertinencia','observacoes','processos','atualizadoEm','anotacaoManual'];
-const ROTULOS = ['ID','Tribunal','Tipo','Número / processo','Questão','Área','Situação na fonte','Registro sobre suspensão','Julgamento','Publicação','Trânsito em julgado','Repercussão geral apreciada em','Tese firmada em','Suspensão nacional determinada em','Tese / destaque','Fonte oficial','Consulta bem-sucedida','Origem','Pertinência','Observações da fonte','Processos e datas','Alteração detectada','Anotação da conferência mensal'];
+const CAMPOS = ['id','tribunal','tipo','numero','questao','area','situacao','suspensao','julgamento','publicacao','transito','repercussaoGeral','dataDaTese','suspensaoNacionalDesde','admissao','tese','fonte','verificadoEm','origem','pertinencia','observacoes','processos','atualizadoEm','anotacaoManual'];
+const ROTULOS = ['ID','Tribunal','Tipo','Número / processo','Questão','Área','Situação na fonte','Registro sobre suspensão','Julgamento','Publicação','Trânsito em julgado','Repercussão geral apreciada em','Tese firmada em','Suspensão nacional determinada em','Admissão do incidente','Tese / destaque','Fonte oficial','Consulta bem-sucedida','Origem','Pertinência','Observações da fonte','Processos e datas','Alteração detectada','Anotação da conferência mensal'];
 const HF = ['Fonte','Última tentativa','Último sucesso','Resultado','Registros lidos','Detalhe','URL'];
 const HH = ['Detectado em','ID','Identificação','Campo','Valor anterior','Valor novo','Fonte','Natureza'];
 
@@ -79,10 +79,10 @@ function coletarSTJ_(){executarFonte_('STJ — temas e processos',PILOTO.stjTema
 });}
 function coletarIUJ_(){executarFonte_('TJMG — IUJ',PILOTO.iujPagina,()=>{
   const r=buscarResposta_(PILOTO.iuj);const rows=lerXlsx_(r.getBlob());
-  if(rows.length<5||!/SITUA/i.test(rows[0][1]||'')||!/QUEST/i.test(rows[0][4]||'')||!/TR.NSITO/i.test(rows[0][10]||''))throw Error('Cabeçalho do acompanhamento IUJ mudou. Nenhuma alteração aplicada.');
+  if(rows.length<5||!/SITUA/i.test(rows[0][1]||'')||!/QUEST/i.test(rows[0][4]||'')||!/TR.NSITO/i.test(rows[0][10]||'')||!/ADMISS/i.test(rows[0][2]||''))throw Error('Cabeçalho do acompanhamento IUJ mudou. Nenhuma alteração aplicada.');
   const records=rows.slice(1).filter(r=>r[0]&&r[4]).map(r=>{
     const parsed=numeroProcesso_(r[0]);const number=parsed||String(r[0]).trim();if(!parsed)r[11]='Identificador incompleto na fonte oficial: '+number+'. Conferir antes de citar. '+(r[11]||'');
-    return {id:'TJMG-IUJ-'+number,tribunal:'TJMG',tipo:'IUJ',numero:number,questao:r[4],area:classificarArea_(r[4]),situacao:r[1],suspensao:[r[5],r[6]].filter(x=>x&&!/^[-. ]+$/.test(x)).join('\n\n'),julgamento:dataExcel_(r[7]),publicacao:dataExcel_(r[8]),transito:dataExcel_(r[10]),tese:r[9],fonte:PILOTO.iujPagina,origem:'TJMG — acompanhamento IUJ',pertinencia:'IUJ da Turma de Uniformização',observacoes:[r[11],r[12],r[3]?'Relatoria: '+r[3]:''].filter(Boolean).join('\n'),processos:r[0]};
+    return {id:'TJMG-IUJ-'+number,tribunal:'TJMG',tipo:'IUJ',numero:number,questao:r[4],area:classificarArea_(r[4]),situacao:r[1],admissao:dataExcel_(r[2]),suspensao:[r[5],r[6]].filter(x=>x&&!/^[-. ]+$/.test(x)).join('\n\n'),julgamento:dataExcel_(r[7]),publicacao:dataExcel_(r[8]),transito:dataExcel_(r[10]),tese:r[9],fonte:PILOTO.iujPagina,origem:'TJMG — acompanhamento IUJ',pertinencia:'IUJ da Turma de Uniformização',observacoes:[r[11],r[12],r[3]?'Relatoria: '+r[3]:''].filter(Boolean).join('\n'),processos:r[0]};
   });return atualizarRegistros_(PILOTO.temas,consolidarIUJ_(records),'TJMG — acompanhamento IUJ');
 });}
 function coletarInformativosSTJ_(){executarFonte_('STJ — informativos',PILOTO.stjInfo,()=>{
@@ -218,7 +218,7 @@ function consolidarSTJ_(rows){
 }
 function consolidarIUJ_(rows){
  const groups=new Map();for(const r of rows){if(!groups.has(r.id))groups.set(r.id,[]);groups.get(r.id).push(r);}
- return [...groups.values()].map(group=>{if(group.length===1)return group[0];const out={...group[0]};for(const k of ['questao','situacao','suspensao','julgamento','publicacao','transito','tese','observacoes']){const vals=[...new Set(group.map(r=>String(r[k]||'').trim()).filter(Boolean))];out[k]=vals.length>1?vals.map((v,i)=>'Registro da fonte '+(i+1)+':\n'+v).join('\n\n'):(vals[0]||'');}out.observacoes='A fonte contém '+group.length+' linhas para este IUJ. Os textos distintos foram preservados e exigem conferência.\n\n'+out.observacoes;return out;});
+ return [...groups.values()].map(group=>{if(group.length===1)return group[0];const out={...group[0]};for(const k of ['questao','situacao','admissao','suspensao','julgamento','publicacao','transito','tese','observacoes']){const vals=[...new Set(group.map(r=>String(r[k]||'').trim()).filter(Boolean))];out[k]=vals.length>1?vals.map((v,i)=>'Registro da fonte '+(i+1)+':\n'+v).join('\n\n'):(vals[0]||'');}out.observacoes='A fonte contém '+group.length+' linhas para este IUJ. Os textos distintos foram preservados e exigem conferência.\n\n'+out.observacoes;return out;});
 }
 function entidades_(s){const e={amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:' ',ordm:'º',ordf:'ª',ndash:'–',mdash:'—',ccedil:'ç',Ccedil:'Ç',aacute:'á',Aacute:'Á',eacute:'é',Eacute:'É',iacute:'í',Iacute:'Í',oacute:'ó',Oacute:'Ó',uacute:'ú',Uacute:'Ú',atilde:'ã',Atilde:'Ã',otilde:'õ',Otilde:'Õ',acirc:'â',Acirc:'Â',ecirc:'ê',Ecirc:'Ê',ocirc:'ô',Ocirc:'Ô',agrave:'à',Agrave:'À',uuml:'ü',hellip:'…'};return s.replace(/&(#x[\da-f]+|#\d+|\w+);/gi,(m,k)=>k[0]==='#'?String.fromCodePoint(k[1].toLowerCase()==='x'?parseInt(k.slice(2),16):parseInt(k.slice(1),10)):(e[k]||m));}
 function atributos_(s){const a={};for(const m of s.matchAll(/([\w:.-]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g))a[m[1]]=entidades_(m[2]===undefined?m[3]:m[2]);return a;}

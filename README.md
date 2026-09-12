@@ -654,6 +654,59 @@ alteração.
 **Pendências.** Seguem com Sarah os segredos do espelho e o aviso à Turma
 Recursal; e segue aberta a fonte automática para trânsito e publicação do
 acórdão do STF.
+### 12/09/2026 — A coluna ADMISSÃO estava na planilha o tempo todo
+
+**Responsável:** Claude Code, a pedido de Sarah, que viu na aba "Novidades"
+cartões anunciando "Julgamento realizado" com o número **139** no corpo e
+mandou trocar por "Admitido em …", com a fase a partir da qual suspender no
+lugar do número — "é mais válido".
+
+**O que estava errado.** O cartão noticiava um julgamento que não houve: a
+planilha da Turma Recursal traz "139", "20", "71" nas colunas de julgamento e de
+trânsito, e o portal, lendo campo de data, anunciava a chamada correspondente.
+Eram 45 cartões, todos de IUJ.
+
+**A descoberta.** A planilha tem uma coluna **ADMISSÃO**, com data de verdade em
+formato Excel, e a coleta a ignorava: lia as colunas 1, 4, 5, 6, 7, 8, 9, 10, 11
+e 12, pulando a 2. O IUJ 2806132-61.2026.8.13.0000, o da imagem, foi admitido em
+**03/09/2026** — e o portal não sabia dizer.
+
+**O que mudou.**
+
+- `coleta/regras.js`: `coletarIUJ_` passa a ler a coluna ADMISSÃO para o campo
+  novo `admissao`, que entra em `CAMPOS`, em `ROTULOS` e na consolidação de
+  linhas repetidas do mesmo incidente. A conferência de cabeçalho agora exige a
+  coluna: se ela sair do lugar, a coleta falha em vez de gravar vazio.
+- `dados/temas-do-portal.json`: 48 IUJ com a data de admissão gravada, fora do
+  fluxo da coleta — a coluna sempre esteve lá, e passar pelo fluxo faria a aba
+  "Novidades" anunciar 48 admissões hoje. Sete IUJ ficam sem: são os da
+  "Planilha inicial", que não constam da planilha atual.
+- `site/index.html`: a ficha ganha "Admissão do incidente". Na aba "Novidades",
+  cartão de campo de data com valor que não é data deixa de anunciar julgamento:
+  a chamada passa a ser **"Admitido em dd/mm/aaaa"** quando o incidente está
+  admitido, ou o estágio que a situação disser; o corpo mostra **"Suspender a
+  partir de: …"** em vez do número; e a etiqueta do campo some, porque o campo
+  não é mais o assunto do cartão.
+- `site/index.html`: o mapeamento de situação virou `sentidoDaSituacao`, usado
+  agora em dois lugares, e `ehData` reúne o teste de data que estava repetido.
+
+**Validação.** A prova de sempre: `coletarIUJ_` rodado de verdade contra uma
+cópia da base deixou ALTERACOES em 5.331 — zero novidades falsas sobre 48
+registros. Na primeira execução apareceu **uma** diferença, e ela valeu a pena:
+o IUJ 1.0000.24.279369-3/000 tem duas linhas na planilha com datas de admissão
+diferentes, e `consolidarIUJ_` as junta em "Registro da fonte 1 / 2" — a base
+foi alinhada a esse formato, e a segunda execução acusou zero. Conferência da
+regra sobre a base inteira: sem falha; nenhuma classificação mudou. Na prévia,
+os dois cartões da imagem agora dizem "Admitido em 03/09/2026" com "Suspender a
+partir de: Após encerrada a instrução probatória".
+
+**Dados e implantação.** 48 registros ganharam data de admissão; nenhuma entrada
+nova em ALTERACOES. Publica com o envio ao GitHub.
+
+**Pendências.** Os 45 valores que não são data continuam na fonte, e o aviso à
+Turma Recursal segue pendente. A coluna BOLETIM da mesma planilha está quase
+toda vazia — só 3 dos 48 IUJ a trazem —, e é por isso que o boletim do NUGEPNAC
+pedido pela Sarah precisa vir da página do tribunal, não daqui.
 
 ### 12/09/2026 — "Julgamento 139" deixa de ser resposta
 
