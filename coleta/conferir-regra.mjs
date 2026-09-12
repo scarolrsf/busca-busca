@@ -51,7 +51,11 @@ export function conferirRegraDeSuspensao(dados, caminhoDoPortal) {
     // 3. Repetitivo e repercussão geral: publicado o acórdão, cessa.
     const paradigma = r.tipo === 'Repetitivo' || r.tipo === 'Repercussão geral';
     const clausulaExpressa = /at[ée] o tr[âa]nsito em julgado/i.test(String(r.suspensao || ''));
-    if (paradigma && r._situacao === 'Acórdão publicado' && !clausulaExpressa && !encerrado) {
+    /* Duas exceções abrem mão desta invariante, e as duas são ordem que fala
+       mais alto que a regra geral: cláusula expressa mandando suspender até o
+       trânsito, e determinação de suspensão posterior ao próprio paradigma. */
+    const ordemPosterior = Boolean(R.determinacaoPosteriorAoParadigma && R.determinacaoPosteriorAoParadigma(r));
+    if (paradigma && r._situacao === 'Acórdão publicado' && !clausulaExpressa && !ordemPosterior && !encerrado) {
       falhas.push(r.id + ': acórdão paradigma publicado, deveria ter cessado (art. 1.040, III)');
     }
 
@@ -132,6 +136,29 @@ export function conferirRegraDeSuspensao(dados, caminhoDoPortal) {
       !/n[ãa]o h[áa] repercuss[ãa]o geral/i.test(String(r.situacao || ''));
     if (soRgPublicado && encerrado) {
       falhas.push(r.id + ': acórdão de repercussão geral publicado não encerra a suspensão — o mérito segue pendente (art. 1.035, § 5º, c/c art. 1.040, III)');
+    }
+
+    /* 10. Determinação de suspensão posterior ao acórdão paradigma não pode
+       aparecer como encerrada. O art. 1.040, III, faz a suspensão cessar com a
+       publicação do paradigma, mas pressupõe ordem anterior a ele; o Tema 372
+       teve a suspensão nacional determinada treze meses DEPOIS, e o portal
+       dizia "sem suspensão em vigor". */
+    if (R.determinacaoPosteriorAoParadigma && R.determinacaoPosteriorAoParadigma(r) && encerrado) {
+      falhas.push(r.id + ': suspensão determinada em ' + r.suspensaoNacionalDesde +
+        ', depois do julgamento do tema, não pode constar como encerrada');
+    }
+
+    /* 11. As datas do STF. A tabela "Todos os temas" não publica trânsito nem
+       publicação do acórdão: o que ela traz é a data da apreciação da
+       repercussão geral e a data da tese. Ler a primeira como trânsito deixou
+       584 temas com trânsito anterior ao próprio julgamento. Campo vazio é
+       resposta melhor que data errada — e é isto que esta invariante protege. */
+    const dataOuVazio = v => !v || /^\d{2}\/\d{2}\/\d{4}$/.test(String(v));
+    for (const campo of ['repercussaoGeral', 'dataDaTese', 'suspensaoNacionalDesde']) {
+      if (!dataOuVazio(r[campo])) falhas.push(r.id + ': ' + campo + ' não é data (' + r[campo] + ')');
+    }
+    if (r.tribunal === 'STF' && r.tipo === 'Repercussão geral' && (r.transito || r.publicacao)) {
+      falhas.push(r.id + ': tema do STF com data de trânsito ou de publicação — a lista de temas não publica nenhuma das duas');
     }
 
     if (!encerrado) {

@@ -22,8 +22,8 @@ const PILOTO = {
   stjInfo: 'https://processo.stj.jus.br/jurisprudencia/externo/informativo/',
   stfInfo: 'https://portal.stf.jus.br/textos/verTexto.asp?servico=informativoSTF'
 };
-const CAMPOS = ['id','tribunal','tipo','numero','questao','area','situacao','suspensao','julgamento','publicacao','transito','tese','fonte','verificadoEm','origem','pertinencia','observacoes','processos','atualizadoEm','anotacaoManual'];
-const ROTULOS = ['ID','Tribunal','Tipo','Número / processo','Questão','Área','Situação na fonte','Registro sobre suspensão','Julgamento','Publicação','Trânsito em julgado','Tese / destaque','Fonte oficial','Consulta bem-sucedida','Origem','Pertinência','Observações da fonte','Processos e datas','Alteração detectada','Anotação da conferência mensal'];
+const CAMPOS = ['id','tribunal','tipo','numero','questao','area','situacao','suspensao','julgamento','publicacao','transito','repercussaoGeral','dataDaTese','suspensaoNacionalDesde','tese','fonte','verificadoEm','origem','pertinencia','observacoes','processos','atualizadoEm','anotacaoManual'];
+const ROTULOS = ['ID','Tribunal','Tipo','Número / processo','Questão','Área','Situação na fonte','Registro sobre suspensão','Julgamento','Publicação','Trânsito em julgado','Repercussão geral apreciada em','Tese firmada em','Suspensão nacional determinada em','Tese / destaque','Fonte oficial','Consulta bem-sucedida','Origem','Pertinência','Observações da fonte','Processos e datas','Alteração detectada','Anotação da conferência mensal'];
 const HF = ['Fonte','Última tentativa','Último sucesso','Resultado','Registros lidos','Detalhe','URL'];
 const HH = ['Detectado em','ID','Identificação','Campo','Valor anterior','Valor novo','Fonte','Natureza'];
 
@@ -295,23 +295,27 @@ function situacaoSTF_(texto){
  resto=resto.replace(/\s+/g,' ').trim();
  return {merito:merito,data:data,processual:resto};
 }
-/* A tabela do STF traz uma data colada à situação, e não diz o que ela é — mas
-   a situação diz. "Trânsito em Julgado ... 22/02/2025" é data de trânsito;
-   "Acórdão de mérito publicado ... 06/09/2025" é data de publicação do acórdão.
-   Onde a situação não disser ("Mérito julgado", "Cancelado", "Analisada
-   Preliminar"), o campo fica vazio: a data continua registrada em observações,
-   com a etiqueta literal da fonte, e inventar um rótulo seria pior que não ter.
+/* A coluna "Situação Atual" da tabela do STF traz três coisas: a apreciação da
+   repercussão geral, UMA data e a situação processual. Por muito tempo esta
+   leitura tratou a data como sendo da situação — "Trânsito em Julgado ...
+   12/12/2007" parecia data de trânsito. Não é: a data está colada à primeira
+   parte, e é a da apreciação da repercussão geral. Conferido de duas maneiras
+   em 11/09/2026: na própria página (Tema 372 mostra "Há repercussão geral |
+   04/03/2011 | Acórdão de mérito publicado", e a ficha do tema no portal do STF
+   diz "Data da Repercussão geral: 04/03/2011"), e contra o Corte Aberta, onde
+   1.299 das 1.397 datas gravadas batem exatamente com a "Data admissibilidade
+   RG". O sintoma era grosseiro e estava à vista: 584 temas tinham "trânsito em
+   julgado" ANTES do próprio julgamento.
 
-   A data literal permanece em observações mesmo quando mapeada. O campo é a
-   nossa leitura; a observação é o que a fonte escreveu — num buscador de
-   precedentes, as duas coisas merecem caber. */
-function datasDaSituacaoSTF_(situacao,data){
- const vazio={julgamento:'',publicacao:'',transito:''};
- if(!data)return vazio;
- const s=normalizar_(situacao);
- if(s.indexOf('transit')>=0)return {julgamento:'',publicacao:'',transito:data};
- if(/acordao[^.]{0,40}publicad/.test(s))return {julgamento:'',publicacao:data,transito:''};
- return vazio;
+   Então o trânsito e a publicação do acórdão não estão nesta tabela, e não se
+   inventam. O que ela dá são duas datas honestas: a da repercussão geral, aqui,
+   e a da tese, na coluna seguinte. */
+function datasDoTemaSTF_(dataDaSituacao,dataDaTese){
+ return {
+  repercussaoGeral:dataDaSituacao||'',
+  dataDaTese:(String(dataDaTese||'').match(/\d{2}\/\d{2}\/\d{4}/)||[''])[0],
+  julgamento:'',publicacao:'',transito:''
+ };
 }
 function parseTemasSTF_(html){
  const inicio=html.indexOf('<table');if(inicio<0)throw Error('Tabela "Todos os temas" não localizada na página do STF.');
@@ -332,7 +336,7 @@ function parseTemasSTF_(html){
   // A mesma frase que vai para o campo `situacao`, para que a leitura da data
   // seja feita sobre exatamente o que fica gravado na base.
   const situacaoTexto=[situacao.processual,situacao.merito].filter(Boolean).join(' — ')||'Sem situação informada';
-  const datas=datasDaSituacaoSTF_(situacaoTexto,situacao.data);
+  const datas=datasDoTemaSTF_(situacao.data,t[5]);
   registros.push({
    id:'STF-TEMA-'+numero,tribunal:'STF',tipo:'Repercussão geral',numero:numero,
    // Alguns temas recém-afetados entram na tabela sem título e sem descrição.
@@ -341,12 +345,13 @@ function parseTemasSTF_(html){
    situacao:situacaoTexto,
    suspensao:'',
    julgamento:datas.julgamento,publicacao:datas.publicacao,transito:datas.transito,
+   repercussaoGeral:datas.repercussaoGeral,dataDaTese:datas.dataDaTese,
    tese:'',
    fonte:href?'https://portal.stf.jus.br/jurisprudenciaRepercussao/'+entidades_(href):PILOTO.stf,
    origem:'STF — repercussão geral',
    pertinencia:'Possível pertinência — classificação automática ampla',
    observacoes:['Título: '+limpaSTF_(titulo),'Relator: '+(t[3].split('\n')[0].trim()||'não informado'),
-    situacao.data?'Data registrada na situação: '+situacao.data:'',
+    situacao.data?'Repercussão geral apreciada em: '+situacao.data:'',
     t[5].trim()?'Data da tese: '+t[5].trim():'',
     assuntos?'Assuntos: '+assuntos:'',
     'O portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.'

@@ -137,6 +137,81 @@ export function compararComOntem(dir, resultados) {
   return relatorio;
 }
 
+/** Lê um CSV inteiro respeitando aspas e devolve objetos por cabeçalho. */
+export function lerCsvObjetos(caminho) {
+  const t = fs.readFileSync(caminho, 'utf8');
+  const linhas = [];
+  let campo = '', linha = [], aspas = false;
+  for (let i = 0; i < t.length; i++) {
+    const c = t[i];
+    if (aspas) {
+      if (c === '"' && t[i + 1] === '"') { campo += '"'; i++; }
+      else if (c === '"') aspas = false;
+      else campo += c;
+    } else if (c === '"') aspas = true;
+    else if (c === ',') { linha.push(campo); campo = ''; }
+    else if (c === '\n') { linha.push(campo); linhas.push(linha); linha = []; campo = ''; }
+    else if (c !== '\r') campo += c;
+  }
+  if (campo || linha.length) { linha.push(campo); linhas.push(linha); }
+  const cab = linhas.shift() || [];
+  return linhas.filter(l => l.length === cab.length)
+    .map(l => Object.fromEntries(l.map((v, i) => [cab[i], v])));
+}
+
+/** O CSV mais recente de uma base, entre os baixados em work/corte-aberta. */
+export function csvMaisRecente(dir, sufixo) {
+  const nomes = fs.readdirSync(dir).filter(n => n.endsWith(sufixo)).sort();
+  if (!nomes.length) throw new Error('Nenhum ' + sufixo + ' baixado em ' + dir + '. Rode --baixar antes.');
+  return path.join(dir, nomes[nomes.length - 1]);
+}
+
+/**
+ * A primeira ponte do Corte Aberta para a base: a DATA em que a suspensão
+ * nacional foi determinada.
+ *
+ * A lista de temas do STF, que é a fonte corrente, diz que há suspensão
+ * nacional e não diz desde quando. A data importa por um motivo prático: o
+ * Tema 372 teve a suspensão determinada em 30/08/2024, mais de um ano DEPOIS
+ * de publicado o acórdão de mérito (06/07/2023). Sem a data, o portal aplicava
+ * o art. 1.040, III, e dava a suspensão por cessada — quando a ordem é
+ * posterior ao marco que a encerraria.
+ *
+ * Escreve direto na base, fora de `atualizarRegistros_`: as datas são
+ * históricas, algumas de 2017, e passá-las pelo fluxo da coleta faria a aba
+ * "Novidades" anunciar hoje determinações antigas. O campo é preenchido só por
+ * aqui; os coletores não o emitem, e por isso sobrevivem a cada coleta
+ * (`atualizarRegistros_` só compara o que vem na leitura da fonte).
+ *
+ * Quem sai do CSV tem o campo limpo: sair da lista de suspensão nacional é o
+ * jeito de o STF dizer que a determinação não vale mais.
+ */
+export function anotarSuspensaoNacional({ dir, arquivoDaBase, aplicar = false } = {}) {
+  const csv = lerCsvObjetos(csvMaisRecente(dir, 'rg-suspensao-nacional.csv'));
+  const soData = s => (String(s || '').match(/\d{2}\/\d{2}\/\d{4}/) || [''])[0];
+  const desde = new Map();
+  for (const linha of csv) {
+    const numero = String(Number(String(linha['Número tema']).trim()));
+    if (!/vigente/i.test(linha['Situação Suspensão Nacional'] || '')) continue;
+    desde.set(numero, soData(linha['Data Determinação Suspensão Nacional']));
+  }
+  const base = JSON.parse(fs.readFileSync(arquivoDaBase, 'utf8'));
+  const postos = [], limpos = [];
+  for (const r of base) {
+    if (r.tribunal !== 'STF' || r.tipo !== 'Repercussão geral') continue;
+    const nova = desde.get(String(r.numero).trim()) || '';
+    const atual = r.suspensaoNacionalDesde || '';
+    if (nova === atual) continue;
+    if (nova) postos.push({ tema: r.numero, de: atual, para: nova });
+    else limpos.push({ tema: r.numero, de: atual });
+    r.suspensaoNacionalDesde = nova;
+  }
+  if (aplicar && (postos.length || limpos.length)) {
+    fs.writeFileSync(arquivoDaBase, JSON.stringify(base, null, 1));
+  }
+  return { vigentesNoCsv: desde.size, postos, limpos, aplicado: Boolean(aplicar) };
+}
+
 /**
  * Baixa as bases pelo navegador. Um clique por vez, com espera entre eles:
  * cada exportação abre o aplicativo Qlik da repercussão geral no servidor do
@@ -247,13 +322,37 @@ function autoteste() {
   confere('hash igual não mudou', r2[0].mudou, false);
   const r3 = compararComOntem(tmp, [{ chave: 'temas', arquivo: 'x.csv', bytes: 11, linhas: 3, sha256: 'b'.repeat(64), data: '2026-09-13' }]);
   confere('hash diferente mudou', r3[0].mudou, true);
+  /* A anotação escreve data de decisão judicial na base: o CSV precisa ser lido
+     com aspas, vírgula dentro de campo e tudo. E o ensaio não pode gravar. */
+  const dirAnotar = path.join(tmp, 'anotar');
+  fs.mkdirSync(dirAnotar, { recursive: true });
+  fs.writeFileSync(path.join(dirAnotar, '2026-01-01-rg-suspensao-nacional.csv'),
+    'Número tema,Título tema,Situação Suspensão Nacional,Data Determinação Suspensão Nacional\n' +
+    '0372,"PIS/COFINS, receitas financeiras",Suspensão Nacional Vigente,30/08/2024 17:16:08\n' +
+    '1455,IPTU,Suspensão Nacional Cancelada,04/05/2026 10:00:00\n');
+  const baseFalsa = path.join(tmp, 'temas.json');
+  const conteudoOriginal = JSON.stringify([
+    { id: 'STF-TEMA-372', tribunal: 'STF', tipo: 'Repercussão geral', numero: '372' },
+    { id: 'STF-TEMA-1455', tribunal: 'STF', tipo: 'Repercussão geral', numero: '1455', suspensaoNacionalDesde: '04/05/2026' },
+    { id: 'TJMG-IRDR-1', tribunal: 'TJMG', tipo: 'IRDR', numero: '1' }
+  ], null, 1);
+  fs.writeFileSync(baseFalsa, conteudoOriginal);
+  const ensaio = anotarSuspensaoNacional({ dir: dirAnotar, arquivoDaBase: baseFalsa, aplicar: false });
+  confere('só a vigente é anotada', ensaio.postos, [{ tema: '372', de: '', para: '30/08/2024' }]);
+  confere('a cancelada é limpa', ensaio.limpos, [{ tema: '1455', de: '04/05/2026' }]);
+  confere('ensaio não grava', fs.readFileSync(baseFalsa, 'utf8'), conteudoOriginal);
+  const aplicado = anotarSuspensaoNacional({ dir: dirAnotar, arquivoDaBase: baseFalsa, aplicar: true });
+  confere('aplicar grava', JSON.parse(fs.readFileSync(baseFalsa, 'utf8'))[0].suspensaoNacionalDesde, '30/08/2024');
+  confere('nada a fazer na segunda vez',
+    anotarSuspensaoNacional({ dir: dirAnotar, arquivoDaBase: baseFalsa, aplicar: true }).postos.length, 0);
+
   fs.rmSync(tmp, { recursive: true, force: true });
 
   if (falhas.length) {
     falhas.forEach(f => console.error('  ' + f));
     throw new Error(falhas.length + ' verificação(ões) falhou(aram).');
   }
-  console.log('Corte Aberta: 15 verificações, todas passaram (sem rede, sem navegador).');
+  console.log('Corte Aberta: 21 verificações, todas passaram (sem rede, sem navegador).');
 }
 
 function osTmp() {
@@ -265,7 +364,8 @@ function ajuda() {
     'Uso:',
     '  node coleta/corte-aberta.mjs --autoteste   (sem rede, sem navegador)',
     '  node coleta/corte-aberta.mjs --baixar       (baixa os 3 CSVs da repercussão geral)',
-    '  node coleta/corte-aberta.mjs --baixar --somente temas [--no-headless] [--dir pasta]'
+    '  node coleta/corte-aberta.mjs --baixar --somente temas [--no-headless] [--dir pasta]',
+    '  node coleta/corte-aberta.mjs --anotar [--ensaio]  (leva a data da suspensão nacional à base)'
   ].join('\n'));
 }
 
@@ -302,6 +402,19 @@ if (ehCli) {
         console.log('  mudou desde ontem: ' + (rel.mudou === null ? 'primeira leitura' : rel.mudou ? 'SIM' : 'não'));
       });
       console.log('\nArquivos em ' + dir + ' (fora do Git). Nenhum dado do portal foi tocado.');
+    } else if (args.includes('--anotar')) {
+      const dir = valor('--dir', path.join(RAIZ, 'work', 'corte-aberta'));
+      const ensaio = args.includes('--ensaio');
+      const r = anotarSuspensaoNacional({
+        dir,
+        arquivoDaBase: path.join(RAIZ, 'dados', 'temas-do-portal.json'),
+        aplicar: !ensaio
+      });
+      console.log('Suspensão nacional vigente no Corte Aberta: ' + r.vigentesNoCsv + ' tema(s).');
+      r.postos.forEach(p => console.log('  Tema ' + p.tema + ': determinada em ' + p.para + (p.de ? ' (antes: ' + p.de + ')' : '')));
+      r.limpos.forEach(p => console.log('  Tema ' + p.tema + ': saiu da lista de suspensão nacional (era ' + p.de + ')'));
+      if (!r.postos.length && !r.limpos.length) console.log('  Nada a mudar: a base já diz o mesmo que o CSV.');
+      console.log(ensaio ? '\nEnsaio: nada foi gravado.' : '\nGravado em dados/temas-do-portal.json, fora do fluxo da coleta.');
     } else {
       ajuda();
       process.exit(2);

@@ -49,7 +49,7 @@ coleta/
   conferir-fontes.mjs mostra, no resumo da execução, quais fontes responderam
   conferir-cadeia.mjs prova que o remendo do certificado do STF funciona
    jurisprudencia-stf.mjs segunda via do STF pelo navegador (desligada por padrão)
-   corte-aberta.mjs   baixa as 3 bases de RG do Corte Aberta (auditoria, fora da base)
+   corte-aberta.mjs   baixa as 3 bases de RG do Corte Aberta e anota a data da suspensão nacional
    complemento.mjs    a coleta feita daqui: atualiza, coleta e envia
   agendado.cmd       o que o Agendador do Windows executa todo dia, sem pause
 
@@ -167,6 +167,14 @@ Desligar a tarefa não quebra nada: a coleta agendada do GitHub continua, e o
 | TJMG — IUJ | planilha de acompanhamento da Turma Recursal |
 | STF — repercussão geral | tabela "Todos os temas" + lista com a marca de suspensão |
 | STF — informativos | planilha oficial de dados do Informativo |
+
+O Corte Aberta, programa de dados abertos do STF, entra como fonte
+complementar: não substitui nenhuma das seis, e alimenta um campo só — a data em
+que a suspensão nacional foi determinada, que a lista de temas não publica.
+Baixa pelo navegador na máquina da Sarah (`corte-aberta.mjs --baixar`) e escreve
+na base com `--anotar`, fora do fluxo da coleta. Quem sai da lista de suspensão
+nacional do Corte Aberta tem o campo limpo: é assim que o STF diz que a
+determinação não vale mais.
 
 ### Arquivo, API ou leitura de página
 
@@ -501,13 +509,48 @@ Não é o trânsito em julgado que a encerra, e o marco muda conforme o rito:
   distintas no portal, e só a primeira encerra. A exceção é o acórdão que
   **nega** a repercussão geral: aí o tema acaba e a matéria volta às instâncias
   ordinárias.
+- **Determinação posterior ao acórdão paradigma** não é alcançada pela regra
+  acima: o art. 1.040, III, pressupõe ordem anterior ao marco que a encerra. O
+  Tema 372 do STF teve o acórdão de mérito publicado em 06/07/2023 e a suspensão
+  nacional determinada em 30/08/2024 — treze meses depois. A data da
+  determinação não vem na lista de temas; vem do Corte Aberta, e é ela que
+  permite ao portal ver a inversão.
 - **Cláusula expressa** em sentido diverso prevalece sobre a regra geral.
 
 Essa regra vive num lugar só — as funções de classificação do `site/index.html` —
 e é aplicada a todo registro no momento de exibir. A cada coleta,
 `coleta/conferir-regra.mjs` carrega essas mesmas funções e as roda sobre a base
-inteira, conferindo nove invariantes. Uma atualização que quebre a regra faz a
+inteira, conferindo onze invariantes. Uma atualização que quebre a regra faz a
 coleta falhar em vez de chegar à tela.
+
+### As datas que o STF publica, e as que ele não publica
+
+A tabela "Todos os temas" tem uma coluna chamada "Situação Atual" com três
+coisas dentro: a apreciação da repercussão geral, **uma** data e a situação
+processual. A data pertence à primeira parte — é a da apreciação da repercussão
+geral —, e por muito tempo esta coleta a leu como se fosse da situação: em
+"Trânsito em Julgado … 12/12/2007", tomava 12/12/2007 por data de trânsito.
+
+O erro era grande e visível: 584 temas ficaram com trânsito em julgado anterior
+ao próprio julgamento. Conferido de duas maneiras em 11/09/2026 — na página do
+Tema 372, que mostra "Data da Repercussão geral: 04/03/2011", exatamente a data
+que estava gravada aqui como publicação do acórdão; e contra o Corte Aberta,
+onde 1.299 das 1.397 datas batem com a coluna "Data admissibilidade RG".
+
+O que a tabela publica, então, são duas datas honestas, e é assim que a ficha as
+mostra:
+
+| Campo | De onde vem |
+| --- | --- |
+| **Repercussão geral apreciada em** | a data da coluna "Situação Atual" |
+| **Tese firmada em** | a coluna "Tese / Data Tese" |
+| **Suspensão nacional determinada em** | Corte Aberta, por `corte-aberta.mjs --anotar` |
+
+Trânsito em julgado e publicação do acórdão de mérito **não** estão nessa
+tabela, e por isso não aparecem mais na ficha dos temas do STF: campo vazio é
+resposta melhor que data errada. Quem precisa dessas duas datas as encontra na
+ficha do tema no portal do STF, para onde o link "Fonte oficial" leva.
+
 
 ### O prazo que a determinação declarou
 
@@ -553,6 +596,115 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 12/09/2026 — As datas do STF, e a suspensão que veio depois do acórdão
+
+**Responsável:** Claude Code, a pedido de Sarah ("faça os dois"), depois de ela
+conferir na fonte oficial os sete temas que o portal dava por encerrados e o STF
+ainda listava como suspensos. A conferência dela fechou um diagnóstico e abriu
+outro.
+
+**O que a conferência mostrou.** Dos sete, seis estavam certos: acórdão de
+mérito publicado — 1455 em 14/08/2026, 1209 em 04/03/2026, 1031 em 15/02/2024,
+1232 em outubro de 2025, e os Temas 966 e 976 com os embargos julgados em
+01/07/2026 e o acórdão publicado em 08/09/2026, três dias antes desta leitura. A
+marca continua vigente no painel do STF porque o tribunal só a revoga
+formalmente; a lei não espera por isso.
+
+O sétimo, não. **O Tema 372 teve o acórdão de mérito publicado em 06/07/2023 e a
+suspensão nacional determinada em 30/08/2024** — treze meses depois. Ordem
+posterior ao marco que a encerraria não é resquício de cadastro.
+
+E a página que a Sarah colou trazia, de brinde, a prova de um segundo defeito:
+"Data da Repercussão geral: 04/03/2011" — exatamente a data que este portal
+mostrava como "Publicação do acórdão".
+
+**As datas: o que estava errado.** A coluna "Situação Atual" da tabela do STF
+guarda três coisas — a apreciação da repercussão geral, uma data e a situação
+processual — e a data pertence à primeira. `datasDaSituacaoSTF_` a tomava pela
+data da situação: onde se lia "Trânsito em Julgado", virava data de trânsito.
+Resultado medido na base: **584 dos 1.251 temas com "trânsito em julgado"
+tinham trânsito anterior ao próprio julgamento**, o que é impossível; e contra o
+Corte Aberta, **1.299 das 1.397 datas batem exatamente com "Data admissibilidade
+RG"**.
+
+**O que mudou nas datas.**
+
+- `coleta/regras.js`: `datasDaSituacaoSTF_` deu lugar a `datasDoTemaSTF_`, que
+  não inventa trânsito nem publicação — o STF não os publica nessa tabela — e
+  grava as duas datas que ela de fato traz: `repercussaoGeral`, da coluna de
+  situação, e `dataDaTese`, da coluna "Tese / Data Tese". Os dois campos entram
+  em `CAMPOS` e `ROTULOS`.
+- `dados/temas-do-portal.json`: correção única dos 1.482 temas do STF, **fora do
+  fluxo da coleta** — 1.251 datas de trânsito e 146 de publicação esvaziadas,
+  1.423 datas de repercussão geral e 1.302 datas de tese gravadas. Passar pelo
+  fluxo marcaria milhares de precedentes como alterados hoje, e a aba
+  "Novidades" diria que o STF mexeu neles. Não mexeu: nós é que líamos errado.
+- `site/index.html`: a ficha mostra os dois campos novos; a ordenação por "mais
+  recentes" passa a considerá-los, e com isso 1.426 dos 1.482 temas do STF
+  voltam a ter data que ordena.
+
+**A suspensão posterior: o que mudou.**
+
+- `coleta/corte-aberta.mjs`: `--anotar` lê o CSV de suspensão nacional já
+  baixado e grava `suspensaoNacionalDesde` nos temas do STF; `--ensaio` mostra
+  sem gravar. É a primeira ponte do Corte Aberta para a base, e ela é estreita
+  de propósito: um campo, escrito fora do fluxo da coleta. Os coletores não
+  emitem esse campo, e por isso ele sobrevive a cada coleta —
+  `atualizarRegistros_` só compara o que a leitura da fonte traz. Tema que sai
+  da lista de suspensão nacional tem o campo limpo.
+- `site/index.html`: `determinacaoPosteriorAoParadigma` compara a data da
+  determinação com a data mais recente do julgamento do tema; sendo posterior,
+  `encerrado()` não cessa a suspensão, e a ficha explica por quê, citando o
+  art. 1.040, III. Sem a data, a função se cala e a regra geral vale como antes.
+- `coleta/conferir-regra.mjs`: invariantes 10 e 11 — determinação posterior não
+  pode constar como encerrada; datas novas têm de ser datas; e tema do STF não
+  pode trazer trânsito nem publicação, que é o guarda contra a volta do erro.
+  A invariante 3 passou a admitir a ordem posterior como exceção, ao lado da
+  cláusula expressa.
+- `coleta/agendado.cmd`: o Corte Aberta passou para **antes** da coleta, com
+  `--baixar` e `--anotar`. O `complemento.mjs` commita a pasta `dados` inteira,
+  então a data anotada entra no commit do mesmo dia; rodando depois, esperaria
+  o dia seguinte.
+
+**Impacto.** Um único registro muda de classificação: o Tema 372, de "sem
+suspensão em vigor, risco baixo" para **suspensão nacional em vigor, risco
+alto**. A contagem por alcance vai de NACIONAL 126 para 127; ESTADUAL 101 e
+RECURSAL 44 seguem iguais. As datas mudam a exibição de 1.482 fichas do STF e
+nenhuma classificação — os campos de data não entram na regra de suspensão, o
+que já fora conferido quando eles foram criados.
+
+**Validação.** A prova que importava: o coletor do STF **rodado de verdade**
+contra uma cópia da base corrigida deixou ALTERACOES em 5.331 entradas — zero
+novidades sobre 1.482 registros. Coletor e base dizem a mesma coisa, e a
+correção feita fora do fluxo não vira novidade falsa na próxima coleta. Na mesma
+execução ficou provado que `suspensaoNacionalDesde` sobrevive à coleta: os 22
+temas anotados continuam com a data depois de o STF ser lido de novo.
+`corte-aberta.mjs --autoteste`: 21 verificações, incluindo seis novas sobre a
+anotação — só a vigente é anotada, a cancelada é limpa, o ensaio não grava, e
+rodar duas vezes não muda nada na segunda. Conferência da regra com as onze
+invariantes sobre a base inteira: sem falha. No navegador, prévia local: o Tema
+372 mostra a pílula "Suspensão nacional", o aviso vermelho e a explicação da
+ordem posterior; o Tema 1031 não mostra mais trânsito nenhum e traz
+"Repercussão geral apreciada em" e "Tese firmada em"; o Tema 1417 — atraso de
+voo, matéria de Juizado — segue com a suspensão nacional que o conserto de
+ontem devolveu.
+
+**Dados.** 1.482 temas do STF com datas corrigidas e 22 com a data da suspensão
+nacional anotada. Nenhuma entrada nova em ALTERACOES, de propósito. Nenhum dado
+do tribunal foi reescrito: o que mudou foi a nossa leitura.
+
+**Implantação.** Publica com o próximo envio ao GitHub, como qualquer alteração.
+A anotação diária só vale na máquina da Sarah, onde o Corte Aberta responde.
+
+**Pendências.** (1) Trânsito em julgado e publicação do acórdão de mérito
+continuam sem fonte automática — estão na ficha de cada tema no portal do STF,
+uma página por tema, e entrariam ao custo de 1.482 requisições; hoje o link
+"Fonte oficial" leva até lá. (2) O texto da marca de suspensão do STF ainda diz
+"a marca não informa a data" nos 22 temas em que a data agora é conhecida;
+corrigir a frase mexe no campo `suspensao` de todos os temas marcados e pede a
+mesma cerimônia de correção fora do fluxo. (3) As duas pendências da Sarah
+seguem abertas: os segredos do espelho e o aviso à Turma Recursal.
 
 ### 11/09/2026 — Acórdão de repercussão geral publicado deixa de encerrar a suspensão
 

@@ -11,17 +11,16 @@ set NODE=node
 if exist "C:\Program Files\nodejs\node.exe" set NODE="C:\Program Files\nodejs\node.exe"
 >> work\coleta-agendada.log echo.
 >> work\coleta-agendada.log echo ===== %date% %time% =====
-%NODE% coleta\complemento.mjs >> work\coleta-agendada.log 2>&1
-set COLETA=%ERRORLEVEL%
-
-REM Auditoria paralela do Corte Aberta: baixa os tres CSVs da repercussao geral
-REM pelo navegador e diz se mudaram desde ontem. Nao toca em dados\ nem no site
-REM -- e, por isso mesmo, nao pode derrubar a coleta: o codigo de saida guardado
-REM acima e o que volta ao Agendador. Se o Playwright nao estiver instalado, ou
-REM o WAF do STF recusar, a linha falha sozinha no log e a coleta do dia
-REM continua valendo. Ver README, secao "Corte Aberta".
+REM Corte Aberta, antes da coleta e por isso mesmo: o --anotar escreve em
+REM dados\, e o complemento.mjs commita a pasta dados inteira. Rodando aqui, a
+REM data da suspensao nacional entra no commit do dia; rodando depois, ficaria
+REM esperando o dia seguinte. Nenhuma das duas linhas pode derrubar a coleta:
+REM falta de Playwright ou recusa do WAF do STF falham sozinhas no log.
 >> work\coleta-agendada.log echo.
->> work\coleta-agendada.log echo ----- Corte Aberta (auditoria paralela) -----
+>> work\coleta-agendada.log echo ----- Corte Aberta (auditoria e anotacao) -----
 %NODE% coleta\corte-aberta.mjs --baixar >> work\coleta-agendada.log 2>&1
+%NODE% coleta\corte-aberta.mjs --anotar >> work\coleta-agendada.log 2>&1
 
-exit /b %COLETA%
+>> work\coleta-agendada.log echo.
+>> work\coleta-agendada.log echo ----- Coleta das seis fontes -----
+%NODE% coleta\complemento.mjs >> work\coleta-agendada.log 2>&1

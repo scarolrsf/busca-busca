@@ -942,7 +942,7 @@ function titulo(r) {
  * É o que ordena "mais recentes"; a data da coleta não diz nada ao usuário.
  */
 function dataPrincipal(r) {
-  var achadas = String([r.transito, r.publicacao, r.julgamento].join(' ')).match(/\d{2}\/\d{2}\/\d{4}/g) || [];
+  var achadas = String([r.transito, r.publicacao, r.julgamento, r.dataDaTese, r.repercussaoGeral].join(' ')).match(/\d{2}\/\d{2}\/\d{4}/g) || [];
   var iso = achadas.map(function (d) { return d.slice(6) + '-' + d.slice(3, 5) + '-' + d.slice(0, 2); }).sort();
   return iso.length ? iso[iso.length - 1] : '';
 }
@@ -1055,6 +1055,38 @@ function nivelAlcance(chave) {
   return 'BAIXO';
 }
 
+/**
+ * Determinação de suspensão posterior ao acórdão paradigma.
+ *
+ * A regra do art. 1.040, III, faz a suspensão cessar com a publicação do
+ * acórdão paradigma — mas ela pressupõe que a ordem de suspensão veio antes.
+ * No Tema 372 não veio: o acórdão de mérito foi publicado em 06/07/2023 e a
+ * suspensão nacional foi determinada em 30/08/2024, treze meses depois. Ordem
+ * posterior ao marco que a encerraria não é resquício de cadastro: é
+ * determinação nova, e o art. 1.040, III, já se esgotou antes dela.
+ *
+ * A data da determinação não está na lista de temas do STF, que é a fonte
+ * corrente — só diz que há suspensão. Ela vem do Corte Aberta, o programa de
+ * dados abertos do próprio tribunal, gravada no campo por
+ * `coleta/corte-aberta.mjs --anotar`. Sem essa data, esta função se cala e a
+ * regra geral vale, como valia antes.
+ */
+function emIso(valor) {
+  var m = String(valor || '').match(/(\d{2})\/(\d{2})\/(\d{4})/);
+  return m ? m[3] + '-' + m[2] + '-' + m[1] : '';
+}
+
+function determinacaoPosteriorAoParadigma(r) {
+  var desde = emIso(r.suspensaoNacionalDesde);
+  if (!desde) return false;
+  /* O marco é a data mais recente do julgamento do próprio tema. "Data da
+     tese" é o que a tabela do STF publica; as outras entram por generalidade,
+     para que a regra não dependa de uma fonte só. */
+  var marcos = [r.dataDaTese, r.publicacao, r.transito, r.julgamento].map(emIso).filter(Boolean).sort();
+  if (!marcos.length) return false;
+  return desde > marcos[marcos.length - 1];
+}
+
 /** Um precedente cancelado não impede julgamento, ainda que o texto cite suspensão. */
 /**
  * Até quando vale a suspensão.
@@ -1081,7 +1113,7 @@ function encerrado(r) {
   if (g !== 'Acórdão publicado') return false;
 
   if (/ate o transito em julgado/.test(norm(r.suspensao))) return false;
-  if (r.tipo === 'Repetitivo' || r.tipo === 'Repercussão geral') return true;
+  if (r.tipo === 'Repetitivo' || r.tipo === 'Repercussão geral') return !determinacaoPosteriorAoParadigma(r);
   return pendencias(r) === 'Nenhuma registrada';
 }
 
@@ -2009,6 +2041,13 @@ function porqueContinuaSuspenso(r) {
       'publicação do acórdão de mérito (art. 1.040, III).';
   }
 
+  if (determinacaoPosteriorAoParadigma(r)) {
+    return 'A suspensão nacional foi determinada em ' + dataDoPrazo(new Date(emIso(r.suspensaoNacionalDesde) + 'T12:00:00')) +
+      ', depois do julgamento do próprio tema. A regra que faz a suspensão cessar com a publicação do ' +
+      'acórdão paradigma (art. 1.040, III, do Código de Processo Civil) pressupõe ordem anterior a ele; ' +
+      'esta é posterior, e vale enquanto o Supremo não a revogar. Confira o andamento do leading case.';
+  }
+
   if (r._situacao === 'Acórdão publicado') {
     var texto = 'O acórdão já foi publicado, mas a suspensão persiste enquanto pender recurso ' +
       'especial ou extraordinário contra o julgamento do incidente, que tem efeito suspensivo por ' +
@@ -2198,14 +2237,16 @@ function ficha(r) {
     campo('Situação', r._situacao) +
     campo('Pendências identificadas', pendencias(r)) +
     campoDeData('Julgamento', r.julgamento) +
-    /* Em tema com repercussão geral reconhecida e mérito pendente, a data que
-       a fonte prende à situação é a da publicação do acórdão DO RECONHECIMENTO.
-       Sob o rótulo genérico ela seria lida como publicação do paradigma — que
-       é justamente o que ainda não houve. */
-    campoDeData(r._situacao === 'Repercussão geral reconhecida'
-      ? 'Publicação do acórdão de repercussão geral'
-      : 'Publicação do acórdão', r.publicacao) +
+    campoDeData('Publicação do acórdão', r.publicacao) +
     campoDeData('Trânsito em julgado', r.transito) +
+    /* Duas datas que só a tabela do STF publica, e que por muito tempo foram
+       lidas como trânsito ou publicação do acórdão — não são. A primeira é a da
+       apreciação da repercussão geral; a segunda, a da tese. O trânsito e a
+       publicação do acórdão de mérito o STF não traz nessa tabela, e por isso
+       aqui não aparecem: campo vazio é resposta melhor que data errada. */
+    campoDeData('Repercussão geral apreciada em', r.repercussaoGeral) +
+    campoDeData('Tese firmada em', r.dataDaTese) +
+    campoDeData('Suspensão nacional determinada em', r.suspensaoNacionalDesde) +
     '</dl></section>';
 
   if (r.processos) {
@@ -3253,6 +3294,7 @@ if (typeof module !== 'undefined' && module.exports) {
     avisoDe: avisoDe,
     momentoDaSuspensao: momentoDaSuspensao,
     prazoDaSuspensao: prazoDaSuspensao,
+    determinacaoPosteriorAoParadigma: determinacaoPosteriorAoParadigma,
     MOMENTO: MOMENTO
   };
 } else {
