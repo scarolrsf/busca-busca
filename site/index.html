@@ -263,6 +263,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .dado dt{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta-3)}
 .dado dd{margin:0;font-size:.94rem}
 .dado dd.mono{font-family:var(--mono);font-size:12.5px;white-space:pre-wrap;line-height:1.5}
+.sem-data{color:var(--tinta-3);font-style:italic}
 .dado-nota{display:block;margin-top:.25rem;font-family:var(--sans);font-size:.82rem;color:var(--tinta-2);white-space:normal}
 .link-fonte{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--borda-forte);border-radius:var(--raio);padding:7px 12px;text-decoration:none;font-size:13.5px}
 .link-fonte:hover{border-color:var(--acento);background:var(--acento-fraco)}
@@ -2119,9 +2120,15 @@ function campo(rotulo, valor, mono) {
 function campoDeData(rotulo, valor) {
   if (!valor) return '';
   if (ultimaData(valor) || /\d{4}-\d{2}-\d{2}/.test(String(valor))) return campo(rotulo, valor, true);
-  return '<div class="dado"><dt>' + esc(rotulo) + '</dt><dd class="mono">' + esc(valor) +
-    '<span class="dado-nota">A fonte oficial não publicou uma data aqui. ' +
-    'O valor é reproduzido como veio, e não deve ser lido como data.</span></dd></div>';
+  /* Valor que não é data — "20", "71", "139" — vindo assim da planilha do TJMG.
+     Mostrá-lo no lugar da data, em monoespaçada, fazia o número parecer
+     resposta: a ficha anunciava "Julgamento 139" e só depois desmentia. A
+     resposta certa é que não há data; o que a fonte escreveu fica registrado
+     ao lado, entre aspas, porque este portal não apaga o que o tribunal
+     publicou — só para de apresentá-lo como aquilo que não é. */
+  return '<div class="dado"><dt>' + esc(rotulo) + '</dt><dd><span class="sem-data">sem data</span>' +
+    '<span class="dado-nota">A planilha do tribunal traz “' + esc(valor) + '” neste campo.</span>' +
+    '</dd></div>';
 }
 
 /**

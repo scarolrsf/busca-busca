@@ -364,10 +364,13 @@ fosse dado bom.** O valor fica visível, dizendo o que é.
   não é apagado: `atualizarRegistros_` congela nele a data da última vez em que
   apareceu. Mas data velha, sozinha, não distingue "a fonte inteira está parada"
   de "este registro saiu da lista". A ficha passa a dizer qual dos dois é.
-- **Não-data no campo de data.** A planilha do TJMG traz "20", "71", "110" na
-  coluna DATA DO JULGAMENTO — 43 registros em 11/09/2026. O valor é reproduzido,
-  porque é o que o tribunal publicou, mas sob aviso de que a fonte não publicou
-  data ali e aquilo não deve ser lido como data.
+- **Não-data no campo de data.** A planilha do TJMG traz "20", "71", "110",
+  "139" na coluna DATA DO JULGAMENTO — 45 campos em 12/09/2026, contando
+  julgamento e trânsito. A ficha responde o que é verdade — **sem data** — e
+  registra ao lado, entre aspas, o que a planilha trouxe. O valor não é apagado,
+  porque é o que o tribunal publicou; o que ele deixou de ser é resposta. Antes,
+  ocupava o lugar da data em monoespaçada, e a ficha anunciava "Julgamento 139"
+  para só depois desmentir.
 
 Os três sinais são **derivados na publicação**, não gravados na base: somem
 sozinhos quando a fonte se corrige, e não geram entrada em "Novidades" — que é
@@ -596,6 +599,38 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 12/09/2026 — "Julgamento 139" deixa de ser resposta
+
+**Responsável:** Claude Code, a pedido de Sarah, que mandou a imagem de uma
+ficha: sob o rótulo JULGAMENTO, o número **139** em destaque e, abaixo, um
+parágrafo explicando que aquilo não era data.
+
+**Motivo.** O aviso estava certo e o arranjo, errado. O número ocupava o lugar
+da data, em monoespaçada, como se fosse a resposta do campo; o desmentido vinha
+depois, e quem bate o olho lê "Julgamento 139". Num portal em que a data de
+julgamento entra em decisão, parecer data já é dano.
+
+**O que mudou.** Em `site/index.html`, só `campoDeData`: o valor do campo passa
+a ser **sem data**, discreto e em itálico, e o que a planilha trouxe fica ao
+lado, entre aspas — "A planilha do tribunal traz '139' neste campo". O valor
+continua ali, porque este portal não apaga o que o tribunal publicou; o que ele
+deixa de fazer é apresentá-lo como aquilo que não é. Uma classe nova, `.sem-data`,
+com a cor mais apagada da escala.
+
+**Alcance.** 45 campos em 12/09/2026 — julgamento e trânsito somados, todos em
+IUJ do TJMG, todos vindos assim da planilha oficial da Turma Recursal. Os
+números são "20", "39", "64", "71", "75", "90", "99", "110", "134", "139".
+
+**Validação.** Conferência da regra sobre a base inteira: sem falha, e nenhuma
+classificação mudou — a alteração é de exibição. Ficha do IUJ
+2806269-43.2026.8.13.0000, a da imagem, conferida na prévia local: "JULGAMENTO /
+sem data / A planilha do tribunal traz '139' neste campo".
+
+**Dados e implantação.** Nenhuma mudança na base. Publica com o envio ao GitHub.
+
+**Pendências.** Segue valendo a de avisar a Turma Recursal: o erro é da planilha
+oficial, e o portal só pode sinalizá-lo.
 
 ### 12/09/2026 — As datas do STF, e a suspensão que veio depois do acórdão
 
