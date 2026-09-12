@@ -588,7 +588,10 @@ judicial. Medido em 11/09/2026: 4 registros declaram prazo, e o aviso aparece em
 ## Publicar
 
 O site é publicado pelo GitHub Pages a cada alteração no repositório, pelo
-workflow `publicar.yml`. O `site/dados.json` é versionado pela própria coleta,
+workflow `publicar.yml`, e ao término de cada coleta com êxito
+(`workflow_run`): o push que a coleta faz com `GITHUB_TOKEN` não dispara
+workflow novo, então só o gatilho de `push` deixava a base das 6h07 e 18h07
+sem publicar até o envio seguinte da máquina da Sarah. O `site/dados.json` é versionado pela própria coleta,
 então não há passo de build: qualquer hospedagem estática publica a pasta
 `site` como está.
 
@@ -610,6 +613,47 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 12/09/2026 — O Pages servia a base das 9h depois da coleta das 18h: Publicar agora roda ao término de cada Coleta
+
+**Responsável:** Muse Spark, a pedido de Sarah ("sim", após o diagnóstico de que
+a aba Fontes mostrava a última atualização às 9h da manhã).
+
+**Motivo.** O `dados.json` servido pelo Pages tinha `geradoEm` de 12:03 UTC
+(base das 09h02), embora a coleta das 18h18 (`0a1b613`) já estivesse no
+repositório. Conferido na API de runs: nenhum commit da coleta (`0a1b613`,
+`c539366`, `1d4ed9e`) teve run do Publicar; o único Publicar sobre commit de
+coleta (`fa22c76`, 10/09) fora disparo manual. Causa: push feito com
+`GITHUB_TOKEN` não dispara workflow novo (proteção anti-recursão do GitHub) —
+e o `publicar.yml` só ouvia `push`. A coleta agendada nunca publicava; o site
+só andava nos envios da máquina da Sarah (que usam credencial própria) ou em
+disparo manual.
+
+**O que mudou.**
+
+- `.github/workflows/publicar.yml`: além de `push`, dispara em `workflow_run`
+  ao término da Coleta em `main`, e só publica se a conclusão for `success`
+  (coleta que falha não commita). Sem segredo novo nem PAT para manter. Seção
+  "Publicar" acima ajustada em consequência.
+- Nenhuma mudança na coleta nem na base.
+
+**Validação.** `node coleta/publicar.mjs` rodado aqui: base íntegra, regra de
+suspensão conferida sem falha (a mesma conferência que o Publicar roda antes
+de publicar). Sintaxe do YAML conferida por leitura do diff. A prova em
+produção é o run do Publicar disparado por este próprio envio (evento `push`),
+acompanhado na API de runs mais o `geradoEm` do `dados.json` no Pages.
+
+**Dados e implantação.** Nenhuma mudança na base. Este envio leva ao Pages a
+base das 18h18; as coletas seguintes publicam sozinhas, sem depender do envio
+da máquina da Sarah.
+
+**Pendências.** O agendador do GitHub continua de melhor esforço (atraso de
+minutos é normal; os sete minutos quebrados de `coletar.yml` seguem valendo).
+Janela inteiramente pulada continua coberta pelo Monitor da coleta (issue +
+e-mail). Retry de leitura já existia e foi mantido como está: três tentativas
+com pausa crescente nos dois níveis — requisição (`ambiente.mjs`) e fonte
+inteira (`regras.js`) — só para o que é passageiro (rede, tempo esgotado, 429
+e 5xx); 403/404 não repetem, por decisão de 11/09/2026.
 
 ### 12/09/2026 — Duas pendências do dia: Corte Aberta não tem as datas, e a frase da marca vira condicional
 

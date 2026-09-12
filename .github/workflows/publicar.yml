@@ -5,6 +5,15 @@ name: Publicar
 on:
   push:
     branches: [main]
+  # O push que a coleta faz com GITHUB_TOKEN não dispara workflow novo
+  # (proteção anti-recursão do GitHub). Sem este gatilho, a base das 6h07 e
+  # 18h07 nunca chegava ao Pages até o próximo envio da máquina da Sarah —
+  # foi assim em 12/09/2026, com o site servindo a base das 9h depois da
+  # coleta das 18h18 já estar no repositório.
+  workflow_run:
+    workflows: [Coleta]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -19,6 +28,9 @@ concurrency:
 
 jobs:
   publicar:
+    # Quando disparado pelo término da coleta, só publica se ela teve êxito:
+    # coleta que falha não commita, então não há base nova a publicar.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
