@@ -50,6 +50,7 @@ coleta/
   conferir-cadeia.mjs prova que o remendo do certificado do STF funciona
    jurisprudencia-stf.mjs segunda via do STF pelo navegador (desligada por padrão)
    corte-aberta.mjs   baixa as 3 bases de RG do Corte Aberta e anota a data da suspensão nacional
+   boletins-nugepnac.mjs  casa as notícias do NUGEPNAC com o boletim da semana
    complemento.mjs    a coleta feita daqui: atualiza, coleta e envia
   agendado.cmd       o que o Agendador do Windows executa todo dia, sem pause
 
@@ -175,6 +176,16 @@ Baixa pelo navegador na máquina da Sarah (`corte-aberta.mjs --baixar`) e escrev
 na base com `--anotar`, fora do fluxo da coleta. Quem sai da lista de suspensão
 nacional do Corte Aberta tem o campo limpo: é assim que o STF diz que a
 determinação não vale mais.
+
+Os **boletins do NUGEPNAC** são a segunda fonte complementar. O núcleo publica
+um informativo semanal em PDF — "Informativo Semanal Nugepnac - 24 (10-08-2026 a
+15-08-2026)" — reunindo o que aconteceu com os precedentes naquela semana, e
+publica também, em HTML, cada notícia separada, com data, categoria ("Suspensão
+Nacional", "Prorrogação de Suspensão", "IRDR Admitido") e o tema entre
+parênteses. `boletins-nugepnac.mjs` casa as duas coisas pela data: a notícia diz
+o tema e o dia, e o boletim daquela semana é o boletim em que o tema consta. A
+ficha mostra o boletim e leva ao PDF. Não é preciso ler o PDF para saber o que
+ele traz — a data está escrita nos dois lugares.
 
 ### Arquivo, API ou leitura de página
 
@@ -654,6 +665,73 @@ alteração.
 **Pendências.** Seguem com Sarah os segredos do espelho e o aviso à Turma
 Recursal; e segue aberta a fonte automática para trânsito e publicação do
 acórdão do STF.
+### 12/09/2026 — Em qual boletim do NUGEPNAC o tema saiu
+
+**Responsável:** Claude Code, a pedido de Sarah: "no site do tribunal, temos os
+boletins do nugepnac que informam os temas suspensos, faça um campo para constar
+em qual boletim cada tema consta e coloque um link para direcionamento ao
+respectivo boletim".
+
+**O caminho que não foi tomado.** O primeiro palpite era ler os PDFs dos
+boletins e pescar "TEMA 1476" dentro deles. Funcionaria, mas exigiria extrator
+de PDF — dependência que este projeto não tem — e deixaria a leitura refém do
+diagramador: o número do tema aparece lá como título de caixa, e nada garante
+que continue assim. Pior: no PDF o tribunal do tema se descobre pelo tipo do
+processo ao lado (RE, ARE, REsp), e STF e STJ têm temas com o mesmo número.
+
+**O caminho que foi.** O NUGEPNAC publica, além do PDF semanal, **cada notícia
+em HTML**, com data, categoria e o tema entre parênteses — e ali o tribunal vem
+dito: "(Tema 1376 - STJ)", "(Tema 113 IRDR - TJMG)". E a lista de boletins traz,
+no título de cada um, a semana que ele cobre. O casamento se faz pela data: a
+notícia diz o tema e o dia; o boletim daquela semana é o boletim em que o tema
+consta. Sem ler PDF, sem adivinhar tribunal.
+
+**O que mudou.**
+
+- `coleta/boletins-nugepnac.mjs` (novo): lê a lista de boletins e as notícias —
+  as duas são formulários Lumis, que respondem a POST comum, sem navegador —,
+  casa uma coisa com a outra e grava `boletim` e `boletimUrl` no registro, fora
+  do fluxo da coleta. `--recente` lê 45 dias, `--desde` um horizonte qualquer,
+  `--ensaio` mostra sem gravar, `--autoteste` roda sem rede.
+- `coleta/regras.js`: os dois campos entram em `CAMPOS` e `ROTULOS`. Nenhum
+  coletor os emite, e é isso que os preserva: `atualizarRegistros_` só compara o
+  que vem na leitura da fonte.
+- `site/index.html`: a ficha ganha "Boletim do NUGEPNAC", com link para o PDF em
+  nova aba.
+- `coleta/agendado.cmd`: a rotina diária chama `--anotar --recente` antes da
+  coleta, junto do Corte Aberta.
+
+**O que a leitura aprendeu com a fonte.** A primeira versão lia só
+"(Tema N - TRIB)" e perdia três formatos que aparecem na mesma semana: vários
+temas de uma vez ("Temas 65, 66 e 67 - STJ"), incidente do TJMG com o tipo
+colado ("Tema 113 IRDR - TJMG") e **controvérsia** ("Controvérsia 827 - STJ"),
+que não é tema e ficou de fora de propósito — casá-la pelo número apontaria o
+boletim errado. Com os três, o alcance subiu de 304 para 330 registros, e os
+incidentes do próprio TJMG passaram a aparecer.
+
+**Resultado.** 330 registros com boletim: 191 repetitivos do STJ, 116 temas do
+STF, 21 IRDR e 2 IAC do TJMG, apontando para 38 boletins distintos. Das 380
+notícias do último ano, 30 não citam tema — são controvérsias e informações
+gerais — e ficaram sem vínculo, como devem.
+
+**Validação.** `--autoteste`: 28 verificações, sem rede, cobrindo os quatro
+jeitos de citar tema, o casamento por semana e a recusa de gravar em ensaio.
+Leitura real do portal do TJMG: 140 boletins e as notícias de um ano.
+Conferência da regra sobre a base inteira: sem falha. O coletor do STF rodado de
+verdade contra uma cópia da base deixou ALTERACOES em 5.331 — zero novidades
+falsas — e os 330 boletins continuaram lá depois da coleta. O link de um boletim
+foi baixado para conferir: 200, `application/pdf`, 828 KB. Ficha conferida na
+prévia, em tema do STF e em IRDR do TJMG.
+
+**Dados e implantação.** 330 registros ganharam dois campos; nenhuma entrada
+nova em ALTERACOES. Publica com o envio ao GitHub.
+
+**Pendências.** O horizonte anotado é de um ano — tema cujo último boletim seja
+mais antigo fica sem o campo até uma varredura maior ser pedida à mão
+(`--desde`). E a categoria da notícia ("Suspensão Nacional", "Prorrogação de
+Suspensão") hoje só aparece no relatório da execução; ela diria, na ficha, *por
+que* o tema saiu naquele boletim.
+
 ### 12/09/2026 — A coluna ADMISSÃO estava na planilha o tempo todo
 
 **Responsável:** Claude Code, a pedido de Sarah, que viu na aba "Novidades"

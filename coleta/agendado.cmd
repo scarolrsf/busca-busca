@@ -21,6 +21,11 @@ REM falta de Playwright ou recusa do WAF do STF falham sozinhas no log.
 %NODE% coleta\corte-aberta.mjs --baixar >> work\coleta-agendada.log 2>&1
 %NODE% coleta\corte-aberta.mjs --anotar >> work\coleta-agendada.log 2>&1
 
+REM Boletins do NUGEPNAC: em qual informativo semanal cada tema apareceu.
+REM --recente le so os ultimos 45 dias, que e o que muda de um dia para o
+REM outro; a varredura de um ano inteiro se faz a mao quando precisar.
+%NODE% coleta\boletins-nugepnac.mjs --anotar --recente >> work\coleta-agendada.log 2>&1
+
 >> work\coleta-agendada.log echo.
 >> work\coleta-agendada.log echo ----- Coleta das seis fontes -----
 %NODE% coleta\complemento.mjs >> work\coleta-agendada.log 2>&1

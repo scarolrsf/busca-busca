@@ -2142,6 +2142,25 @@ function campo(rotulo, valor, mono) {
  * exibi-lo sob o rótulo "Julgamento", sem mais nada, faz parecer data e convida
  * a erro de leitura. Então o valor fica, dizendo o que é.
  */
+/**
+ * O boletim do NUGEPNAC em que o tema apareceu, com o link para o PDF.
+ *
+ * O núcleo publica um informativo semanal reunindo o que aconteceu com os
+ * precedentes naquela semana — afetação, suspensão nacional, prorrogação,
+ * cancelamento. Saber em qual boletim o tema saiu é o caminho mais curto entre
+ * a ficha e o documento do tribunal que a explica. O vínculo é feito pela data
+ * da notícia e pela semana que o boletim cobre, em `boletins-nugepnac.mjs`.
+ */
+function campoDoBoletim(r) {
+  if (!r.boletim) return '';
+  var url = urlSegura(r.boletimUrl);
+  var valor = url
+    ? '<a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(r.boletim) +
+      ' <span aria-hidden="true">↗</span><span class="oculto"> (abre em nova aba)</span></a>'
+    : esc(r.boletim);
+  return '<div class="dado"><dt>Boletim do NUGEPNAC</dt><dd>' + valor + '</dd></div>';
+}
+
 function campoDeData(rotulo, valor) {
   if (!valor) return '';
   if (ehData(valor)) return campo(rotulo, valor, true);
@@ -2282,6 +2301,7 @@ function ficha(r) {
   h += '<section class="secao"><h2>Situação e datas</h2><dl class="dados">' +
     campo('Situação', r._situacao) +
     campo('Pendências identificadas', pendencias(r)) +
+    campoDoBoletim(r) +
     campoDeData('Admissão do incidente', r.admissao) +
     campoDeData('Julgamento', r.julgamento) +
     campoDeData('Publicação do acórdão', r.publicacao) +

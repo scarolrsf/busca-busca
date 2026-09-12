@@ -22,8 +22,8 @@ const PILOTO = {
   stjInfo: 'https://processo.stj.jus.br/jurisprudencia/externo/informativo/',
   stfInfo: 'https://portal.stf.jus.br/textos/verTexto.asp?servico=informativoSTF'
 };
-const CAMPOS = ['id','tribunal','tipo','numero','questao','area','situacao','suspensao','julgamento','publicacao','transito','repercussaoGeral','dataDaTese','suspensaoNacionalDesde','admissao','tese','fonte','verificadoEm','origem','pertinencia','observacoes','processos','atualizadoEm','anotacaoManual'];
-const ROTULOS = ['ID','Tribunal','Tipo','Número / processo','Questão','Área','Situação na fonte','Registro sobre suspensão','Julgamento','Publicação','Trânsito em julgado','Repercussão geral apreciada em','Tese firmada em','Suspensão nacional determinada em','Admissão do incidente','Tese / destaque','Fonte oficial','Consulta bem-sucedida','Origem','Pertinência','Observações da fonte','Processos e datas','Alteração detectada','Anotação da conferência mensal'];
+const CAMPOS = ['id','tribunal','tipo','numero','questao','area','situacao','suspensao','julgamento','publicacao','transito','repercussaoGeral','dataDaTese','suspensaoNacionalDesde','admissao','boletim','boletimUrl','tese','fonte','verificadoEm','origem','pertinencia','observacoes','processos','atualizadoEm','anotacaoManual'];
+const ROTULOS = ['ID','Tribunal','Tipo','Número / processo','Questão','Área','Situação na fonte','Registro sobre suspensão','Julgamento','Publicação','Trânsito em julgado','Repercussão geral apreciada em','Tese firmada em','Suspensão nacional determinada em','Admissão do incidente','Boletim do NUGEPNAC','Endereço do boletim','Tese / destaque','Fonte oficial','Consulta bem-sucedida','Origem','Pertinência','Observações da fonte','Processos e datas','Alteração detectada','Anotação da conferência mensal'];
 const HF = ['Fonte','Última tentativa','Último sucesso','Resultado','Registros lidos','Detalhe','URL'];
 const HH = ['Detectado em','ID','Identificação','Campo','Valor anterior','Valor novo','Fonte','Natureza'];
 
