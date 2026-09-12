@@ -161,6 +161,21 @@ export function conferirRegraDeSuspensao(dados, caminhoDoPortal) {
       falhas.push(r.id + ': tema do STF com data de trânsito ou de publicação — a lista de temas não publica nenhuma das duas');
     }
 
+    /* 12. O texto de suspensão exibido não pode dizer que a data é desconhecida
+       onde ela é conhecida. Nos temas com `suspensaoNacionalDesde`, a ficha
+       mostra "Suspensão nacional determinada em …" — e `textoSuspensao` troca,
+       só na tela, "não informa a data nem as exceções" por "não informa as
+       exceções". Sem a data, o texto exibido é o gravado, sem retoque. */
+    if (R.textoSuspensao) {
+      const exibido = R.textoSuspensao(r);
+      if (r.suspensaoNacionalDesde && /não informa a data/.test(exibido)) {
+        falhas.push(r.id + ': ficha diz que a marca não informa a data, mas a data é conhecida (' + r.suspensaoNacionalDesde + ')');
+      }
+      if (!r.suspensaoNacionalDesde && exibido !== String(r.suspensao || '')) {
+        falhas.push(r.id + ': texto de suspensão exibido difere do gravado sem haver data que o justifique');
+      }
+    }
+
     if (!encerrado) {
       conta.porAlcance[r._alcance] = (conta.porAlcance[r._alcance] || 0) + 1;
     }

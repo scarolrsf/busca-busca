@@ -2203,6 +2203,20 @@ function avisoDeForaDaFonte(r) {
     '</span></div>';
 }
 
+function textoSuspensao(r) {
+  var s = String(r.suspensao || '');
+  /* Nos temas em que o Corte Aberta já deu a data da determinação, a ficha
+     mostra "Suspensão nacional determinada em …" logo abaixo; manter "a marca
+     não informa a data" seria contradizer a própria ficha. É leitura de tela,
+     não da base: o campo gravado segue intacto, e a regra de suspensão lê o
+     original. */
+  if (r.suspensaoNacionalDesde) {
+    s = s.replace('A marca não informa a data nem as exceções',
+      'A marca não informa as exceções');
+  }
+  return s;
+}
+
 function ficha(r) {
   el('rail').hidden = true;
   el('rail').innerHTML = '';
@@ -2237,7 +2251,7 @@ function ficha(r) {
   if (r.suspensao) {
     h += '<section class="secao"><h2>' +
       (r._emVigor ? 'Registro sobre suspensão' : 'Suspensão que vigorou') +
-      '</h2><p class="texto-juridico">' + esc(r.suspensao) + '</p></section>';
+      '</h2><p class="texto-juridico">' + esc(textoSuspensao(r)) + '</p></section>';
   }
 
   h += '<section class="secao"><h2>Situação e datas</h2><dl class="dados">' +
@@ -3302,6 +3316,7 @@ if (typeof module !== 'undefined' && module.exports) {
     momentoDaSuspensao: momentoDaSuspensao,
     prazoDaSuspensao: prazoDaSuspensao,
     determinacaoPosteriorAoParadigma: determinacaoPosteriorAoParadigma,
+    textoSuspensao: textoSuspensao,
     MOMENTO: MOMENTO
   };
 } else {

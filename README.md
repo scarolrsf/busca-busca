@@ -523,7 +523,7 @@ Não é o trânsito em julgado que a encerra, e o marco muda conforme o rito:
 Essa regra vive num lugar só — as funções de classificação do `site/index.html` —
 e é aplicada a todo registro no momento de exibir. A cada coleta,
 `coleta/conferir-regra.mjs` carrega essas mesmas funções e as roda sobre a base
-inteira, conferindo onze invariantes. Uma atualização que quebre a regra faz a
+inteira, conferindo doze invariantes. Uma atualização que quebre a regra faz a
 coleta falhar em vez de chegar à tela.
 
 ### As datas que o STF publica, e as que ele não publica
@@ -599,6 +599,61 @@ e publicação. Não registre resultado simulado como confirmação oficial. Nã
 inclua credenciais, cookies ou tokens aqui.
 
 ## Histórico
+
+### 12/09/2026 — Duas pendências do dia: Corte Aberta não tem as datas, e a frase da marca vira condicional
+
+**Responsável:** Muse Spark, a pedido de Sarah ("vamos fazer como vc sugeriu",
+sobre os itens 1 e 2 das pendências da entrega do Claude Code do mesmo dia).
+
+**Item 1 — trânsito e publicação do acórdão: o Corte Aberta também não os tem.**
+Mapeadas as colunas dos três CSVs baixados em 11/09/2026 (`rg-temas`,
+`rg-suspensao-nacional`, `rg-representativo-controversia`, 1.483 registros):
+nenhum traz data de trânsito em julgado nem data de publicação do acórdão de
+mérito. O que há de próximo é **"Data julgamento tema"** — data do julgamento,
+não da publicação — e **"Situação Processo Paradigma"** ("Acórdão de mérito
+publicado", texto sem data). Usar uma como proxy da outra seria o mesmo erro de
+12/09/2026 em outra roupa, então não se usa. De quebra, o mapeamento confirmou
+o conserto daquele dia: "Data admissibilidade RG" bate com o que a ficha mostra
+como "Repercussão geral apreciada em" (conferido nos temas 372, 966, 1031, 1417
+e 1455). Conclusão: a pendência segue aberta, mas estreitada — só as fichas
+individuais do portal do STF restam como fonte, ao custo de 1.482 requisições,
+com risco ao firewall e para datas que não entram na regra de suspensão. Fica
+valendo o link "Fonte oficial", sem raspagem.
+
+**Item 2 — "a marca não informa a data": virou condicional, só na tela.**
+Nos 22 temas em que a data da determinação é conhecida, a ficha mostrava
+"Suspensão nacional determinada em …" e, logo acima, a frase dizendo que a
+marca não informa a data. O ajuste é `textoSuspensao(r)` em `site/index.html`:
+havendo `suspensaoNacionalDesde`, troca-se só na exibição "não informa a data
+nem as exceções" por "não informa as exceções"; sem a data, o texto sai
+idêntico ao gravado. Nada muda na base — e de propósito: o coletor não conhece
+a data na hora da coleta (ela entra depois, via `--anotar`), então texto datado
+gravado seria revertido na coleta seguinte, além de gerar novidades falsas em
+ALTERACOES. A classificação não se move: a regra lê o campo original, e o Tema
+372 segue DETERMINACAO, em vigor, NACIONAL, risco ALTO.
+
+- `site/index.html`: `textoSuspensao` na ficha, exportada junto às funções da
+  regra para ser conferida.
+- `coleta/conferir-regra.mjs`: invariante 12 — com data conhecida, o exibido
+  não pode dizer que ela é desconhecida; sem data, o exibido tem de ser o
+  gravado.
+
+**Validação.** `conferirRegraDeSuspensao` sobre a base inteira, agora com as
+doze invariantes: sem falha, contagens idênticas às de 12/09/2026 (em vigor
+1.680; NACIONAL 127, ESTADUAL 101, RECURSAL 44). Conferência funcional: 22
+temas com a frase nova, 38 sem data com a antiga intacta (ex.: STF-TEMA-32), e
+o momento do 372 inalterado. `corte-aberta.mjs --autoteste`: 21 verificações,
+todas passam.
+
+**Dados.** Nenhuma alteração na base nem em ALTERACOES. Tudo é derivado na
+exibição.
+
+**Implantação.** Publica com o próximo envio ao GitHub, como qualquer
+alteração.
+
+**Pendências.** Seguem com Sarah os segredos do espelho e o aviso à Turma
+Recursal; e segue aberta a fonte automática para trânsito e publicação do
+acórdão do STF.
 
 ### 12/09/2026 — "Julgamento 139" deixa de ser resposta
 
