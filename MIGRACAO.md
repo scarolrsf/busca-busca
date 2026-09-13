@@ -7,7 +7,7 @@ que cada tela possa ser conferida contra este texto depois da mudança.
 
 **Regra de convivência com o README.** O `README.md`, na raiz, continua sendo
 o documento único do estado atual do projeto: requisitos, arquitetura, dados,
-operação, pendências e histórico datado. Este arquivo não o duplica nem o
+operação e pendências; o histórico datado fica em `HISTORICO.md`. Este arquivo não o duplica nem o
 substitui — descreve o sistema parado numa fotografia e o caminho para
 reinstalá-lo. Em caso de divergência, vale o README e, depois dele, o código.
 
