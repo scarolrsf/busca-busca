@@ -1,0 +1,186 @@
+/**
+ * Confere a regra de suspensão contra a base inteira.
+ *
+ * A regra vive num lugar só — as funções de classificação do Index.html — e é
+ * aplicada a todo precedente e a todo incidente no momento de exibir. Este
+ * arquivo carrega essas mesmas funções fora do navegador e as roda sobre os
+ * dados recém-coletados, de modo que uma atualização que quebre a regra faça o
+ * build falhar em vez de chegar à tela.
+ *
+ * Fundamento do que se confere:
+ *   art. 1.040, III, do CPC  — repetitivo e repercussão geral: a suspensão
+ *                              cessa com a publicação do acórdão paradigma;
+ *   art. 982, § 5º, do CPC   — IRDR e correlatos: cessa se não houver recurso
+ *                              especial ou extraordinário contra o acórdão;
+ *   art. 987, § 1º, do CPC   — havendo esse recurso, ele tem efeito suspensivo.
+ */
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+
+export function conferirRegraDeSuspensao(dados, caminhoDoPortal) {
+  const html = fs.readFileSync(caminhoDoPortal || 'site/index.html', 'utf8');
+  const codigo = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+
+  const modulo = { exports: {} };
+  vm.runInNewContext(codigo, { module: modulo, exports: modulo.exports, console });
+  const R = modulo.exports;
+  assert.ok(R.encerrado && R.prepararRegistro, 'O Index.html deixou de expor a regra de suspensão.');
+
+  const registros = dados.temas.concat(dados.informativos)
+    .map(r => R.prepararRegistro(Object.assign({}, r)));
+
+  const falhas = [];
+  const conta = { emVigor: 0, encerrados: 0, porAlcance: {} };
+
+  for (const r of registros) {
+    const encerrado = R.encerrado(r);
+    if (encerrado) conta.encerrados++; else conta.emVigor++;
+
+    // 1. Precedente encerrado nunca pode aparecer como risco de nulidade.
+    if (encerrado && R.risco(r) !== 'BAIXO') {
+      falhas.push(r.id + ': encerrado, mas classificado como risco ' + R.risco(r));
+    }
+
+    // 2. Situações que encerram por si, qualquer que seja o rito.
+    const definitivas = ['Trânsito em julgado', 'Cancelado', 'Repercussão geral negada', 'Prejudicado / baixado'];
+    if (definitivas.indexOf(r._situacao) >= 0 && !encerrado) {
+      falhas.push(r.id + ': situação "' + r._situacao + '" deveria encerrar a suspensão');
+    }
+
+    // 3. Repetitivo e repercussão geral: publicado o acórdão, cessa.
+    const paradigma = r.tipo === 'Repetitivo' || r.tipo === 'Repercussão geral';
+    const clausulaExpressa = /at[ée] o tr[âa]nsito em julgado/i.test(String(r.suspensao || ''));
+    /* Duas exceções abrem mão desta invariante, e as duas são ordem que fala
+       mais alto que a regra geral: cláusula expressa mandando suspender até o
+       trânsito, e determinação de suspensão posterior ao próprio paradigma. */
+    const ordemPosterior = Boolean(R.determinacaoPosteriorAoParadigma && R.determinacaoPosteriorAoParadigma(r));
+    if (paradigma && r._situacao === 'Acórdão publicado' && !clausulaExpressa && !ordemPosterior && !encerrado) {
+      falhas.push(r.id + ': acórdão paradigma publicado, deveria ter cessado (art. 1.040, III)');
+    }
+
+    // 4. Incidente com recurso pendente contra o acórdão: a suspensão persiste.
+    const incidente = ['IRDR', 'IAC', 'GR', 'IUJ'].indexOf(r.tipo) >= 0;
+    const temPendencia = R.pendencias(r) !== 'Nenhuma registrada';
+    if (incidente && r._situacao === 'Acórdão publicado' && temPendencia && encerrado) {
+      falhas.push(r.id + ': há recurso pendente contra o acórdão, não deveria ter cessado (art. 987, § 1º)');
+    }
+
+    // 5. Todo aviso precisa dizer uma razão, e não a genérica de outro caso.
+    const aviso = R.avisoDe(r);
+    if (!aviso || !aviso.t || !aviso.c) falhas.push(r.id + ': aviso sem texto');
+
+    /* 7. Embargos de declaração vivos contra o acórdão do incidente impedem o
+       encerramento. Eles interrompem o prazo do especial e do extraordinário
+       (art. 1.026 do CPC), então não se pode afirmar que recurso "não foi
+       interposto" — a condição do art. 982, § 5º, para a suspensão cessar.
+       Foi assim que o IRDR 94 aparecia como "sem suspensão em vigor" tendo
+       determinação expressa em contrário. Vale para incidente, não para
+       repetitivo e repercussão geral, cuja cessação segue o art. 1.040, III. */
+    const embargosVivos = incidente &&
+      /(embargos de declara[çc][ãa]o\s+(interpostos|opostos)|efeito suspensivo aos embargos|concedeu-lhes efeito suspensivo)/i
+        .test(String(r.suspensao || ''));
+    if (embargosVivos && r._situacao === 'Acórdão publicado' && encerrado) {
+      falhas.push(r.id + ': embargos de declaração vivos contra o acórdão, não deveria ter cessado (art. 1.026 c/c art. 982, § 5º)');
+    }
+
+    /* 6. "A partir de quando suspender" é resposta que a ficha dá em destaque:
+       precisa existir, e com as duas partes — o rótulo curto e a explicação.
+       Uma categoria nova sem texto chegaria à tela como caixa vazia. */
+    if (R.MOMENTO) {
+      const momento = R.MOMENTO[r._momento];
+      if (!momento || !momento.r || !momento.c) {
+        falhas.push(r.id + ': momento da suspensão sem rótulo ou sem explicação (' + r._momento + ')');
+      }
+      // Fase declarada só se sustenta se houver texto de suspensão para declará-la.
+      const temTexto = Boolean(String(r.suspensao || '').trim());
+      if (r._momento !== 'NAO_DITO' && !temTexto) {
+        falhas.push(r.id + ': momento "' + r._momento + '" sem texto de suspensão que o ampare');
+      }
+      /* E a recíproca: "não especificada" é resposta para ausência de fonte, não
+         para silêncio da fonte. Havendo determinação escrita, a regra legal
+         responde — deixar "não especificada" aí devolveria ao leitor a pergunta
+         que o portal existe para responder. */
+      if (r._momento === 'NAO_DITO' && temTexto) {
+        falhas.push(r.id + ': momento "não especificado" apesar de haver texto de suspensão a ler');
+      }
+    }
+
+    /* 8. Prazo declarado na determinação: quando a leitura acha um, ele tem de
+       ser inteiro — data de início legível, número de dias positivo e fim
+       depois do início. O aviso que nasce daí põe uma data em cima de decisão
+       judicial, e data errada ali é pior do que aviso nenhum. */
+    if (R.prazoDaSuspensao) {
+      const p = R.prazoDaSuspensao(r);
+      /* O portal roda dentro de um vm: a Data que vem de lá é de outro realm e
+         não passa por `instanceof Date`. Pergunta-se pelo comportamento. */
+      if (p && (typeof p.fim?.getTime !== 'function' || isNaN(p.fim.getTime()) || !(p.dias > 0) ||
+                p.fim <= p.inicio || !/^\d{2}\/\d{2}\/\d{4}$/.test(String(p.desde)))) {
+        falhas.push(r.id + ': prazo declarado ilegível (' + JSON.stringify(p) + ')');
+      }
+    }
+
+    /* 9. Acórdão de repercussão geral publicado não encerra nada. Ele é o
+       reconhecimento da repercussão geral, com o mérito pendente — e é o
+       momento em que a suspensão nacional é determinada (art. 1.035, § 5º, e
+       art. 1.037, II). Quem encerra é o acórdão de mérito (art. 1.040, III).
+       Enquanto os dois couberam no mesmo grupo "Acórdão publicado", 15 temas
+       que o próprio STF lista como suspensão nacional vigente apareciam no
+       portal como encerrados. */
+    const soRgPublicado = /ac[óo]rd[ãa]o de repercuss[ãa]o geral publicad/i.test(String(r.situacao || '')) &&
+      !/ac[óo]rd[ãa]o de m[ée]rito publicad/i.test(String(r.situacao || '')) &&
+      !/tr[âa]nsito|transitad|cancelad|prejudicad/i.test(String(r.situacao || '')) &&
+      /* "Acórdão de Repercussão Geral publicado — Não há repercussão geral" é o
+         acórdão que NEGA a repercussão geral: aí o tema acaba mesmo, e a
+         matéria volta às instâncias ordinárias. São 8 temas hoje. */
+      !/n[ãa]o h[áa] repercuss[ãa]o geral/i.test(String(r.situacao || ''));
+    if (soRgPublicado && encerrado) {
+      falhas.push(r.id + ': acórdão de repercussão geral publicado não encerra a suspensão — o mérito segue pendente (art. 1.035, § 5º, c/c art. 1.040, III)');
+    }
+
+    /* 10. Determinação de suspensão posterior ao acórdão paradigma não pode
+       aparecer como encerrada. O art. 1.040, III, faz a suspensão cessar com a
+       publicação do paradigma, mas pressupõe ordem anterior a ele; o Tema 372
+       teve a suspensão nacional determinada treze meses DEPOIS, e o portal
+       dizia "sem suspensão em vigor". */
+    if (R.determinacaoPosteriorAoParadigma && R.determinacaoPosteriorAoParadigma(r) && encerrado) {
+      falhas.push(r.id + ': suspensão determinada em ' + r.suspensaoNacionalDesde +
+        ', depois do julgamento do tema, não pode constar como encerrada');
+    }
+
+    /* 11. As datas do STF. A tabela "Todos os temas" não publica trânsito nem
+       publicação do acórdão: o que ela traz é a data da apreciação da
+       repercussão geral e a data da tese. Ler a primeira como trânsito deixou
+       584 temas com trânsito anterior ao próprio julgamento. Campo vazio é
+       resposta melhor que data errada — e é isto que esta invariante protege. */
+    const dataOuVazio = v => !v || /^\d{2}\/\d{2}\/\d{4}$/.test(String(v));
+    for (const campo of ['repercussaoGeral', 'dataDaTese', 'suspensaoNacionalDesde']) {
+      if (!dataOuVazio(r[campo])) falhas.push(r.id + ': ' + campo + ' não é data (' + r[campo] + ')');
+    }
+    if (r.tribunal === 'STF' && r.tipo === 'Repercussão geral' && (r.transito || r.publicacao)) {
+      falhas.push(r.id + ': tema do STF com data de trânsito ou de publicação — a lista de temas não publica nenhuma das duas');
+    }
+
+    /* 12. O texto de suspensão exibido não pode dizer que a data é desconhecida
+       onde ela é conhecida. Nos temas com `suspensaoNacionalDesde`, a ficha
+       mostra "Suspensão nacional determinada em …" — e `textoSuspensao` troca,
+       só na tela, "não informa a data nem as exceções" por "não informa as
+       exceções". Sem a data, o texto exibido é o gravado, sem retoque. */
+    if (R.textoSuspensao) {
+      const exibido = R.textoSuspensao(r);
+      if (r.suspensaoNacionalDesde && /não informa a data/.test(exibido)) {
+        falhas.push(r.id + ': ficha diz que a marca não informa a data, mas a data é conhecida (' + r.suspensaoNacionalDesde + ')');
+      }
+      if (!r.suspensaoNacionalDesde && exibido !== String(r.suspensao || '')) {
+        falhas.push(r.id + ': texto de suspensão exibido difere do gravado sem haver data que o justifique');
+      }
+    }
+
+    if (!encerrado) {
+      conta.porAlcance[r._alcance] = (conta.porAlcance[r._alcance] || 0) + 1;
+    }
+  }
+
+  assert.equal(falhas.length, 0, 'Regra de suspensão violada:\n  ' + falhas.slice(0, 20).join('\n  '));
+  return conta;
+}

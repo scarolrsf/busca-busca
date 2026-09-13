@@ -1,0 +1,11 @@
+# Publicação: a partir desta pasta,
+#   npx --yes wrangler login
+#   npx --yes wrangler secret put CHAVE
+#   npx --yes wrangler deploy
+# O endereço que o deploy imprimir e a mesma CHAVE vão para os segredos
+# ESPELHO_URL e ESPELHO_CHAVE do repositório (Settings → Secrets and variables
+# → Actions). Sem esses dois segredos, a coleta simplesmente não usa o espelho.
+name = "espelho-busca-busca"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+workers_dev = true

@@ -1,0 +1,7 @@
+# O repositório é editado no Windows e a coleta roda no Linux. Sem isto, cada
+# checkout troca LF por CRLF e os arquivos aparecem inteiros como alterados —
+# além de quebrar qualquer edição que procure trechos de várias linhas.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.xlsx binary

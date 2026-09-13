@@ -1,0 +1,38 @@
+# Arquivos de apoio ao desenvolvimento: amostras baixadas das fontes, usadas
+# para rodar a coleta sem rede. São dezenas de megabytes e podem ser baixados
+# de novo a qualquer momento — não pertencem ao repositório.
+work/
+
+# Notas internas e configuração pessoal: ficam na máquina, não no repositório
+# público. O estado operacional compartilhado pertence ao README.md.
+HISTORICO.md
+MIGRACAO.md
+CLAUDE.md
+AGENTS.md
+.claude/
+
+# Derivado da base em dados/, gerado por coleta/publicar.mjs na publicação e ao
+# rodar a coleta à mão. Minificado numa linha só: versioná-lo faria o Git gravar
+# 1,7 MB inteiros a cada coleta, sem conseguir guardar só a diferença.
+site/dados.json
+
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+
+# Configuração local e credenciais. O exemplo documentado pode ser versionado.
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+*.pem
+*.key
+.wrangler/
+
+# Saídas locais de testes em navegador.
+playwright-report/
+test-results/
+blob-report/
+playwright/.auth/

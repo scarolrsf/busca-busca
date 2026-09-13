@@ -1,0 +1,79 @@
+name: Publicar
+
+# Publica a pasta site/ no GitHub Pages a cada alteração no repositório —
+# inclusive nas que a própria coleta grava, às 6h e às 18h.
+on:
+  push:
+    branches: [main]
+  # O push que a coleta faz com GITHUB_TOKEN não dispara workflow novo
+  # (proteção anti-recursão do GitHub). Este gatilho garante que a coleta
+  # automática também atualize o Pages.
+  workflow_run:
+    workflows: [Coleta]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Uma publicação por vez; se chegar outra, a anterior é descartada.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    # Quando disparado pelo término da coleta, só publica se ela teve êxito:
+    # coleta que falha não commita, então não há base nova a publicar.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # O dados.json não é versionado: é derivado da base em dados/. Ele nasce
+      # aqui, no momento de publicar. Versioná-lo custaria 1,7 MB de blob novo a
+      # cada coleta — o arquivo é minificado numa linha só, então o Git não
+      # consegue guardar a diferença, guarda o arquivo inteiro de novo.
+      # Este passo também roda a conferência da regra de suspensão: uma base que
+      # a viole não chega a ser publicada.
+      - name: Gerar o dados.json a partir da base
+        run: node coleta/publicar.mjs
+
+      - name: Conferir se há dado a publicar
+        run: |
+          test -s site/index.html || { echo 'site/index.html ausente'; exit 1; }
+          test -s site/dados.json || { echo 'site/dados.json ausente'; exit 1; }
+
+      # O Pages precisa estar habilitado uma vez em Settings → Pages, com a
+      # origem "GitHub Actions". Habilitar por aqui não é possível: o token do
+      # workflow não tem permissão para criar o site. Enquanto não estiver
+      # habilitado, este passo falha — e falhar encheria a caixa de entrada de
+      # aviso a cada coleta —, então a falha é tolerada e o restante é pulado.
+      - id: pages
+        continue-on-error: true
+        uses: actions/configure-pages@v5
+
+      - name: Pages ainda indisponível
+        if: steps.pages.outcome != 'success'
+        run: |
+          echo "::notice::O GitHub Pages ainda não está disponível para este repositório."
+          echo "::notice::Habilite em Settings → Pages, origem GitHub Actions. A publicação é retomada sozinha na alteração seguinte."
+
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.pages.outcome == 'success'
+        with:
+          path: site
+
+      - id: publicacao
+        if: steps.pages.outcome == 'success'
+        uses: actions/deploy-pages@v4

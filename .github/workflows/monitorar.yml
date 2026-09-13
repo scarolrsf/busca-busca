@@ -1,0 +1,36 @@
+name: Monitor da coleta
+
+# Uma coleta pulada não commita, então ninguém fica sabendo — foi assim na
+# manhã de 11/09/2026. Este monitor confere, com ~3h de margem para os atrasos
+# normais do agendador: (1) se o commit da janela existe; (2) se alguma fonte
+# falha nos dois últimos commits de coleta (falha isolada é soluço e se
+# resolve sozinha). Se algo estiver errado, abre uma issue e o trabalho
+# termina em falha, o que manda também o e-mail do GitHub. Quando normaliza,
+# a issue fecha sozinha na verificação seguinte.
+on:
+  schedule:
+    - cron: '0 12 * * *' # 9h de Brasília: confere a janela das 6h07
+    - cron: '0 0 * * *' # 21h de Brasília: confere a janela das 18h07
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  monitorar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Conferir o commit da coleta
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node coleta/monitorar.mjs

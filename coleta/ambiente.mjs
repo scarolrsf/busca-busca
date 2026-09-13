@@ -1,0 +1,561 @@
+/**
+ * Ambiente de execução da coleta.
+ *
+ * As regras de leitura das fontes foram escritas para o Google Apps Script, que
+ * é síncrono: `buscarTexto_(url)` devolve o texto na hora. Reescrevê-las em
+ * torno de Promises significaria mexer em todo o código já testado contra as
+ * seis fontes. Em vez disso, este arquivo entrega as mesmas funções com o mesmo
+ * comportamento síncrono, apoiadas no curl — que está em qualquer runner do
+ * GitHub Actions e foi o que respondeu corretamente a todos os seis tribunais,
+ * inclusive aos que exigem cookie, POST e compressão.
+ *
+ * Também substitui o que a planilha fazia: guardar os registros entre uma
+ * coleta e outra. Agora isso são arquivos JSON versionados, o que dá de brinde
+ * um histórico legível de cada alteração no próprio repositório.
+ */
+import { spawnSync } from 'node:child_process';
+import { inflateRawSync } from 'node:zlib';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+
+const NAVEGADOR = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
+  '(KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36';
+
+const TEMP = fs.mkdtempSync(path.join(os.tmpdir(), 'busca-busca-'));
+const COOKIES = path.join(TEMP, 'cookies.txt');
+
+/* ------------------------------------------------------------------- rede */
+
+/*
+ * Cadeia de certificados incompleta.
+ *
+ * Os dois endereços do STF enviam só o certificado deles e omitem o
+ * intermediário que os liga a uma autoridade confiável. O navegador disfarça o
+ * defeito: quando falta um elo, ele busca sozinho no endereço que o próprio
+ * certificado indica (a extensão AIA). O curl no Linux não faz essa busca — por
+ * isso a coleta funcionava numa máquina Windows, que busca o elo faltante, e
+ * falhava no runner do GitHub com "unable to get
+ * local issuer certificate".
+ *
+ * Aqui o elo é buscado à mão, uma vez por host e por execução. Nada é gravado no
+ * repositório: assim a troca periódica do intermediário não quebra a coleta nem
+ * cobra manutenção. Se o remendo não for possível, o erro original é mantido —
+ * um problema de certificado que não seja este deve continuar interrompendo a
+ * consulta, e não ser contornado em silêncio.
+ */
+const ANCORAS = {};
+
+/*
+ * Repetição.
+ *
+ * Os portais dos tribunais oscilam. O do STF, medido daqui, responde duas vezes
+ * seguidas e trava na terceira. Sem repetir, uma oscilação de segundos derruba a
+ * fonte da coleta inteira, e a base fica doze horas sem aquele tribunal por
+ * causa de um soluço — foi o que aconteceu com a repercussão geral.
+ *
+ * Repete só o que é passageiro: erro de rede, tempo esgotado, 429 e 5xx. Um 403
+ * ou um 404 é resposta, não soluço; repetir só adiaria o registro do que já se
+ * sabe. Todas as requisições daqui são de leitura, então repeti-las não tem
+ * efeito colateral.
+ */
+const TENTATIVAS = 3;
+
+function esperar(ms) {
+  // Espera síncrona: o resto da coleta é síncrono, e dormir com um subprocesso
+  // custaria mais que a própria espera.
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function vaiAdiantarRepetir(saidaDoCurl, codigo) {
+  if (saidaDoCurl !== 0) return true;          // erro de rede ou tempo esgotado
+  return codigo === 429 || (codigo >= 500 && codigo < 600);
+}
+
+/*
+ * Espelho.
+ *
+ * O STJ nega o endereço de saída do GitHub Actions. Medido em 11/09/2026, o
+ * mesmo pedido feito da rede da Cloudflare passa, e devolve o arquivo inteiro.
+ * Então o caminho normal continua sendo o direto — sempre — e o espelho só
+ * entra quando a fonte recusa com 403. Não é contorno preventivo: é resposta a
+ * uma recusa já recebida.
+ *
+ * O STF não entra aqui. Pela Cloudflare ele devolve 526, porque omite o
+ * intermediário da cadeia de certificados; o remendo que resolve isso está
+ * logo acima, e um Worker não tem como reproduzi-lo.
+ *
+ * Sem os dois segredos configurados, nada disso acontece e a coleta se comporta
+ * exatamente como antes — é o caso de quem roda à mão, e o de um fork.
+ */
+const ESPELHO_URL = process.env.ESPELHO_URL || '';
+const ESPELHO_CHAVE = process.env.ESPELHO_CHAVE || '';
+const ESPELHO_HOSTS = (process.env.ESPELHO_HOSTS || 'processo.stj.jus.br,dadosabertos.web.stj.jus.br')
+  .split(',').map(h => h.trim()).filter(Boolean);
+const ZYTE_CHAVE = process.env.ZYTE_CHAVE || '';
+
+function cabeNoEspelho(url, opcoes) {
+  if (!ESPELHO_URL || !ESPELHO_CHAVE) return false;
+  if (opcoes && opcoes.method === 'post') return false;  // o espelho só faz GET
+  try { return ESPELHO_HOSTS.includes(new URL(url).hostname); } catch (e) { return false; }
+}
+
+/*
+ * Segunda via gerenciada.
+ *
+ * O runner hospedado pelo GitHub recebe 403 em recursos do STF e, de forma
+ * intermitente, no Informativo do STJ. A Zyte devolve os corpos oficiais sem
+ * transformá-los: HTML e os bytes originais do XLSX. Continua valendo o direto
+ * primeiro, e a segunda via é fechada nos formatos de endereço realmente
+ * usados pelo coletor.
+ */
+function cabeNaZyte(url, opcoes) {
+  if (!ZYTE_CHAVE || (opcoes && opcoes.method === 'post')) return false;
+  try {
+    const u = new URL(url);
+    if (u.hostname === 'portal.stf.jus.br') {
+      return [
+        '/jurisprudenciaRepercussao/todostemas.asp',
+        '/jurisprudenciaRepercussao/listarProcesso.asp',
+        '/jurisprudenciaRepercussao/verTeseTema.asp'
+      ].includes(u.pathname);
+    }
+    if (u.hostname === 'scon.stj.jus.br') {
+      return u.pathname === '/jurisprudencia/externo/informativo/' &&
+        u.searchParams.toString() === 'aplicacao=informativo';
+    }
+    return u.hostname === 'www.stf.jus.br' &&
+      u.pathname === '/arquivo/cms/informativoSTF/anexo/Informativo_Dados/Dados_InformativosSTF.xlsx';
+  } catch (e) { return false; }
+}
+
+/** Executa a chamada assíncrona da API num filho para manter `buscar` síncrona. */
+function buscarPelaZyte(url, segundos) {
+  const corpo = path.join(TEMP, 'zyte-corpo-' + Math.random().toString(36).slice(2));
+  const meta = path.join(TEMP, 'zyte-meta-' + Math.random().toString(36).slice(2));
+  const roteiro = [
+    "const fs = require('fs');",
+    "const [url, corpo, meta, limite] = process.argv.slice(1);",
+    "const terminar = (dados, codigo) => { fs.writeFileSync(meta, JSON.stringify(dados)); process.exitCode = codigo; };",
+    "fetch('https://api.zyte.com/v1/extract', {",
+    "  method: 'POST',",
+    "  headers: {",
+    "    Authorization: 'Basic ' + Buffer.from(process.env.ZYTE_CHAVE + ':').toString('base64'),",
+    "    'Content-Type': 'application/json'",
+    "  },",
+    "  body: JSON.stringify({ url, httpResponseBody: true, httpResponseHeaders: true }),",
+    "  signal: AbortSignal.timeout(Number(limite))",
+    "}).then(async r => {",
+    "  const texto = await r.text();",
+    "  let j = {};",
+    "  try { j = JSON.parse(texto); } catch (e) { terminar({ apiStatus: r.status, erro: 'resposta da API não é JSON' }, 1); return; }",
+    "  const dados = { apiStatus: r.status, statusCode: j.statusCode, headers: j.httpResponseHeaders || [], erro: j.detail || j.error || '' };",
+    "  if (!r.ok || j.statusCode !== 200 || !j.httpResponseBody) { terminar(dados, 1); return; }",
+    "  fs.writeFileSync(corpo, Buffer.from(j.httpResponseBody, 'base64'));",
+    "  terminar(dados, 0);",
+    "}).catch(e => terminar({ erro: String(e && e.message || e) }, 1));"
+  ].join('\n');
+
+  const limite = Math.max(1000, Number(segundos || 180) * 1000);
+  const r = spawnSync(process.execPath, ['-e', roteiro, url, corpo, meta, String(limite)], {
+    encoding: 'utf8', timeout: limite + 10000, env: { ZYTE_CHAVE }
+  });
+  let dados = {};
+  try { dados = JSON.parse(fs.readFileSync(meta, 'utf8')); } catch (e) { /* sem metadados */ }
+  if (r.status !== 0 || !fs.existsSync(corpo) || !fs.statSync(corpo).size) {
+    const motivo = dados.statusCode && dados.statusCode !== 200 ? 'fonte HTTP ' + dados.statusCode :
+      dados.apiStatus ? 'API HTTP ' + dados.apiStatus : dados.erro || 'falha de rede';
+    const codigoHttp = dados.statusCode && dados.statusCode !== 200 ? dados.statusCode : dados.apiStatus;
+    return { erro: motivo, codigoHttp };
+  }
+  const cabecalhos = ['HTTP/1.1 200 OK'].concat((dados.headers || [])
+    .map(h => String(h.name || '') + ': ' + String(h.value || ''))).join('\n');
+  return { codigo: 200, cabecalhos, arquivo: corpo };
+}
+
+/** O código HTTP da última resposta, lido do arquivo de cabeçalhos do curl. */
+function codigoDe(cabecalhosBrutos) {
+  const status = cabecalhosBrutos.split(/\r?\n/).filter(l => /^HTTP\//.test(l)).pop() || '';
+  return Number((status.match(/\s(\d{3})\s?/) || [])[1] || 0);
+}
+
+/* Por que o remendo não deu certo, quando não dá. Sem isto, a única coisa que
+   chega ao painel é o erro de certificado do curl, que não diz em que passo a
+   busca do elo faltante parou — e cada diagnóstico custaria doze horas. */
+export const ANCORA_DIAGNOSTICO = {};
+
+/**
+ * O endereço do certificado intermediário, lido do próprio certificado que o
+ * servidor apresenta.
+ *
+ * Feito pelo módulo tls do Node, e não pelo openssl: assim não se depende de o
+ * binário existir no runner, nem de casar expressão regular contra texto feito
+ * para humano ler — foi exatamente esse casamento que falhou em produção sem
+ * dar sinal. O Node devolve a extensão já estruturada.
+ *
+ * Roda num subprocesso porque o tls é assíncrono e toda a coleta é síncrona.
+ */
+function enderecoDoIntermediario(host) {
+  const roteiro = [
+    "const tls = require('tls');",
+    "const host = process.argv[1];",
+    "let respondeu = false;",
+    "const encerrar = (texto) => {",
+    "  if (respondeu) return;",
+    "  respondeu = true;",
+    "  process.stdout.write(texto || '');",
+    "  s.destroy();",
+    "};",
+    "const s = tls.connect({ host: host, port: 443, servername: host, rejectUnauthorized: false }, () => {",
+    "  const cert = s.getPeerCertificate(true) || {};",
+    "  const aia = (cert.infoAccess || {})['CA Issuers - URI'] || [];",
+    "  encerrar(aia[0]);",
+    "});",
+    "s.on('error', () => encerrar(''));",
+    "s.setTimeout(20000, () => encerrar(''));"
+  ].join('\n');
+
+  const r = spawnSync(process.execPath, ['-e', roteiro, host],
+    { encoding: 'utf8', timeout: 30000 });
+  return String(r.stdout || '').trim();
+}
+
+/** DER para PEM sem openssl: um certificado em PEM é o DER em base64, e só. */
+function derParaPem(bruto) {
+  if (bruto.slice(0, 11).toString('latin1') === '-----BEGIN ') return bruto.toString('latin1');
+  const linhas = bruto.toString('base64').match(/.{1,64}/g) || [];
+  return '-----BEGIN CERTIFICATE-----\n' + linhas.join('\n') + '\n-----END CERTIFICATE-----\n';
+}
+
+function ancoraDaCadeia(host) {
+  if (Object.prototype.hasOwnProperty.call(ANCORAS, host)) return ANCORAS[host];
+  ANCORAS[host] = null;
+  try {
+    const uri = enderecoDoIntermediario(host);
+    if (!/^https?:\/\//.test(uri)) {
+      ANCORA_DIAGNOSTICO[host] = 'o certificado não indica onde buscar o intermediário';
+      return null;
+    }
+
+    const baixado = path.join(TEMP, 'ca-' + host.replace(/[^a-z0-9.-]/gi, '_'));
+    const baixa = spawnSync('curl', ['--silent', '--show-error', '--max-time', '30',
+      '--location', '--output', baixado, uri], { encoding: 'buffer' });
+    if (baixa.status !== 0 || !fs.existsSync(baixado) || !fs.statSync(baixado).size) {
+      ANCORA_DIAGNOSTICO[host] = 'não foi possível baixar o intermediário em ' + uri;
+      return null;
+    }
+
+    const pem = baixado + '.pem';
+    fs.writeFileSync(pem, derParaPem(fs.readFileSync(baixado)));
+    ANCORAS[host] = pem;
+    return pem;
+  } catch (e) {
+    ANCORA_DIAGNOSTICO[host] = 'erro ao buscar o intermediário: ' + (e && e.message);
+    return null;
+  }
+}
+
+export { ancoraDaCadeia };
+
+/**
+ * Uma requisição, de forma síncrona. Devolve o corpo em Buffer, o código HTTP
+ * e os cabeçalhos — o suficiente para o que as regras precisam.
+ */
+export function buscar(url, opcoes) {
+  opcoes = opcoes || {};
+  const corpo = path.join(TEMP, 'corpo-' + Math.random().toString(36).slice(2));
+  const cabecalhos = path.join(TEMP, 'cab-' + Math.random().toString(36).slice(2));
+
+  const args = [
+    '--silent', '--show-error', '--compressed', '--location',
+    '--max-time', String(opcoes.segundos || 180),
+    '--user-agent', NAVEGADOR,
+    '--header', 'Accept-Language: pt-BR,pt;q=0.9',
+    '--cookie-jar', COOKIES, '--cookie', COOKIES,
+    '--dump-header', cabecalhos,
+    '--output', corpo
+  ];
+
+  if (opcoes.referer) args.push('--referer', opcoes.referer);
+  Object.entries(opcoes.headers || {}).forEach(([k, v]) => args.push('--header', k + ': ' + v));
+
+  if (opcoes.method === 'post') {
+    args.push('--request', 'POST');
+    const dados = opcoes.payload || {};
+    // O corpo vai num arquivo: são formulários com centenas de campos, e a
+    // linha de comando do Windows não aguenta isso como argumento.
+    const forma = Object.entries(dados)
+      .map(([k, v]) => encodeURIComponent(k) + '=' + encodeURIComponent(v == null ? '' : v))
+      .join('&');
+    const arquivo = path.join(TEMP, 'post-' + Math.random().toString(36).slice(2));
+    fs.writeFileSync(arquivo, forma);
+    args.push('--data', '@' + arquivo);
+    args.push('--header', 'Content-Type: application/x-www-form-urlencoded');
+  }
+
+  args.push(url);
+
+  let r = null;
+  let brutos = '';
+  let codigo = 0;
+
+  for (let tentativa = 1; tentativa <= TENTATIVAS; tentativa++) {
+    r = spawnSync('curl', args, { encoding: 'buffer', maxBuffer: 1024 * 1024 * 256 });
+    if (r.error) throw new Error('curl indisponível: ' + r.error.message);
+
+    // 60 é o código do curl para "não consegui validar o certificado do servidor".
+    if (r.status === 60) {
+      const host = (() => { try { return new URL(url).hostname; } catch (e) { return ''; } })();
+      const ancora = host ? ancoraDaCadeia(host) : null;
+      if (ancora) {
+        r = spawnSync('curl', ['--cacert', ancora].concat(args),
+          { encoding: 'buffer', maxBuffer: 1024 * 1024 * 256 });
+      }
+    }
+
+    brutos = fs.existsSync(cabecalhos) ? fs.readFileSync(cabecalhos, 'latin1') : '';
+    codigo = codigoDe(brutos);
+
+    if (!vaiAdiantarRepetir(r.status, codigo) || tentativa === TENTATIVAS) break;
+    esperar(tentativa * 4000);
+  }
+
+  if (r.status !== 0) {
+    const host = (() => { try { return new URL(url).hostname; } catch (e) { return ''; } })();
+    const porque = ANCORA_DIAGNOSTICO[host] ? ' (remendo da cadeia: ' + ANCORA_DIAGNOSTICO[host] + ')' : '';
+    throw new Error('Falha de rede ao consultar a fonte, em ' + TENTATIVAS + ' tentativas: ' +
+      String(r.stderr || '').slice(0, 300) + porque);
+  }
+
+  /* O direto já respondeu, e respondeu recusando. Só agora a segunda via entra.
+     Os arquivos da segunda tentativa são outros: se ela também falhar, o que
+     fica registrado é a recusa da fonte — não a mensagem intermediária. */
+  let notaSegundaVia = '';
+  let codigoDaSegundaVia = 0;
+  let arquivo = corpo;
+  if (codigo === 403 && cabeNoEspelho(url, opcoes)) {
+    const corpoE = path.join(TEMP, 'esp-corpo-' + Math.random().toString(36).slice(2));
+    const cabE = path.join(TEMP, 'esp-cab-' + Math.random().toString(36).slice(2));
+    const alvo = ESPELHO_URL + (ESPELHO_URL.includes('?') ? '&' : '?') + 'url=' + encodeURIComponent(url);
+    const rE = spawnSync('curl', ['--silent', '--show-error', '--compressed', '--location',
+      '--max-time', String(opcoes.segundos || 180),
+      '--header', 'x-espelho-chave: ' + ESPELHO_CHAVE,
+      '--dump-header', cabE, '--output', corpoE, alvo],
+      { encoding: 'buffer', maxBuffer: 1024 * 1024 * 256 });
+
+    const brutosE = (!rE.error && fs.existsSync(cabE)) ? fs.readFileSync(cabE, 'latin1') : '';
+    const codigoE = codigoDe(brutosE);
+    if (rE.status === 0 && codigoE === 200) {
+      console.log('   ' + new URL(url).hostname + ': 403 no direto, refeito pelo espelho.');
+      brutos = brutosE;
+      codigo = codigoE;
+      arquivo = corpoE;
+    } else {
+      notaSegundaVia = ' O espelho também não trouxe: ' +
+        (rE.status !== 0 ? 'falha de rede' : 'HTTP ' + (codigoE || '?')) + '.';
+    }
+  }
+
+  if (codigo === 403 && cabeNaZyte(url, opcoes)) {
+    const rZ = buscarPelaZyte(url, opcoes.segundos || 180);
+    if (!rZ.erro) {
+      console.log('   ' + new URL(url).hostname + ': 403 no direto, refeito pela segunda via remota.');
+      brutos = rZ.cabecalhos;
+      codigo = rZ.codigo;
+      arquivo = rZ.arquivo;
+    } else {
+      notaSegundaVia = ' A segunda via remota também não trouxe: ' + rZ.erro + '.';
+      codigoDaSegundaVia = Number(rZ.codigoHttp || 0);
+    }
+  }
+
+  const linhas = brutos.split(/\r?\n/);
+  const mapa = {};
+  linhas.forEach(l => {
+    const i = l.indexOf(':');
+    if (i < 0) return;
+    const nome = l.slice(0, i).trim();
+    const valor = l.slice(i + 1).trim();
+    const chave = nome.toLowerCase() === 'set-cookie' ? 'Set-Cookie' : nome;
+    if (chave === 'Set-Cookie') (mapa[chave] = mapa[chave] || []).push(valor);
+    else mapa[chave] = valor;
+  });
+
+  return { codigo, cabecalhos: mapa, arquivo, bytes: fs.statSync(arquivo).size,
+    notaSegundaVia, codigoDaSegundaVia };
+}
+
+/** O objeto que as regras esperam receber de `buscarResposta_`. */
+export function resposta(url, opcoes) {
+  const r = buscar(url, opcoes);
+  if (r.codigo !== 200) {
+    // Sem um trecho do corpo, um bloqueio de firewall e uma página fora do ar
+    // chegam ao painel como o mesmo "HTTP 403", e não há como distinguir.
+    let pista = '';
+    try {
+      pista = fs.readFileSync(r.arquivo, 'utf8')
+        // Sem tirar o <style> e o <script>, a "pista" vira a folha de estilo da
+        // página de erro — foi o que voltou da primeira vez, e não disse nada.
+        .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;?/gi, ' ')
+        .replace(/\s+/g, ' ')
+        .trim().slice(0, 200);
+    } catch (e) { /* sem pista */ }
+    // O código vai junto do erro: quem repete precisa saber se houve resposta
+    // do servidor — e qual — para não insistir no que já foi respondido.
+    const erro = new Error('A fonte respondeu HTTP ' + r.codigo + '.' +
+      (pista ? ' Resposta: ' + pista : '') + (r.notaSegundaVia || ''));
+    // Se a fonte recusou, mas a segunda via teve 429/5xx, é esse último código
+    // que decide a repetição. A mensagem continua mostrando os dois fatos.
+    erro.codigoHttp = r.codigoDaSegundaVia || r.codigo;
+    throw erro;
+  }
+  return {
+    getResponseCode: () => r.codigo,
+    getAllHeaders: () => r.cabecalhos,
+    getContentText: (codificacao) =>
+      fs.readFileSync(r.arquivo).toString(/8859|latin/i.test(codificacao || '') ? 'latin1' : 'utf8'),
+    getBlob: () => ({ caminho: r.arquivo, tamanho: r.bytes })
+  };
+}
+
+/* ------------------------------------------------------------------ zip */
+
+/**
+ * Leitor de zip mínimo, sem dependências: percorre o diretório central e
+ * infla cada entrada. Um .xlsx é exatamente isso — um zip de XMLs.
+ */
+export function descompactar(buffer) {
+  const fim = (() => {
+    for (let i = buffer.length - 22; i >= 0 && i > buffer.length - 66000; i--) {
+      if (buffer.readUInt32LE(i) === 0x06054b50) return i;
+    }
+    throw new Error('Arquivo não é um zip válido.');
+  })();
+
+  let entradas = buffer.readUInt16LE(fim + 10);
+  let pos = buffer.readUInt32LE(fim + 16);
+  const arquivos = {};
+
+  for (let n = 0; n < entradas; n++) {
+    if (buffer.readUInt32LE(pos) !== 0x02014b50) break;
+    const metodo = buffer.readUInt16LE(pos + 10);
+    const tamComprimido = buffer.readUInt32LE(pos + 20);
+    const tamNome = buffer.readUInt16LE(pos + 28);
+    const tamExtra = buffer.readUInt16LE(pos + 30);
+    const tamComentario = buffer.readUInt16LE(pos + 32);
+    const inicioLocal = buffer.readUInt32LE(pos + 42);
+    const nome = buffer.toString('utf8', pos + 46, pos + 46 + tamNome);
+
+    const nomeLocal = buffer.readUInt16LE(inicioLocal + 26);
+    const extraLocal = buffer.readUInt16LE(inicioLocal + 28);
+    const dados = inicioLocal + 30 + nomeLocal + extraLocal;
+    const bruto = buffer.subarray(dados, dados + tamComprimido);
+
+    arquivos[nome] = metodo === 0 ? bruto : inflateRawSync(bruto);
+    pos += 46 + tamNome + tamExtra + tamComentario;
+  }
+  return arquivos;
+}
+
+/* ----------------------------------------------------------------- xlsx */
+
+function textosCompartilhados(xml) {
+  if (!xml) return [];
+  return [...xml.matchAll(/<si>([\s\S]*?)<\/si>/g)].map(m =>
+    [...m[1].matchAll(/<t[^>]*>([\s\S]*?)<\/t>/g)].map(x => entidades(x[1])).join(''));
+}
+
+function entidades(s) {
+  return String(s).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'").replace(/&#(\d+);/g, (m, n) => String.fromCodePoint(Number(n)))
+    .replace(/&amp;/g, '&');
+}
+
+/** Lê a primeira aba de um .xlsx e devolve linhas de células como texto. */
+export function lerXlsxDeArquivo(caminho) {
+  const arquivos = descompactar(fs.readFileSync(caminho));
+  const compartilhados = textosCompartilhados(
+    arquivos['xl/sharedStrings.xml'] ? arquivos['xl/sharedStrings.xml'].toString('utf8') : '');
+
+  const nomeAba = Object.keys(arquivos).find(n => /^xl\/worksheets\/sheet1\.xml$/.test(n));
+  if (!nomeAba) throw new Error('A planilha não tem a primeira aba no lugar esperado.');
+  const xml = arquivos[nomeAba].toString('utf8');
+
+  const linhas = [];
+  const reLinha = /<row\b[^>]*>([\s\S]*?)<\/row>/g;
+  const reCelula = /<c\b([^>]*)>([\s\S]*?)<\/c>|<c\b([^>]*)\/>/g;
+  let m;
+  while ((m = reLinha.exec(xml)) !== null) {
+    const celulas = [];
+    let c;
+    reCelula.lastIndex = 0;
+    while ((c = reCelula.exec(m[1])) !== null) {
+      const attrs = c[1] || c[3] || '';
+      const corpo = c[2] || '';
+      const ref = (attrs.match(/r="([A-Z]+)\d+"/) || [])[1] || '';
+      let col = 0;
+      for (const ch of ref) col = col * 26 + ch.charCodeAt(0) - 64;
+      const tipo = (attrs.match(/t="([^"]+)"/) || [])[1] || '';
+      let valor = '';
+      if (tipo === 'inlineStr') {
+        valor = [...corpo.matchAll(/<t[^>]*>([\s\S]*?)<\/t>/g)].map(x => entidades(x[1])).join('');
+      } else {
+        const v = (corpo.match(/<v>([\s\S]*?)<\/v>/) || [])[1] || '';
+        valor = tipo === 's' ? (compartilhados[Number(v)] || '') : entidades(v);
+      }
+      if (col) celulas[col - 1] = valor;
+    }
+    if (celulas.some(Boolean)) linhas.push(celulas);
+  }
+  return linhas;
+}
+
+/* ------------------------------------------------------------ CSV simples */
+
+/** Equivalente a Utilities.parseCsv: respeita aspas e quebras dentro do campo. */
+export function lerCsv(texto) {
+  const linhas = [];
+  let campo = '', linha = [], aspas = false;
+  const s = String(texto).replace(/^﻿/, '').replace(/\r\n/g, '\n');
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (aspas) {
+      if (ch === '"') {
+        if (s[i + 1] === '"') { campo += '"'; i++; } else aspas = false;
+      } else campo += ch;
+    } else if (ch === '"') aspas = true;
+    else if (ch === ',') { linha.push(campo); campo = ''; }
+    else if (ch === '\n') { linha.push(campo); linhas.push(linha); linha = []; campo = ''; }
+    else campo += ch;
+  }
+  if (campo || linha.length) { linha.push(campo); linhas.push(linha); }
+  return linhas;
+}
+
+/* ------------------------------------------------------------ armazenamento */
+
+/** No lugar da planilha: um arquivo JSON por tabela, versionado no repositório. */
+export function armazenamento(pasta) {
+  fs.mkdirSync(pasta, { recursive: true });
+  const caminho = nome => path.join(pasta, nome.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.json');
+  return {
+    ler(nome) {
+      const arq = caminho(nome);
+      if (!fs.existsSync(arq)) return [];
+      try { return JSON.parse(fs.readFileSync(arq, 'utf8')); } catch (e) { return []; }
+    },
+    gravar(nome, dados) {
+      fs.writeFileSync(caminho(nome), JSON.stringify(dados, null, 1));
+    },
+    acrescentar(nome, linhas) {
+      const atual = this.ler(nome);
+      this.gravar(nome, atual.concat(linhas));
+    }
+  };
+}
+
+export function limparTemporarios() {
+  try { fs.rmSync(TEMP, { recursive: true, force: true }); } catch (e) { /* nada a fazer */ }
+}

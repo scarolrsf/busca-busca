@@ -1,0 +1,59 @@
+name: Coleta
+
+# 09:07 e 21:07 UTC = 6h07 e 18h07 no horário de Brasília.
+#
+# Os sete minutos são de propósito. O agendador do GitHub é de melhor esforço, e
+# a hora cheia é quando o mundo inteiro agenda: pedir 09:00 costuma render uma
+# execução bem mais tarde, ou nenhuma, quando a fila está grande. Um minuto
+# quebrado cai fora do pico e chega perto do horário pedido.
+#
+# O cron do GitHub não conhece fuso. O Brasil não tem horário de verão desde
+# 2019; se voltar a ter, estes dois horários precisam ser corrigidos à mão.
+on:
+  schedule:
+    - cron: '7 9 * * *'
+    - cron: '7 21 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: coleta
+  cancel-in-progress: false
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # As segundas vias só entram depois de 403 e aceitam apenas os endereços
+      # fechados no código: Cloudflare para os dados abertos do STJ; Zyte para
+      # o Informativo do STJ e os recursos do STF.
+      - name: Consultar os tribunais
+        env:
+          ESPELHO_URL: ${{ secrets.ESPELHO_URL }}
+          ESPELHO_CHAVE: ${{ secrets.ESPELHO_CHAVE }}
+          ZYTE_CHAVE: ${{ secrets.ZYTE_CHAVE }}
+        run: node --max-old-space-size=4096 coleta/executar.mjs
+
+      - name: Conferir a resposta das fontes
+        run: node coleta/conferir-fontes.mjs
+
+      - name: Publicar o que mudou
+        run: |
+          git config user.name  'Coleta automática'
+          git config user.email 'actions@github.com'
+          git add dados
+          if git diff --staged --quiet; then
+            echo 'Nenhuma alteração nas fontes.'
+          else
+            git commit -m "Coleta de $(TZ=America/Sao_Paulo date '+%d/%m/%Y às %Hh%M')"
+            git push
+          fi
