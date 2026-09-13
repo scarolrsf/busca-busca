@@ -4,6 +4,48 @@ Registro datado das alterações do projeto, da mais recente para a mais antiga.
 O estado atual está no [README.md](README.md); a regra de como registrar está
 lá, na seção "Regra permanente de atualização".
 
+### 12/09/2026 — README enxuto, em regras, com "Antes de alterar" no topo
+
+**Responsável:** Claude Code, a pedido de Sarah, que perguntou se o README
+podia ficar mais enxuto e se estava fácil para um agente ler, e mandou fazer o
+enxugamento recomendado.
+
+**Motivo.** Mesmo sem o histórico, o README contava *como se chegou* a cada
+decisão — medições, episódios, alternativas descartadas — e as regras que um
+agente não pode quebrar estavam no meio da prosa. Também trazia contagens que
+envelhecem a cada coleta ("88 em vigor hoje", "2.555 registros").
+
+**O que mudou.** Só `README.md`, que vai de 692 para 465 linhas (38 KB para 24 KB):
+
+- **"Antes de alterar"** (novo, no topo): o que não fazer, onde mexer (tabela
+  arquivo por assunto) e a validação mínima.
+- "As seis fontes", "Arquivo, API ou leitura de página", "Quando o tribunal
+  oscila", "Espelho", "Segunda via do STF", "O que foi preciso para o STF",
+  "As datas que o STF publica", "Quando a fonte erra", "No telefone" e as duas
+  seções da regra de suspensão reescritas como regras curtas, com remissão
+  "(histórico: …)" à entrada que explica. "Rodar a coleta à mão" virou
+  "Coleta", com a agendada e o vigia descritos junto; as seções da regra de
+  suspensão ficaram sob "Regra de suspensão".
+- Saíram as contagens datadas e os exemplos (Tema 372, IRDR 74, IRDR 94,
+  IUJ 2007816…), que continuam nas entradas deste arquivo.
+- Saiu a menção a `datasDaSituacaoSTF_`, função que não existe mais no código.
+- A "Regra permanente de atualização" ganha a orientação: medições e
+  justificativas vão para o histórico; no README fica a regra, com remissão.
+
+**Validação.** Antes de cortar, cada detalhe removido foi procurado neste
+arquivo. Os dois que não constavam — `verTeseTema.asp` e a falta de suporte a
+`Range` na ficha do STF — ficaram no README. Nomes citados em "Onde mexer"
+conferidos no código: `PILOTO`, `coletarIUJ_` e `atualizarRegistros_` em
+`coleta/regras.js`; `module.exports` com `prepararRegistro`, `encerrado` e
+`risco` lido por `conferir-regra.mjs`; `ESPELHO_URL` em `ambiente.mjs`;
+`JURISPRUDENCIA_STF` em `coletar.yml` e `executar.mjs`. Links internos do
+sumário conferidos por script.
+
+**Dados e implantação.** Nada muda na base, na coleta nem no site.
+
+**Pendências.** O Codex, que responde pela revisão de arquitetura e dados,
+deveria revisar a lista "Não faça" e a condensação da regra de suspensão.
+
 ### 12/09/2026 — O histórico sai do README e vai para HISTORICO.md
 
 **Responsável:** Claude Code, a pedido de Sarah, que pediu ajuda para organizar
