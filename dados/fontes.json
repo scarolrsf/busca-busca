@@ -1,17 +1,17 @@
 [
  [
   "STJ — temas e processos",
+  "2026-09-14T21:16:34.695Z",
   "2026-09-14T09:20:03.563Z",
-  "2026-09-14T09:20:03.563Z",
-  "Consulta concluída",
-  "1495",
-  "O STJ publicou estes arquivos em 09/09/2026. Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "Falha / cobertura pendente",
+  "0",
+  "Em 1 tentativa: A fonte respondeu HTTP 403. Resposta: oops! P&aacute;gina n&atilde;o encontrada. Verifique se o endere&ccedil;o digitado est&aacute; correto ou clique para acessar a p&aacute;gina inicial do STJ. Se desejar, entre em contato com o nosso s O espelho também não trouxe: HTTP 403.",
   "https://dadosabertos.web.stj.jus.br/dataset/4238da2f-c07b-4c1a-b345-4402accacdcf/resource/df29da13-7d6b-41ba-ad96-cd1a5bbd191c/download/temas.csv"
  ],
  [
   "TJMG — IUJ",
-  "2026-09-14T09:20:07.976Z",
-  "2026-09-14T09:20:07.976Z",
+  "2026-09-14T21:16:34.697Z",
+  "2026-09-14T21:16:34.697Z",
   "Consulta concluída",
   "48",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-09-14T09:20:09.289Z",
-  "2026-09-14T09:20:09.289Z",
+  "2026-09-14T21:16:36.134Z",
+  "2026-09-14T21:16:36.134Z",
   "Consulta concluída",
   "172",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,8 +28,8 @@
  ],
  [
   "STJ — informativos",
-  "2026-09-14T09:20:30.015Z",
-  "2026-09-14T09:20:30.015Z",
+  "2026-09-14T21:17:05.885Z",
+  "2026-09-14T21:17:05.885Z",
   "Consulta concluída",
   "15",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -37,8 +37,8 @@
  ],
  [
   "STF — repercussão geral",
-  "2026-09-14T09:20:31.741Z",
-  "2026-09-14T09:20:31.741Z",
+  "2026-09-14T21:17:08.924Z",
+  "2026-09-14T21:17:08.924Z",
   "Consulta concluída",
   "1482",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -46,8 +46,8 @@
  ],
  [
   "STF — informativos",
-  "2026-09-14T09:21:50.574Z",
-  "2026-09-14T09:21:50.574Z",
+  "2026-09-14T21:18:49.560Z",
+  "2026-09-14T21:18:49.560Z",
   "Consulta concluída",
   "1012",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
