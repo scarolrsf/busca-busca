@@ -1,7 +1,7 @@
 [
  [
   "STJ — temas e processos",
-  "2026-09-15T21:16:41.300Z",
+  "2026-09-16T09:18:19.801Z",
   "2026-09-14T09:20:03.563Z",
   "Falha / cobertura pendente",
   "0",
@@ -10,8 +10,8 @@
  ],
  [
   "TJMG — IUJ",
-  "2026-09-15T21:16:41.301Z",
-  "2026-09-15T21:16:41.301Z",
+  "2026-09-16T09:18:19.802Z",
+  "2026-09-16T09:18:19.802Z",
   "Consulta concluída",
   "48",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-09-15T21:30:46.876Z",
-  "2026-09-15T21:30:46.876Z",
+  "2026-09-16T09:18:22.476Z",
+  "2026-09-16T09:18:22.476Z",
   "Consulta concluída",
   "172",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,26 +28,26 @@
  ],
  [
   "STJ — informativos",
-  "2026-09-15T21:33:37.579Z",
-  "2026-09-15T21:33:37.579Z",
+  "2026-09-16T09:18:54.098Z",
+  "2026-09-16T09:18:54.098Z",
   "Consulta concluída",
-  "15",
+  "10",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://scon.stj.jus.br/jurisprudencia/externo/informativo/?aplicacao=informativo"
  ],
  [
   "STF — repercussão geral",
-  "2026-09-15T21:34:20.826Z",
-  "2026-09-15T09:21:20.401Z",
-  "Falha / cobertura pendente",
-  "0",
-  "Em 3 tentativas: Tabela \"Todos os temas\" não localizada na página do STF.",
+  "2026-09-16T09:18:57.299Z",
+  "2026-09-16T09:18:57.299Z",
+  "Consulta concluída",
+  "1482",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
  ],
  [
   "STF — informativos",
-  "2026-09-15T21:34:20.827Z",
-  "2026-09-15T21:34:20.827Z",
+  "2026-09-16T09:21:48.514Z",
+  "2026-09-16T09:21:48.514Z",
   "Consulta concluída",
   "1012",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
