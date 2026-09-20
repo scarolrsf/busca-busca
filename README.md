@@ -46,6 +46,10 @@ O portal usa o mesmo desenho em qualquer largura; abaixo de 700 px a faixa do
 topo quebra em duas linhas, o texto deixa de ser justificado, campos vão a
 16 px e alvos de toque a 44 px.
 
+Na listagem, cada resultado é uma caixa fechada por borda plena, separada das
+vizinhas por 14 px, com 16/18 px de respiro interno e faixa de 4 px à esquerda
+na cor do risco. O contorno é desenho, não sinal: o que alerta é a faixa.
+
 ### Arquivos
 
 ```
