@@ -194,8 +194,8 @@ button,input,select{font:inherit;color:inherit}
 .ficha:hover{border-color:var(--acento);box-shadow:var(--sombra)}
 .ficha-abrir{position:absolute;inset:0;width:100%;height:100%;border:0;background:none;cursor:pointer;border-radius:var(--raio);padding:0}
 .ficha-pe{position:relative;z-index:2}
-.fonte-min{margin-left:auto;font-size:12.5px;text-decoration:none;border-bottom:1px solid transparent;white-space:nowrap}
-.fonte-min:hover{border-bottom-color:currentColor}
+.fonte-min{margin-left:auto;font-size:11.5px;line-height:1.75;padding:1px 8px;text-decoration:none;white-space:nowrap;color:var(--tinta-2);background:var(--superficie);border:1px solid var(--borda-forte);border-radius:4px}
+.fonte-min:hover{border-color:var(--acento);color:var(--acento);background:var(--acento-fraco)}
 .ficha.r-ALTO{border-left-color:var(--critico)}
 .ficha.r-MEDIO{border-left-color:var(--atencao)}
 .ficha.r-BAIXO{border-left-color:var(--seguro)}
@@ -225,7 +225,7 @@ button,input,select{font:inherit;color:inherit}
 /* As duas respostas que mandam parar agora levam a mesma faixa: o que muda
    entre elas é quem manda — o tribunal ou a lei —, e isso a nota explica. */
 .momento.m-IMEDIATA,.momento.m-DETERMINACAO{border-left-color:var(--critico)}
-.etiqueta{font-size:11.5px;color:var(--tinta-3);background:var(--superficie-2);border-radius:3px;padding:1px 7px}
+.etiqueta{font-size:11.5px;line-height:1.75;padding:1px 8px;color:var(--tinta-2);background:var(--superficie-2);border:1px solid var(--borda-forte);border-radius:4px;white-space:nowrap}
 mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .vazio{border:1px dashed var(--borda-forte);border-radius:var(--raio);padding:34px 24px;text-align:center;color:var(--tinta-2)}
 .vazio p{margin:0 0 4px}
