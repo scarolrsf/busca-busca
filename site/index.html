@@ -1156,18 +1156,96 @@ function escopoPreferido() {
 }
 
 /* Competência do Juizado Especial.
-   A triagem já feita vale como resposta; os IUJ vêm da Turma Recursal, logo são
-   do Juizado por definição; no resto, o texto da fonte costuma dizer quando a
-   controvérsia é de Juizado — cita a Lei 9.099, a 12.153, a 10.259, a Turma
-   Recursal ou o próprio Juizado. Sem nenhum desses sinais, o registro fica em
-   "Justiça comum", que aqui significa "não identificado como de Juizado". */
-var RE_JUIZADO = /(juizado especial|juizados especiais|turma recursal|turmas recursais|turma de uniformizacao|lei 9 ?099|9099|lei 12 ?153|12153|lei 10 ?259|10259)/;
+
+   A pergunta é se a *matéria* cabe nos Juizados — não se a fonte por acaso
+   escreveu a palavra. Um tema sobre negativa de cobertura de plano de saúde é
+   do JEC ainda que o STJ nunca cite a Lei 9.099, e a regra anterior, que
+   procurava a menção, deixava esse tema em "Justiça comum".
+
+   Daí a presunção ser de inclusão: entra tudo, salvo o que a lei exclui. O
+   teto de valor — 40 salários mínimos na 9.099, 60 na 12.153 — não entra aqui
+   de propósito: ele não está no cadastro de um tema, que é questão abstrata, e
+   é conferido no caso concreto, com o valor da causa à vista. A aba responde
+   "esta matéria não está excluída dos Juizados", e não "esta causa cabe no
+   Juizado" — a segunda pergunta é de quem tem os autos.
+
+   O erro seguro é o mesmo que o portal já adota no alcance da suspensão:
+   incluir a mais faz conferir um tema que não era; excluir a menos esconde uma
+   ordem que alcança o processo na mesa. */
+
+/* Menção expressa à competência. Não é mais porta de entrada — com a presunção
+   de inclusão, todo registro já entra —, e sim veto à exclusão: quando a fonte
+   diz que a matéria é de Juizado, nenhuma heurística abaixo a remove.
+   A Lei 10.259 fica: é Juizado Especial Federal, fora da competência do TJMG,
+   mas o precedente pensado para o JEF é invocado por analogia no JEC e no JEFP.
+   O número da lei exige a palavra "lei" por perto; solto, ele casava com número
+   de processo — era o que punha o RE 589099 no recorte de Juizado. */
+var RE_JUIZADO = /(juizado especial|juizados especiais|turma recursal|turmas recursais|turma de uniformizacao|lei[^0-9]{0,8}(9 ?099|12 ?153|10 ?259))/;
+
+/* Matéria excluída dos Juizados, com a âncora legal de cada linha. A ordem não
+   importa: basta uma para o registro sair. */
+var FORA_DO_JUIZADO = [
+  /* 9.099, art. 3º, §2º — alimentar, falimentar, estado e capacidade. */
+  /(alimento|pensao alimenticia|guarda de menor|divorcio|uniao estavel|inventario|heranca|sucessao|investigacao de paternidade|adocao|poder familiar|curatela|interdicao|estado e capacidade)/,
+  /(falenc|recuperacao judicial|insolvencia civil|massa falida)/,
+  /* 9.099, art. 3º, §2º e 12.153, art. 2º, §1º, II — matéria fiscal e execução fiscal. */
+  /(execucao fiscal|divida ativa|certidao de divida ativa|lancamento tributario|credito tributario|anulatoria de debito fiscal)/,
+  /* 9.099, art. 3º, §2º — acidente do trabalho. */
+  /(acidente do trabalho|acidente de trabalho|acidentaria)/,
+  /* 12.153, art. 2º, §1º, I e II — MS, desapropriação, demarcação, improbidade,
+     difusos e coletivos, bens imóveis do ente, demissão e sanção disciplinar. */
+  /(mandado de seguranca)/,
+  /(desapropriac|divisao e demarcacao|bem imovel publico|imovel do municipio|imovel do estado)/,
+  /(improbidade)/,
+  /(acao civil publica|direitos difusos|direitos coletivos|interesses difusos|interesse coletivo)/,
+  /(pena de demissao|demissao de servidor|processo administrativo disciplinar|sancao disciplinar)/,
+  /* 9.099, art. 61 — só infração de menor potencial ofensivo; e 11.340, art. 41,
+     que veda expressamente a 9.099 na violência doméstica. */
+  /(homicidio|latrocinio|roubo|furto qualificado|trafico de droga|trafico ilicito|estupro|organizacao criminosa|lavagem de dinheiro|peculato|corrupcao ativa|corrupcao passiva|extorsao|receptacao|associacao criminosa|estelionato|apropriacao indebita|sonegacao|milicia|feminicidio|execucao penal|regime prisional|dosimetria|pronuncia|tribunal do juri|maria da penha|violencia domestica)/,
+  /* Fora da Justiça estadual: nada disso chega ao JEC ou ao JEFP. */
+  /(reclamacao trabalhista|justica do trabalho|vinculo empregaticio|\bfgts\b)/,
+  /(materia eleitoral|justica eleitoral|justica militar)/
+];
+
+/* Previdenciário pede cuidado que as demais não pedem: o benefício do RGPS é
+   federal e não chega aqui, mas aposentadoria e pensão de servidor estadual ou
+   municipal são matéria de JEFP, pela 12.153. Medido em 20/09/2026: dos 277
+   registros do tema, 54 traziam marcador de servidor estadual e 141 eram
+   ambíguos — excluir o conjunto esconderia quase 200 registros que ou são do
+   Juizado, ou não dá para descartar. Só sai o que é inequivocamente federal e
+   não traz marcador estadual. */
+var RE_PREV_FEDERAL = /(\binss\b|regime geral de previdencia|\brgps\b|beneficio de prestacao continuada|\bloas\b|salario-maternidade|auxilio-doenca|auxilio doenca|segurado especial|trabalhador rural)/;
+var RE_PREV_ESTADUAL = /(servidor publico|servidor estadual|servidor municipal|regime proprio|\brpps\b|ipsemg|policial militar|militar estadual|magistrado)/;
+
+function foraDoJuizado(t) {
+  for (var i = 0; i < FORA_DO_JUIZADO.length; i++) {
+    if (FORA_DO_JUIZADO[i].test(t)) return true;
+  }
+  return RE_PREV_FEDERAL.test(t) && !RE_PREV_ESTADUAL.test(t);
+}
 
 function competenciaJuizado(r) {
   if (r._curado) return true;
   if (r.tipo === 'IUJ') return true;
   var t = norm([r.questao, r.tese, r.observacoes, r.area, r.situacao].join(' ')).replace(/[.]/g, ' ');
-  return RE_JUIZADO.test(t);
+  if (RE_JUIZADO.test(t)) return true;
+  return !foraDoJuizado(t);
+}
+
+/* O que só existe dentro do sistema dos Juizados.
+
+   As duas competências não são complementares, e tratá-las como se fossem era
+   o erro anterior: competência de Juizado não é exclusiva por matéria. No JEC a
+   opção é do autor, com renúncia ao excedente (art. 3º, §3º, da Lei 9.099); no
+   JEFP ela é absoluta apenas até 60 salários mínimos (art. 2º, §4º, da Lei
+   12.153). Superado o teto, a mesma matéria vai para a vara comum. Logo a
+   justiça comum engloba o Juizado, e não o exclui.
+
+   Só o IUJ fica de fora: é incidente da Turma de Uniformização, instrumento
+   interno dos Juizados, que não vincula vara comum. A matéria de fundo dele
+   continua correndo na comum acima do teto — o que não corre lá é o incidente. */
+function soDoJuizado(r) {
+  return r.tipo === 'IUJ';
 }
 
 /* Índice de busca e campos derivados, calculados uma única vez. */
@@ -1315,6 +1393,7 @@ function prepararRegistro(r) {
   r._data = dataPrincipal(r);
   r._curado = r.pertinencia === CURADO;
   r._juizado = competenciaJuizado(r);
+  r._soJuizado = soDoJuizado(r);
   r._verificado = Boolean(r.verificadoEm);
   r._busca = norm([r._titulo, r.tipo, r.tribunal, r.numero, r.questao, r.tese,
     r.area, r.situacao, r.processos, r.observacoes, r.suspensao].join(' '));
@@ -1497,14 +1576,14 @@ var ESCOPOS = [
 
 function noEscopoAtual(r) {
   if (estado.escopo === 'juizado') return r._juizado;
-  if (estado.escopo === 'comum') return !r._juizado;
+  if (estado.escopo === 'comum') return !r._soJuizado;
   return true;
 }
 
 function escopoHtml(lista) {
-  var nJuizado = 0;
-  lista.forEach(function (r) { if (r._juizado) nJuizado++; });
-  var contagens = { todos: lista.length, juizado: nJuizado, comum: lista.length - nJuizado };
+  var nJuizado = 0, nSo = 0;
+  lista.forEach(function (r) { if (r._juizado) nJuizado++; if (r._soJuizado) nSo++; });
+  var contagens = { todos: lista.length, juizado: nJuizado, comum: lista.length - nSo };
   return '<div class="escopo" role="group" aria-label="Competência">' +
     ESCOPOS.map(function (e) {
       return '<button type="button" data-escopo="' + e.chave + '" aria-pressed="' +
@@ -2860,12 +2939,20 @@ function abaAjuda() {
 
     '<section class="secao"><h2>Competência</h2><dl class="dados definicoes">' +
       campo('Juizado Especial',
-        'Precedentes cuja matéria tramita nos Juizados Especiais Cíveis, Criminais e da Fazenda Pública, além dos incidentes de uniformização da Turma Recursal.') +
+        'Precedentes cuja matéria pode tramitar nos Juizados Especiais Cíveis, Criminais e da Fazenda Pública, ' +
+        'além dos incidentes de uniformização da Turma Recursal. O recorte parte da inclusão: entra tudo, ' +
+        'menos o que as Leis 9.099 e 12.153 excluem. O teto de valor — 40 salários mínimos na 9.099, 60 na ' +
+        '12.153 — não é aplicado aqui, porque o cadastro de um tema não traz valor da causa; ele se confere ' +
+        'no caso concreto, nos autos.') +
       campo('Justiça comum',
-        'Precedentes em que a fonte não indica competência de Juizado. A classificação decorre do que a fonte publica e não afirma, por si, a incompetência do Juizado.') +
+        'A base quase inteira, e de propósito: as duas competências não se excluem. No JEC a opção é do ' +
+        'autor, com renúncia ao excedente (art. 3º, §3º, da Lei 9.099); no JEFP a competência é absoluta ' +
+        'só até 60 salários mínimos (art. 2º, §4º, da Lei 12.153). Superado o teto, a mesma matéria corre ' +
+        'na vara comum — então a justiça comum engloba o Juizado. Fica de fora apenas o que só existe ' +
+        'dentro do sistema dos Juizados: o incidente de uniformização da Turma Recursal.') +
       campo('Todos', 'A base inteira, das três origens, sem recorte de competência.') +
       campo('Qual vem marcada',
-        'A consulta abre em “Juizado Especial”, que é o recorte mais estreito. Quem atua na justiça comum troca uma vez, ' +
+        'A consulta abre em “Juizado Especial”, que é de onde o projeto nasceu. Quem atua na justiça comum troca uma vez, ' +
         'e o portal passa a abrir na competência escolhida — a preferência fica guardada neste navegador, não na base.') +
     '</dl></section>' +
 

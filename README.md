@@ -21,6 +21,7 @@ requisitos, arquitetura, dados, operação, validações e pendências.
 - [Coleta](#coleta) — agendada e complementar
 - [As fontes](#as-fontes) — como cada tribunal é lido e o que fazer quando falha
 - [O que é base e o que é derivado](#o-que-é-base-e-o-que-é-derivado)
+- [Recorte de competência](#recorte-de-competência) — o que entra no Juizado e o que não
 - [Regra de suspensão](#regra-de-suspensão) — a partir de quando e até quando
 - [Publicar](#publicar)
 - [Conferências](#conferências)
@@ -307,6 +308,54 @@ quando a fonte se corrige e não geram "Novidades".
   `publicar.mjs` a devolve a cada registro na montagem.
 - `conferencia.json` muda a cada coleta, o que mantém o repositório ativo — o
   GitHub desliga workflow agendado após 60 dias parado.
+
+## Recorte de competência
+
+O seletor no alto da listagem tem três posições, e elas **não** são exclusivas
+entre si.
+
+**Juizado Especial** responde "esta matéria *pode* tramitar nos Juizados?", e
+parte da inclusão: entra tudo, menos o que as Leis 9.099 e 12.153 excluem. As
+exclusões estão em `FORA_DO_JUIZADO`, em `site/index.html`, uma expressão por
+grupo, cada uma com o artigo que a fundamenta — alimentar, falimentar, estado e
+capacidade e fiscal (art. 3º, §2º, da 9.099); mandado de segurança,
+desapropriação, demarcação, improbidade, difusos e coletivos, bens imóveis do
+ente e sanção disciplinar (art. 2º, §1º, da 12.153); infração acima da menor
+potencialidade ofensiva (art. 61 da 9.099) e violência doméstica (art. 41 da
+11.340); e o que não corre na Justiça estadual. Previdenciário só sai com
+marcador federal inequívoco e sem marcador de servidor estadual, porque
+aposentadoria e pensão de servidor estadual são matéria de JEFP.
+
+Três coisas entram por decisão, e não por heurística: os registros marcados na
+planilha inicial, os IUJ, e todo registro em que a fonte menciona expressamente
+Juizado, Turma Recursal ou uma das três leis. Essa menção não é porta de
+entrada — com a presunção de inclusão, tudo já entra —, e sim **veto à
+exclusão**: dito pela fonte, nenhuma heurística remove.
+
+**O teto de valor não é aplicado.** Os 40 salários mínimos da 9.099 e os 60 da
+12.153 não estão no cadastro de um tema, que é questão abstrata sem valor da
+causa. A aba afirma "esta matéria não está excluída", e o valor se confere no
+caso concreto, nos autos.
+
+**Justiça comum** é a base quase inteira, e de propósito. Competência de
+Juizado não é exclusiva por matéria: no JEC a opção é do autor, com renúncia ao
+excedente (art. 3º, §3º, da 9.099); no JEFP é absoluta só até 60 salários
+mínimos (art. 2º, §4º, da 12.153). Superado o teto, a mesma matéria corre na
+vara comum — então a justiça comum **engloba** o Juizado. Fica de fora só o que
+existe apenas dentro do sistema dos Juizados: o IUJ, incidente da Turma de
+Uniformização, que não vincula vara comum.
+
+Medido em 20/09/2026, sobre 3.210 temas: Todos 3.210, Justiça comum 3.153,
+Juizado Especial 2.333 — destes, 158 por curadoria, 57 IUJ, 45 por menção
+expressa e o restante por presunção. As 877 exclusões se distribuem em fiscal
+326, criminal 150, trabalhista 90, família e sucessões 81, previdenciário
+federal 73, difusos e coletivos 43, mandado de segurança 25, desapropriação 25,
+improbidade 23, falimentar 21, acidente do trabalho 13, disciplinar 5,
+eleitoral e militar 2.
+
+O erro seguro aqui é o mesmo do alcance da suspensão: incluir a mais faz
+conferir um tema que não era; excluir a menos esconde ordem que alcança o
+processo na mesa.
 
 ## Regra de suspensão
 
