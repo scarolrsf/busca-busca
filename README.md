@@ -22,6 +22,7 @@ requisitos, arquitetura, dados, operação, validações e pendências.
 - [As fontes](#as-fontes) — como cada tribunal é lido e o que fazer quando falha
 - [O que é base e o que é derivado](#o-que-é-base-e-o-que-é-derivado)
 - [Recorte de competência](#recorte-de-competência) — o que entra no Juizado e o que não
+- [Os três menus do topo](#os-três-menus-do-topo) — suspensão, julgamento e assunto
 - [Regra de suspensão](#regra-de-suspensão) — a partir de quando e até quando
 - [Publicar](#publicar)
 - [Conferências](#conferências)
@@ -356,6 +357,48 @@ eleitoral e militar 2.
 O erro seguro aqui é o mesmo do alcance da suspensão: incluir a mais faz
 conferir um tema que não era; excluir a menos esconde ordem que alcança o
 processo na mesa.
+
+## Os três menus do topo
+
+Eram cinco quadrinhos que se excluíam entre si; são três menus que **se
+combinam**. Cada um faz uma pergunta diferente sobre o mesmo registro, e
+escolher nos três pergunta as três de uma vez — "suspensão nacional, já
+julgada, em matéria de consumo" não tinha como ser perguntado antes.
+
+| Menu | Posições |
+| --- | --- |
+| Suspensão | nacional, estadual, apenas em fase recursal, todos os suspensos |
+| Julgamento | julgados; julgados, mas ainda suspensos |
+| Assunto | consumo, servidor público, saúde pública, tributário, previdenciário, família, criminal, imóveis, responsabilidade civil, contratos, processual, outros |
+
+A contagem ao lado de cada opção ignora a escolha do próprio menu e respeita a
+dos outros dois: é o que faz o número de "Consumo" dizer quantos há *dentro* do
+que já está recortado, em vez de zerar toda opção não escolhida. Opção sem
+registro some, salvo se for a escolhida. Menu que fica sem nenhuma opção some
+inteiro — é o caso de Suspensão e Julgamento na aba dos informativos, que não
+trazem ordem nem estágio.
+
+**"Julgados, mas ainda suspensos"** é a posição que mais importa a quem vai
+sentenciar. Julgado e suspenso não se excluem: o mérito do precedente pode estar
+decidido e a ordem continuar de pé — porque vale até o trânsito em julgado,
+porque há pendência registrada, ou porque a suspensão veio depois do julgamento
+do paradigma. `encerrado()` conhece os três casos e a ficha diz qual é o do
+registro. Ler "julgado" e concluir que já dá para sentenciar é o erro que este
+recorte evita.
+
+**Assunto** é mais fino que as três áreas da coluna da esquerda, porque "Fazenda
+Pública" reúne servidor, tributo e saúde, que são rotinas diferentes. A lista
+`ASSUNTOS`, em `site/index.html`, vai da matéria mais específica para a mais
+genérica, e cada registro entra num assunto só, o primeiro que casa: plano de
+saúde é consumo, e não saúde pública; aposentadoria de servidor estadual é
+servidor, e não previdenciário. Processual vem quase no fim de propósito —
+prescrição e honorários aparecem em tema de qualquer matéria e, mais acima,
+engoliriam o assunto de fundo.
+
+Os três menus vão para o endereço (`suspensao=`, `julgamento=`, `assunto=`) e
+para o nome do arquivo da planilha. Endereços copiados antes desta mudança
+traziam um bloco só, em `bloco=`; continuam abrindo no mesmo recorte, porque o
+valor antigo é encaminhado ao menu a que pertencia.
 
 ## Regra de suspensão
 

@@ -162,27 +162,19 @@ button,input,select{font:inherit;color:inherit}
 
 /* ------------------------------------------------- escopo e painel de risco */
 .escopo{display:inline-flex;border:1px solid var(--borda-forte);border-radius:var(--raio);overflow:hidden;background:var(--superficie);margin-bottom:14px}
-.escopo button{border:0;background:none;padding:7px 16px;cursor:pointer;font-size:13.5px;color:var(--tinta-2);border-right:1px solid var(--borda);display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-height:44px;justify-content:center}
+.escopo button{border:0;background:none;padding:7px 20px;cursor:pointer;font-size:13.5px;color:var(--tinta-2);border-right:1px solid var(--borda);display:flex;flex-direction:column;align-items:center;text-align:center;gap:1px;min-height:44px;justify-content:center}
 .escopo button:last-child{border-right:0}
 .escopo button:hover{background:var(--superficie-2);color:var(--tinta)}
 .escopo button[aria-pressed="true"]{background:var(--acento-forte);color:var(--sobre-acento);font-weight:600}
 .escopo button[aria-pressed="true"]:hover{background:var(--acento-forte);color:var(--sobre-acento)}
 .escopo .n{font-family:var(--mono);font-size:11px;font-variant-numeric:tabular-nums;opacity:.75;font-weight:400}
-.alcance{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr));gap:10px;margin-bottom:16px}
-.alcance-item{text-align:left;border:1px solid var(--borda);border-left:3px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie);padding:9px 12px;cursor:pointer;display:flex;flex-direction:column;gap:1px}
-.alcance-item:hover{border-color:var(--borda-forte)}
-.alcance-item[aria-pressed="true"]{background:var(--acento-fraco);border-color:var(--acento)}
-.alcance-item .n{font-family:var(--mono);font-size:21px;font-weight:600;line-height:1.15;font-variant-numeric:tabular-nums}
-.alcance-item .r{font-size:12.5px;color:var(--tinta-2);line-height:1.35}
-.alcance-item.grupo-total{border-left-style:dashed}
-.alcance-item.grupo-estagio{border-left-color:var(--borda-forte)}
-.alcance-item.grupo-estagio .n{color:var(--tinta-2)}
-.alcance-item.grupo-total{border-left-style:dashed}
-.alcance-item.grupo-estagio{border-left-color:var(--borda-forte)}
-.alcance-item.grupo-estagio .n{color:var(--tinta-2)}
-.alcance-item.g-alto{border-left-color:var(--critico)} .alcance-item.g-alto .n{color:var(--critico)}
-.alcance-item.g-medio{border-left-color:var(--atencao)} .alcance-item.g-medio .n{color:var(--atencao)}
-.alcance-item.g-baixo{border-left-color:var(--seguro)} .alcance-item.g-baixo .n{color:var(--seguro)}
+/* Os três menus do topo. Eram cinco quadrinhos que se excluíam; viraram menus
+   que se combinam, e a faixa ficou com a mesma moldura do filtro detalhado
+   logo abaixo — são dois grupos de controle da mesma família, e desenhá-los
+   diferente sugeriria uma hierarquia que não existe. */
+.menus-topo{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;border:1px solid var(--borda-forte);background:var(--superficie);border-radius:var(--raio);padding:12px 14px;margin-bottom:14px}
+.menus-topo .campo-filtro{flex:1 1 190px;min-width:190px}
+.menus-topo .limpar-tudo{min-height:32px}
 
 /* --------------------------------------------------------------- listagem */
 .filtro-detalhado{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;border:1px solid var(--borda);background:var(--superficie);border-radius:var(--raio);padding:12px 14px;margin-bottom:16px}
@@ -442,8 +434,8 @@ a.atalho-normas{text-decoration:none}
 
   .escopo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
   .escopo button{padding:7px 8px;font-size:12.5px}
-  .alcance{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-  .alcance-item{padding:9px 10px}
+  .menus-topo .campo-filtro{min-width:100%}
+  .menus-topo .limpar-tudo{min-height:44px}
 
   /* Número e Espécie são curtos e cabem lado a lado; só o campo de palavras
      e o botão de limpar ocupam a linha inteira. */
@@ -629,7 +621,7 @@ var estado = {
   ordem: 'relevancia',
   limite: PAGINA,
   registroId: null,
-  destaque: '',        // bloco selecionado no painel do topo
+  menus: { suspensao: '', julgamento: '', assunto: '' },  // os três menus do topo, combináveis
   favsRecebidos: [],   // favoritos que chegaram pelo endereço, ainda não guardados
   numero: '',          // filtro detalhado: número do precedente
   texto: '',           // filtro detalhado: palavras na questão ou na tese
@@ -664,27 +656,145 @@ var ALCANCES = [
   { chave: 'NAO_DETERMINADA', rotulo: 'Suspensão não determinada', nivel: 'MEDIO' }
 ];
 
-/* Os cinco blocos do topo. Não são uma divisão da base: são atalhos para o que
-   o usuário procura com mais frequência, e por isso podem se sobrepor. */
+/* Os três menus do topo. Não são uma divisão da base: são recortes do que se
+   procura com mais frequência, e se combinam — cada um responde a uma pergunta
+   diferente sobre o mesmo registro, e escolher nos três pergunta as três de uma
+   vez. Por isso são menus independentes, e não botões que se excluem:
+   "suspensão nacional, já julgada, em matéria de consumo" é pergunta legítima,
+   e antes não havia como fazê-la. */
 var ESTAGIOS_JULGADOS = { 'Julgado': 1, 'Acórdão publicado': 1, 'Trânsito em julgado': 1 };
 
-var DESTAQUES = [
-  { chave: 'nacional', rotulo: 'Suspensão nacional', nivel: 'alto', grupo: 'tipo',
+function suspensoEmVigor(r) {
+  return r._emVigor && (r._alcance === 'NACIONAL' || r._alcance === 'ESTADUAL' || r._alcance === 'RECURSAL');
+}
+
+var MENU_SUSPENSAO = [
+  { chave: 'nacional', rotulo: 'Suspensão nacional',
     ajuda: 'Alcança os processos sobre a mesma questão em todo o país — art. 1.035, § 5º, e art. 1.037, II, do CPC.',
     testa: function (r) { return r._emVigor && r._alcance === 'NACIONAL'; } },
-  { chave: 'estadual', rotulo: 'Suspensão estadual', nivel: 'alto', grupo: 'tipo',
+  { chave: 'estadual', rotulo: 'Suspensão estadual',
     ajuda: 'Restrita ao território do Estado, típica do IRDR — art. 982, I, do CPC.',
     testa: function (r) { return r._emVigor && r._alcance === 'ESTADUAL'; } },
-  { chave: 'recursal', rotulo: 'Apenas em fase recursal', nivel: 'medio', grupo: 'tipo',
+  { chave: 'recursal', rotulo: 'Apenas em fase recursal',
     ajuda: 'Alcança recursos especiais, extraordinários e agravos. O processo em primeiro grau segue seu curso.',
     testa: function (r) { return r._emVigor && r._alcance === 'RECURSAL'; } },
-  { chave: 'suspensos', rotulo: 'Todos os suspensos', nivel: 'alto', grupo: 'total',
-    ajuda: 'A soma dos três tipos acima: tudo que está com suspensão em vigor, qualquer que seja o alcance.',
-    testa: function (r) { return r._emVigor && (r._alcance === 'NACIONAL' || r._alcance === 'ESTADUAL' || r._alcance === 'RECURSAL'); } },
-  { chave: 'julgados', rotulo: 'Julgados', nivel: 'baixo', grupo: 'estagio',
-    ajuda: 'Outro eixo: precedentes com mérito julgado, acórdão publicado ou trânsito em julgado. Não fala de suspensão.',
-    testa: function (r) { return ESTAGIOS_JULGADOS[r._situacao] === 1; } }
+  { chave: 'suspensos', rotulo: 'Todos os suspensos',
+    ajuda: 'A soma dos três acima: tudo com suspensão em vigor, qualquer que seja o alcance.',
+    testa: suspensoEmVigor }
 ];
+
+/* O segundo menu tem duas posições, e a segunda é a que interessa a quem vai
+   sentenciar. "Julgado" e "suspenso" não se excluem: o mérito do precedente
+   pode estar decidido e a ordem de suspensão continuar de pé — porque a
+   determinação vale até o trânsito em julgado, porque há pendência registrada
+   (embargos, recurso ainda não apreciado), ou porque a suspensão foi
+   determinada depois do julgamento do próprio paradigma. A função encerrado()
+   conhece os três casos, e a ficha diz qual é o do registro. Ler "julgado" e
+   concluir que já dá para sentenciar é o erro que este recorte evita. */
+var MENU_JULGAMENTO = [
+  { chave: 'julgados', rotulo: 'Julgados',
+    ajuda: 'Mérito julgado, acórdão publicado ou trânsito em julgado. Não diz nada sobre suspensão.',
+    testa: function (r) { return ESTAGIOS_JULGADOS[r._situacao] === 1; } },
+  { chave: 'julgados-suspensos', rotulo: 'Julgados, mas ainda suspensos',
+    ajuda: 'Já julgados e com a suspensão ainda em vigor: a ordem vale até o trânsito, há pendência registrada, ou a suspensão é posterior ao julgamento do paradigma. A ficha diz qual é o caso.',
+    testa: function (r) { return ESTAGIOS_JULGADOS[r._situacao] === 1 && suspensoEmVigor(r); } }
+];
+
+/* Assunto. As áreas da base são três — Cível, Criminal e Fazenda Pública —, boas
+   para separar acervo e grossas demais para procurar: "Fazenda Pública" reúne
+   servidor, tributo e saúde, que são rotinas diferentes. Esta lista é mais fina
+   e vai da matéria mais específica para a mais genérica, porque a classificação
+   para na primeira que casa: "plano de saúde" é consumo, e não saúde pública;
+   "aposentadoria de servidor estadual" é servidor, e não previdenciário.
+   Processual vem quase no fim de propósito — prescrição e honorários aparecem
+   em tema de qualquer matéria, e mais acima engoliriam o assunto de fundo. */
+var ASSUNTOS = [
+  { chave: 'consumo', rotulo: 'Consumo',
+    re: /(consumidor|relacao de consumo|plano de saude|seguro saude|\bdpvat\b|seguro de vida|cartao de credito|emprestimo consignado|instituicao financeira|contrato bancario|\bbanco\b|tarifa bancaria|juros remuneratorios|telefonia|energia eletrica|fornecimento de agua|companhia aerea|transporte aereo|overbooking|inscricao indevida|cadastro de inadimplentes|negativacao|vicio do produto|produto defeituoso|garantia legal|publicidade enganosa|superendividamento)/ },
+  { chave: 'servidor', rotulo: 'Servidor público',
+    re: /(servidor publico|servidor estadual|servidor municipal|funcionario publico|vencimento|remuneracao|gratificacao|adicional de|subsidio|quinquenio|bienio|progressao funcional|enquadramento funcional|concurso publico|policial militar|militar estadual|magistrado|reajuste de \d|revisao geral anual|\burv\b|teto remuneratorio)/ },
+  { chave: 'saude', rotulo: 'Saúde pública',
+    re: /(fornecimento de medicamento|dispensacao de medicamento|tratamento de saude|\bsus\b|sistema unico de saude|internacao|leito de uti|cirurgia|insumo de saude|procedimento medico)/ },
+  { chave: 'tributario', rotulo: 'Tributário',
+    re: /(\bicms\b|\biss\b|\bipva\b|\biptu\b|\bitbi\b|\bitcd\b|\bipi\b|imposto|tributo|tributari|taxa de|contribuicao de melhoria|base de calculo|aliquota|imunidade|isencao)/ },
+  { chave: 'previdenciario', rotulo: 'Previdenciário',
+    re: /(aposentador|pensao por morte|auxilio-doenca|auxilio doenca|auxilio-acidente|beneficio previdenciario|\binss\b|regime proprio|\brpps\b|\brgps\b|salario-maternidade|beneficio de prestacao continuada|\bloas\b)/ },
+  { chave: 'familia', rotulo: 'Família e sucessões',
+    re: /(alimento|pensao alimenticia|guarda de|divorcio|uniao estavel|inventario|heranca|sucessao|paternidade|adocao|poder familiar|curatela|interdicao|regime de bens)/ },
+  { chave: 'criminal', rotulo: 'Criminal',
+    re: /(direito penal|processual penal|criminal|\bcrime|contravenc|pena privativa|dosimetria|regime prisional|execucao penal|habeas corpus|maria da penha|violencia domestica|inqueri|pronuncia|tribunal do juri|medida protetiva)/ },
+  { chave: 'imoveis', rotulo: 'Imóveis, posse e locação',
+    re: /(condominio|locacao|despejo|usucapiao|posse|reintegracao de posse|imovel|incorporac|compra e venda de imovel|alienacao fiduciaria|financiamento habitacional|\bsfh\b|registro de imoveis|vizinhanca)/ },
+  { chave: 'responsabilidade', rotulo: 'Responsabilidade civil',
+    re: /(dano moral|dano material|dano estetico|responsabilidade civil|indenizacao|acidente de transito|acidente de veiculo|lucros cessantes|pensionamento)/ },
+  { chave: 'contratos', rotulo: 'Contratos e obrigações',
+    re: /(contrato|obrigac|inadimplemento|rescisao|clausula|multa contratual|cobranca|duplicata|cheque|nota promissoria|titulo executivo)/ },
+  { chave: 'processual', rotulo: 'Processual',
+    re: /(honorario|prescric|decadencia|custas|gratuidade|competencia|coisa julgada|prova|onus da prova|recurso|agravo|embargos|execucao|cumprimento de sentenca|penhora|juros de mora|correcao monetaria|litisconsorcio|legitimidade)/ },
+  { chave: 'outros', rotulo: 'Outros assuntos', re: null }
+];
+
+function assuntoDe(r) {
+  var t = norm([r.questao, r.tese, r.observacoes, r.area, r.situacao].join(' '));
+  for (var i = 0; i < ASSUNTOS.length; i++) {
+    if (ASSUNTOS[i].re && ASSUNTOS[i].re.test(t)) return ASSUNTOS[i].chave;
+  }
+  return 'outros';
+}
+
+var MENUS = [
+  { chave: 'suspensao', rotulo: 'Suspensão', vazio: 'Qualquer suspensão', opcoes: MENU_SUSPENSAO },
+  { chave: 'julgamento', rotulo: 'Julgamento', vazio: 'Qualquer estágio', opcoes: MENU_JULGAMENTO },
+  { chave: 'assunto', rotulo: 'Assunto', vazio: 'Todos os assuntos',
+    opcoes: ASSUNTOS.map(function (a) {
+      return {
+        chave: a.chave, rotulo: a.rotulo, ajuda: '',
+        testa: function (r) { return r._assunto === a.chave; }
+      };
+    }) }
+];
+
+function menuDe(chave) {
+  for (var i = 0; i < MENUS.length; i++) if (MENUS[i].chave === chave) return MENUS[i];
+  return null;
+}
+
+function opcaoDe(menu, chave) {
+  if (!chave) return null;
+  var m = menuDe(menu);
+  if (!m) return null;
+  for (var i = 0; i < m.opcoes.length; i++) if (m.opcoes[i].chave === chave) return m.opcoes[i];
+  return null;
+}
+
+/* Passa nos menus, opcionalmente ignorando um deles — é o que permite contar
+   cada opção de um menu já filtrada pelos outros dois, sem que o menu se conte
+   a si mesmo e zere toda opção que não está escolhida. */
+function passaNosMenus(r, exceto) {
+  for (var i = 0; i < MENUS.length; i++) {
+    var c = MENUS[i].chave;
+    if (c === exceto) continue;
+    var o = opcaoDe(c, estado.menus[c]);
+    if (o && !o.testa(r)) return false;
+  }
+  return true;
+}
+
+function algumMenuLigado() {
+  return !!(estado.menus.suspensao || estado.menus.julgamento || estado.menus.assunto);
+}
+
+/* Os recortes ligados, para a linha de contagem. Com um bloco só bastava o
+   rótulo; com três combináveis, omitir os demais faria a contagem prometer
+   menos filtro do que de fato há. */
+function rotuloDosMenus() {
+  var nomes = [];
+  MENUS.forEach(function (m) {
+    var o = opcaoDe(m.chave, estado.menus[m.chave]);
+    if (o) nomes.push(o.rotulo);
+  });
+  return nomes.length ? ' em “' + esc(nomes.join(' · ')) + '”' : '';
+}
 
 /* ------------------------------------------------------------ filtro detalhado
    Complementa a busca do topo em vez de repeti-la: o número isola um precedente
@@ -737,11 +847,6 @@ function filtroDetalhado(lista) {
     '</div>' +
     (algum ? '<button type="button" class="limpar-tudo" id="limpar-detalhado">Limpar</button>' : '') +
   '</form>';
-}
-
-function destaque(chave) {
-  for (var i = 0; i < DESTAQUES.length; i++) if (DESTAQUES[i].chave === chave) return DESTAQUES[i];
-  return null;
 }
 
 var AVISO = {
@@ -1394,6 +1499,7 @@ function prepararRegistro(r) {
   r._curado = r.pertinencia === CURADO;
   r._juizado = competenciaJuizado(r);
   r._soJuizado = soDoJuizado(r);
+  r._assunto = assuntoDe(r);
   r._verificado = Boolean(r.verificadoEm);
   r._busca = norm([r._titulo, r.tipo, r.tribunal, r.numero, r.questao, r.tese,
     r.area, r.situacao, r.processos, r.observacoes, r.suspensao].join(' '));
@@ -1554,17 +1660,45 @@ function cartao(r, re) {
   '</article>';
 }
 
-function painelDestaques(itens) {
-  var h = '<div class="alcance">';
-  DESTAQUES.forEach(function (g) {
-    var n = 0;
-    itens.forEach(function (r) { if (g.testa(r)) n++; });
-    var ligado = estado.destaque === g.chave;
-    h += '<button class="alcance-item g-' + g.nivel + ' grupo-' + g.grupo + '" type="button" ' +
-      'data-destaque="' + g.chave + '" title="' + esc(g.ajuda) + '" ' +
-      'aria-pressed="' + (ligado ? 'true' : 'false') + '">' +
-      '<span class="n">' + numero(n) + '</span><span class="r">' + esc(g.rotulo) + '</span></button>';
+/* Os três menus, com a contagem de cada opção ao lado do rótulo.
+
+   A contagem de um menu ignora a escolha dele próprio e respeita a dos outros
+   dois: é o que faz o número ao lado de "Consumo" dizer quantos consumos há
+   *dentro* do que já está recortado, em vez de zerar todas as opções que não
+   estão escolhidas. Opção sem nenhum registro some da lista, salvo se for a
+   que está escolhida — tirá-la debaixo do cursor esconderia o próprio recorte. */
+function painelMenus(itens) {
+  var h = '<div class="menus-topo" role="group" aria-label="Recortes">';
+  MENUS.forEach(function (m) {
+    var base = itens.filter(function (r) { return passaNosMenus(r, m.chave); });
+    var escolhida = estado.menus[m.chave];
+    var opcoes = '';
+    var uteis = 0;
+    m.opcoes.forEach(function (o) {
+      var n = 0;
+      base.forEach(function (r) { if (o.testa(r)) n++; });
+      if (!n && escolhida !== o.chave) return;
+      uteis++;
+      opcoes += '<option value="' + esc(o.chave) + '"' +
+        (escolhida === o.chave ? ' selected' : '') +
+        (o.ajuda ? ' title="' + esc(o.ajuda) + '"' : '') +
+        '>' + esc(o.rotulo) + ' (' + numero(n) + ')</option>';
+    });
+    // Menu sem nenhuma opção não é menu: é um controle que não faz nada. Na aba
+    // dos informativos é o caso de Suspensão e de Julgamento, que só existem
+    // para precedente — informativo não traz ordem nem estágio. Some.
+    if (!uteis) return;
+    h += '<div class="campo-filtro">' +
+      '<label for="m-' + m.chave + '">' + esc(m.rotulo) + '</label>' +
+      '<select id="m-' + m.chave + '" data-menu="' + m.chave + '">' +
+        '<option value="">' + esc(m.vazio) + ' (' + numero(base.length) + ')</option>' +
+        opcoes +
+      '</select>' +
+    '</div>';
   });
+  if (algumMenuLigado()) {
+    h += '<button type="button" class="limpar-tudo" id="limpar-menus">Limpar recortes</button>';
+  }
   return h + '</div>';
 }
 
@@ -1660,8 +1794,7 @@ function abaRegistros(lista, rotuloSingular, rotuloPlural) {
   var noEscopo = achados.filter(noEscopoAtual);
 
   var comFacetas = noEscopo.filter(function (r) { return passa(r, campos); });
-  var bloco = destaque(estado.destaque);
-  var filtrados = bloco ? comFacetas.filter(bloco.testa) : comFacetas;
+  var filtrados = comFacetas.filter(function (r) { return passaNosMenus(r, null); });
 
   ordenar(filtrados, ts);
   ULTIMO_RESULTADO = filtrados;   // é este recorte que a planilha exporta
@@ -1675,10 +1808,10 @@ function abaRegistros(lista, rotuloSingular, rotuloPlural) {
 
   var visiveis = filtrados.slice(0, estado.limite);
 
-  var h = escopoHtml(achados) + painelDestaques(comFacetas) + filtroDetalhado(noEscopo) +
+  var h = escopoHtml(achados) + painelMenus(comFacetas) + filtroDetalhado(noEscopo) +
     '<div class="barra-lista"><span class="contagem"><strong>' + numero(filtrados.length) + '</strong> ' +
       (filtrados.length === 1 ? rotuloSingular : rotuloPlural) +
-      (bloco ? ' em “' + esc(bloco.rotulo) + '”' : '') +
+      rotuloDosMenus() +
       (estado.termo ? ' para “' + esc(estado.termo) + '”' : '') + '</span>' +
     seletorOrdem(ts) +
     (filtrados.length
@@ -1804,8 +1937,10 @@ function nomeDoRelatorio() {
   else if (estado.aba === 'informativos') partes.push('informativos');
   if (estado.escopo === 'juizado') partes.push('juizado-especial');
   if (estado.escopo === 'comum') partes.push('justica-comum');
-  var bloco = destaque(estado.destaque);
-  if (bloco) partes.push(norm(bloco.rotulo).replace(/[^a-z0-9]+/g, '-'));
+  MENUS.forEach(function (m) {
+    var o = opcaoDe(m.chave, estado.menus[m.chave]);
+    if (o) partes.push(norm(o.rotulo).replace(/[^a-z0-9]+/g, '-'));
+  });
   if (estado.termo.trim()) partes.push(norm(estado.termo).replace(/[^a-z0-9]+/g, '-').slice(0, 30));
   var d = new Date();
   partes.push(d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2));
@@ -2866,16 +3001,33 @@ function abaAjuda() {
         '<dd>Tribunal de origem, espécie do precedente e área a que a matéria corresponde.</dd></div>' +
     '</dl></section>' +
 
-    '<section class="secao"><h2>Os blocos do topo</h2>' +
-      '<p class="texto-juridico">Os três primeiros são tipos de suspensão e se excluem entre si — ' +
-      'o que muda é até onde a ordem alcança. O quarto não é um quarto tipo: é a soma dos três, ' +
-      'um atalho para ver de uma vez tudo que está sobrestado. O quinto é de outro eixo e não fala ' +
-      'de suspensão, e sim de estágio.</p><dl class="dados definicoes">' +
+    '<section class="secao"><h2>Os três menus do topo</h2>' +
+      '<p class="texto-juridico">Cada menu faz uma pergunta diferente sobre o mesmo registro, e eles ' +
+      '<strong>se combinam</strong>: escolher nos três pergunta as três de uma vez — por exemplo ' +
+      'suspensão nacional, já julgada, em matéria de consumo. O número ao lado de cada opção conta ' +
+      'quantos registros ela tem <em>dentro</em> do que os outros dois menus já recortaram, e opção ' +
+      'sem nenhum registro não aparece.</p>' +
+      '<p class="texto-juridico">O primeiro menu é o alcance da ordem; suas posições se excluem, ' +
+      'salvo “Todos os suspensos”, que é a soma das outras três. O segundo é o estágio do ' +
+      'julgamento. O terceiro é a matéria.</p><dl class="dados definicoes">' +
       campo('Suspensão nacional', 'Alcança os processos sobre a mesma questão em todo o país.') +
       campo('Suspensão estadual', 'Restrita ao território do Estado.') +
       campo('Apenas em fase recursal', 'Alcança só os recursos; o processo em primeiro grau segue.') +
       campo('Todos os suspensos', 'A soma dos três anteriores.') +
-      campo('Julgados', 'Mérito julgado, acórdão publicado ou trânsito em julgado.') +
+      campo('Julgados', 'Mérito julgado, acórdão publicado ou trânsito em julgado. Não diz nada sobre suspensão.') +
+      campo('Julgados, mas ainda suspensos',
+        'Julgado e suspenso não se excluem, e esta é a posição que mais importa a quem vai sentenciar: ' +
+        'o mérito do precedente já foi decidido e a ordem continua de pé — porque vale até o trânsito ' +
+        'em julgado, porque há pendência registrada, ou porque a suspensão veio depois do julgamento ' +
+        'do paradigma. A ficha diz qual é o caso. Ler “julgado” e concluir que já dá para sentenciar ' +
+        'é exatamente o erro que este recorte evita.') +
+      campo('Assunto',
+        'Matéria do precedente, mais fina que as três áreas da coluna da esquerda: consumo, servidor ' +
+        'público, saúde pública, tributário, previdenciário, família, criminal, imóveis, ' +
+        'responsabilidade civil, contratos e processual. Cada registro entra num assunto só, o ' +
+        'primeiro que casa, do mais específico para o mais genérico — plano de saúde é consumo, e não ' +
+        'saúde pública. Os assuntos ofertados são os que existem na competência escolhida: família, ' +
+        'excluída dos Juizados, só aparece em “Todos” e “Justiça comum”.') +
     '</dl></section>' +
         '<section class="secao"><h2>As chamadas das novidades</h2>' +
       '<p class="texto-juridico">Na aba “Novidades”, cada alteração abre por uma chamada que diz o que ' +
@@ -2993,7 +3145,9 @@ function paraURL() {
   if (estado.escopo !== 'juizado') p.push('escopo=' + estado.escopo);
   if (estado.ordem !== 'relevancia') p.push('ordem=' + estado.ordem);
   if (estado.dia) p.push('dia=' + estado.dia);
-  if (estado.destaque) p.push('bloco=' + estado.destaque);
+  MENUS.forEach(function (m) {
+    if (estado.menus[m.chave]) p.push(m.chave + '=' + estado.menus[m.chave]);
+  });
   if (estado.favsRecebidos.length) {
     p.push('favs=' + estado.favsRecebidos.map(encodeURIComponent).join(','));
   }
@@ -3018,7 +3172,7 @@ function deURL() {
   estado.escopo = escopoPreferido();
   estado.ordem = 'relevancia';
   estado.dia = '';
-  estado.destaque = '';
+  estado.menus = { suspensao: '', julgamento: '', assunto: '' };
   estado.favsRecebidos = [];
   estado.numero = '';
   estado.texto = '';
@@ -3031,7 +3185,13 @@ function deURL() {
     else if (k === 'escopo') estado.escopo = v;
     else if (k === 'ordem') estado.ordem = v;
     else if (k === 'dia') estado.dia = v;
-    else if (k === 'bloco') estado.destaque = v;
+    else if (k === 'suspensao' || k === 'julgamento' || k === 'assunto') estado.menus[k] = v;
+    // Endereços copiados antes dos três menus traziam um bloco só. Continuam
+    // abrindo no mesmo recorte: o bloco vai para o menu a que pertencia.
+    else if (k === 'bloco') {
+      if (v === 'julgados') estado.menus.julgamento = v;
+      else estado.menus.suspensao = v;
+    }
     else if (k === 'favs') estado.favsRecebidos = v.split(',').map(decodeURIComponent).filter(Boolean);
     else if (k === 'num') estado.numero = v;
     else if (k === 'texto') estado.texto = v;
@@ -3209,7 +3369,7 @@ function ligar() {
     estado.termo = '';
     estado.filtros = {};
     estado.escopo = escopoPreferido();
-    estado.destaque = '';
+    estado.menus = { suspensao: '', julgamento: '', assunto: '' };
     estado.registroId = null;
     estado.limite = PAGINA;
     c.value = '';
@@ -3259,7 +3419,7 @@ function ligar() {
     if (aba) {
       estado.aba = aba.getAttribute('data-aba');
       estado.filtros = {};
-      estado.destaque = '';
+      estado.menus = { suspensao: '', julgamento: '', assunto: '' };
       estado.limite = PAGINA;
       estado.registroId = null;
       return aplicar();
@@ -3322,14 +3482,6 @@ function ligar() {
     var ficha = alvo.closest('[data-reg]');
     if (ficha) { estado.registroId = ficha.getAttribute('data-reg'); return aplicar(); }
 
-    var tile = alvo.closest('[data-destaque]');
-    if (tile) {
-      var chave = tile.getAttribute('data-destaque');
-      estado.destaque = estado.destaque === chave ? '' : chave;
-      estado.limite = PAGINA;
-      return aplicar();
-    }
-
     var esc2 = alvo.closest('[data-escopo]');
     if (esc2) {
       estado.escopo = esc2.getAttribute('data-escopo');
@@ -3340,7 +3492,12 @@ function ligar() {
 
     if (alvo.id === 'ver-mais') { estado.limite += PAGINA; return aplicar(); }
     if (alvo.id === 'voltar') { estado.registroId = null; return aplicar(); }
-    if (alvo.id === 'limpar-filtros') { estado.filtros = {}; estado.destaque = ''; return aplicar(); }
+    if (alvo.id === 'limpar-filtros') { estado.filtros = {}; estado.menus = { suspensao: '', julgamento: '', assunto: '' }; return aplicar(); }
+    if (alvo.id === 'limpar-menus') {
+      estado.menus = { suspensao: '', julgamento: '', assunto: '' };
+      estado.limite = PAGINA;
+      return aplicar();
+    }
     if (alvo.id === 'limpar-detalhado') {
       estado.numero = '';
       estado.texto = '';
@@ -3356,6 +3513,11 @@ function ligar() {
       return alterna(a.getAttribute('data-campo'), a.getAttribute('data-valor'));
     }
     if (a.id === 'ordenar') { estado.ordem = a.value; return aplicar(); }
+    if (a.getAttribute && a.getAttribute('data-menu')) {
+      estado.menus[a.getAttribute('data-menu')] = a.value;
+      estado.limite = PAGINA;
+      return aplicar();
+    }
     if (a.id === 'f-especie') {
       // escreve na mesma faceta da coluna da esquerda: um estado, duas vistas
       if (a.value) estado.filtros.tipo = [a.value]; else delete estado.filtros.tipo;
