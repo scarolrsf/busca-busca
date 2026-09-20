@@ -205,10 +205,10 @@ button,input,select{font:inherit;color:inherit}
 .questao{font-family:var(--serif);font-size:1.07rem;line-height:1.42;margin:0;text-wrap:pretty}
 .tese-curta{font-family:var(--serif);font-size:.97rem;line-height:1.55;color:var(--tinta-2);margin:0}
 .ficha-pe{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.estado{display:inline-flex;border-radius:4px;overflow:hidden;border:1px solid var(--borda-forte);font-size:11.5px;line-height:1.75}
+.estado{display:inline-flex;gap:6px;font-size:11.5px;line-height:1.75}
 .estado span{padding:1px 8px;white-space:nowrap}
-.estado .j{background:var(--superficie-2);color:var(--tinta-2)}
-.estado .s{border-left:1px solid var(--borda-forte);font-weight:600}
+.estado .j{background:var(--superficie-2);color:var(--tinta-2);border:1px solid var(--borda-forte);border-radius:4px}
+.estado .s{border:1px solid var(--borda-forte);border-radius:4px;font-weight:600}
 .estado .s.n-ALTO{background:var(--critico-fraco);color:var(--critico)}
 .estado .s.n-MEDIO{background:var(--atencao-fraco);color:var(--atencao)}
 .estado .s.n-BAIXO{background:var(--seguro-fraco);color:var(--seguro)}
@@ -248,7 +248,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .aviso-extra{display:block;margin-top:6px}
 .secao{padding:18px 24px;border-bottom:1px solid var(--borda)}
 .secao:last-child{border-bottom:0}
-.secao h2{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--tinta-3);margin:0 0 8px;font-weight:600}
+.secao h2{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--tinta-2);margin:0 0 10px;font-weight:700}
 .texto-juridico{font-family:var(--serif);font-size:1.03rem;line-height:1.62;white-space:pre-wrap;margin:0;text-wrap:pretty}
 .dados{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:14px 20px;margin:0}
 .dado{display:flex;flex-direction:column;gap:2px}
@@ -260,7 +260,28 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .link-fonte{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--borda-forte);border-radius:var(--raio);padding:7px 12px;text-decoration:none;font-size:13.5px}
 .link-fonte:hover{border-color:var(--acento);background:var(--acento-fraco)}
 .procedencia{font-size:12.5px;color:var(--tinta-3);margin:12px 0 0}
-.dados.definicoes{grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:16px 28px}
+/* Os verbetes do glossário.
+
+   Eram texto solto numa grade de três colunas, com align-items:start — cada
+   célula terminava na própria altura, e nada dizia onde um verbete acabava e
+   começava o seguinte. Lido de longe virava um bloco de texto irregular.
+
+   Agora cada verbete é uma caixa delimitada, as da mesma linha têm a mesma
+   altura (stretch, que é o padrão da grade), e o rótulo sai da tinta mais
+   clara: caixa baixa, negrito e na tinta cheia. A hierarquia passa a ter três
+   degraus distintos — rótulo da seção em versalete apagado, termo em negrito
+   escuro, definição em corpo de leitura. */
+.dados.definicoes{grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:12px}
+.dados.definicoes .dado{gap:5px;background:var(--superficie-2);border:1px solid var(--borda);border-radius:var(--raio);padding:12px 14px}
+.dados.definicoes .dado dt{font-size:13.5px;text-transform:none;letter-spacing:0;color:var(--tinta);font-weight:700;line-height:1.35}
+.dados.definicoes .dado dd{font-size:.92rem;line-height:1.55;color:var(--tinta-2);text-wrap:pretty}
+.dados.definicoes .dado.amplo{grid-column:1/-1}
+.dados.definicoes .dado.amplo dd{max-width:75ch}
+/* Ritmo dos textos de abertura: um parágrafo atrás do outro, e a lista de
+   verbetes sempre à mesma distância do texto, em qualquer seção. */
+.secao .texto-juridico+.texto-juridico{margin-top:.65em}
+.secao .texto-juridico+.dados{margin-top:14px}
+.secao .dados+.texto-juridico{margin-top:14px}
 .legenda .dado{grid-column:1/-1}
 .legenda-item dt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;text-transform:none;letter-spacing:0;font-size:13.5px;color:var(--tinta);font-weight:600;margin-bottom:3px}
 .amostra{display:inline-block;width:46px;height:19px;border:1px solid var(--borda);border-left:3px solid var(--borda-forte);border-radius:3px;background:var(--superficie);flex-shrink:0}
@@ -2341,9 +2362,9 @@ function pendencias(r) {
 
 /* ------------------------------------------------------------ aba: ficha */
 
-function campo(rotulo, valor, mono) {
+function campo(rotulo, valor, mono, classe) {
   if (!valor) return '';
-  return '<div class="dado"><dt>' + esc(rotulo) + '</dt><dd' + (mono ? ' class="mono"' : '') + '>' +
+  return '<div class="dado' + (classe ? ' ' + classe : '') + '"><dt>' + esc(rotulo) + '</dt><dd' + (mono ? ' class="mono"' : '') + '>' +
     esc(valor) + '</dd></div>';
 }
 
@@ -3020,14 +3041,14 @@ function abaAjuda() {
         'o mérito do precedente já foi decidido e a ordem continua de pé — porque vale até o trânsito ' +
         'em julgado, porque há pendência registrada, ou porque a suspensão veio depois do julgamento ' +
         'do paradigma. A ficha diz qual é o caso. Ler “julgado” e concluir que já dá para sentenciar ' +
-        'é exatamente o erro que este recorte evita.') +
+        'é exatamente o erro que este recorte evita.', false, 'amplo') +
       campo('Assunto',
         'Matéria do precedente, mais fina que as três áreas da coluna da esquerda: consumo, servidor ' +
         'público, saúde pública, tributário, previdenciário, família, criminal, imóveis, ' +
         'responsabilidade civil, contratos e processual. Cada registro entra num assunto só, o ' +
         'primeiro que casa, do mais específico para o mais genérico — plano de saúde é consumo, e não ' +
         'saúde pública. Os assuntos ofertados são os que existem na competência escolhida: família, ' +
-        'excluída dos Juizados, só aparece em “Todos” e “Justiça comum”.') +
+        'excluída dos Juizados, só aparece em “Todos” e “Justiça comum”.', false, 'amplo') +
     '</dl></section>' +
         '<section class="secao"><h2>As chamadas das novidades</h2>' +
       '<p class="texto-juridico">Na aba “Novidades”, cada alteração abre por uma chamada que diz o que ' +
