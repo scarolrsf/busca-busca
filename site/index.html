@@ -814,11 +814,19 @@ var MENUS = [
   { chave: 'suspensao', rotulo: 'Suspensão', vazio: 'Qualquer suspensão', opcoes: MENU_SUSPENSAO },
   { chave: 'julgamento', rotulo: 'Julgamento', vazio: 'Qualquer estágio', opcoes: MENU_JULGAMENTO },
   { chave: 'assunto', rotulo: 'Assunto', vazio: 'Todos os assuntos',
+    /* Só a vitrine vai por ordem alfabética: a lista ASSUNTOS continua na
+       ordem de classificação (do específico ao genérico), porque assuntoDe()
+       para na primeira que casa. "Outros assuntos" é o resto e fica por
+       último, fora da ordem. */
     opcoes: ASSUNTOS.map(function (a) {
       return {
         chave: a.chave, rotulo: a.rotulo, ajuda: '',
         testa: function (r) { return r._assunto === a.chave; }
       };
+    }).sort(function (x, y) {
+      if (x.chave === 'outros') return 1;
+      if (y.chave === 'outros') return -1;
+      return x.rotulo.localeCompare(y.rotulo, 'pt-BR');
     }) }
 ];
 
