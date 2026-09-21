@@ -164,7 +164,7 @@ button,input,select{font:inherit;color:inherit}
 .opcao .rot{flex:1;min-width:0}
 .opcao .qtd{font-family:var(--mono);font-size:11.5px;color:var(--tinta-3);font-variant-numeric:tabular-nums}
 .opcao.ativa{color:var(--tinta);font-weight:500}
-.limpar-tudo{border:1px solid var(--borda);background:var(--superficie);border-radius:var(--raio);padding:7px 10px;cursor:pointer;font-size:13px;color:var(--tinta-2)}
+.limpar-tudo{display:inline-flex;align-items:center;min-height:34px;border:1px solid var(--borda-forte);background:var(--superficie);border-radius:var(--raio);padding:0 12px;cursor:pointer;font-size:13px;color:var(--tinta-2)}
 .limpar-tudo:hover{border-color:var(--borda-forte);color:var(--tinta)}
 
 /* ------------------------------------------------- escopo e painel de risco */
@@ -193,12 +193,31 @@ button,input,select{font:inherit;color:inherit}
    que se combinam, e a faixa ficou com a mesma moldura do filtro detalhado
    logo abaixo — são dois grupos de controle da mesma família, e desenhá-los
    diferente sugeriria uma hierarquia que não existe. */
-.menus-topo{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;border:1px solid var(--borda-forte);background:var(--superficie);border-radius:var(--raio);padding:12px 14px;margin-bottom:14px}
-.menus-topo .campo-filtro{flex:1 1 190px;min-width:190px}
-.menus-topo .limpar-tudo{min-height:32px}
+.painel-filtros{border:1px solid var(--borda-forte);background:var(--superficie);border-radius:var(--raio);margin-bottom:14px}
+.menus-topo{border-bottom:1px solid var(--borda)}
+.menus-topo .limpar-tudo,.filtro-detalhado .limpar-tudo{min-height:32px;grid-column:1/-1;justify-self:end}
 
 /* --------------------------------------------------------------- listagem */
-.filtro-detalhado{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;border:1px solid var(--borda);background:var(--superficie);border-radius:var(--raio);padding:12px 14px;margin-bottom:16px}
+/* Os dois grupos de filtro moravam em caixas separadas, de mesma largura e
+   mesmo respiro, mas com bordas de peso diferente — uma em --borda-forte, a
+   outra em --borda — e grades que não se alinhavam: as colunas de cima caíam
+   em 312, 621 e 930, as de baixo em 312, 434 e 600. Duas caixas empilhadas
+   disputando a mesma função.
+
+   Agora é uma moldura só, dividida por um fio, e as duas fileiras partilham as
+   mesmas três colunas. Número e Espécie repartem a primeira, e Palavras ocupa
+   as outras duas — assim a largura de cada campo continua proporcional ao que
+   se digita nele, e mesmo assim as guias verticais coincidem.
+
+   O botão de limpar não entra na grade das três colunas: ele desce para uma
+   linha própria, alinhado à direita. Se ocupasse uma quarta coluna, apareceria
+   e sumiria conforme houvesse filtro, e as três primeiras mudariam de largura
+   a cada digitada. */
+.menus-topo,.filtro-detalhado{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 12px;align-items:end;padding:12px 14px;margin:0;border:0;background:none;border-radius:0}
+.campo-par{display:flex;gap:12px;min-width:0}
+.campo-par .campo-filtro:first-child{flex:0 0 92px}
+.campo-par .campo-filtro:last-child{flex:1;min-width:0}
+.filtro-detalhado .campo-filtro.cresce{grid-column:2/-1;min-width:0}
 .campo-filtro{display:flex;flex-direction:column;gap:4px}
 .campo-filtro.cresce{flex:1;min-width:220px}
 .campo-filtro label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta-3);font-weight:600}
@@ -323,7 +342,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .paradigma-num{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--acento);margin:0 0 8px}
 .acoes-favoritos{margin-bottom:16px}
 .acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
-.botao-copiar{border:1px solid var(--acento);background:var(--superficie);color:var(--acento);border-radius:var(--raio);padding:7px 13px;cursor:pointer;font-size:13.5px;font-weight:500;transition:background .12s,color .12s}
+.botao-copiar{display:inline-flex;align-items:center;min-height:34px;border:1px solid var(--acento);background:var(--superficie);color:var(--acento);border-radius:var(--raio);padding:0 13px;cursor:pointer;font-size:13.5px;font-weight:500;transition:background .12s,color .12s}
 .botao-copiar:hover{background:var(--acento);border-color:var(--acento);color:var(--sobre-acento)}
 .botao-copiar.copiado{background:var(--seguro-fraco);border-color:var(--seguro);color:var(--seguro)}
 
@@ -485,13 +504,12 @@ a.atalho-normas{text-decoration:none}
 
   .escopo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
   .escopo button{padding:7px 8px;font-size:12.5px}
-  .menus-topo .campo-filtro{min-width:100%}
-  .menus-topo .limpar-tudo{min-height:44px}
 
-  /* Número e Espécie são curtos e cabem lado a lado; só o campo de palavras
-     e o botão de limpar ocupam a linha inteira. */
-  .filtro-detalhado{display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:10px;padding:12px}
-  .campo-filtro.cresce,.filtro-detalhado .limpar-tudo{grid-column:1/-1;min-width:0}
+  /* Uma coluna só: cada campo na sua linha. Número e Espécie continuam lado a
+     lado dentro do par, que é curto e cabe. */
+  .menus-topo,.filtro-detalhado{grid-template-columns:1fr;padding:12px}
+  .filtro-detalhado .campo-filtro.cresce{grid-column:1/-1;min-width:0}
+  .campo-par .campo-filtro:first-child{flex:0 0 96px}
   .campo-filtro input,.campo-filtro select,.ordenar,.abre-calendario{font-size:16px;min-height:40px}
 
   /* No telefone o campo do dia pode estar encostado na margem esquerda: o
@@ -502,7 +520,7 @@ a.atalho-normas{text-decoration:none}
   .mes-passo{width:36px;height:36px}
   .todos-dias{min-height:40px}
   #f-numero{width:100%}
-  .filtro-detalhado .limpar-tudo{min-height:44px}
+  .menus-topo .limpar-tudo,.filtro-detalhado .limpar-tudo{min-height:44px}
   .baixar{margin:6px 0 0;min-height:40px}
 
   .ficha{padding:14px}
@@ -877,6 +895,7 @@ function filtroDetalhado(lista) {
   var especieAtual = (estado.filtros.tipo || [])[0] || '';
   var algum = estado.numero || estado.texto || especieAtual;
   return '<form class="filtro-detalhado" id="filtro-detalhado" onsubmit="return false">' +
+    '<div class="campo-par">' +
     '<div class="campo-filtro">' +
       '<label for="f-numero">Número</label>' +
       '<input id="f-numero" type="text" inputmode="numeric" autocomplete="off" placeholder="1169" value="' +
@@ -889,6 +908,7 @@ function filtroDetalhado(lista) {
           return '<option value="' + esc(t) + '"' + (especieAtual === t ? ' selected' : '') + '>' + esc(t) + '</option>';
         }).join('') +
       '</select>' +
+    '</div>' +
     '</div>' +
     '<div class="campo-filtro cresce">' +
       '<label for="f-texto">Palavras na questão ou na tese</label>' +
@@ -1870,7 +1890,8 @@ function abaRegistros(lista, rotuloSingular, rotuloPlural) {
 
   var visiveis = filtrados.slice(0, estado.limite);
 
-  var h = escopoHtml(achados) + painelMenus(comFacetas) + filtroDetalhado(noEscopo) +
+  var h = escopoHtml(achados) +
+    '<div class="painel-filtros">' + painelMenus(comFacetas) + filtroDetalhado(noEscopo) + '</div>' +
     '<div class="barra-lista"><span class="contagem"><strong>' + numero(filtrados.length) + '</strong> ' +
       (filtrados.length === 1 ? rotuloSingular : rotuloPlural) +
       rotuloDosMenus() +
@@ -2732,8 +2753,11 @@ function abaFavoritos() {
 
   abaRegistros(guardados, 'favorito', 'favoritos');
 
-  // As ações entram acima da lista, logo depois do seletor de competência.
-  var painel = el('conteudo').querySelector('.escopo');
+  // As ações entram acima da lista, logo depois da faixa de competência — e
+  // depois dela inteira, não do grupo de chips: o coração dos favoritos mora
+  // na mesma faixa, e inserir após o grupo punha as ações entre os chips e o
+  // coração, dentro da própria linha.
+  var painel = el('conteudo').querySelector('.barra-escopo');
   if (painel) painel.insertAdjacentHTML('afterend', acoesDosFavoritos(recebidosPendentes));
   if (recebidosPendentes.length) {
     el('conteudo').querySelector('.acoes-favoritos').insertAdjacentHTML('beforebegin',
