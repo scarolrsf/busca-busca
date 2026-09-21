@@ -107,7 +107,14 @@ button,input,select{font:inherit;color:inherit}
 
 /* -------------------------------------------------------------- cabeçalho */
 .topo{position:sticky;top:0;z-index:30;background:var(--superficie);border-bottom:1px solid var(--borda)}
-.topo-faixa{max-width:1260px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:18px}
+/* A faixa do topo reunia quatro controles em três alturas: a busca com 45 px,
+   o grupo de tamanho com 32 e os dois botões com 30 — as bases caíam em 55, 48
+   e 47. Os 15 px da busca saltavam; os 2 px do grupo não se explicavam, e o
+   olho lia como torto sem saber por quê. Agora todos partem da mesma altura
+   mínima. Mínima, e não fixa: o texto da busca cresce com o A+, e altura presa
+   cortaria o que a pessoa digita. */
+:root{--altura-topo:36px}
+.topo-faixa{max-width:1260px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:16px}
 .marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;flex-shrink:0;border:0;background:none;cursor:pointer;padding:0}
 /* ------------------------------------------------------------- logotipo
    Dois círculos iguais, um por "Busca". Onde eles se cruzam nasce a lente —
@@ -125,7 +132,7 @@ button,input,select{font:inherit;color:inherit}
 .marca-nome .eco{color:var(--acento);margin-left:.28em}
 .marca-sub{font-size:10.5px;color:var(--tinta-3);text-transform:uppercase;letter-spacing:.09em;display:block;text-align:left}
 .busca{flex:1;position:relative;min-width:0}
-.busca input{width:100%;padding:10px 40px 10px 38px;border:1px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie-2);transition:border-color .12s,box-shadow .12s}
+.busca input{width:100%;min-height:var(--altura-topo);padding:5px 40px 5px 38px;border:1px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie-2);transition:border-color .12s,box-shadow .12s}
 .busca input:focus{outline:none;border-color:var(--acento);box-shadow:0 0 0 3px var(--acento-fraco);background:var(--superficie)}
 .busca-lupa{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--tinta-3);pointer-events:none;display:flex}
 .busca-dica{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:11px;color:var(--tinta-3);border:1px solid var(--borda);border-radius:4px;padding:1px 6px;background:var(--superficie)}
@@ -395,12 +402,12 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .pular:focus{left:12px}
 .preferencias{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .grupo-botoes{display:inline-flex;border:1px solid var(--borda-forte);border-radius:var(--raio);overflow:hidden;background:var(--superficie)}
-.grupo-botoes button{border:0;background:none;cursor:pointer;color:var(--tinta-2);min-width:30px;height:30px;padding:0 6px;font-family:var(--serif);font-size:14px;line-height:1;border-right:1px solid var(--borda);display:inline-flex;align-items:center;justify-content:center;gap:1px}
+.grupo-botoes button{border:0;background:none;cursor:pointer;color:var(--tinta-2);min-width:34px;min-height:calc(var(--altura-topo) - 2px);padding:0 6px;font-family:var(--serif);font-size:14px;line-height:1;border-right:1px solid var(--borda);display:inline-flex;align-items:center;justify-content:center;gap:1px}
 .grupo-botoes button:last-child{border-right:0}
 .grupo-botoes button:hover{background:var(--superficie-2);color:var(--tinta)}
 .grupo-botoes .menos,.grupo-botoes .mais-sinal{font-family:var(--sans);font-size:10px;line-height:1}
 .grupo-botoes .mais-sinal{font-size:12px}
-.botao-tema{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--borda-forte);background:var(--superficie);color:var(--tinta-2);border-radius:var(--raio);height:30px;padding:0 11px;cursor:pointer;font-size:12.5px;white-space:nowrap}
+.botao-tema{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--borda-forte);background:var(--superficie);color:var(--tinta-2);border-radius:var(--raio);min-height:var(--altura-topo);padding:0 12px;cursor:pointer;font-size:12.5px;white-space:nowrap}
 .botao-tema:hover{background:var(--superficie-2);color:var(--tinta)}
 .icone-tema{width:13px;height:13px;border-radius:50%;border:1.6px solid currentColor;background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
 /* Herda o botão de tema: é da mesma família de controles, e um link que se
