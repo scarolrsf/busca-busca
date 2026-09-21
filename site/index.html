@@ -475,7 +475,12 @@ a.atalho-normas{text-decoration:none}
 .enq-medidas{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
 .enq-pos{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:50%;background:var(--acento);color:var(--sobre-acento);font-family:var(--mono);font-size:11px;font-weight:600;flex-shrink:0}
 .enq-rodape{border-top:1px solid var(--borda);margin-top:12px;padding-top:10px;color:var(--atencao);font-size:12px;font-weight:600;line-height:1.55}
-@media (max-width:700px){.enq-aviso-fita{padding:0 14px}.enq-par{grid-template-columns:1fr}.enq-texto{font-size:16px}.enq-acoes{align-items:stretch;flex-direction:column}.enq-acoes .botao-copiar{width:100%;justify-content:center}}
+.enq-dica{font-size:12.5px;color:var(--tinta-3)}
+.enq-falta{font-size:.85rem;color:var(--atencao);margin:8px 0 0}
+.dados.definicoes.enq-duas{grid-template-columns:repeat(2,minmax(0,1fr))}
+.dados.definicoes.enq-duas .dado dd{max-width:none;text-wrap:wrap;text-align:left;hyphens:none}
+.enq-aviso-fita{margin-top:14px}
+@media (max-width:700px){.enq-aviso-fita{padding:0 14px}.dados.definicoes.enq-duas{grid-template-columns:1fr}.enq-par{grid-template-columns:1fr}.enq-texto{font-size:16px}.enq-acoes{align-items:stretch;flex-direction:column}.enq-acoes .botao-copiar{width:100%;justify-content:center}}
 
 /* ------------------------------------------------- prévia antes de copiar */
 .previa{border:1px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie);color:var(--tinta);padding:0;max-width:min(780px,92vw);width:100%;box-shadow:var(--sombra)}
@@ -3257,7 +3262,7 @@ function enqResumoCategorias(categorias) {
 
 /* ---------------- interface da aba: formulário, resultados e base normativa
     O texto da petição vive em ENQ, fora de `estado`: ele não vai para o
-    endereço (que pode ser copiado e enviado) nem é guardado no navegador —
+    endereço (que pode ser copiado e enviado) nem é guardado no navegador:
     some ao descartar ou ao sair da página. */
 
 var ENQ = { texto: '', anon: true, saida: null, erro: '', aviso: '', arquivo: '', ms: 0 };
@@ -3276,84 +3281,61 @@ function enqMotor() {
 
 function enqMensagemProtecao(resultado) {
   if (!resultado.ocorrencias && /\[(?:NOME|CPF|CNPJ|EMAIL|ENDEREÇO|TELEFONE|DOCUMENTO|DADO BANCÁRIO|CHAVE PIX|PROCESSO)\]/.test(resultado.texto)) {
-    return 'Conteúdo já protegido. Revise o texto para conferir se não restou informação identificável.';
+    return 'O texto já estava com dados ocultados. Revise se não sobrou nenhum.';
   }
-  if (!resultado.ocorrencias) return 'Nenhum padrão foi detectado automaticamente. Faça a conferência manual antes de prosseguir.';
+  if (!resultado.ocorrencias) return 'Nenhum dado pessoal foi encontrado automaticamente. Revise o texto mesmo assim.';
   var residual = resultado.riscoResidual.sinais.length
-    ? ' Atenção residual: ' + resultado.riscoResidual.sinais.join(', ') + '.'
-    : ' Varredura residual automática: sem sinais óbvios.';
-  return resultado.ocorrencias + (resultado.ocorrencias === 1 ? ' trecho protegido: ' : ' trechos protegidos: ') +
+    ? ' Confira: ' + resultado.riscoResidual.sinais.join(', ') + '.'
+    : ' Revise o texto mesmo assim.';
+  return (resultado.ocorrencias === 1 ? '1 dado ocultado: ' : resultado.ocorrencias + ' dados ocultados: ') +
     enqResumoCategorias(resultado.categorias) + '.' + residual;
 }
 
-/* Um candidato volta como ficha da mesma família da listagem: a faixa lateral
-   é a do risco, o cartão inteiro abre a ficha, e o coração guarda. O que a
-   listagem não tem — motivos, método e coberturas — entra em linhas próprias,
-   com as classes desta aba. */
+/* Cada candidato volta como ficha da mesma família da listagem: a faixa
+   lateral é a do risco, o cartão inteiro abre a ficha, e o coração guarda.
+   Do motor, só o que ajuda a conferir: as palavras em comum e o que falta. */
+var ENQ_TRAVESSAO = new RegExp('\\s*[' + String.fromCharCode(8212, 8211) + ']\\s*', 'g');
+function enqSemTravessao(s) {
+  return String(s == null ? '' : s).replace(ENQ_TRAVESSAO, ' · ');
+}
+
 function enqCartao(x, i) {
   var r = x.r;
-  var presentes = x.materias.concat(x.ancorasPresentes).filter(function (m, j, a) { return a.indexOf(m) === j; }).slice(0, 8);
-  var conferir = x.ancorasAusentes.slice(0, 4);
+  var faltam = x.ancorasAusentes.slice(0, 4);
   return '<article class="ficha r-' + r._risco + '">' +
     '<button class="ficha-abrir" data-reg="' + esc(r.id) + '" type="button" aria-label="' +
       esc('Abrir a ficha de ' + r._titulo) + '"></button>' +
     '<span class="ficha-topo">' +
       '<span class="enq-pos">' + (i + 1) + '</span>' +
-      '<span class="ident">' + esc(r._titulo) + '</span>' +
+      '<span class="ident">' + esc(enqSemTravessao(r._titulo)) + '</span>' +
       '<span class="sigla">' + esc(r.tribunal) + '</span>' + etiquetaTipo(r) +
       '<span class="estado"><span class="s ' + (x.suspensaoRegistrada ? 'n-' + r._risco : 'j') + '">' +
-        esc(x.suspensaoRotulo) + '</span></span>' +
+        esc(enqSemTravessao(x.suspensaoRotulo)) + '</span></span>' +
     '</span>' +
-    '<p class="questao">' + esc(corta(r.questao, 280) || 'Questão não informada na base.') + '</p>' +
-    '<div class="enq-motivos"><span class="quem">elementos coincidentes</span>' +
-      x.motivos.map(function (m) { return '<span class="etiqueta">' + esc(m) + '</span>'; }).join('') + '</div>' +
-    '<div class="enq-par"><div><strong>Por que entrou · <span class="enq-forca">' + esc(x.forca) + '</span></strong>' +
-      esc(x.metodo) + (presentes.length ? ' · ' + esc(presentes.join(', ')) : '') + '</div>' +
-      '<div><strong>Elementos centrais ainda não localizados</strong>' +
-      '<span class="enq-conf">' + esc(conferir.length ? conferir.join(', ') : 'nenhuma lacuna relevante; ainda confira fatos, alcance, fase e fonte') + '</span></div></div>' +
-    '<div class="enq-medidas"><span class="fonte-linha">cobertura do caso: ' + x.coberturaConsulta + '%</span>' +
-      '<span class="fonte-linha">cobertura do tema: ' + x.coberturaTema + '%</span></div>' +
+    '<p class="questao">' + esc(enqSemTravessao(corta(r.questao, 280)) || 'Questão não informada na base.') + '</p>' +
+    (x.motivos.length ? '<div class="enq-motivos"><span class="quem">Em comum com o caso:</span>' +
+      x.motivos.map(function (m) { return '<span class="etiqueta">' + esc(m) + '</span>'; }).join('') + '</div>' : '') +
+    (faltam.length ? '<p class="enq-falta">Não achei no caso: ' + esc(faltam.join(', ')) + '.</p>' : '') +
     '<span class="ficha-pe">' + pilula(r) + '<span class="etiqueta">' + esc(r._area) + '</span>' +
       linkFonte(r.fonte) + botaoFavorito(r.id) + '</span>' +
-    '<div class="enq-rodape">Prévia explicável, não enquadramento definitivo · o percentual não é probabilidade · confirme fatos, fase, alcance e fonte oficial</div>' +
+    '<div class="enq-rodape">É só uma sugestão. Confira os fatos, a fase do processo e a fonte oficial antes de aplicar.</div>' +
   '</article>';
 }
 
 function enqResultadosHtml() {
   if (!ENQ.saida) return '';
   var itens = ENQ.saida.itens;
-  var h = '<section class="secao" id="enq-resultados"><h2>Possibilidades encontradas</h2>' +
-    '<p class="texto-juridico">';
-  if (itens.length) {
-    h += '<strong>' + numero(itens.length) + '</strong> ' + (itens.length === 1 ? 'tema passou' : 'temas passaram') +
-      ' pelo critério rigoroso entre <strong>' + numero(ENQ.saida.total) + '</strong> · ' +
-      numero(ENQ.saida.tokens) + ' termos úteis em ' + ENQ.ms + ' ms.</p>';
-  } else {
-    h += 'Nenhum dos <strong>' + numero(ENQ.saida.total) + '</strong> temas atingiu o critério mínimo de aderência.</p>';
-  }
-  if (ENQ.saida.perfil) {
-    h += '<dl class="dados definicoes">' +
-      campo('Como o caso foi lido',
-        'Matérias: ' + (ENQ.saida.perfil.materias.join(', ') || 'não classificadas automaticamente') +
-        '. Núcleos: ' + (ENQ.saida.perfil.nucleos.join('; ') || 'nenhum conceito estruturado; a comparação usou os fatos e pedidos') +
-        '. A qualificação das partes e o formulário ficaram em segundo plano; a comparação se concentrou nos fatos determinantes e nos pedidos.',
-        false, 'amplo') +
-    '</dl>';
-  }
+  var h = '<section class="secao" id="enq-resultados"><h2>Resultado</h2>';
   if (!itens.length) {
-    // Vazio que diz o que fazer, em vez de só dizer que não há nada: sem
-    // candidato forte, o seguro é seguir sem sugestão — e, se a conclusão for
-    // a de não enquadramento, registrá-la como distinguishing.
-    h += '<div class="vazio"><p><strong>Nenhum enquadramento suficientemente forte.</strong></p>' +
-      '<p>É mais seguro seguir sem sugestão automática do que aplicar temas apenas parecidos. ' +
-      'Esta ferramenta também pode cometer erros — inclusive o de nada sugerir onde havia tema.</p>' +
-      '<p>Se, conferidos os fatos e a fonte oficial, a conclusão for a de que o processo não se enquadra ' +
-      'em nenhum precedente, registre expressamente o <em>distinguishing</em>, demonstrando as diferenças ' +
-      'fáticas ou jurídicas (art. 489, § 1º, V e VI, do CPC).</p></div>';
-  } else {
-    h += '<div class="fichas">' + itens.map(enqCartao).join('') + '</div>';
+    return h + '<div class="vazio"><p><strong>Nenhum tema encontrado.</strong></p>' +
+      '<p>Isso não quer dizer que o caso esteja fora de todo precedente. A ferramenta está em teste e pode errar. ' +
+      'Confira na fonte oficial.</p>' +
+      '<p>Se concluir que nenhum tema se aplica, registre a distinção na decisão ' +
+      '(art. 489, § 1º, V e VI, do CPC).</p></div></section>';
   }
-  return h + '</section>';
+  h += '<p class="texto-juridico">' + (itens.length === 1 ? '1 tema encontrado' : numero(itens.length) + ' temas encontrados') +
+    ', do mais parecido para o menos parecido.</p>';
+  return h + '<div class="fichas">' + itens.map(enqCartao).join('') + '</div></section>';
 }
 
 function abaEnquadrar() {
@@ -3362,76 +3344,69 @@ function abaEnquadrar() {
   ULTIMO_RESULTADO = [];
   var h = '<article class="detalhe">' +
     '<header class="detalhe-cabeca r-BAIXO"><h1>Enquadrar petição</h1></header>' +
-    '<section class="secao"><h2>O que esta ferramenta faz</h2>' +
-      '<p class="texto-juridico">Cole a causa de pedir e os pedidos — ou selecione um arquivo de texto — ' +
-      'e a ferramenta compara o caso com os <strong>' + numero(BASE.temas.length) + '</strong> precedentes da base, ' +
-      'sugerindo os temas de possível enquadramento com os elementos que sustentam cada sugestão. ' +
-      'Tudo acontece <strong>neste navegador</strong>: o conteúdo não é transmitido, não é guardado e não usa ' +
-      'inteligência artificial externa — é comparação literal e conceitual com o que os tribunais publicaram.</p></section>' +
     '<div class="enq-aviso-fita"><p class="aviso a-MEDIO"><span aria-hidden="true">!</span><span>' +
-      '<strong>A conferência humana é indispensável. Esta é apenas uma ferramenta e pode cometer erros.</strong> ' +
-      'Ela pode sugerir o tema errado — e pode também nada sugerir onde havia tema. ' +
-      'Quem enquadra o processo é a pessoa que assina, nunca a ferramenta.</span></p></div>' +
+      '<strong>Ferramenta em teste.</strong> Pode apresentar erros, que ainda estão sendo apurados. ' +
+      'Confira sempre o resultado antes de usar.</span></p></div>' +
+    '<section class="secao"><h2>Para que serve</h2>' +
+      '<p class="texto-juridico">Mostra os temas de precedentes que podem se aplicar ao caso, a partir da causa de pedir ' +
+      'e dos pedidos. O texto é lido só neste navegador: nada é enviado nem guardado.</p></section>' +
     '<section class="secao"><h2>Causa de pedir e pedidos</h2>' +
       '<label class="oculto" for="enq-texto">Causa de pedir e pedidos</label>' +
       '<textarea class="enq-texto" id="enq-texto" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" ' +
-        'placeholder="Ex.: A parte autora relata falha intermitente no fornecimento de água e pede indenização por dano moral…">' +
-        esc(ENQ.texto) + '</textarea>' +
-      '<div class="enq-linha"><span style="font-size:12.5px;color:var(--tinta-3)">Ou selecione um arquivo:</span>' +
-        '<label class="limpar-tudo" for="enq-arquivo" style="cursor:pointer">Selecionar TXT ou Markdown</label>' +
-        '<input class="oculto" id="enq-arquivo" type="file" accept=".txt,.md,text/plain,text/markdown">' +
+        'placeholder="Cole aqui a causa de pedir e os pedidos.">' + esc(ENQ.texto) + '</textarea>' +
+      '<div class="enq-linha"><span class="enq-dica">Ou envie o arquivo:</span>' +
+        '<label class="limpar-tudo" for="enq-arquivo" style="cursor:pointer">Selecionar PDF ou TXT</label>' +
+        '<input class="oculto" id="enq-arquivo" type="file" accept=".pdf,.txt,.md,application/pdf,text/plain,text/markdown">' +
         '<span class="enq-arquivo">' + esc(ENQ.arquivo) + '</span></div>' +
-      '<div class="enq-linha"><span style="font-size:12.5px;color:var(--tinta-3)">Ver um exemplo:</span>' +
-        '<button class="limpar-tudo" type="button" data-enq-amostra="agua">água e dano moral</button>' +
+      '<div class="enq-linha"><span class="enq-dica">Exemplos:</span>' +
+        '<button class="limpar-tudo" type="button" data-enq-amostra="agua">falta de água</button>' +
         '<button class="limpar-tudo" type="button" data-enq-amostra="divida">dívida prescrita</button>' +
         '<button class="limpar-tudo" type="button" data-enq-amostra="icms">ICMS-Difal</button></div>' +
       '<label class="enq-anon"><input id="enq-anon" type="checkbox"' + (ENQ.anon ? ' checked' : '') + '> ' +
-        '<span><strong>Proteção reforçada: ocultar dados antes da análise.</strong> Identificadores detectados ' +
-        '(CPF, telefone, processo, nomes em qualificação e outros) são substituídos no texto, sem guardar chave de ' +
-        'reversão. A detecção automática pode falhar: revise o texto e remova fatos que permitam reconhecer uma pessoa. ' +
-        'PDF digitalizado como imagem não é lido aqui — clique em “Selecionar” só com TXT, ou cole o trecho.</span></label>' +
+        '<span><strong>Ocultar dados pessoais</strong> (CPF, telefone, número de processo, nomes na qualificação). ' +
+        'Revise o texto: a ocultação automática pode deixar passar algum dado.</span></label>' +
       (ENQ.aviso ? '<p class="enq-status ok">' + esc(ENQ.aviso) + '</p>' : '') +
       (ENQ.erro ? '<p class="enq-erro" role="alert">' + esc(ENQ.erro) + '</p>' : '') +
-      '<div class="enq-acoes"><span class="enq-priv">● processamento local · conteúdo não é transmitido nem guardado</span>' +
+      '<div class="enq-acoes"><span class="enq-priv">● lido só neste navegador</span>' +
         '<span style="display:flex;gap:8px;flex-wrap:wrap">' +
-        '<button class="limpar-tudo" id="enq-descartar" type="button">Descartar documento</button>' +
-        '<button class="botao-copiar" id="enq-analisar" type="button">Buscar possibilidades</button>' +
+        '<button class="limpar-tudo" id="enq-descartar" type="button">Limpar</button>' +
+        '<button class="botao-copiar" id="enq-analisar" type="button">Buscar temas</button>' +
         '</span></div>' +
     '</section>' +
     enqResultadosHtml() +
-    '<section class="secao"><h2>Quando nenhum tema aparece</h2>' +
-      '<p class="texto-juridico">“Nenhum enquadramento suficientemente forte” não é atestado de que o processo ' +
-      'não se submete a precedente — é só o silêncio desta comparação. Confira a fonte oficial antes de concluir, ' +
-      'porque a ferramenta pode cometer erros nos dois sentidos: sugerir sem aderência e calar com aderência.</p>' +
-      '<p class="texto-juridico">Se a conclusão, conferida, for a de não enquadramento, registre expressamente o ' +
-      '<em>distinguishing</em>, demonstrando as diferenças fáticas ou jurídicas entre o caso e os precedentes ' +
-      'afastados. Sem isso, a decisão que invoca precedente sem demonstrar a similitude — ou que deixa de aplicar ' +
-      'precedente invocado sem demonstrar a distinção — é considerada não fundamentada ' +
-      '(art. 489, § 1º, V e VI, do Código de Processo Civil).</p></section>' +
-    '<section class="secao"><h2>Por que a conferência humana é obrigatória</h2>' +
+    '<section class="secao"><h2>Resultados possíveis</h2>' +
+      '<dl class="dados definicoes enq-duas">' +
+      campo('Temas encontrados',
+        'Até cinco temas, do mais parecido para o menos parecido, com as palavras que coincidiram com o caso. ' +
+        'Abra a ficha e confira na fonte oficial antes de aplicar.') +
+      campo('Nenhum tema encontrado',
+        'A ferramenta não achou semelhança suficiente. Isso não garante que o caso esteja fora de precedente. ' +
+        'Se concluir que nenhum tema se aplica, registre a distinção (art. 489, § 1º, V e VI, do CPC).') +
+      '</dl></section>' +
+    '<section class="secao"><h2>Resolução CNJ nº 615/2025</h2>' +
       '<p class="texto-juridico">O uso de inteligência artificial no Poder Judiciário é regido pela ' +
       '<strong>Resolução CNJ nº 615/2025</strong> (DJe/CNJ nº 54/2025). Esta aba segue o que ela determina:</p>' +
-      '<dl class="dados definicoes">' +
+      '<dl class="dados definicoes enq-duas">' +
       campo('Ferramenta auxiliar, nunca autônoma',
         'O uso dessas ferramentas é auxiliar e complementar, vedada a utilização como instrumento autônomo de tomada ' +
         'de decisões sem a devida orientação, interpretação, verificação e revisão pelo magistrado, que permanece ' +
-        'integralmente responsável pelas decisões e pelas informações nelas contidas (art. 19, § 3º, II).', false, 'amplo') +
+        'integralmente responsável pelas decisões e pelas informações nelas contidas (art. 19, § 3º, II).') +
       campo('Sem vinculação, com revisão e correção',
         'Os sistemas devem possibilitar a revisão detalhada do conteúdo e o acesso às premissas e ao método, sem ' +
-        'qualquer vinculação à solução apresentada e com possibilidade de correções ou ajustes — e em nenhum momento ' +
-        'restringem ou substituem a autoridade final de quem decide (art. 32, II e parágrafo único).', false, 'amplo') +
+        'qualquer vinculação à solução apresentada e com possibilidade de correções ou ajustes, e em nenhum momento ' +
+        'restringem ou substituem a autoridade final de quem decide (art. 32, II e parágrafo único).') +
       campo('Caráter consultivo e supervisão humana',
         'A proposta tem caráter consultivo e não vinculante, sempre submetida à análise e à decisão final da autoridade ' +
         'competente, que exerce a supervisão humana (art. 33, § 1º); os sistemas devem exigir essa supervisão e permitir ' +
         'a modificação do produto pelo magistrado (art. 34). São vedadas soluções sem revisão humana ou que gerem ' +
-        'dependência absoluta do usuário (art. 10, I).', false, 'amplo') +
+        'dependência absoluta do usuário (art. 10, I).') +
       campo('A ferramenta pode cometer erros',
         'O próprio CNJ determina que o manual de uso oriente sobre limitações e sobre a correção de eventuais erros ou ' +
         'inconsistências (art. 19, § 4º). É por isso que esta aba repete em cada resultado: confira fatos, fase, alcance ' +
-        'e fonte oficial antes de aplicar.', false, 'amplo') +
+        'e fonte oficial antes de aplicar.') +
       '</dl>' +
-      '<p class="procedencia">Resolução CNJ nº 615/2025 — ' +
-      '<a class="link-fonte" href="https://atos.cnj.jus.br/atos/detalhar/6001" target="_blank" rel="noopener noreferrer">texto oficial no CNJ ↗' +
+      '<p class="procedencia">' +
+      '<a class="link-fonte" href="https://atos.cnj.jus.br/atos/detalhar/6001" target="_blank" rel="noopener noreferrer">Texto oficial da Resolução no CNJ ↗' +
       '<span class="oculto"> (abre em nova aba)</span></a></p>' +
     '</section></article>';
   el('conteudo').innerHTML = h;
@@ -3471,8 +3446,8 @@ function enqAnalisar() {
       ENQ.ms = Math.round(fim - inicio);
       abaEnquadrar();
       anunciar(ENQ.saida.itens.length
-        ? ENQ.saida.itens.length + ' possibilidades encontradas.'
-        : 'Nenhum enquadramento suficientemente forte.');
+        ? ENQ.saida.itens.length + (ENQ.saida.itens.length === 1 ? ' tema encontrado.' : ' temas encontrados.')
+        : 'Nenhum tema encontrado.');
       var destino = el('enq-resultados');
       if (destino) destino.scrollIntoView();
     } catch (e) {
@@ -3495,47 +3470,101 @@ function enqDescartar() {
   abaEnquadrar();
   var caixa = el('enq-texto');
   if (caixa) caixa.focus();
-  anunciar('Documento descartado.');
+  anunciar('Texto apagado.');
+}
+
+/* O leitor de PDF (pdf.js, Mozilla, Apache 2.0) fica em site/vendor/pdfjs e
+   só é baixado na primeira vez que alguém escolhe um PDF. Roda aqui mesmo:
+   o arquivo não sai do navegador. PDF digitalizado como imagem não tem texto
+   para ler, e a aba avisa em vez de devolver vazio. */
+var ENQ_PDFJS = null;
+
+function enqLeitorPdf() {
+  if (!ENQ_PDFJS) {
+    ENQ_PDFJS = import('./vendor/pdfjs/pdf.min.mjs').then(function (pdfjs) {
+      pdfjs.GlobalWorkerOptions.workerSrc = './vendor/pdfjs/pdf.worker.min.mjs';
+      return pdfjs;
+    });
+    ENQ_PDFJS.catch(function () { ENQ_PDFJS = null; });
+  }
+  return ENQ_PDFJS;
+}
+
+function enqTextoDoPdf(dados) {
+  return enqLeitorPdf().then(function (pdfjs) {
+    return pdfjs.getDocument({ data: dados, isEvalSupported: false }).promise;
+  }).then(function (pdf) {
+    if (pdf.numPages > 300) throw new Error('O PDF tem mais de 300 páginas. Envie só a petição inicial.');
+    var paginas = [];
+    var cadeia = Promise.resolve();
+    for (var n = 1; n <= pdf.numPages; n++) {
+      (function (numero) {
+        cadeia = cadeia.then(function () { return pdf.getPage(numero); })
+          .then(function (pagina) { return pagina.getTextContent(); })
+          .then(function (conteudo) {
+            paginas.push(conteudo.items.map(function (item) { return item.str; }).join(' '));
+          });
+      })(n);
+    }
+    return cadeia.then(function () {
+      var texto = paginas.join('\n\n').replace(/[ \t]+/g, ' ').trim();
+      if (texto.length < 80) throw new Error('Este PDF é uma imagem digitalizada e não dá para ler o texto. Cole o trecho no campo acima.');
+      return { texto: texto, paginas: pdf.numPages };
+    });
+  });
+}
+
+function enqTextoLido(texto, origem) {
+  if (ENQ.anon) {
+    var protegido = enqAnonimizarTexto(texto);
+    texto = protegido.texto;
+    ENQ.aviso = enqMensagemProtecao(protegido);
+  }
+  ENQ.texto = texto;
+  ENQ.arquivo = origem;
+  abaEnquadrar();
+  anunciar('Arquivo lido. Revise o texto antes de buscar.');
 }
 
 function enqLerArquivo(arquivo) {
   if (!arquivo) return;
   ENQ.erro = '';
   ENQ.aviso = '';
-  if (arquivo.size > 5000000) {
-    ENQ.erro = 'O arquivo ultrapassa 5 MB. Para esta análise, use apenas o trecho da causa de pedir e dos pedidos.';
-    abaEnquadrar();
-    return;
-  }
   var nome = arquivo.name || '';
-  if (/\.pdf$/i.test(nome)) {
-    ENQ.erro = 'PDF não é lido nesta aba (sem OCR para digitalizados). Salve como TXT ou cole o trecho relevante.';
+  var ehPdf = /\.pdf$/i.test(nome) || arquivo.type === 'application/pdf';
+  if (arquivo.size > (ehPdf ? 30000000 : 5000000)) {
+    ENQ.erro = ehPdf ? 'O PDF passa de 30 MB. Envie só a petição inicial.' : 'O arquivo passa de 5 MB. Cole só a causa de pedir e os pedidos.';
     abaEnquadrar();
     return;
   }
-  if (!/\.(txt|md)$/i.test(nome) && arquivo.type !== 'text/plain' && arquivo.type !== 'text/markdown') {
-    ENQ.erro = 'Formato não aceito. Selecione TXT ou Markdown, ou cole o trecho relevante.';
+  if (!ehPdf && !/\.(txt|md)$/i.test(nome) && arquivo.type !== 'text/plain' && arquivo.type !== 'text/markdown') {
+    ENQ.erro = 'Formato não aceito. Envie PDF ou TXT, ou cole o texto.';
     abaEnquadrar();
     return;
   }
   var leitor = new FileReader();
-  leitor.onload = function () {
-    var texto = String(leitor.result || '');
-    if (ENQ.anon) {
-      var protegido = enqAnonimizarTexto(texto);
-      texto = protegido.texto;
-      ENQ.aviso = enqMensagemProtecao(protegido);
-    }
-    ENQ.texto = texto;
-    ENQ.arquivo = 'texto processado localmente · nome do arquivo descartado';
-    abaEnquadrar();
-    anunciar('Arquivo lido localmente. Revise o texto antes de analisar.');
-  };
   leitor.onerror = function () {
     ENQ.erro = 'Não foi possível ler o arquivo.';
     abaEnquadrar();
   };
-  leitor.readAsText(arquivo);
+  if (!ehPdf) {
+    leitor.onload = function () { enqTextoLido(String(leitor.result || ''), 'arquivo lido neste navegador'); };
+    leitor.readAsText(arquivo);
+    return;
+  }
+  ENQ.arquivo = 'lendo o PDF…';
+  abaEnquadrar();
+  leitor.onload = function () {
+    enqTextoDoPdf(new Uint8Array(leitor.result)).then(function (res) {
+      enqTextoLido(res.texto, 'PDF lido neste navegador · ' + res.paginas + (res.paginas === 1 ? ' página' : ' páginas'));
+    }, function (e) {
+      ENQ.arquivo = '';
+      ENQ.erro = (e && /digitalizada|páginas/.test(e.message)) ? e.message
+        : 'Não foi possível ler este PDF. Tente de novo ou cole o texto.';
+      abaEnquadrar();
+    });
+  };
+  leitor.readAsArrayBuffer(arquivo);
 }
 
 /* ----------------------------------------------------- aba: meus favoritos

@@ -412,9 +412,13 @@ sugestão. É porta rigorosa: prefere devolver nada a devolver parecido.
   guardado e não usa IA externa: é comparação literal e conceitual
   (motor v2.0.0 em `work/encaixe/`, portado para `site/index.html`), com
   proteção que oculta CPF, telefone, processo e outros identificadores antes
-  da análise. O texto some ao descartar ou ao sair da página, e nunca vai
-  para o endereço. PDF não é lido (sem OCR): vale TXT, Markdown ou colar o
-  trecho.
+  da análise. O texto some ao limpar ou ao sair da página, e nunca vai
+  para o endereço. Aceita texto colado, TXT, Markdown e PDF com texto; o PDF
+  é lido no navegador pelo pdf.js (Mozilla, Apache 2.0, em `site/vendor/pdfjs/`,
+  baixado só quando alguém escolhe um PDF). PDF digitalizado como imagem não
+  tem texto e é recusado com aviso (sem OCR).
+- **Aviso de teste** no topo da aba: a ferramenta está em teste e pode
+  apresentar erros que ainda estão sendo apurados.
 - **A conferência humana é obrigatória**, nos termos da **Resolução CNJ nº
   615/2025**: uso auxiliar e complementar, nunca autônomo, com o magistrado
   integralmente responsável (art. 19, § 3º, II); sem vinculação, com revisão,
