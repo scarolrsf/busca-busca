@@ -228,7 +228,7 @@ button,input,select{font:inherit;color:inherit}
 .barra-lista{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}
 .contagem{font-size:.9rem;color:var(--tinta-2)}
 .contagem strong{font-family:var(--mono);font-variant-numeric:tabular-nums}
-.ordenar{border:1px solid var(--borda);background:var(--superficie);border-radius:var(--raio);padding:5px 8px;font-size:13px}
+.ordenar{border:1px solid var(--borda-forte);background:var(--superficie);border-radius:var(--raio);padding:0 8px;min-height:32px;font-size:13px}
 .fichas{display:flex;flex-direction:column;gap:14px}
 .ficha{position:relative;width:100%;text-align:left;background:var(--superficie);border:1px solid var(--borda-forte);border-left:4px solid var(--borda-forte);border-radius:var(--raio);padding:16px 18px;cursor:pointer;display:flex;flex-direction:column;gap:9px;transition:border-color .12s,box-shadow .12s}
 .ficha:hover{border-color:var(--acento);box-shadow:var(--sombra)}
@@ -347,7 +347,7 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .botao-copiar.copiado{background:var(--seguro-fraco);border-color:var(--seguro);color:var(--seguro)}
 
 /* ------------------------------------------------------ novidades e fontes */
-.dia-titulo{display:flex;align-items:baseline;gap:10px;margin:22px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--borda)}
+.dia-titulo{display:flex;align-items:baseline;gap:10px;margin:24px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--borda)}
 .dia-titulo:first-child{margin-top:0}
 .dia-titulo h3{font-family:var(--serif);font-size:16px;margin:0;font-weight:600}
 .dia-titulo span{font-family:var(--mono);font-size:12px;color:var(--tinta-3)}
@@ -3023,12 +3023,20 @@ function abaNovidades() {
       '<p>Veja em “Fontes e atualização” se alguma consulta falhou.</p></div>';
   } else {
     var diaAtual = '';
+    var grupoAberto = false;
     visiveis.forEach(function (l) {
       var d = diaLocal(l[0]);
       if (d !== diaAtual) {
         diaAtual = d;
+        /* Cada dia é um grupo com o mesmo invólucro da aba de temas. Sem ele os
+           cartões saíam encostados uns nos outros — medido em 20/09/2026:
+           intervalo zero, contra os 14 px da listagem —, e com a borda plena
+           que a ficha ganhou isso lia como um bloco maciço. */
+        if (grupoAberto) { h += '</div>'; grupoAberto = false; }
         h += '<div class="dia-titulo"><h3>' + esc(dataBR(d)) + '</h3><span>' +
           numero(filtradas.filter(function (x) { return diaLocal(x[0]) === d; }).length) + ' registros</span></div>';
+        h += '<div class="fichas">';
+        grupoAberto = true;
       }
       var sentido = significadoDaNovidade(l);
       h += '<article class="ficha' + (sentido.nivel === 'NEUTRO' ? '' : ' r-' + sentido.nivel) + '">' +
@@ -3043,6 +3051,7 @@ function abaNovidades() {
         (linkFonte(l[6]) ? '<span class="ficha-pe">' + linkFonte(l[6]) + '</span>' : '') +
       '</article>';
     });
+    if (grupoAberto) h += '</div>';
     if (filtradas.length > visiveis.length) {
       h += '<button class="mais" id="ver-mais" type="button">Mostrar mais</button>';
     }
