@@ -296,6 +296,15 @@ mark{background:var(--realce);color:inherit;border-radius:2px;padding:0 1px}
 .secao .texto-juridico+.texto-juridico{margin-top:.65em}
 .secao .texto-juridico+.dados{margin-top:14px}
 .secao .dados+.texto-juridico{margin-top:14px}
+/* O registro sobre suspensão é uma sequência de episódios datados; em
+   parágrafo único vira muro de texto. Aqui cada episódio é uma entrada, com
+   a data em selo à esquerda e o texto à direita, no mesmo desenho dos selos
+   da ficha. */
+.linha-tempo{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.linha-tempo li{display:grid;grid-template-columns:88px 1fr;gap:4px 12px;align-items:start}
+.linha-tempo li.sem-marco{grid-template-columns:1fr}
+.marco{font-family:var(--mono);font-size:12px;color:var(--tinta-2);background:var(--superficie-2);border:1px solid var(--borda);border-radius:4px;padding:1px 6px;white-space:nowrap;width:fit-content}
+.quando{font-family:var(--mono);font-size:.92em;font-weight:600;white-space:nowrap}
 .legenda .dado{grid-column:1/-1}
 .legenda-item dt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;text-transform:none;letter-spacing:0;font-size:13.5px;color:var(--tinta);font-weight:600;margin-bottom:3px}
 .amostra{display:inline-block;width:46px;height:19px;border:1px solid var(--borda);border-left:3px solid var(--borda-forte);border-radius:3px;background:var(--superficie);flex-shrink:0}
@@ -2545,6 +2554,43 @@ function textoSuspensao(r) {
   return s;
 }
 
+/**
+ * O registro sobre suspensão é uma sequência de episódios datados ("Em
+ * 27/06/2024, o STJ afetou…"), e em parágrafo único vira muro de texto. Aqui
+ * cada episódio é uma entrada de linha do tempo: a frase com data abre uma
+ * entrada, com a data em destaque à esquerda; frase sem data continua a
+ * entrada anterior, e parágrafo novo da fonte recomeça a sequência.
+ * Nenhuma palavra é alterada — só a quebra, o realce das datas e a abertura
+ * das alíneas ("a) …; b) …") em linhas próprias.
+ */
+function blocoSuspensao(s) {
+  var entradas = [];
+  var atual = null;
+  function novaEntrada() { atual = { data: '', frases: [] }; entradas.push(atual); }
+  String(s || '').split(/\n+/).forEach(function (paragrafo) {
+    atual = null;
+    paragrafo.split(/(?<=\.)\s+(?=[A-ZÀ-Þ\"“])/).forEach(function (frase) {
+      frase = frase.trim();
+      if (!frase) return;
+      var data = (frase.match(/\d{2}\/\d{2}\/\d{4}/) || [''])[0];
+      if (data || !atual) novaEntrada();
+      if (data && !atual.data) atual.data = data;
+      atual.frases.push(frase);
+    });
+  });
+  var itens = entradas.map(function (e) {
+    var html = esc(e.frases.join(' '))
+      .replace(/(\d{2}\/\d{2}\/\d{4})/g, '<span class="quando">$1</span>')
+      .replace(/([;:.])\s*([a-z])\)\s+/g, '$1<br><strong>$2)</strong> ');
+    if (e.data) {
+      return '<li><span class="marco">' + e.data + '</span>' +
+        '<span class="texto-juridico">' + html + '</span></li>';
+    }
+    return '<li class="sem-marco"><span class="texto-juridico">' + html + '</span></li>';
+  }).join('');
+  return '<ol class="linha-tempo">' + itens + '</ol>';
+}
+
 function ficha(r) {
   el('rail').hidden = true;
   el('rail').innerHTML = '';
@@ -2579,7 +2625,7 @@ function ficha(r) {
   if (r.suspensao) {
     h += '<section class="secao"><h2>' +
       (r._emVigor ? 'Registro sobre suspensão' : 'Suspensão que vigorou') +
-      '</h2><p class="texto-juridico">' + esc(textoSuspensao(r)) + '</p></section>';
+      '</h2>' + blocoSuspensao(textoSuspensao(r)) + '</section>';
   }
 
   h += '<section class="secao"><h2>Situação e datas</h2><dl class="dados">' +
