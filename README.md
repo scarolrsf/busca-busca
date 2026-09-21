@@ -23,6 +23,7 @@ requisitos, arquitetura, dados, operação, validações e pendências.
 - [O que é base e o que é derivado](#o-que-é-base-e-o-que-é-derivado)
 - [Recorte de competência](#recorte-de-competência) — o que entra no Juizado e o que não
 - [Os três menus do topo](#os-três-menus-do-topo) — suspensão, julgamento e assunto
+- [Enquadrar petição](#enquadrar-petição) — sugestão local de temas, com conferência humana obrigatória
 - [Regra de suspensão](#regra-de-suspensão) — a partir de quando e até quando
 - [Publicar](#publicar)
 - [Conferências](#conferências)
@@ -400,6 +401,31 @@ para o nome do arquivo da planilha. Endereços copiados antes desta mudança
 traziam um bloco só, em `bloco=`; continuam abrindo no mesmo recorte, porque o
 valor antigo é encaminhado ao menu a que pertencia.
 
+## Enquadrar petição
+
+A aba "Enquadrar petição" (terceira da barra, onde ficava "Meus favoritos")
+compara a causa de pedir e os pedidos com os precedentes da base e sugere os
+temas de possível enquadramento, mostrando os elementos que sustentam cada
+sugestão. É porta rigorosa: prefere devolver nada a devolver parecido.
+
+- **Tudo acontece neste navegador.** O conteúdo não é transmitido, não é
+  guardado e não usa IA externa: é comparação literal e conceitual
+  (motor v2.0.0 em `work/encaixe/`, portado para `site/index.html`), com
+  proteção que oculta CPF, telefone, processo e outros identificadores antes
+  da análise. O texto some ao descartar ou ao sair da página, e nunca vai
+  para o endereço. PDF não é lido (sem OCR): vale TXT, Markdown ou colar o
+  trecho.
+- **A conferência humana é obrigatória**, nos termos da **Resolução CNJ nº
+  615/2025**: uso auxiliar e complementar, nunca autônomo, com o magistrado
+  integralmente responsável (art. 19, § 3º, II); sem vinculação, com revisão,
+  premissas, método e correção (art. 32, II e parágrafo único); caráter
+  consultivo sob supervisão humana (art. 33, § 1º, e art. 34); vedadas
+  soluções sem revisão humana (art. 10, I). A aba cita esses artigos e repete
+  em cada tela: a ferramenta pode cometer erros, nos dois sentidos.
+- **Sem candidato forte**, a aba diz isso e orienta: confira a fonte oficial
+  e, se a conclusão for o não enquadramento, registre o *distinguishing*
+  (art. 489, § 1º, V e VI, do CPC).
+
 ## Regra de suspensão
 
 Vive num lugar só — as funções de classificação de `site/index.html` — e é
@@ -503,3 +529,13 @@ uma pendência deve atualizá-la no mesmo trabalho.
   fica sem o campo até uma varredura com `--desde`.
 - **NUGEPNAC, categoria da notícia** ("Suspensão Nacional", "Prorrogação de
   Suspensão") só aparece no relatório da execução; poderia ir para a ficha.
+- **Enquadrar petição, limites medidos em teste sintético** (auditoria local
+  em `work/encaixe/auditoria/`, 49 casos, não é acurácia em produção):
+  linguagem leiga não encontra o tema ("nome sujo", "cortaram a luz"); em
+  petição longa o fato fica fora dos 20 termos que a porta compara e o tema se
+  perde; petição com dois temas costuma mostrar um só; "trânsito em julgado" e
+  "adoção de critérios" disparam os eixos restritivos de veículo e de família e
+  bloqueiam cerca de 80 temas; a proteção de dados apaga o número de IUJ e de
+  IRDR citado (56 de 57 do TJMG) e prazos como "3 anos"; e os 497 temas do STF
+  sem repercussão geral concorrem como candidatos. O site não tem CSP; a
+  prévia tem.

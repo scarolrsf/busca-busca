@@ -446,6 +446,37 @@ a.atalho-normas{text-decoration:none}
 @keyframes coracao{0%{transform:scale(.6)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
 .ficha-pe .fonte-min{margin-left:0}
 
+/* ------------------------------------------------- enquadrar a petição
+    A ferramenta mora nesta folha, com o mesmo desenho do resto: o formulário
+    é um .detalhe em seções, os botões são os da família (.botao-copiar para a
+    ação principal, .limpar-tudo para as secundárias) e os candidatos voltam
+    como .ficha, com a mesma faixa de risco da listagem. Só o que é próprio
+    daqui ganha classe nova: o texto da petição, a linha de motivos e o par
+    "por que entrou / o que conferir". */
+.enq-texto{display:block;width:100%;min-height:180px;resize:vertical;padding:12px 13px;border:1px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie-2);font-family:var(--serif);font-size:1.02rem;line-height:1.6}
+.enq-texto:focus{outline:none;border-color:var(--acento);box-shadow:0 0 0 3px var(--acento-fraco);background:var(--superficie)}
+.enq-linha{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.enq-arquivo{font-family:var(--mono);font-size:12px;color:var(--tinta-2)}
+.enq-anon{display:flex;align-items:flex-start;gap:9px;margin-top:14px;padding:12px 14px;border:1px solid var(--borda);border-radius:var(--raio);background:var(--superficie-2);cursor:pointer;font-size:.88rem;line-height:1.55}
+.enq-anon input{width:17px;height:17px;accent-color:var(--acento);flex-shrink:0;margin-top:2px}
+.enq-acoes{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px}
+.enq-priv{font-size:12px;color:var(--seguro);display:flex;gap:6px;align-items:center}
+.enq-status{font-size:12.5px;color:var(--tinta-2);margin:8px 0 0}
+.enq-status.ok{color:var(--seguro)}
+.enq-erro{font-size:13px;color:var(--critico);font-weight:600;margin:8px 0 0}
+.enq-aviso-fita{padding:0 24px}
+.enq-motivos{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-top:2px}
+.enq-motivos .quem{font-size:11px;color:var(--tinta-3);margin-right:2px}
+.enq-par{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.enq-par>div{padding:9px 11px;border:1px solid var(--borda);border-radius:4px;background:var(--superficie-2);font-size:.85rem;line-height:1.55;color:var(--tinta-2)}
+.enq-par strong{display:block;color:var(--tinta);margin-bottom:2px;font-size:.85rem}
+.enq-forca{font-weight:700;color:var(--seguro)}
+.enq-conf{color:var(--atencao);font-weight:600}
+.enq-medidas{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.enq-pos{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:50%;background:var(--acento);color:var(--sobre-acento);font-family:var(--mono);font-size:11px;font-weight:600;flex-shrink:0}
+.enq-rodape{border-top:1px solid var(--borda);margin-top:12px;padding-top:10px;color:var(--atencao);font-size:12px;font-weight:600;line-height:1.55}
+@media (max-width:700px){.enq-aviso-fita{padding:0 14px}.enq-par{grid-template-columns:1fr}.enq-texto{font-size:16px}.enq-acoes{align-items:stretch;flex-direction:column}.enq-acoes .botao-copiar{width:100%;justify-content:center}}
+
 /* ------------------------------------------------- prévia antes de copiar */
 .previa{border:1px solid var(--borda-forte);border-radius:var(--raio);background:var(--superficie);color:var(--tinta);padding:0;max-width:min(780px,92vw);width:100%;box-shadow:var(--sombra)}
 .previa::backdrop{background:rgba(20,15,5,.45)}
@@ -624,6 +655,7 @@ a.atalho-normas{text-decoration:none}
   <nav class="abas" role="tablist" aria-label="Seções">
     <button class="aba" role="tab" data-aba="temas" aria-selected="true">Temas e incidentes</button>
     <button class="aba" role="tab" data-aba="informativos" aria-selected="false">Informativos</button>
+    <button class="aba" role="tab" data-aba="enquadrar" aria-selected="false">Enquadrar petição</button>
     <button class="aba" role="tab" data-aba="novidades" aria-selected="false">Novidades</button>
     <button class="aba" role="tab" data-aba="fontes" aria-selected="false">Fontes e atualização<span class="alerta-aba" id="alerta-fontes" hidden></span></button>
     <button class="aba" role="tab" data-aba="ajuda" aria-selected="false">Como usar</button>
@@ -2701,6 +2733,811 @@ function ficha(r) {
   window.scrollTo(0, 0);
 }
 
+/* ================================================== aba: enquadrar a petição
+    Motor local e determinístico de recuperação jurídica, sem rede, sem modelo
+    remoto e sem dados pessoais: compara a causa de pedir e os pedidos com os
+    precedentes da base e explica quais elementos sustentam cada candidato. É
+    porta de entrada rigorosa — prefere devolver nada a devolver parecido —,
+    e o resultado exige conferência humana (Resolução CNJ nº 615/2025).
+    Porte fiel de work/encaixe/motor-enquadramento.mjs (v2.0.0) e de
+    work/encaixe/privacidade.mjs, em ES5 como o resto desta folha. */
+
+/* ENQ-PURO-INICIO */
+
+var ENQ_VERSAO = '2.0.0';
+
+var ENQ_STOP = {};
+'a,ao,aos,com,como,da,das,de,do,dos,e,em,entre,esse,essa,esses,essas,este,esta,estes,estas,isso,isto,para,por,que,se,sem,sob,sobre,os,as,o,um,uma,uns,umas,nos,nas,no,na,num,numa,ou,mais,mas,foi,ser,sao,sua,seu,seus,suas,meu,minha,nosso,nossa,ele,ela,eles,elas,aquele,aquela,qual,quais,quando,onde,qualquer,cada,muito,pouco,todo,toda,todos,todas,tambem,ja,ate,desde,apos,ante,contra,segundo,conforme,mediante,durante,entretanto,todavia,porem,pois,porque,portanto,assim,entao,desse,dessa,deste,desta,daquele,daquela,disso,disto,nele,nela,neles,nelas,nesse,nessa,neste,nesta,naquele,naquela,pelo,pela,pelos,pelas,lhe,lhes,vos,te,ti,mim,consigo,algo,alguem,ninguem,outro,outra,outros,outras,tal,tais,pode,podem,ha,tem,ter,foram,sera,serao,estao,estavam,estava,referente,relativo,relativa,autos,processo,acao,pedido,requer,excelencia,juizo,vara,comarca,tribunal,justica'
+  .split(',').forEach(function (t) { ENQ_STOP[t] = 1; });
+
+var ENQ_GENERICOS = {};
+'autor,autora,reu,requerente,requerido,parte,direito,danos,dano,moral,morais,material,materiais,indenizacao,condenacao,reparacao,valor,valores,pagamento,obrigacao,contrato,consumidor,recurso,decisao,discussao,discute,possibilidade,pretensao,cobranca,procedencia,restituicao,servico,publico,publica,tema,incidente,questao'
+  .split(',').forEach(function (t) { ENQ_GENERICOS[t] = 1; });
+
+var ENQ_PESOS = { questao: 3.4, tese: 2.5, observacoes: 1.1, suspensao: 0.7, processos: 0.35, area: 0.45 };
+var ENQ_NORM_CAMPO = { questao: 0.55, tese: 0.65, observacoes: 0.8, suspensao: 0.85, processos: 0.7, area: 0.3 };
+
+var ENQ_EIXOS = [
+  { id: 'financeiro', rotulo: 'operações bancárias e crédito', restritivo: false, re: /(instituicao financeira|contrato bancario|\bbanco\b|financeir|cartao de credito|emprestimo|financiamento|operacao bancaria|transacao bancaria|conta corrente|pix\b)/ },
+  { id: 'veiculo', rotulo: 'veículo e trânsito', restritivo: true, re: /(\bveiculo\b|automovel|motocicleta|gravame|detran|transito|licenciamento|habilitacao|acidente de carro)/ },
+  { id: 'internet', rotulo: 'internet e plataformas', restritivo: true, re: /(internet|rede social|aplicativo|plataforma digital|provedor|website|sitio na rede|marco civil)/ },
+  { id: 'servidor', rotulo: 'servidor público', restritivo: true, re: /(servidor(?:a|as|es)? (?:public|estad|municip)|funcionari[oa]s? public|vencimento|remuneracao|gratificacao|progressao funcional|concurso publico|policial militar|militar estadual)/ },
+  { id: 'saude', rotulo: 'saúde', restritivo: true, re: /(plano de saude|tratamento de saude|fornecimento de medicamento|\bsus\b|internacao|cirurgia|procedimento medico|hospital|doenca)/ },
+  { id: 'tributario', rotulo: 'tributário', restritivo: true, re: /(\bicms\b|\biss\b|\bipva\b|\biptu\b|\bitbi\b|\bitcd\b|imposto|tribut|aliquota|isencao|imunidade)/ },
+  { id: 'previdenciario', rotulo: 'previdenciário', restritivo: true, re: /(aposentador|pensao por morte|auxilio-doenca|beneficio previdenciario|\binss\b|\brpps\b|\brgps\b|\bloas\b)/ },
+  { id: 'familia', rotulo: 'família e sucessões', restritivo: true, re: /(pensao alimenticia|guarda de|divorcio|uniao estavel|inventario|heranca|paternidade|adocao|curatela|regime de bens)/ },
+  { id: 'criminal', rotulo: 'criminal', restritivo: true, re: /(direito penal|processual penal|\bcrime|pena privativa|execucao penal|habeas corpus|violencia domestica|inquerito|tribunal do juri)/ },
+  { id: 'imoveis', rotulo: 'imóveis, posse e locação', restritivo: true, re: /(condominio|locacao|despejo|usucapiao|reintegracao de posse|\bimovel|financiamento habitacional|registro de imoveis)/ },
+  { id: 'educacao', rotulo: 'educação', restritivo: true, re: /(universidade|faculdade|escola|ensino|aluno|estudante|matricula|diploma|curso superior|colacao de grau)/ },
+  { id: 'trabalhista', rotulo: 'trabalhista', restritivo: true, re: /(empregado|empregador|contrato de trabalho|verba trabalhista|fgts|clt\b|jornada de trabalho)/ },
+  { id: 'ambiental', rotulo: 'ambiental', restritivo: true, re: /(meio ambiente|ambiental|licenciamento ambiental|dano ecologico|area de preservacao)/ },
+  { id: 'consumo', rotulo: 'relação de consumo', restritivo: false, re: /(consumidor|relacao de consumo|fornecedor|codigo de defesa do consumidor|\bcdc\b|vicio do produto|negativacao)/ },
+  { id: 'responsabilidade', rotulo: 'responsabilidade civil', restritivo: false, re: /(responsabilidade civil|indeniz|dano moral|dano material|dever de reparar|dever de indenizar)/ },
+  { id: 'processual', rotulo: 'questão processual', restritivo: false, re: /(interesse de agir|competencia|prescric|decadencia|prova|onus da prova|recurso|execucao|cumprimento de sentenca|penhora|legitimidade)/ }
+];
+
+function enqEixosDo(texto) {
+  var n = norm(texto), saida = [], i;
+  for (i = 0; i < ENQ_EIXOS.length; i++) if (ENQ_EIXOS[i].re.test(n)) saida.push(ENQ_EIXOS[i].id);
+  return saida;
+}
+
+function enqRotuloEixo(id) {
+  for (var i = 0; i < ENQ_EIXOS.length; i++) if (ENQ_EIXOS[i].id === id) return ENQ_EIXOS[i].rotulo;
+  return id;
+}
+
+function enqConceitos(texto) {
+  var n = norm(texto), saida = [];
+  var tentativaNegada = /(?:nao houve|inexistiu|sem).{0,45}(?:tentativa|reclamacao|contato|protocolo|sac|procon)/.test(n);
+  if (!tentativaNegada && /(?:tentativa|solucao|reclamacao|notificacao).{0,35}extrajudicial|contat[oa]s?.{0,20}(?:telefon|fornecedor|empresa)|servico.{0,10}atendimento|\bsac\b|\bprocon\b|reclame aqui|consumidor\.gov|numero.{0,5}protocolo/.test(n)) saida.push('conceito_tentativa_extrajudicial');
+  if (/relacao.{0,12}consumo|\bconsumidor(?:a|es)?\b|codigo de defesa do consumidor|\bcdc\b|lei.{0,5}8\.?078|\bfornecedor(?:a|es)?\b/.test(n)) saida.push('conceito_relacao_consumo');
+  if (/auxilio.{0,12}alimentacao|ajuda de custo|vale.{0,8}alimentacao/.test(n)) saida.push('conceito_auxilio_alimentacao');
+  if (/servidor(?:a|as|es)?\s+(?:public|estad|municip)|funcionari[oa]s?\s+public/.test(n)) saida.push('conceito_servidor_publico');
+  if (/afastamento|ferias[- ]premio|licenca.{0,20}remunerad|efetivo exercicio/.test(n)) saida.push('conceito_afastamento_remunerado');
+  if (/instituicao.{0,18}financeir|\bbanc[oa]s?\b|\bfinanceir[ao]s?\b|cartao.{0,15}credito|credito.{0,15}financiamento|operac(?:ao|oes).{0,15}bancari|transac(?:ao|oes).{0,15}bancari/.test(n)) saida.push('conceito_operacao_financeira');
+  if (/fraud|\bgolpe\b|(?:operac|transac|compra|divida|debito|cartao|contrato).{0,55}(?:nao reconhec|sem (?:sua )?(?:solicitacao|autorizacao|consentimento))|(?:nao reconhec|sem (?:sua )?(?:solicitacao|autorizacao|consentimento)).{0,55}(?:operac|transac|compra|divida|debito|cartao|contrato)/.test(n)) saida.push('conceito_fraude_nao_reconhecida');
+  if (/responsabil|indeniz|danos?\s+mor|dever.{0,15}indenizar|condena[rc]/.test(n)) saida.push('conceito_responsabilizacao');
+  if (saida.indexOf('conceito_tentativa_extrajudicial') >= 0 && saida.indexOf('conceito_relacao_consumo') >= 0 &&
+    /interesse.{0,18}agir|(?:ajuiz|propoe|ingress).{0,70}(?:acao|demanda)|(?:sem solucao|infrutifer).{0,90}(?:ajuiz|propoe|acao|demanda)/.test(n)) saida.push('conceito_interesse_agir_consumo');
+  return saida;
+}
+
+function enqRaizLeve(termo) {
+  if (termo.length < 6 || /^\d+$/.test(termo)) return termo;
+  return termo.replace(/mente$/, '').replace(/oes$/, 'ao').replace(/ais$/, 'al')
+    .replace(/eis$/, 'el').replace(/ns$/, 'm').replace(/s$/, '');
+}
+
+function enqTokens(texto) {
+  var palavras = norm(texto).split(/[^a-z0-9]+/).filter(function (t) { return t.length > 2 && !ENQ_STOP[t]; });
+  var expandidos = [], i;
+  for (i = 0; i < palavras.length; i++) {
+    expandidos.push(palavras[i]);
+    var raiz = enqRaizLeve(palavras[i]);
+    if (raiz.length > 3 && palavras[i].length >= 6) expandidos.push('rad_' + raiz);
+  }
+  return expandidos.concat(enqConceitos(texto));
+}
+
+/* Prioriza fatos e pedidos. Sem os títulos, preserva início e fim: em textos
+   longos os pedidos costumam estar no fim. */
+function enqExtrairNucleo(texto) {
+  var original = String(texto || ''), partes = [];
+  var fatos = original.match(/(?:\d+\.?\s*)?(?:DOS?\s+FATOS|S[ÍI]NTESE\s+F[ÁA]TICA)([\s\S]{0,18000}?)(?=(?:\d+\.?\s*)?(?:DO\s+DIREITO|DOS?\s+FUNDAMENTOS|DOS?\s+PEDIDOS|DA\s+CONCLUS[AÃ]O|DA\s+TUTELA|DA\s+INDENIZA[CÇ][AÃ]O|DA\s+INVERS[AÃ]O))/i);
+  var pedidos = original.match(/(?:DA\s+CONCLUS[AÃ]O|DOS?\s+PEDIDOS|SENDO\s+ASSIM,?\s+REQUER)([\s\S]{0,14000}?)(?=NESTES\s+TERMOS|OBS\s*:|$)/i);
+  if (fatos && fatos[1]) partes.push(fatos[1]);
+  if (pedidos && pedidos[1]) partes.push(pedidos[1]);
+  if (partes.length) return partes.join('\n');
+  if (original.length <= 6500) return original;
+  return original.slice(0, 2600) + '\n[...miolo omitido na indexacao...]\n' + original.slice(-3900);
+}
+
+function enqRotuloTermo(termo) {
+  var mapa = {
+    conceito_tentativa_extrajudicial: 'tentativa prévia de solução extrajudicial',
+    conceito_relacao_consumo: 'relação de consumo',
+    conceito_auxilio_alimentacao: 'auxílio-alimentação ou ajuda de custo',
+    conceito_servidor_publico: 'servidor público',
+    conceito_afastamento_remunerado: 'afastamento remunerado',
+    conceito_operacao_financeira: 'operação ou serviço financeiro',
+    conceito_fraude_nao_reconhecida: 'fraude ou operação não reconhecida',
+    conceito_responsabilizacao: 'pedido de responsabilização ou indenização',
+    conceito_interesse_agir_consumo: 'interesse de agir após tentativa extrajudicial'
+  };
+  if (mapa[termo]) return mapa[termo];
+  return String(termo).replace(/^rad_/, '');
+}
+
+var ENQ_RE_RECURSAL = /(recurso especial|recursos especiais|recurso extraordinario|recursos extraordinarios|resps e aresps|aresps|agravo em recurso|agravos em recurso|segunda instancia|segundo grau|fase recursal|256 l|vice-presidencia|vice presidencia)/;
+var ENQ_RE_PRIMEIRO_GRAU = /(primeira instancia|1 instancia|primeiro grau|juizados|todos os processos|processos em curso|acoes|individuais e coletivos|individuais ou coletivos|instrucao)/;
+
+function enqRotuloMomento(r) {
+  var s = norm(r.suspensao || '').trim();
+  if (!s) return 'sem ordem de suspensão registrada';
+  if (/instrucao probatoria|instrucao processual/.test(s)) return 'suspensão após a instrução';
+  if (ENQ_RE_RECURSAL.test(s.replace(/[^a-z0-9]+/g, ' ')) && !ENQ_RE_PRIMEIRO_GRAU.test(s)) return 'suspensão só na fase recursal';
+  if (/suspensao imediata|imediata suspensao|suspender de imediato|sobrestamento imediato/.test(s)) return 'suspensão imediata';
+  return 'suspensão desde a determinação';
+}
+
+function enqSuspensaoAtiva(r) {
+  if (!String(r.suspensao || '').trim()) return false;
+  return !/transito|cancelad|inadmit|nao admit|arquivad|suspensao (?:cessada|revogada|levantada)/.test(norm(r.situacao || ''));
+}
+
+function enqEscaparRe(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+function enqLocalizarCitacao(textoN, doc) {
+  var numero = String(doc.r.numero || '').trim();
+  var id = norm(doc.r.id || '');
+  var tipo = norm(doc.r.tipo || '').split(/\s+/)[0];
+  var fontes = [];
+  if (numero.length >= 2 && tipo) fontes.push(tipo + '\\s*(?:n[º°.o]*\\s*)?' + enqEscaparRe(norm(numero)) + '(?![\\d./-])');
+  if (id) fontes.push(enqEscaparRe(id).replace(/\s+/g, '\\s*'));
+  var indice = -1, i;
+  for (i = 0; i < fontes.length; i++) {
+    var achado = new RegExp(fontes[i], 'i').exec(textoN);
+    if (achado) { indice = achado.index; break; }
+  }
+  if (indice < 0) return { tipo: 'ausente', bonus: 0 };
+  var contexto = textoN.slice(Math.max(0, indice - 140), indice + 220);
+  var negada = /(nao|jamais|inaplicavel|afast|distinguish|distincao|nao se enquadra|nao incide|sem aderencia|mero exemplo).{0,65}(tema|irdr|iuj|iac|repercussao)|(?:tema|irdr|iuj|iac).{0,85}(nao se aplica|inaplicavel|afast|distinguish|distincao|nao incide|sem aderencia)/.test(contexto);
+  if (negada) return { tipo: 'negada', bonus: -100, contexto: contexto };
+  var afirmativa = /(suspens|sobrest|aplica|incide|enquadra|abrang|identic|mesma questao|objeto do).{0,85}(tema|irdr|iuj|iac)|(?:tema|irdr|iuj|iac).{0,85}(suspens|sobrest|aplica|incide|enquadra|abrang|identic|mesma questao)/.test(contexto);
+  return { tipo: afirmativa ? 'afirmativa' : 'neutra', bonus: afirmativa ? 18 : 4, contexto: contexto };
+}
+
+function enqConstruirIndice(base) {
+  var df = {}, somaCampo = {}, i, j, k;
+  var campos = Object.keys(ENQ_PESOS);
+  for (i = 0; i < campos.length; i++) somaCampo[campos[i]] = 0;
+  var docs = base.map(function (r) {
+    var porCampo = {}, compCampo = {};
+    for (k = 0; k < campos.length; k++) {
+      var lista = enqTokens(r[campos[k]] || '');
+      porCampo[campos[k]] = lista;
+      compCampo[campos[k]] = lista.length;
+      somaCampo[campos[k]] += lista.length;
+    }
+    var questao = enqTokens(r.questao || ''), tese = enqTokens(r.tese || '');
+    var unicos = {};
+    for (j = 0; j < questao.length; j++) unicos[questao[j]] = 1;
+    for (j = 0; j < tese.length; j++) unicos[tese[j]] = 1;
+    var vistos = {};
+    for (k = 0; k < campos.length; k++) {
+      var arr = porCampo[campos[k]];
+      for (j = 0; j < arr.length; j++) {
+        if (!vistos[arr[j]]) {
+          vistos[arr[j]] = 1;
+          df[arr[j]] = (df[arr[j]] || 0) + 1;
+        }
+      }
+    }
+    var eixosQuestao = enqEixosDo(r.questao || ''), eixosTese = enqEixosDo(r.tese || '');
+    var eixosTema = [], vista = {};
+    for (j = 0; j < eixosQuestao.concat(eixosTese).length; j++) {
+      var ex = eixosQuestao.concat(eixosTese)[j];
+      if (!vista[ex]) { vista[ex] = 1; eixosTema.push(ex); }
+    }
+    var uq = {}, ut = {};
+    for (j = 0; j < questao.length; j++) uq[questao[j]] = 1;
+    for (j = 0; j < tese.length; j++) ut[tese[j]] = 1;
+    return { r: r, porCampo: porCampo, compCampo: compCampo, unicos: unicos,
+      unicosQuestao: uq, unicosTese: ut,
+      eixosQuestao: eixosQuestao, eixosTese: eixosTese, eixosTema: eixosTema };
+  });
+  var medias = {};
+  for (i = 0; i < campos.length; i++) medias[campos[i]] = somaCampo[campos[i]] / Math.max(1, docs.length);
+  var idf = {};
+  Object.keys(df).forEach(function (t) { idf[t] = Math.log(1 + (base.length - df[t] + 0.5) / (df[t] + 0.5)); });
+  return { docs: docs, idf: idf, medias: medias, total: base.length };
+}
+
+function enqPontuar(doc, qfreq, idf, medias) {
+  var k1 = 1.2, pontos = 0, termos = Object.keys(qfreq), i, c;
+  var campos = Object.keys(ENQ_PESOS);
+  for (i = 0; i < termos.length; i++) {
+    var termo = termos[i], pesoIdf = idf[termo];
+    if (pesoIdf == null) continue;
+    var tfN = 0;
+    for (c = 0; c < campos.length; c++) {
+      var tf = 0, arr = doc.porCampo[campos[c]], j;
+      for (j = 0; j < arr.length; j++) if (arr[j] === termo) tf++;
+      if (!tf) continue;
+      var b = ENQ_NORM_CAMPO[campos[c]];
+      tfN += ENQ_PESOS[campos[c]] * tf / (1 - b + b * (doc.compCampo[campos[c]] / Math.max(1, medias[campos[c]])));
+    }
+    if (!tfN) continue;
+    pontos += pesoIdf * ((tfN * (k1 + 1)) / (tfN + k1)) * Math.min(1.7, 1 + Math.log1p(qfreq[termo]) * 0.35);
+  }
+  return pontos;
+}
+
+function enqSelecionar(conjunto, idf, n) {
+  return Object.keys(conjunto).filter(function (t) { return idf[t] != null && !ENQ_GENERICOS[t] && t.indexOf('conceito_') !== 0; })
+    .sort(function (a, b) { return idf[b] - idf[a]; }).slice(0, n);
+}
+
+function enqAvaliar(doc, qfreq, idf, citacao, perfil) {
+  var consulta = enqSelecionar(qfreq, idf, 20);
+  var focoQuestao = enqSelecionar(doc.unicosQuestao, idf, 18);
+  var focoTese = enqSelecionar(doc.unicosTese, idf, 18);
+  var especificos = consulta.filter(function (t) { return doc.unicos[t]; });
+  var coberturaConsulta = especificos.length / Math.max(1, consulta.length);
+  function coberturaDe(foco) {
+    if (!foco.length) return 0;
+    var n = 0, i;
+    for (i = 0; i < foco.length; i++) if (qfreq[foco[i]]) n++;
+    return n / foco.length;
+  }
+  var coberturaQuestao = coberturaDe(focoQuestao), coberturaTese = coberturaDe(focoTese);
+  var coberturaTema = Math.max(coberturaQuestao, coberturaTese);
+  var usaQuestao = coberturaQuestao >= coberturaTese;
+  var focoCentral = usaQuestao ? focoQuestao : focoTese;
+  var presentes = focoCentral.filter(function (t) { return qfreq[t]; });
+  var ausentes = focoCentral.filter(function (t) { return !qfreq[t]; }).slice(0, 6);
+  var conceitosComuns = Object.keys(qfreq).filter(function (t) { return t.indexOf('conceito_') === 0 && doc.unicos[t]; });
+  var eixosComuns = doc.eixosTema.filter(function (id) { return perfil.eixos.indexOf(id) >= 0; });
+  var eixosCentrais = usaQuestao ? doc.eixosQuestao : doc.eixosTese;
+  var restricoes = eixosCentrais.filter(function (id) {
+    for (var i = 0; i < ENQ_EIXOS.length; i++) {
+      if (ENQ_EIXOS[i].id === id) return ENQ_EIXOS[i].restritivo && perfil.eixos.indexOf(id) < 0;
+    }
+    return false;
+  });
+  var situacaoN = norm(doc.r.situacao || ''), questaoN = norm(doc.r.questao || '').trim();
+  var semQuestao = /cancelad/.test(situacaoN) || /^em duplicidade com o tema/.test(questaoN);
+  function temTodos(lista) {
+    for (var i = 0; i < lista.length; i++) if (conceitosComuns.indexOf(lista[i]) < 0) return false;
+    return true;
+  }
+  var assinatura = (conceitosComuns.indexOf('conceito_interesse_agir_consumo') >= 0) ||
+    temTodos(['conceito_auxilio_alimentacao', 'conceito_servidor_publico', 'conceito_afastamento_remunerado']) ||
+    temTodos(['conceito_operacao_financeira', 'conceito_fraude_nao_reconhecida', 'conceito_responsabilizacao']);
+  var lexicalForte = especificos.length >= 5 && coberturaConsulta >= 0.28 && coberturaTema >= 0.33;
+  var lexicalConcentrado = especificos.length >= 4 && coberturaConsulta >= 0.58 && coberturaTema >= 0.48;
+  var lexicalEquilibrado = especificos.length >= 4 && coberturaConsulta >= 0.35 && coberturaTema >= 0.45;
+  var lexicalExtenso = especificos.length >= 9 && coberturaConsulta >= 0.4 && coberturaTema >= 0.25;
+  var conceitual = assinatura && (especificos.length >= 1 || eixosComuns.length >= 1);
+  var citada = citacao.tipo === 'afirmativa' && (especificos.length >= 2 || conceitosComuns.length >= 1 || eixosComuns.length >= 1);
+  var passou = !semQuestao && !restricoes.length && citacao.tipo !== 'negada' &&
+    (lexicalForte || lexicalConcentrado || lexicalEquilibrado || lexicalExtenso || conceitual || citada);
+  var forca = passou && ((lexicalForte && especificos.length >= 7) ||
+    (assinatura && especificos.length >= 2) || (citada && coberturaTema >= 0.35)) ? 'forte' : 'possível para conferência';
+  var metodo = citada ? 'citação afirmativa com suporte no conteúdo' :
+    assinatura ? 'núcleo conceitual completo' : 'aderência lexical bilateral';
+  var razao = passou ? metodo
+    : citacao.tipo === 'negada' ? 'a citacao aparece em contexto de afastamento ou distincao'
+    : restricoes.length ? 'falta o recorte material: ' + restricoes.map(enqRotuloEixo).join(', ')
+    : especificos.length < 4 ? 'poucos elementos especificos em comum'
+    : coberturaConsulta < 0.34 ? 'o tema cobre pouco do nucleo do caso'
+    : 'o caso cobre pouco da questao central do tema';
+  var especificosRot = [], vistos = {}, i;
+  conceitosComuns.concat(especificos).forEach(function (t) {
+    if (!vistos[t]) { vistos[t] = 1; especificosRot.push(t); }
+  });
+  return { passou: passou, forca: forca, metodo: metodo, razao: razao,
+    coberturaTema: coberturaTema, coberturaConsulta: coberturaConsulta,
+    especificos: especificosRot, eixosComuns: eixosComuns,
+    presentes: presentes, ausentes: ausentes, restricoes: restricoes, citacao: citacao.tipo };
+}
+
+function enqCriarMotor(base) {
+  if (!base || !base.length) throw new Error('Base de temas vazia ou inválida.');
+  var indice = enqConstruirIndice(base);
+  function analisar(texto, topo) {
+    var original = String(texto || '');
+    var nucleo = enqExtrairNucleo(original);
+    var eixosCaso = enqEixosDo(nucleo), concCaso = enqConceitos(nucleo).concat(enqConceitos(original)), vistos = {}, i;
+    var conceitosUnicos = [];
+    for (i = 0; i < concCaso.length; i++) if (!vistos[concCaso[i]]) { vistos[concCaso[i]] = 1; conceitosUnicos.push(concCaso[i]); }
+    var perfil = { eixos: eixosCaso, conceitos: conceitosUnicos };
+    var listaTokens = enqTokens(nucleo).concat(enqConceitos(original));
+    var qfreq = {};
+    for (i = 0; i < listaTokens.length; i++) qfreq[listaTokens[i]] = (qfreq[listaTokens[i]] || 0) + 1;
+    var textoN = ' ' + norm(original) + ' ';
+    var candidatos = [];
+    for (i = 0; i < indice.docs.length; i++) {
+      var doc = indice.docs[i];
+      var lexical = enqPontuar(doc, qfreq, indice.idf, indice.medias);
+      if (lexical <= 0) continue;
+      var citacao = enqLocalizarCitacao(textoN, doc);
+      var aderencia = enqAvaliar(doc, qfreq, indice.idf, citacao, perfil);
+      if (!aderencia.passou) continue;
+      var bonusConceitual = 0, j;
+      for (j = 0; j < aderencia.especificos.length; j++) {
+        if (aderencia.especificos[j].indexOf('conceito_') === 0) bonusConceitual += 5;
+      }
+      // A ordem é só desempate moderado depois que a aderência passou: ela
+      // nunca abre a porta de entrada.
+      var suspensaoRegistrada = enqSuspensaoAtiva(doc.r);
+      candidatos.push({ r: doc.r, score: lexical + bonusConceitual + citacao.bonus + (suspensaoRegistrada ? 6 : 0),
+        aderencia: aderencia, suspensaoRegistrada: suspensaoRegistrada,
+        suspensaoRotulo: suspensaoRegistrada ? enqRotuloMomento(doc.r) : String(doc.r.situacao || 'situação não informada') });
+    }
+    candidatos.sort(function (a, b) {
+      return b.score - a.score || (b.suspensaoRegistrada ? 1 : 0) - (a.suspensaoRegistrada ? 1 : 0) ||
+        String(a.r.id).localeCompare(String(b.r.id));
+    });
+    var itens = candidatos.slice(0, Math.max(0, topo)).map(function (item) {
+      var motivos = [], v = {}, j;
+      item.aderencia.especificos.forEach(function (t) {
+        var rot = enqRotuloTermo(t);
+        if (!v[rot]) { v[rot] = 1; motivos.push(rot); }
+      });
+      var materias = item.aderencia.eixosComuns.map(enqRotuloEixo);
+      function rotulosUnicos(lista, n) {
+        var out = [], w = {}, k;
+        for (k = 0; k < lista.length && out.length < n; k++) {
+          var rot = enqRotuloTermo(lista[k]);
+          if (!w[rot]) { w[rot] = 1; out.push(rot); }
+        }
+        return out;
+      }
+      return { r: item.r, score: Math.round(item.score * 100) / 100,
+        forca: item.aderencia.forca, metodo: item.aderencia.metodo, criterio: item.aderencia.razao,
+        citacao: item.aderencia.citacao, motivos: motivos.slice(0, 9),
+        coberturaTema: Math.round(item.aderencia.coberturaTema * 100),
+        coberturaConsulta: Math.round(item.aderencia.coberturaConsulta * 100),
+        materias: materias,
+        ancorasPresentes: rotulosUnicos(item.aderencia.presentes, 7),
+        ancorasAusentes: rotulosUnicos(item.aderencia.ausentes, 5),
+        restricoesAusentes: item.aderencia.restricoes.map(enqRotuloEixo),
+        suspensaoRegistrada: item.suspensaoRegistrada, suspensaoRotulo: item.suspensaoRotulo };
+    });
+    return { itens: itens, tokens: listaTokens.length, tokensUnicos: Object.keys(qfreq).length,
+      total: indice.total,
+      perfil: { materias: perfil.eixos.map(enqRotuloEixo), nucleos: perfil.conceitos.map(enqRotuloTermo) },
+      versao: ENQ_VERSAO };
+  }
+  return { analisar: analisar, total: indice.total, versao: ENQ_VERSAO };
+}
+
+/* ---------------- proteção de dados: processar no navegador, sem envio ---- */
+
+var ENQ_ROTULOS_PRIV = { CPF: 'CPF', CNPJ: 'CNPJ', PROCESSO: 'PROCESSO', EMAIL: 'EMAIL',
+  TELEFONE: 'TELEFONE', CEP: 'CEP', DOCUMENTO: 'DOCUMENTO', NASCIMENTO: 'DATA DE NASCIMENTO',
+  OAB: 'OAB', NOME: 'NOME', PARTE: 'PARTE', ENDERECO: 'ENDEREÇO', PROTOCOLO: 'PROTOCOLO',
+  IDENTIFICADOR: 'IDENTIFICADOR', BENEFICIO: 'BENEFÍCIO', CONTA: 'DADO BANCÁRIO',
+  PIX: 'CHAVE PIX', CARTAO: 'CARTÃO', VEICULO: 'VEÍCULO', IP: 'ENDEREÇO IP', IDADE: 'IDADE',
+  SAUDE: 'DADO SENSÍVEL DE SAÚDE', SENSIVEL: 'DADO PESSOAL SENSÍVEL', MATRICULA: 'MATRÍCULA' };
+
+var ENQ_NAO_NOME = {};
+'acao,acordao,administracao,advocacia,agencia,autos,banco,camara,civil,comarca,constituicao,credito,direito,estado,excelentissimo,federal,instituto,justica,lei,municipio,nacional,poder,previdencia,processo,secretaria,sentenca,sociedade,superior,supremo,tribunal,vara'
+  .split(',').forEach(function (t) { ENQ_NAO_NOME[t] = 1; });
+
+function enqSoDigitos(v) { return String(v == null ? '' : v).replace(/\D/g, ''); }
+
+function enqCpfValido(v) {
+  var n = enqSoDigitos(v);
+  if (n.length !== 11 || /^(\d)\1{10}$/.test(n)) return false;
+  function calc(tam) {
+    var soma = 0, i;
+    for (i = 0; i < tam; i++) soma += Number(n[i]) * (tam + 1 - i);
+    var resto = (soma * 10) % 11;
+    return resto === 10 ? 0 : resto;
+  }
+  return calc(9) === Number(n[9]) && calc(10) === Number(n[10]);
+}
+
+function enqCnpjValido(v) {
+  var n = enqSoDigitos(v);
+  if (n.length !== 14 || /^(\d)\1{13}$/.test(n)) return false;
+  function calc(pesos) {
+    var soma = 0, i;
+    for (i = 0; i < pesos.length; i++) soma += Number(n[i]) * pesos[i];
+    var resto = soma % 11;
+    return resto < 2 ? 0 : 11 - resto;
+  }
+  return calc([5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]) === Number(n[12]) &&
+    calc([6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]) === Number(n[13]);
+}
+
+function enqLuhnValido(v) {
+  var n = enqSoDigitos(v), soma = 0, dobrar = false, i;
+  if (n.length < 13 || n.length > 19 || /^(\d)\1+$/.test(n)) return false;
+  for (i = n.length - 1; i >= 0; i--) {
+    var d = Number(n[i]);
+    if (dobrar && (d *= 2) > 9) d -= 9;
+    soma += d;
+    dobrar = !dobrar;
+  }
+  return soma % 10 === 0;
+}
+
+function enqParecePessoa(nome) {
+  var limpo = norm(nome).replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!limpo || /\b(?:s\/?a|ltda|eireli|me|epp|municipio|estado|uniao|banco|instituto|associacao|fundacao)\b/.test(limpo)) return false;
+  var termos = limpo.split(' ').filter(function (t) {
+    return ['da', 'de', 'do', 'das', 'dos', 'e'].indexOf(t) < 0;
+  });
+  if (termos.length < 2 || termos.length > 7) return false;
+  for (var i = 0; i < termos.length; i++) if (ENQ_NAO_NOME[termos[i]]) return false;
+  return true;
+}
+
+function enqAnonimizarTexto(original) {
+  var texto = String(original == null ? '' : original);
+  var categorias = {};
+  function registrar(tipo) { categorias[tipo] = (categorias[tipo] || 0) + 1; }
+  function lugar(tipo) { return '[' + (ENQ_ROTULOS_PRIV[tipo] || tipo) + ']'; }
+  function aplicar(re, tipo, transformar) {
+    texto = texto.replace(re, function (trecho) {
+      var args = Array.prototype.slice.call(arguments, 1, -2);
+      var novo = transformar ? transformar.apply(null, [trecho].concat(args)) : lugar(tipo);
+      if (novo == null || novo === trecho) return trecho;
+      registrar(tipo);
+      return novo;
+    });
+  }
+  function comPrefixo(tipo) {
+    return function (trecho, prefixo) { return prefixo + lugar(tipo); };
+  }
+  aplicar(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, 'EMAIL');
+  aplicar(/\b\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}\b/g, 'PROCESSO');
+  aplicar(/\b\d\s*\.\s*\d{4}\s*\.\s*\d{2}\s*\.\s*\d{6}\s*-\s*\d\s*\/\s*\d{3}\b/g, 'PROCESSO');
+  aplicar(/\b\d{3}\s*\.?\s*\d{3}\s*\.?\s*\d{3}\s*-?\s*\d{2}\b/g, 'CPF', function (trecho) {
+    return (enqCpfValido(trecho) || /[.-]/.test(trecho)) ? lugar('CPF') : null;
+  });
+  aplicar(/\b\d{2}\s*\.?\s*\d{3}\s*\.?\s*\d{3}\s*[\/.]?\s*\d{4}\s*-?\s*\d{2}\b/g, 'CNPJ', function (trecho) {
+    return (enqCnpjValido(trecho) || /[.\/-]/.test(trecho)) ? lugar('CNPJ') : null;
+  });
+  aplicar(/(\bCPF\s*(?:n[º°.o]*\s*)?[:\-]?\s*)\d{11}\b/gi, 'CPF', comPrefixo('CPF'));
+  aplicar(/(\bCNPJ\s*(?:n[º°.o]*\s*)?[:\-]?\s*)\d{14}\b/gi, 'CNPJ', comPrefixo('CNPJ'));
+  aplicar(/(?<!\d)(?:\+?55\s*)?(?:\(?\d{2}\)?\s*)?(?:9\s*)?\d{4}[-\s]?\d{4}(?!\d)/g, 'TELEFONE');
+  aplicar(/\b\d{2}\s*\.?\s*\d{3}\s*[-.]?\s*\d{3}\b/g, 'CEP');
+  aplicar(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, 'IP');
+  aplicar(/(\b(?:RG|identidade|CNH|passaporte|t[ií]tulo\s+de\s+eleitor|CTPS)\s*(?:n[º°.o]*\s*)?[:\-]?\s*)[A-Z0-9./-]{5,}\b/gi, 'DOCUMENTO', comPrefixo('DOCUMENTO'));
+  aplicar(/(\b(?:PIS|PASEP|NIT)\s*(?:n[º°.o]*\s*)?[:\-]?\s*)[\d.\/-]{8,}\b/gi, 'DOCUMENTO', comPrefixo('DOCUMENTO'));
+  aplicar(/(\b(?:NB|n[uú]mero\s+do\s+benef[ií]cio|benef[ií]cio\s+n[º°.o]*)\s*[:\-]?\s*)[\d.\/-]{6,}\b/gi, 'BENEFICIO', comPrefixo('BENEFICIO'));
+  aplicar(/(\bOAB(?:\s*\/\s*[A-Z]{2}|[A-Z]{2})?\s*(?:n[º°.o]*\s*)?)\d[\d.\/-]*/gi, 'OAB', comPrefixo('OAB'));
+  aplicar(/(\b(?:matr[ií]cula|registro\s+funcional|SIAPE)\s*(?:n[º°.o]*\s*)?[:\-]?\s*)[A-Z0-9.\/-]{4,}\b/gi, 'MATRICULA', comPrefixo('MATRICULA'));
+  aplicar(/(\bprotocolo\s*(?:n[º°.o]*\s*)?[:\-]?\s*)[A-Z0-9.\/-]{6,}/gi, 'PROTOCOLO', comPrefixo('PROTOCOLO'));
+  aplicar(/(\bboletim\s+de\s+ocorr[eê]ncia\s+(?:de\s+)?(?:n[uú]mero|n[º°.o]*)?\s*)[A-Z0-9.\/-]{6,}/gi, 'IDENTIFICADOR', comPrefixo('IDENTIFICADOR'));
+  aplicar(/(\b(?:ag[eê]ncia|conta(?:\s+corrente)?|conta\s+poupan[cç]a)\s*(?:n[º°.o]*\s*)?[:\-]?\s*)\d[\d.\/-]{2,}\b/gi, 'CONTA', comPrefixo('CONTA'));
+  aplicar(/(\bchave\s+PIX\s*[:\-]?\s*)(?:[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|\+?\d[\d\s().-]{7,}|[0-9A-F]{8}-[0-9A-F-]{27,})/gi, 'PIX', comPrefixo('PIX'));
+  aplicar(/\b(?:\d[ -]?){13,19}\b/g, 'CARTAO', function (trecho) {
+    return enqLuhnValido(trecho) ? lugar('CARTAO') : null;
+  });
+  aplicar(/\b[A-Z]{3}[ -]?\d[A-Z0-9]\d{2}\b/g, 'VEICULO');
+  aplicar(/(\b(?:data\s+(?:de\s+)?nascimento|nascid[oa]\s+em)\s*[:\-]?\s*)\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4}/gi, 'NASCIMENTO', comPrefixo('NASCIMENTO'));
+  aplicar(/(\b(?:idade\s*(?:de)?\s*[:\-]?\s*)?)\d{1,3}\s*\(?\s*(?:anos?\s+de\s+idade|anos?)\s*\)?/gi, 'IDADE', comPrefixo('IDADE'));
+  aplicar(/(\bCID(?:-?10)?\s*[:\-]?\s*)[A-Z]\d{2}(?:\.\d{1,2})?\b/gi, 'SAUDE', comPrefixo('SAUDE'));
+  aplicar(/(\b(?:prontu[aá]rio|cart[aã]o\s+SUS)\s*(?:n[º°.o]*\s*)?[:\-]?\s*)[A-Z0-9.\/-]{5,}\b/gi, 'SAUDE', comPrefixo('SAUDE'));
+  aplicar(/(\b(?:ra[cç]a(?:\/cor)?|etnia|religi[aã]o|orienta[cç][aã]o\s+sexual|filia[cç][aã]o\s+sindical|opini[aã]o\s+pol[ií]tica)\s*[:\-]\s*)[^,;\n]{2,80}/gi, 'SENSIVEL', comPrefixo('SENSIVEL'));
+  aplicar(/(\bresidente\s+e\s+domiciliad[oa]\s+)(?:na|no|à|ao)\s+[\s\S]{2,260}?(?=,\s*(?:vem|por\s+sua|neste\s+ato|CEP))/gi, 'ENDERECO', comPrefixo('ENDERECO'));
+  aplicar(/(\bcom\s+endere[cç]o\s+(?:na|no|à|ao|em)?\s*)[\s\S]{2,220}?(?=,\s*(?:pelas\s+raz[oõ]es|neste\s+ato|representad|CEP))/gi, 'ENDERECO', comPrefixo('ENDERECO'));
+  aplicar(/\b(?:Rua|R\.|Avenida|Av\.|Alameda|Travessa|Pra[cç]a|Rodovia|Estrada)\s+[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ0-9][^\n;]{2,120}?(?=(?:\s+CEP\b|[;\n]|\.$))/gi, 'ENDERECO');
+  aplicar(/\b([A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][A-Za-zÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇáàâãéèêíïóôõöúç']+(?:\s+(?:(?:d[aeo]s?|e)\s+)?[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][A-Za-zÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇáàâãéèêíïóôõöúç']+){1,6})(?=,\s*(?:brasileir[oa]|casad[oa]|solteir[oa]|vi[uú]v[oa]|aposentad[oa]|portador[ae]?|inscrit[oa]|residente))/g, 'NOME', function (trecho, nome) {
+    return enqParecePessoa(nome) ? lugar('NOME') : null;
+  });
+  aplicar(/(\b(?:parte\s+)?(?:autor(?:a)?|requerente|r[eé]u|requerid[oa]|advogad[oa]|representante|paciente|servidor(?:a)?)\s*[:\-]\s*)([A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][A-Za-zÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇáàâãéèêíïóôõöúç']+(?:\s+(?:(?:d[aeo]s?|e)\s+)?[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][A-Za-zÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇáàâãéèêíïóôõöúç']+){1,7})/gi, 'NOME', function (trecho, prefixo, nome) {
+    return enqParecePessoa(nome) ? prefixo + lugar('NOME') : null;
+  });
+  aplicar(/(\b(?:nome(?:[ \t]+completo|[ \t]+da[ \t]+parte)?|cliente|benefici[aá]ri[oa]|testemunha|v[ií]tima|perit[oa]|curador(?:a)?|genitor(?:a)?)[ \t]*[:\-][ \t]*)([A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][A-Za-zÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇáàâãéèêíïóôõöúç']+(?:[ \t]+(?:(?:d[aeo]s?|e)[ \t]+)?[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][A-Za-zÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇáàâãéèêíïóôõöúç']+){1,7})/gi, 'NOME', function (trecho, prefixo, nome) {
+    return enqParecePessoa(nome) ? prefixo + lugar('NOME') : null;
+  });
+  aplicar(/(\b(?:Sr\.?|Sra\.?|Dr\.?|Dra\.?)\s+)([A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][A-Za-zÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇáàâãéèêíïóôõöúç']+(?:\s+(?:(?:d[aeo]s?|e)\s+)?[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][A-Za-zÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇáàâãéèêíïóôõöúç']+){1,6})/g, 'NOME', function (trecho, prefixo, nome) {
+    return enqParecePessoa(nome) ? prefixo + lugar('NOME') : null;
+  });
+  aplicar(/(\b(?:filh[oa]\s+de|m[aã]e\s*[:\-]|pai\s*[:\-])\s*)([A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][A-Za-zÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇáàâãéèêíïóôõöúç']+(?:\s+(?:(?:d[aeo]s?|e)\s+)?[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][A-Za-zÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇáàâãéèêíïóôõöúç']+){1,6})/gi, 'NOME', function (trecho, prefixo, nome) {
+    return enqParecePessoa(nome) ? prefixo + lugar('NOME') : null;
+  });
+  aplicar(/\b[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ]{2,}(?:\s+(?:(?:DA|DE|DO|DAS|DOS|E)\s+)?[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ]{2,}){1,7}(?=\s+OAB)/g, 'NOME');
+  aplicar(/(\bAtermador\s*\(?a\)?\s*:\s*)[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇa-záàâãéèêíïóôõöúç' -]{4,80}(?=\s+Matr[ií]cula)/gi, 'NOME', comPrefixo('NOME'));
+  var ocorrencias = 0;
+  Object.keys(categorias).forEach(function (k) { ocorrencias += categorias[k]; });
+  return { texto: texto, ocorrencias: ocorrencias, categorias: categorias, riscoResidual: enqRiscoResidual(texto) };
+}
+
+function enqRiscoResidual(texto) {
+  var valor = String(texto == null ? '' : texto), sinais = [];
+  function testar(tipo, re) { if (re.test(valor)) sinais.push(tipo); }
+  testar('possível e-mail', /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i);
+  testar('possível documento numérico', /\b\d{11,14}\b/);
+  testar('possível telefone', /(?<!\d)\(?\d{2}\)?\s*9?\d{4}[-\s]?\d{4}(?!\d)/);
+  testar('possível endereço', /\b(?:Rua|Avenida|Alameda|Travessa|Pra[cç]a|Rodovia|Estrada)\s+[^\n,;]{3,}/i);
+  testar('possível nome em qualificação', /\b[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][a-záàâãéèêíïóôõöúç']+(?:\s+(?:d[aeo]s?\s+)?[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ][a-záàâãéèêíïóôõöúç']+){1,5},\s*(?:brasileir[oa]|casad[oa]|solteir[oa]|aposentad[oa])/);
+  var unicos = [];
+  sinais.forEach(function (s) { if (unicos.indexOf(s) < 0) unicos.push(s); });
+  return { nivel: unicos.length ? 'revisar' : 'baixo', sinais: unicos };
+}
+
+function enqResumoCategorias(categorias) {
+  categorias = categorias || {};
+  return Object.keys(categorias).sort(function (a, b) {
+    return categorias[b] - categorias[a] || a.localeCompare(b);
+  }).map(function (tipo) {
+    return categorias[tipo] + ' ' + (ENQ_ROTULOS_PRIV[tipo] || String(tipo).toLowerCase());
+  }).join(' · ');
+}
+
+/* ENQ-PURO-FIM */
+
+/* ---------------- interface da aba: formulário, resultados e base normativa
+    O texto da petição vive em ENQ, fora de `estado`: ele não vai para o
+    endereço (que pode ser copiado e enviado) nem é guardado no navegador —
+    some ao descartar ou ao sair da página. */
+
+var ENQ = { texto: '', anon: true, saida: null, erro: '', aviso: '', arquivo: '', ms: 0 };
+var ENQ_MOTOR = null;
+
+var ENQ_AMOSTRAS = {
+  agua: 'A autora relata falha intermitente no fornecimento de água pela concessionária, com interrupções semanais ao longo de meses, e pede indenização por dano moral. Discute-se se o dano moral é presumido ou se depende de prova.',
+  divida: 'O réu inscreveu o nome da autora em plataforma de renegociação de débitos e passou a cobrar extrajudicialmente dívida já prescrita. Pede-se declaração de inexigibilidade e indenização.',
+  icms: 'Mandado de segurança contra cobrança de ICMS-Difal em operação interestadual destinada a consumidor final contribuinte do ICMS, referente a bens para ativo fixo, sem lei complementar após a Emenda Constitucional 87/2015.'
+};
+
+function enqMotor() {
+  if (!ENQ_MOTOR) ENQ_MOTOR = enqCriarMotor(BASE.temas);
+  return ENQ_MOTOR;
+}
+
+function enqMensagemProtecao(resultado) {
+  if (!resultado.ocorrencias && /\[(?:NOME|CPF|CNPJ|EMAIL|ENDEREÇO|TELEFONE|DOCUMENTO|DADO BANCÁRIO|CHAVE PIX|PROCESSO)\]/.test(resultado.texto)) {
+    return 'Conteúdo já protegido. Revise o texto para conferir se não restou informação identificável.';
+  }
+  if (!resultado.ocorrencias) return 'Nenhum padrão foi detectado automaticamente. Faça a conferência manual antes de prosseguir.';
+  var residual = resultado.riscoResidual.sinais.length
+    ? ' Atenção residual: ' + resultado.riscoResidual.sinais.join(', ') + '.'
+    : ' Varredura residual automática: sem sinais óbvios.';
+  return resultado.ocorrencias + (resultado.ocorrencias === 1 ? ' trecho protegido: ' : ' trechos protegidos: ') +
+    enqResumoCategorias(resultado.categorias) + '.' + residual;
+}
+
+/* Um candidato volta como ficha da mesma família da listagem: a faixa lateral
+   é a do risco, o cartão inteiro abre a ficha, e o coração guarda. O que a
+   listagem não tem — motivos, método e coberturas — entra em linhas próprias,
+   com as classes desta aba. */
+function enqCartao(x, i) {
+  var r = x.r;
+  var presentes = x.materias.concat(x.ancorasPresentes).filter(function (m, j, a) { return a.indexOf(m) === j; }).slice(0, 8);
+  var conferir = x.ancorasAusentes.slice(0, 4);
+  return '<article class="ficha r-' + r._risco + '">' +
+    '<button class="ficha-abrir" data-reg="' + esc(r.id) + '" type="button" aria-label="' +
+      esc('Abrir a ficha de ' + r._titulo) + '"></button>' +
+    '<span class="ficha-topo">' +
+      '<span class="enq-pos">' + (i + 1) + '</span>' +
+      '<span class="ident">' + esc(r._titulo) + '</span>' +
+      '<span class="sigla">' + esc(r.tribunal) + '</span>' + etiquetaTipo(r) +
+      '<span class="estado"><span class="s ' + (x.suspensaoRegistrada ? 'n-' + r._risco : 'j') + '">' +
+        esc(x.suspensaoRotulo) + '</span></span>' +
+    '</span>' +
+    '<p class="questao">' + esc(corta(r.questao, 280) || 'Questão não informada na base.') + '</p>' +
+    '<div class="enq-motivos"><span class="quem">elementos coincidentes</span>' +
+      x.motivos.map(function (m) { return '<span class="etiqueta">' + esc(m) + '</span>'; }).join('') + '</div>' +
+    '<div class="enq-par"><div><strong>Por que entrou · <span class="enq-forca">' + esc(x.forca) + '</span></strong>' +
+      esc(x.metodo) + (presentes.length ? ' · ' + esc(presentes.join(', ')) : '') + '</div>' +
+      '<div><strong>Elementos centrais ainda não localizados</strong>' +
+      '<span class="enq-conf">' + esc(conferir.length ? conferir.join(', ') : 'nenhuma lacuna relevante; ainda confira fatos, alcance, fase e fonte') + '</span></div></div>' +
+    '<div class="enq-medidas"><span class="fonte-linha">cobertura do caso: ' + x.coberturaConsulta + '%</span>' +
+      '<span class="fonte-linha">cobertura do tema: ' + x.coberturaTema + '%</span></div>' +
+    '<span class="ficha-pe">' + pilula(r) + '<span class="etiqueta">' + esc(r._area) + '</span>' +
+      linkFonte(r.fonte) + botaoFavorito(r.id) + '</span>' +
+    '<div class="enq-rodape">Prévia explicável, não enquadramento definitivo · o percentual não é probabilidade · confirme fatos, fase, alcance e fonte oficial</div>' +
+  '</article>';
+}
+
+function enqResultadosHtml() {
+  if (!ENQ.saida) return '';
+  var itens = ENQ.saida.itens;
+  var h = '<section class="secao" id="enq-resultados"><h2>Possibilidades encontradas</h2>' +
+    '<p class="texto-juridico">';
+  if (itens.length) {
+    h += '<strong>' + numero(itens.length) + '</strong> ' + (itens.length === 1 ? 'tema passou' : 'temas passaram') +
+      ' pelo critério rigoroso entre <strong>' + numero(ENQ.saida.total) + '</strong> · ' +
+      numero(ENQ.saida.tokens) + ' termos úteis em ' + ENQ.ms + ' ms.</p>';
+  } else {
+    h += 'Nenhum dos <strong>' + numero(ENQ.saida.total) + '</strong> temas atingiu o critério mínimo de aderência.</p>';
+  }
+  if (ENQ.saida.perfil) {
+    h += '<dl class="dados definicoes">' +
+      campo('Como o caso foi lido',
+        'Matérias: ' + (ENQ.saida.perfil.materias.join(', ') || 'não classificadas automaticamente') +
+        '. Núcleos: ' + (ENQ.saida.perfil.nucleos.join('; ') || 'nenhum conceito estruturado; a comparação usou os fatos e pedidos') +
+        '. A qualificação das partes e o formulário ficaram em segundo plano; a comparação se concentrou nos fatos determinantes e nos pedidos.',
+        false, 'amplo') +
+    '</dl>';
+  }
+  if (!itens.length) {
+    // Vazio que diz o que fazer, em vez de só dizer que não há nada: sem
+    // candidato forte, o seguro é seguir sem sugestão — e, se a conclusão for
+    // a de não enquadramento, registrá-la como distinguishing.
+    h += '<div class="vazio"><p><strong>Nenhum enquadramento suficientemente forte.</strong></p>' +
+      '<p>É mais seguro seguir sem sugestão automática do que aplicar temas apenas parecidos. ' +
+      'Esta ferramenta também pode cometer erros — inclusive o de nada sugerir onde havia tema.</p>' +
+      '<p>Se, conferidos os fatos e a fonte oficial, a conclusão for a de que o processo não se enquadra ' +
+      'em nenhum precedente, registre expressamente o <em>distinguishing</em>, demonstrando as diferenças ' +
+      'fáticas ou jurídicas (art. 489, § 1º, V e VI, do CPC).</p></div>';
+  } else {
+    h += '<div class="fichas">' + itens.map(enqCartao).join('') + '</div>';
+  }
+  return h + '</section>';
+}
+
+function abaEnquadrar() {
+  el('rail').hidden = true;
+  el('rail').innerHTML = '';
+  ULTIMO_RESULTADO = [];
+  var h = '<article class="detalhe">' +
+    '<header class="detalhe-cabeca r-BAIXO"><h1>Enquadrar petição</h1></header>' +
+    '<section class="secao"><h2>O que esta ferramenta faz</h2>' +
+      '<p class="texto-juridico">Cole a causa de pedir e os pedidos — ou selecione um arquivo de texto — ' +
+      'e a ferramenta compara o caso com os <strong>' + numero(BASE.temas.length) + '</strong> precedentes da base, ' +
+      'sugerindo os temas de possível enquadramento com os elementos que sustentam cada sugestão. ' +
+      'Tudo acontece <strong>neste navegador</strong>: o conteúdo não é transmitido, não é guardado e não usa ' +
+      'inteligência artificial externa — é comparação literal e conceitual com o que os tribunais publicaram.</p></section>' +
+    '<div class="enq-aviso-fita"><p class="aviso a-MEDIO"><span aria-hidden="true">!</span><span>' +
+      '<strong>A conferência humana é indispensável. Esta é apenas uma ferramenta e pode cometer erros.</strong> ' +
+      'Ela pode sugerir o tema errado — e pode também nada sugerir onde havia tema. ' +
+      'Quem enquadra o processo é a pessoa que assina, nunca a ferramenta.</span></p></div>' +
+    '<section class="secao"><h2>Causa de pedir e pedidos</h2>' +
+      '<label class="oculto" for="enq-texto">Causa de pedir e pedidos</label>' +
+      '<textarea class="enq-texto" id="enq-texto" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" ' +
+        'placeholder="Ex.: A parte autora relata falha intermitente no fornecimento de água e pede indenização por dano moral…">' +
+        esc(ENQ.texto) + '</textarea>' +
+      '<div class="enq-linha"><span style="font-size:12.5px;color:var(--tinta-3)">Ou selecione um arquivo:</span>' +
+        '<label class="limpar-tudo" for="enq-arquivo" style="cursor:pointer">Selecionar TXT ou Markdown</label>' +
+        '<input class="oculto" id="enq-arquivo" type="file" accept=".txt,.md,text/plain,text/markdown">' +
+        '<span class="enq-arquivo">' + esc(ENQ.arquivo) + '</span></div>' +
+      '<div class="enq-linha"><span style="font-size:12.5px;color:var(--tinta-3)">Ver um exemplo:</span>' +
+        '<button class="limpar-tudo" type="button" data-enq-amostra="agua">água e dano moral</button>' +
+        '<button class="limpar-tudo" type="button" data-enq-amostra="divida">dívida prescrita</button>' +
+        '<button class="limpar-tudo" type="button" data-enq-amostra="icms">ICMS-Difal</button></div>' +
+      '<label class="enq-anon"><input id="enq-anon" type="checkbox"' + (ENQ.anon ? ' checked' : '') + '> ' +
+        '<span><strong>Proteção reforçada: ocultar dados antes da análise.</strong> Identificadores detectados ' +
+        '(CPF, telefone, processo, nomes em qualificação e outros) são substituídos no texto, sem guardar chave de ' +
+        'reversão. A detecção automática pode falhar: revise o texto e remova fatos que permitam reconhecer uma pessoa. ' +
+        'PDF digitalizado como imagem não é lido aqui — clique em “Selecionar” só com TXT, ou cole o trecho.</span></label>' +
+      (ENQ.aviso ? '<p class="enq-status ok">' + esc(ENQ.aviso) + '</p>' : '') +
+      (ENQ.erro ? '<p class="enq-erro" role="alert">' + esc(ENQ.erro) + '</p>' : '') +
+      '<div class="enq-acoes"><span class="enq-priv">● processamento local · conteúdo não é transmitido nem guardado</span>' +
+        '<span style="display:flex;gap:8px;flex-wrap:wrap">' +
+        '<button class="limpar-tudo" id="enq-descartar" type="button">Descartar documento</button>' +
+        '<button class="botao-copiar" id="enq-analisar" type="button">Buscar possibilidades</button>' +
+        '</span></div>' +
+    '</section>' +
+    enqResultadosHtml() +
+    '<section class="secao"><h2>Quando nenhum tema aparece</h2>' +
+      '<p class="texto-juridico">“Nenhum enquadramento suficientemente forte” não é atestado de que o processo ' +
+      'não se submete a precedente — é só o silêncio desta comparação. Confira a fonte oficial antes de concluir, ' +
+      'porque a ferramenta pode cometer erros nos dois sentidos: sugerir sem aderência e calar com aderência.</p>' +
+      '<p class="texto-juridico">Se a conclusão, conferida, for a de não enquadramento, registre expressamente o ' +
+      '<em>distinguishing</em>, demonstrando as diferenças fáticas ou jurídicas entre o caso e os precedentes ' +
+      'afastados. Sem isso, a decisão que invoca precedente sem demonstrar a similitude — ou que deixa de aplicar ' +
+      'precedente invocado sem demonstrar a distinção — é considerada não fundamentada ' +
+      '(art. 489, § 1º, V e VI, do Código de Processo Civil).</p></section>' +
+    '<section class="secao"><h2>Por que a conferência humana é obrigatória</h2>' +
+      '<p class="texto-juridico">O uso de inteligência artificial no Poder Judiciário é regido pela ' +
+      '<strong>Resolução CNJ nº 615/2025</strong> (DJe/CNJ nº 54/2025). Esta aba segue o que ela determina:</p>' +
+      '<dl class="dados definicoes">' +
+      campo('Ferramenta auxiliar, nunca autônoma',
+        'O uso dessas ferramentas é auxiliar e complementar, vedada a utilização como instrumento autônomo de tomada ' +
+        'de decisões sem a devida orientação, interpretação, verificação e revisão pelo magistrado, que permanece ' +
+        'integralmente responsável pelas decisões e pelas informações nelas contidas (art. 19, § 3º, II).', false, 'amplo') +
+      campo('Sem vinculação, com revisão e correção',
+        'Os sistemas devem possibilitar a revisão detalhada do conteúdo e o acesso às premissas e ao método, sem ' +
+        'qualquer vinculação à solução apresentada e com possibilidade de correções ou ajustes — e em nenhum momento ' +
+        'restringem ou substituem a autoridade final de quem decide (art. 32, II e parágrafo único).', false, 'amplo') +
+      campo('Caráter consultivo e supervisão humana',
+        'A proposta tem caráter consultivo e não vinculante, sempre submetida à análise e à decisão final da autoridade ' +
+        'competente, que exerce a supervisão humana (art. 33, § 1º); os sistemas devem exigir essa supervisão e permitir ' +
+        'a modificação do produto pelo magistrado (art. 34). São vedadas soluções sem revisão humana ou que gerem ' +
+        'dependência absoluta do usuário (art. 10, I).', false, 'amplo') +
+      campo('A ferramenta pode cometer erros',
+        'O próprio CNJ determina que o manual de uso oriente sobre limitações e sobre a correção de eventuais erros ou ' +
+        'inconsistências (art. 19, § 4º). É por isso que esta aba repete em cada resultado: confira fatos, fase, alcance ' +
+        'e fonte oficial antes de aplicar.', false, 'amplo') +
+      '</dl>' +
+      '<p class="procedencia">Resolução CNJ nº 615/2025 — ' +
+      '<a class="link-fonte" href="https://atos.cnj.jus.br/atos/detalhar/6001" target="_blank" rel="noopener noreferrer">texto oficial no CNJ ↗' +
+      '<span class="oculto"> (abre em nova aba)</span></a></p>' +
+    '</section></article>';
+  el('conteudo').innerHTML = h;
+}
+
+/* Roda fora do redesenho geral: indexar 3 mil precedentes trava a página por
+   um instante, e o botão precisa dizer "comparando" antes disso. */
+function enqAnalisar() {
+  var caixa = el('enq-texto');
+  var conteudo = caixa ? caixa.value.trim() : ENQ.texto.trim();
+  ENQ.erro = '';
+  ENQ.aviso = '';
+  ENQ.saida = null;
+  var botao = el('enq-analisar');
+  if (conteudo.length < 40) {
+    ENQ.erro = 'Inclua um trecho um pouco mais detalhado da causa de pedir e dos pedidos.';
+    ENQ.texto = caixa ? caixa.value : conteudo;
+    abaEnquadrar();
+    var volta = el('enq-texto');
+    if (volta) volta.focus();
+    return;
+  }
+  var anon = el('enq-anon');
+  ENQ.anon = anon ? anon.checked : ENQ.anon;
+  if (ENQ.anon) {
+    var protegido = enqAnonimizarTexto(conteudo);
+    conteudo = protegido.texto;
+    ENQ.aviso = enqMensagemProtecao(protegido);
+  }
+  ENQ.texto = conteudo;
+  if (botao) { botao.disabled = true; botao.textContent = 'Comparando…'; }
+  window.setTimeout(function () {
+    try {
+      var inicio = (window.performance && window.performance.now) ? window.performance.now() : Date.now();
+      ENQ.saida = enqMotor().analisar(conteudo, 5);
+      var fim = (window.performance && window.performance.now) ? window.performance.now() : Date.now();
+      ENQ.ms = Math.round(fim - inicio);
+      abaEnquadrar();
+      anunciar(ENQ.saida.itens.length
+        ? ENQ.saida.itens.length + ' possibilidades encontradas.'
+        : 'Nenhum enquadramento suficientemente forte.');
+      var destino = el('enq-resultados');
+      if (destino) destino.scrollIntoView();
+    } catch (e) {
+      ENQ.erro = (e && e.message) || 'Não foi possível comparar o texto.';
+      ENQ.saida = null;
+      abaEnquadrar();
+    }
+  }, 30);
+}
+
+function enqDescartar() {
+  ENQ.texto = '';
+  ENQ.saida = null;
+  ENQ.erro = '';
+  ENQ.aviso = '';
+  ENQ.arquivo = '';
+  ENQ.ms = 0;
+  var campoArquivo = el('enq-arquivo');
+  if (campoArquivo) campoArquivo.value = '';
+  abaEnquadrar();
+  var caixa = el('enq-texto');
+  if (caixa) caixa.focus();
+  anunciar('Documento descartado.');
+}
+
+function enqLerArquivo(arquivo) {
+  if (!arquivo) return;
+  ENQ.erro = '';
+  ENQ.aviso = '';
+  if (arquivo.size > 5000000) {
+    ENQ.erro = 'O arquivo ultrapassa 5 MB. Para esta análise, use apenas o trecho da causa de pedir e dos pedidos.';
+    abaEnquadrar();
+    return;
+  }
+  var nome = arquivo.name || '';
+  if (/\.pdf$/i.test(nome)) {
+    ENQ.erro = 'PDF não é lido nesta aba (sem OCR para digitalizados). Salve como TXT ou cole o trecho relevante.';
+    abaEnquadrar();
+    return;
+  }
+  if (!/\.(txt|md)$/i.test(nome) && arquivo.type !== 'text/plain' && arquivo.type !== 'text/markdown') {
+    ENQ.erro = 'Formato não aceito. Selecione TXT ou Markdown, ou cole o trecho relevante.';
+    abaEnquadrar();
+    return;
+  }
+  var leitor = new FileReader();
+  leitor.onload = function () {
+    var texto = String(leitor.result || '');
+    if (ENQ.anon) {
+      var protegido = enqAnonimizarTexto(texto);
+      texto = protegido.texto;
+      ENQ.aviso = enqMensagemProtecao(protegido);
+    }
+    ENQ.texto = texto;
+    ENQ.arquivo = 'texto processado localmente · nome do arquivo descartado';
+    abaEnquadrar();
+    anunciar('Arquivo lido localmente. Revise o texto antes de analisar.');
+  };
+  leitor.onerror = function () {
+    ENQ.erro = 'Não foi possível ler o arquivo.';
+    abaEnquadrar();
+  };
+  leitor.readAsText(arquivo);
+}
+
 /* ----------------------------------------------------- aba: meus favoritos
    Reaproveita a listagem inteira — busca, filtros, blocos, ordenação e a
    planilha valem aqui do mesmo jeito. O que muda é o conjunto de partida. */
@@ -3453,6 +4290,7 @@ function desenha() {
     }
   } else if (estado.aba === 'informativos') abaRegistros(BASE.informativos, 'julgado', 'julgados');
   else if (estado.aba === 'favoritos') abaFavoritos();
+  else if (estado.aba === 'enquadrar') abaEnquadrar();
   else if (estado.aba === 'novidades') abaNovidades();
   else if (estado.aba === 'fontes') abaFontes();
   else if (estado.aba === 'ajuda') abaAjuda();
@@ -3520,6 +4358,12 @@ function ligar() {
   var atrasoFiltro;
   document.addEventListener('input', function (ev) {
     var alvo = ev.target;
+    // O texto da petição fica só na memória da aba, sem redesenho geral.
+    if (alvo.id === 'enq-texto') {
+      ENQ.texto = alvo.value;
+      ENQ.arquivo = '';
+      return;
+    }
     if (alvo.id !== 'f-numero' && alvo.id !== 'f-texto') return;
     clearTimeout(atrasoFiltro);
     var qual = alvo.id, valor = alvo.value;
@@ -3647,6 +4491,24 @@ function ligar() {
       return aplicar();
     }
 
+    /* A aba de enquadramento redesenha só a si mesma: o texto da petição não
+       passa pelo redesenho geral, para nunca ir parar no endereço. */
+    if (alvo.id === 'enq-analisar') return enqAnalisar();
+    if (alvo.id === 'enq-descartar') return enqDescartar();
+
+    var amostra = alvo.closest('[data-enq-amostra]');
+    if (amostra) {
+      var qual = amostra.getAttribute('data-enq-amostra');
+      ENQ.texto = ENQ_AMOSTRAS[qual] || '';
+      ENQ.erro = '';
+      ENQ.aviso = '';
+      ENQ.arquivo = 'exemplo demonstrativo';
+      abaEnquadrar();
+      var caixaAmostra = el('enq-texto');
+      if (caixaAmostra) caixaAmostra.focus();
+      return;
+    }
+
     if (alvo.id === 'limpar-favoritos') {
       if (!window.confirm('Remover os ' + FAVORITOS.length + ' precedentes guardados neste navegador? ' +
           'A lista some e não há como desfazer.')) return;
@@ -3702,6 +4564,11 @@ function ligar() {
 
   document.addEventListener('change', function (ev) {
     var a = ev.target;
+    if (a.id === 'enq-arquivo') return enqLerArquivo(a.files ? a.files[0] : null);
+    if (a.id === 'enq-anon') {
+      ENQ.anon = !!a.checked;
+      return;
+    }
     if (a.getAttribute && a.getAttribute('data-campo')) {
       return alterna(a.getAttribute('data-campo'), a.getAttribute('data-valor'));
     }
@@ -3770,6 +4637,33 @@ function ligar() {
       if (ev.target === caixa) { if (id === 'boas-vindas') fecharBoasVindas(); else fecharPrevia(); }
     });
     caixa.addEventListener('close', function () { if (id === 'boas-vindas') guardar('guia-visto', 'sim'); });
+  });
+
+  /* Colar com a proteção ligada anonimiza só o trecho colado, sem tocar no
+     que já estava escrito — e sem guardar chave de reversão. */
+  document.addEventListener('paste', function (ev) {
+    var alvo = ev.target;
+    if (!alvo || alvo.id !== 'enq-texto' || !ENQ.anon) return;
+    var colado = ev.clipboardData ? ev.clipboardData.getData('text/plain') : null;
+    if (typeof colado !== 'string' || !colado) return;
+    ev.preventDefault();
+    var resultado = enqAnonimizarTexto(colado);
+    var inicio = alvo.selectionStart, fim = alvo.selectionEnd;
+    alvo.setRangeText(resultado.texto, inicio, fim, 'end');
+    ENQ.texto = alvo.value;
+    ENQ.aviso = enqMensagemProtecao(resultado);
+    abaEnquadrar();
+  });
+
+  /* Sair da página descarta a petição da memória, como o botão descartar. */
+  window.addEventListener('pagehide', function () {
+    ENQ.texto = '';
+    ENQ.saida = null;
+    ENQ.erro = '';
+    ENQ.aviso = '';
+    ENQ.arquivo = '';
+    ENQ.ms = 0;
+    ENQ_MOTOR = null;
   });
 
   window.addEventListener('hashchange', function () { deURL(); desenha(); });
