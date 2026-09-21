@@ -3045,21 +3045,23 @@ function abaFontes() {
     return (a[2] ? 1 : 0) - (b[2] ? 1 : 0);
   });
 
+  /* Com tudo respondendo não há aviso a dar: o selo "Consultada" em cada
+     cartão já diz. A caixa verde sumiu; a vermelha continua, porque fonte sem
+     resposta é o que alguém vem procurar nesta aba. */
   var h = '<article class="detalhe">' +
     '<header class="detalhe-cabeca r-' + (falhas.length ? 'ALTO' : 'BAIXO') + '">' +
       '<h1>' + (falhas.length
         ? 'Há fonte sem consulta válida'
         : 'Todos os tribunais foram consultados') + '</h1>' +
-      '<div class="aviso a-' + (falhas.length ? 'ALTO' : 'BAIXO') + '">' +
-        '<span aria-hidden="true">' + (falhas.length ? '!' : '✓') + '</span><span>' +
-        (falhas.length
-          ? '<strong>' + falhas.length + ' de ' + fontes.length +
-            ' fontes não responderam na última coleta.</strong>' +
-            'Os registros dessas fontes continuam sendo os da última consulta bem-sucedida — ' +
-            'não foram conferidos agora. Confira o site do tribunal antes de aplicar o que vier delas.'
-          : '<strong>As ' + fontes.length + ' fontes responderam na última coleta.</strong>' +
-            'Os registros do portal correspondem ao que os tribunais publicavam neste momento.') +
-      '</span></div>' +
+      (falhas.length
+        ? '<div class="aviso a-ALTO">' +
+          '<span aria-hidden="true">!</span><span>' +
+          '<strong>' + falhas.length + ' de ' + fontes.length +
+          ' fontes não responderam na última coleta.</strong>' +
+          'Os registros dessas fontes continuam sendo os da última consulta bem-sucedida — ' +
+          'não foram conferidos agora. Confira o site do tribunal antes de aplicar o que vier delas.' +
+          '</span></div>'
+        : '') +
     '</header>' +
     '<section class="secao"><h2>Atualização</h2><dl class="dados definicoes">' +
       campo('Última coleta', dataBR(ultimaColeta(), true)) +
@@ -3067,15 +3069,27 @@ function abaFontes() {
     '</dl></section>' +
     '<section class="secao"><h2>Fontes consultadas</h2><div class="fontes">';
 
+  /* Na tela, a firula da coleta ("dados reconhecidos e comparados…", "não
+     certifica a completude…", escrita em executarFonte_ no regras.js) não
+     aparece: aqui interessa se a fonte respondeu, quando e com quantos
+     registros. A ressalva vive na ficha de cada precedente. Só o extra de
+     verdade continua — ex. a data em que o STJ publicou os arquivos — e, em
+     caso de falha, o detalhe do erro, que aí sim importa. */
+  var FIRULA = 'Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.';
   ordenadas.forEach(function (f) {
     var ok = Boolean(f[2]);
     var url = urlSegura(f[6]);
+    var extra = ok
+      ? String(f[5] || '').replace(FIRULA, '').replace(/\s+/g, ' ').trim()
+      : String(f[5] || '');
     h += '<div class="fonte-item' + (ok ? '' : ' falha') + '">' +
       '<div class="fonte-cabeca"><strong>' + esc(f[0]) + '</strong>' +
         '<span class="fonte-estado">' + (ok ? 'Consultada' : 'Sem resposta') + '</span></div>' +
-      '<p class="fonte-nota">' + esc(f[5]) + '</p>' +
-      '<div class="fonte-linha">' + numero(f[4]) + ' registros · consulta em ' + esc(dataBR(f[1], true)) +
-        ' · última resposta ' + (ok ? esc(dataBR(f[2], true)) : 'nenhuma até agora') + '</div>' +
+      (extra ? '<p class="fonte-nota">' + esc(extra) + '</p>' : '') +
+      '<div class="fonte-linha">' + (ok
+        ? numero(f[4]) + ' registros · verificados em ' + esc(dataBR(f[2], true))
+        : numero(f[4]) + ' registros · tentativa em ' + esc(dataBR(f[1], true)) +
+          ' · última resposta ' + (f[2] ? esc(dataBR(f[2], true)) : 'nenhuma até agora')) + '</div>' +
       (url ? '<a class="link-fonte" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">Abrir a fonte ↗<span class="oculto"> (abre em nova aba)</span></a>' : '') +
     '</div>';
   });
