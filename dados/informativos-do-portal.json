@@ -22162,7 +22162,8 @@
   "observacoes": "Ramo: Direito Constitucional\nMatéria: Repartição de Competências; Direito Civil; Política de Seguros\nÓrgão: Plenário\nRelator: MIN. GILMAR MENDES",
   "processos": "1258/SP",
   "atualizadoEm": "2026-09-22T00:04:29.988Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-09-23T14:14:36.376Z"
  },
  {
   "id": "STJ-INFO-022630",
@@ -22451,5 +22452,39 @@
   "processos": "REsp 2.256.731-PB , Rel. Ministro Og Fernandes, Sexta Turma, por unanimidade, julgado em 1/9/2026, DJEN 11/9/2029.",
   "atualizadoEm": "2026-09-22T23:38:52.212Z",
   "anotacaoManual": ""
+ },
+ {
+  "id": "STF-INFO-1229-ADI7815",
+  "tribunal": "STF",
+  "tipo": "Informativo",
+  "numero": "Informativo STF 1229",
+  "questao": "Fundo de Combate e Erradicação da Pobreza: adicional de 2% da alíquota do ICMS incidente sobre serviços de telecomunicações",
+  "area": "Fazenda Pública",
+  "situacao": "Destaque publicado",
+  "tese": "É constitucional a cobrança de adicional de ICMS destinado ao Fundo de Combate à Pobreza sobre serviços de telecomunicações prevista em legislação estadual anterior à Lei Complementar nº 194/2022, mas sua eficácia fica suspensa a partir da superveniência dessa lei complementar.",
+  "publicacao": "14/09/2026",
+  "fonte": "https://www.stf.jus.br/arquivo/cms/informativoSTF/anexo/Informativo_PDF/Informativo_stf_1229.pdf",
+  "origem": "STF — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "Ramo: Direito Tributário\nMatéria: Impostos; Adicional Sobre o ICMS; Serviços de Telecomunicações; Financiamento do Fundo de Combate e Erradicação da Pobreza\n\n\nÓrgão: Plenário\nRelator: MIN. CÁRMEN LÚCIA",
+  "processos": "ADI 7815/MT",
+  "atualizadoEm": "2026-09-23T23:38:01.983Z"
+ },
+ {
+  "id": "STF-INFO-1229-ADPF1258",
+  "tribunal": "STF",
+  "tipo": "Informativo",
+  "numero": "Informativo STF 1229",
+  "questao": "Política de seguros automotivos: vedação à aquisição direta de peças de reposição de veículos pelas seguradoras",
+  "area": "Cível",
+  "situacao": "Destaque publicado",
+  "tese": "É inconstitucional – por invadir a competência privativa da União para legislar sobre direito civil e política de seguros (CF/1988, art. 22, I e VII) – lei municipal que: (i) para as companhias seguradoras, veda a aquisição direta de peças de reposição, a serem utilizadas nos serviços de funilaria e pintura de veículos sinistrados; (ii) para o consumidor, garante a escolha de peças originais ou de qualidade similar e a livre escolha de oficina prestadora dos serviços.",
+  "publicacao": "04/09/2026",
+  "fonte": "https://www.stf.jus.br/arquivo/cms/informativoSTF/anexo/Informativo_PDF/Informativo_stf_1229.pdf",
+  "origem": "STF — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "Ramo: Direito Constitucional\nMatéria: Repartição de Competências; Direito Civil; Política de Seguros\nÓrgão: Plenário\nRelator: MIN. GILMAR MENDES",
+  "processos": "ADPF 1258/SP",
+  "atualizadoEm": "2026-09-23T23:38:01.983Z"
  }
 ]
