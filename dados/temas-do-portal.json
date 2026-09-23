@@ -69463,7 +69463,8 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Dados parcialmente recuperados via sistema Athos.Controvérsia 819/STJ.ProAfR 549/STJ. Afetação na sessão eletrônica iniciada em 26/08/2026 e finalizada em 01/09/2026 (Segunda Seção).\n\nA data do trânsito não é fornecida neste arquivo. As informações complementares podem conter determinações históricas de suspensão.",
   "processos": "REsp 2248247 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2252171 | Julgamento: não informado | Publicação: não informada | ED: não informados",
-  "atualizadoEm": "2026-09-22T23:38:12.870Z"
+  "atualizadoEm": "2026-09-22T23:38:12.870Z",
+  "anotacaoManual": ""
  },
  {
   "id": "TJMG-IRDR-114",
@@ -69476,13 +69477,14 @@
   "origem": "TJMG — RUPE",
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "area": "Transversal / a conferir",
-  "observacoes": "Suspensão Geral: .\nReferência Legislativa: .\nData última atualização: 22/09/2026",
+  "observacoes": "Suspensão Geral: .\nReferência Legislativa: .\nData última atualização: 23/09/2026",
   "tese": ".",
-  "suspensao": "Não houve a determinação de suspensão das ações sobre o tema, no acórdão da admissão do IRDR. O Relator, Des. Sérgio André da Fonseca Xavier, asseverou o afastamento da \"ordem de suspensão automática geral e autorizar o prosseguimento regular de todas as ações de cobrança, execuções e cumprimentos de sentença de honorários advocatícios em curso no Estado de Minas Gerais, dispensando-se os credores do adiantamento prévio das exações e taxas objeto da presente controvérsia interpretativa, relegando-se o seu recolhimento de forma diferida para o final de cada processo.\"",
-  "processos": "Paradigma: 1.0000.26.418258-5/001 | Classe: 600 - IRDR - Cv | Órgão Julgador: Segunda Seção | Relator: Sérgio André da Fonseca Xavier | Data de Admissão: 22/09/2026 | Julgado em:  | Acórdão Publicado em:  | Embargos de Declaração:  | Trânsito em Julgado:  | Data última atualização: 22/09/2026",
+  "suspensao": "Não houve a determinação de suspensão das ações sobre o tema, no acórdão da admissão do IRDR. O Relator, Des. Sérgio André da Fonseca Xavier, asseverou o afastamento da ordem de suspensão automática geral e autorizou \"o prosseguimento regular de todas as ações de cobrança, execuções e cumprimentos de sentença de honorários advocatícios em curso no Estado de Minas Gerais, dispensando-se os credores do adiantamento prévio das exações e taxas objeto da presente controvérsia interpretativa, relegando-se o seu recolhimento de forma diferida para o final de cada processo.\"",
+  "processos": "Paradigma: 1.0000.26.418258-5/001 | Classe: 600 - IRDR - Cv | Órgão Julgador: Segunda Seção | Relator: Sérgio André da Fonseca Xavier | Data de Admissão: 22/09/2026 | Julgado em:  | Acórdão Publicado em:  | Embargos de Declaração:  | Trânsito em Julgado:  | Data última atualização: 22/09/2026\nParadigma: 1.0000.22.223405-6/005 | Classe: 263 - Agravo de Instrumento-Cv | Órgão Julgador:  | Relator: Sérgio André da Fonseca Xavier | Data de Admissão: 22/09/2026 | Julgado em:  | Acórdão Publicado em:  | Embargos de Declaração:  | Trânsito em Julgado:  | Data última atualização: 23/09/2026",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
-  "atualizadoEm": "2026-09-22T23:38:49.341Z"
+  "atualizadoEm": "2026-09-23T14:12:20.577Z",
+  "anotacaoManual": ""
  }
 ]
