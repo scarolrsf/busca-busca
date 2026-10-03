@@ -69494,7 +69494,7 @@
   "numero": "1486",
   "questao": "Recurso extraordinário em que se discute, à luz do artigo 22, XVI, da Constituição Federal, se os municípios detêm competência para fixar, no âmbito de seu regime estatutário, jornada de trabalho superior a 30 horas semanais para profissionais fisioterapeutas e terapeutas ocupacionais, em desacordo com o limite estabelecido pela Lei Federal nº 8.856/1994.",
   "area": "Fazenda Pública",
-  "situacao": "Em julgamento",
+  "situacao": "Há repercussão geral com reafirmação de Jurisprudência Mérito julgado",
   "suspensao": "",
   "julgamento": "",
   "publicacao": "",
@@ -69507,7 +69507,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Competência dos municípios para fixar jornada de trabalho superior à definida em legislação federal para fisioterapeutas e terapeutas ocupacionais submetidos ao regime estatutário.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 10287-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Jornada de Trabalho\n10382-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Concurso Público / Edital | Anulação\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1555476",
-  "atualizadoEm": "2026-09-29T00:59:13.664Z",
+  "atualizadoEm": "2026-10-03T14:17:56.592Z",
   "anotacaoManual": ""
  },
  {
@@ -69517,7 +69517,7 @@
   "numero": "1487",
   "questao": "Descrição: Recursos extraordinários em que se discute, à luz dos artigos 5°; II; XXXVI; 6º; 37; e 205, da Constituição Federal, a aplicação retroativa das Leis nº 13.530/2017, 14.375/2022 e 14.719/2023 aos contratos de financiamento estudantil celebrados no âmbito do Fundo de Financiamento Estudantil - FIES, para fins de incidência de taxa de juros zero, redução do saldo devedor ou renegociação da dívida.",
   "area": "Cível",
-  "situacao": "Em julgamento",
+  "situacao": "Não há repercussão geral (questão infraconstitucional) Analisada Preliminar de Repercussão Geral",
   "suspensao": "",
   "julgamento": "",
   "publicacao": "",
@@ -69530,7 +69530,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Revisão dos encargos financeiros de contratos de financiamento estudantil celebrados no âmbito do FIES.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 12844-DIREITO À EDUCAÇÃO | Permanência | Programas de Bolsas e Financiamento Estudantil com Recursos Públicos | Fies\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 1620532",
-  "atualizadoEm": "2026-09-29T00:59:13.664Z",
+  "atualizadoEm": "2026-10-03T14:17:56.592Z",
   "anotacaoManual": ""
  },
  {
@@ -69681,6 +69681,7 @@
   "pertinencia": "IUJ da Turma de Uniformização",
   "observacoes": "Identificador incompleto na fonte oficial: 1.0000.24.410808.0.000. Conferir antes de citar. \nRelatoria: Des.(a) Lilian Maciel",
   "processos": "1.0000.24.410808.0.000",
-  "atualizadoEm": "2026-10-03T00:22:42.615Z"
+  "atualizadoEm": "2026-10-03T00:22:42.615Z",
+  "anotacaoManual": ""
  }
 ]
