@@ -1,17 +1,17 @@
 [
  [
   "STJ — temas e processos",
-  "2026-10-06T15:50:12.654Z",
-  "2026-10-06T15:50:12.654Z",
+  "2026-10-07T00:34:24.092Z",
+  "2026-10-07T00:34:24.092Z",
   "Consulta concluída",
   "1496",
-  "O STJ publicou estes arquivos em 05/10/2026. Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "O STJ publicou estes arquivos em 06/10/2026. Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://dadosabertos.web.stj.jus.br/dataset/4238da2f-c07b-4c1a-b345-4402accacdcf/resource/df29da13-7d6b-41ba-ad96-cd1a5bbd191c/download/temas.csv"
  ],
  [
   "TJMG — IUJ",
-  "2026-10-06T15:51:43.715Z",
-  "2026-10-06T15:51:43.715Z",
+  "2026-10-07T00:34:26.651Z",
+  "2026-10-07T00:34:26.651Z",
   "Consulta concluída",
   "54",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-10-06T15:51:45.078Z",
-  "2026-10-06T15:51:45.078Z",
+  "2026-10-07T00:34:27.853Z",
+  "2026-10-07T00:34:27.853Z",
   "Consulta concluída",
   "173",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,17 +28,17 @@
  ],
  [
   "STJ — informativos",
+  "2026-10-07T00:36:10.900Z",
   "2026-10-06T15:52:14.300Z",
-  "2026-10-06T15:52:14.300Z",
-  "Consulta concluída",
-  "10",
-  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "Falha / cobertura pendente",
+  "0",
+  "Em 3 tentativas: Destaque STJ incompleto: 022661",
   "https://scon.stj.jus.br/jurisprudencia/externo/informativo/?aplicacao=informativo"
  ],
  [
   "STF — repercussão geral",
-  "2026-10-06T15:52:28.348Z",
-  "2026-10-06T15:52:28.348Z",
+  "2026-10-07T00:36:10.901Z",
+  "2026-10-07T00:36:10.901Z",
   "Consulta concluída",
   "1489",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -46,8 +46,8 @@
  ],
  [
   "STF — informativos",
-  "2026-10-06T15:53:44.068Z",
-  "2026-10-06T15:53:44.068Z",
+  "2026-10-07T00:38:11.827Z",
+  "2026-10-07T00:38:11.827Z",
   "Consulta concluída",
   "1045",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
