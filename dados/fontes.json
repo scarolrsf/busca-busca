@@ -1,8 +1,8 @@
 [
  [
   "STJ — temas e processos",
-  "2026-10-17T23:00:13.256Z",
-  "2026-10-17T23:00:13.256Z",
+  "2026-10-18T13:09:26.546Z",
+  "2026-10-18T13:09:26.546Z",
   "Consulta concluída",
   "1496",
   "O STJ publicou estes arquivos em 09/10/2026. Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -10,8 +10,8 @@
  ],
  [
   "TJMG — IUJ",
-  "2026-10-17T23:02:40.441Z",
-  "2026-10-17T23:02:40.441Z",
+  "2026-10-18T13:11:46.554Z",
+  "2026-10-18T13:11:46.554Z",
   "Consulta concluída",
   "54",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-10-17T23:02:41.615Z",
-  "2026-10-17T23:02:41.615Z",
+  "2026-10-18T13:11:48.013Z",
+  "2026-10-18T13:11:48.013Z",
   "Consulta concluída",
   "174",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,8 +28,8 @@
  ],
  [
   "STJ — informativos",
-  "2026-10-17T23:03:02.297Z",
-  "2026-10-17T23:03:02.297Z",
+  "2026-10-18T13:12:20.229Z",
+  "2026-10-18T13:12:20.229Z",
   "Consulta concluída",
   "10",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -37,20 +37,20 @@
  ],
  [
   "STF — repercussão geral",
-  "2026-10-17T23:03:05.601Z",
-  "2026-10-13T16:53:50.919Z",
-  "Falha / cobertura pendente",
-  "0",
-  "Em 1 tentativa: A fonte respondeu HTTP 403. Resposta: 403 Forbidden 403 Forbidden A segunda via remota também não trouxe: API HTTP 403.",
+  "2026-10-18T13:12:21.535Z",
+  "2026-10-18T13:12:21.535Z",
+  "Consulta concluída",
+  "1494",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
  ],
  [
   "STF — informativos",
-  "2026-10-17T23:03:06.344Z",
-  "2026-10-13T16:54:46.745Z",
-  "Falha / cobertura pendente",
-  "0",
-  "Em 1 tentativa: A fonte respondeu HTTP 403. Resposta: 403 Forbidden 403 Forbidden A segunda via remota também não trouxe: API HTTP 403.",
+  "2026-10-18T13:12:53.522Z",
+  "2026-10-18T13:12:53.522Z",
+  "Consulta concluída",
+  "1048",
+  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://portal.stf.jus.br/textos/verTexto.asp?servico=informativoSTF"
  ]
 ]
