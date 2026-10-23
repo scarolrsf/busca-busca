@@ -1,8 +1,8 @@
 [
  [
   "STJ — temas e processos",
-  "2026-10-22T23:57:02.500Z",
-  "2026-10-22T23:57:02.500Z",
+  "2026-10-23T14:11:04.928Z",
+  "2026-10-23T14:11:04.928Z",
   "Consulta concluída",
   "1496",
   "O STJ publicou estes arquivos em 20/10/2026. Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -10,8 +10,8 @@
  ],
  [
   "TJMG — IUJ",
-  "2026-10-22T23:57:04.585Z",
-  "2026-10-22T23:57:04.585Z",
+  "2026-10-23T14:12:41.752Z",
+  "2026-10-23T14:12:41.752Z",
   "Consulta concluída",
   "54",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-10-22T23:57:05.977Z",
-  "2026-10-22T23:57:05.977Z",
+  "2026-10-23T14:12:43.601Z",
+  "2026-10-23T14:12:43.601Z",
   "Consulta concluída",
   "174",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,7 +28,7 @@
  ],
  [
   "STJ — informativos",
-  "2026-10-22T23:57:50.732Z",
+  "2026-10-23T14:13:27.422Z",
   "2026-10-20T00:13:13.450Z",
   "Falha / cobertura pendente",
   "0",
@@ -37,17 +37,17 @@
  ],
  [
   "STF — repercussão geral",
+  "2026-10-23T14:15:09.032Z",
   "2026-10-22T23:57:50.733Z",
-  "2026-10-22T23:57:50.733Z",
-  "Consulta concluída",
-  "1494",
-  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "Falha / cobertura pendente",
+  "0",
+  "Em 3 tentativas: A lista de temas do STF veio com apenas 902 linhas; a marcação de suspensão não foi aplicada.",
   "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
  ],
  [
   "STF — informativos",
-  "2026-10-22T23:58:53.614Z",
-  "2026-10-22T23:58:53.614Z",
+  "2026-10-23T14:15:09.032Z",
+  "2026-10-23T14:15:09.032Z",
   "Consulta concluída",
   "1052",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
