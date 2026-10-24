@@ -1,17 +1,17 @@
 [
  [
   "STJ — temas e processos",
-  "2026-10-24T00:06:11.351Z",
-  "2026-10-23T14:11:04.928Z",
-  "Falha / cobertura pendente",
-  "0",
-  "Em 3 tentativas: A fonte respondeu HTTP 504. Resposta: stj.jus.br | 504: Gateway time-out Gateway time-out Error code 504 Visit cloudflare.com for more information. 2026-10-24 00:06:11 UTC You Browser Working Ashburn Cloudflare Working dadosabertos.web.st",
+  "2026-10-24T13:14:21.307Z",
+  "2026-10-24T13:14:21.307Z",
+  "Consulta concluída",
+  "1496",
+  "O STJ publicou estes arquivos em 20/10/2026. Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
   "https://dadosabertos.web.stj.jus.br/dataset/4238da2f-c07b-4c1a-b345-4402accacdcf/resource/df29da13-7d6b-41ba-ad96-cd1a5bbd191c/download/temas.csv"
  ],
  [
   "TJMG — IUJ",
-  "2026-10-24T00:06:11.352Z",
-  "2026-10-24T00:06:11.352Z",
+  "2026-10-24T13:15:18.976Z",
+  "2026-10-24T13:15:18.976Z",
   "Consulta concluída",
   "54",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-10-24T00:06:12.624Z",
-  "2026-10-24T00:06:12.624Z",
+  "2026-10-24T13:15:20.646Z",
+  "2026-10-24T13:15:20.646Z",
   "Consulta concluída",
   "174",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,7 +28,7 @@
  ],
  [
   "STJ — informativos",
-  "2026-10-24T00:10:24.920Z",
+  "2026-10-24T13:16:28.852Z",
   "2026-10-20T00:13:13.450Z",
   "Falha / cobertura pendente",
   "0",
@@ -37,17 +37,17 @@
  ],
  [
   "STF — repercussão geral",
+  "2026-10-24T13:19:37.390Z",
   "2026-10-24T00:10:24.921Z",
-  "2026-10-24T00:10:24.921Z",
-  "Consulta concluída",
-  "1496",
-  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "Falha / cobertura pendente",
+  "0",
+  "Em 3 tentativas: A lista de temas do STF veio com apenas 977 linhas; a marcação de suspensão não foi aplicada.",
   "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
  ],
  [
   "STF — informativos",
-  "2026-10-24T00:11:21.041Z",
-  "2026-10-24T00:11:21.041Z",
+  "2026-10-24T13:19:37.391Z",
+  "2026-10-24T13:19:37.391Z",
   "Consulta concluída",
   "1052",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
