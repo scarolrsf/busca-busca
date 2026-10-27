@@ -968,12 +968,12 @@
   "pertinencia": "Selecionado na planilha inicial",
   "suspensao": "Processos nos Juizados Especiais, Processos nas Turmas Recursais\n\nA Presidente da Turma de Uniformização de Jurisprudência, Desa. Lílian Maciel, determinou a suspensão de processos em curso no sistema de Juizados Especiais nos seguintes termos: “a) A suspensão de todos os processos no Estado de Minas Gerais abrangendo a questão objeto do tema e em tramitação nos Juizados Especiais e Turmas Recursais até o julgamento deste incidente, nos termos do art. 982, I, do CPC; b) A suspensão se aplicará somente aos processos com a instrução probatória já encerrada.”",
   "julgamento": "2026-09-18",
-  "publicacao": "65",
-  "transito": "66",
+  "publicacao": "67",
+  "transito": "68",
   "fonte": "https://www.tjmg.jus.br/portal-tjmg/institucional/juizados-especiais/turma-recursal/",
   "processos": "1.0000.24.470858-2/000",
   "anotacaoManual": "",
-  "atualizadoEm": "2026-10-20T00:12:37.918Z",
+  "atualizadoEm": "2026-10-27T15:17:04.738Z",
   "admissao": "2025-06-17"
  },
  {
@@ -989,12 +989,12 @@
   "pertinencia": "Selecionado na planilha inicial",
   "suspensao": "Processos nos Juizados Especiais, Processos nas Turmas Recursais\n\nA Presidente da Turma de Uniformização de Jurisprudência, Desa. Lílian Maciel, determinou a suspensão de processos em curso no sistema de Juizados Especiais nos seguintes termos: “a) A suspensão de todos os processos no Estado de Minas Gerais abrangendo a questão objeto do tema e em tramitação nos Juizados Especiais e Turmas Recursais até o julgamento deste incidente, nos termos do art. 982, I, do CPC; b) A suspensão se aplicará somente aos processos com a instrução probatória já encerrada.”",
   "julgamento": "2026-09-18",
-  "publicacao": "71",
+  "publicacao": "73",
   "transito": "48",
   "fonte": "https://www.tjmg.jus.br/portal-tjmg/institucional/juizados-especiais/turma-recursal/",
   "processos": "1.0000.24.482556-8/000",
   "anotacaoManual": "",
-  "atualizadoEm": "2026-10-20T00:12:37.918Z",
+  "atualizadoEm": "2026-10-27T15:17:04.738Z",
   "admissao": "2025-06-27"
  },
  {
@@ -1023,7 +1023,7 @@
   "tribunal": "TJMG",
   "tipo": "IUJ",
   "numero": "1.0000.24.279369-3/000",
-  "questao": " (i) definir o marco temporal e as condições normativas aplicáveis aos\nmilitares estaduais para a aquisição do adicional trintenário, especificamente se a regra da ECE nº 09/1993\natua como óbice à concessão; e (ii) saber se o militar estadual que ingressou no serviço público antes da\nEmenda Constitucional Estadual nº 59/2003 possui o direito garantido à percepção do benefício, mesmo\nmediante o cômputo de tempo de serviço averbado da iniciativa privada.",
+  "questao": " (i) definir o marco temporal e as condições normativas aplicáveis aos militares estaduais para a aquisição do adicional trintenário, especificamente se a regra da ECE nº 09/1993\natua como óbice à concessão; e (ii) saber se o militar estadual que ingressou no serviço público antes da Emenda Constitucional Estadual nº 59/2003 possui o direito garantido à percepção do benefício, mesmo mediante o cômputo de tempo de serviço averbado da iniciativa privada.",
   "area": "Transversal / a conferir",
   "situacao": "Acórdão Publicado",
   "observacoes": "Relatoria: José Leão Santiago Campos ",
@@ -1037,7 +1037,7 @@
   "fonte": "https://www.tjmg.jus.br/portal-tjmg/institucional/juizados-especiais/turma-recursal/",
   "processos": "1.0000.24.279369-3/000",
   "anotacaoManual": "",
-  "atualizadoEm": "2026-10-20T00:12:37.918Z",
+  "atualizadoEm": "2026-10-27T15:17:04.738Z",
   "admissao": "2025-08-07"
  },
  {
@@ -69887,5 +69887,26 @@
   "processos": "RE 1538549",
   "atualizadoEm": "2026-10-27T00:23:57.158Z",
   "anotacaoManual": ""
+ },
+ {
+  "id": "TJMG-IUJ-10000.24.422724-5/000",
+  "tribunal": "TJMG",
+  "tipo": "IUJ",
+  "numero": "10000.24.422724-5/000",
+  "questao": "adicional trintenário devido aos militares estaduais que ingressaram no serviço público até a data em que entrou em vigor a ECE nº 59/2003.",
+  "area": "Transversal / a conferir",
+  "situacao": "Admitido",
+  "admissao": "2025-07-30",
+  "suspensao": "Processos nas Turmas Recursais, Processos nos Juizados Especiais\n\nA Presidente da Turma de Uniformização de Jurisprudência, Desa. Lílian Maciel, determinou a suspensão de processos em curso no sistema de Juizados Especiais nos seguintes termos: “a) A suspensão de todos os processos no Estado de Minas Gerais abrangendo a questão objeto do tema e em tramitação nos Juizados Especiais e Turmas Recursais até o julgamento deste incidente, nos termos do art. 982, I, do CPC; b) A suspensão se aplicará somente aos processos com a instrução probatória já encerrada.”",
+  "julgamento": "",
+  "publicacao": "",
+  "transito": "",
+  "tese": "",
+  "fonte": "https://www.tjmg.jus.br/portal-tjmg/institucional/juizados-especiais/turma-recursal/",
+  "origem": "TJMG — acompanhamento IUJ",
+  "pertinencia": "IUJ da Turma de Uniformização",
+  "observacoes": "Identificador incompleto na fonte oficial: 10000.24.422724-5/000. Conferir antes de citar. \nRelatoria: Des.(a) Lilian Maciel",
+  "processos": "10000.24.422724-5/000",
+  "atualizadoEm": "2026-10-27T15:17:04.738Z"
  }
 ]
