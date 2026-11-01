@@ -1,8 +1,8 @@
 [
  [
   "STJ — temas e processos",
-  "2026-10-31T15:15:03.293Z",
-  "2026-10-31T15:15:03.293Z",
+  "2026-11-01T00:00:01.435Z",
+  "2026-11-01T00:00:01.435Z",
   "Consulta concluída",
   "1496",
   "O STJ publicou estes arquivos em 25/10/2026. Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -10,8 +10,8 @@
  ],
  [
   "TJMG — IUJ",
-  "2026-10-31T15:15:09.540Z",
-  "2026-10-31T15:15:09.540Z",
+  "2026-11-01T00:00:03.123Z",
+  "2026-11-01T00:00:03.123Z",
   "Consulta concluída",
   "55",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-10-31T15:15:10.940Z",
-  "2026-10-31T15:15:10.940Z",
+  "2026-11-01T00:00:04.395Z",
+  "2026-11-01T00:00:04.395Z",
   "Consulta concluída",
   "174",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,8 +28,8 @@
  ],
  [
   "STJ — informativos",
-  "2026-10-31T15:15:48.723Z",
-  "2026-10-31T15:15:48.723Z",
+  "2026-11-01T00:00:27.030Z",
+  "2026-11-01T00:00:27.030Z",
   "Consulta concluída",
   "11",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -37,17 +37,17 @@
  ],
  [
   "STF — repercussão geral",
+  "2026-11-01T00:02:13.653Z",
   "2026-10-31T15:16:26.525Z",
-  "2026-10-31T15:16:26.525Z",
-  "Consulta concluída",
-  "1141",
-  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "Falha / cobertura pendente",
+  "0",
+  "Em 3 tentativas: Tabela \"Todos os temas\" não localizada na página do STF.",
   "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
  ],
  [
   "STF — informativos",
-  "2026-10-31T15:17:22.304Z",
-  "2026-10-31T15:17:22.304Z",
+  "2026-11-01T00:02:13.654Z",
+  "2026-11-01T00:02:13.654Z",
   "Consulta concluída",
   "1056",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
