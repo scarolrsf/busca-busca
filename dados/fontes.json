@@ -1,8 +1,8 @@
 [
  [
   "STJ — temas e processos",
-  "2026-11-05T17:18:12.626Z",
-  "2026-11-05T17:18:12.626Z",
+  "2026-11-06T01:28:16.358Z",
+  "2026-11-06T01:28:16.358Z",
   "Consulta concluída",
   "1496",
   "O STJ publicou estes arquivos em 25/10/2026. Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -10,8 +10,8 @@
  ],
  [
   "TJMG — IUJ",
-  "2026-11-05T17:18:14.693Z",
-  "2026-11-05T17:18:14.693Z",
+  "2026-11-06T01:28:21.100Z",
+  "2026-11-06T01:28:21.100Z",
   "Consulta concluída",
   "55",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-11-05T17:18:15.944Z",
-  "2026-11-05T17:18:15.944Z",
+  "2026-11-06T01:28:22.549Z",
+  "2026-11-06T01:28:22.549Z",
   "Consulta concluída",
   "174",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,8 +28,8 @@
  ],
  [
   "STJ — informativos",
-  "2026-11-05T17:18:44.398Z",
-  "2026-11-05T17:18:44.398Z",
+  "2026-11-06T01:29:01.922Z",
+  "2026-11-06T01:29:01.922Z",
   "Consulta concluída",
   "10",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -37,17 +37,17 @@
  ],
  [
   "STF — repercussão geral",
+  "2026-11-06T01:30:51.319Z",
   "2026-11-05T17:18:47.039Z",
-  "2026-11-05T17:18:47.039Z",
-  "Consulta concluída",
-  "1498",
-  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "Falha / cobertura pendente",
+  "0",
+  "Em 3 tentativas: A lista de temas do STF veio com apenas 0 linhas; a marcação de suspensão não foi aplicada.",
   "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
  ],
  [
   "STF — informativos",
-  "2026-11-05T17:19:51.010Z",
-  "2026-11-05T17:19:51.010Z",
+  "2026-11-06T01:30:51.319Z",
+  "2026-11-06T01:30:51.319Z",
   "Consulta concluída",
   "1061",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
