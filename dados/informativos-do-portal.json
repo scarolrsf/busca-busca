@@ -23578,7 +23578,8 @@
   "observacoes": "DIREITO PROCESSUAL CIVIL",
   "processos": "AREsp 3.044.883-MG , Rel. Ministro Gurgel de Faria, Primeira Turma, por maioria, julgado em 1º/9/2026.",
   "atualizadoEm": "2026-11-04T01:12:58.619Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-10T16:58:18.531Z"
  },
  {
   "id": "STJ-INFO-022702",
@@ -23596,7 +23597,8 @@
   "observacoes": "DIREITO PROCESSUAL CIVIL",
   "processos": "AREsp 3.095.458-SP , Rel. Ministro Paulo Sérgio Domingues, Primeira Turma, por unanimidade, julgado em 20/10/2026.",
   "atualizadoEm": "2026-11-04T01:12:58.619Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-10T16:58:18.531Z"
  },
  {
   "id": "STJ-INFO-022708",
@@ -23614,7 +23616,8 @@
   "observacoes": "DIREITO TRIBUTÁRIO",
   "processos": "REsp 2.294.977-SC , Rel. Ministro Francisco Falcão, Segunda Turma, por unanimidade, julgado em 20/10/2026.",
   "atualizadoEm": "2026-11-04T01:12:58.619Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-10T16:58:18.531Z"
  },
  {
   "id": "STJ-INFO-022706",
@@ -23632,7 +23635,8 @@
   "observacoes": "DIREITO ADMINISTRATIVO",
   "processos": "REsp 2.209.648-RJ , Rel. Ministro Marco Aurélio Bellizze, Segunda Turma, por unanimidade, julgado em 20/10/2026.",
   "atualizadoEm": "2026-11-04T01:12:58.619Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-10T16:58:18.531Z"
  },
  {
   "id": "STJ-INFO-022694",
@@ -23650,7 +23654,8 @@
   "observacoes": "DIREITO NOTARIAL E REGISTRAL, DIREITO CIVIL",
   "processos": "REsp 2.189.786-TO , Rel. Ministra Nancy Andrighi, Terceira Turma, por unanimidade, julgado em 20/10/2026, DJEN de 26/10/2026.",
   "atualizadoEm": "2026-11-04T01:12:58.619Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-10T16:58:18.531Z"
  },
  {
   "id": "STJ-INFO-022695",
@@ -23668,7 +23673,8 @@
   "observacoes": "DIREITO DO CONSUMIDOR",
   "processos": "REsp 2.263.523-SP , Rel. Ministra Nancy Andrighi, Terceira Turma, por unanimidade, julgado em 20/10/2026, DJEN 26/10/2026.",
   "atualizadoEm": "2026-11-04T01:12:58.619Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-10T16:58:18.531Z"
  },
  {
   "id": "STJ-INFO-022736",
@@ -23686,7 +23692,8 @@
   "observacoes": "DIREITO CIVIL",
   "processos": "REsp 2.296.199-SC , Rel. Ministro Ricardo Villas Bôas Cueva, Terceira Turma, por unanimidade, julgado em 20/10/2026, DJEN 26/10/2026.",
   "atualizadoEm": "2026-11-04T01:12:58.619Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-10T16:58:18.531Z"
  },
  {
   "id": "STJ-INFO-022699",
@@ -23704,7 +23711,8 @@
   "observacoes": "DIREITO CIVIL",
   "processos": "REsp 1.890.939-MG , Rel. Ministro Luís Carlos Gambogi (Desembargador convocado do TJMG), Quarta Turma, por unanimidade, julgado em 20/10/2026.",
   "atualizadoEm": "2026-11-04T01:12:58.619Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-10T16:58:18.531Z"
  },
  {
   "id": "STJ-INFO-022739",
@@ -23722,7 +23730,8 @@
   "observacoes": "DIREITO PROCESSUAL CIVIL",
   "processos": "Processo em segredo de justiça, Rel. Ministro Raul Araújo, Quarta Turma, por unanimidade, julgado em 20/10/2026.",
   "atualizadoEm": "2026-11-04T01:12:58.619Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-10T16:58:18.531Z"
  },
  {
   "id": "STJ-INFO-022703",
@@ -23740,7 +23749,8 @@
   "observacoes": "DIREITO PENAL",
   "processos": "Processo em segredo de justiça, Rel. Ministra Nilsoni de Freitas, Sexta Turma, por unanimidade, julgado em 8/10/2026 e DJEN 13/10/2026.",
   "atualizadoEm": "2026-11-04T01:12:58.619Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-10T16:58:18.531Z"
  },
  {
   "id": "STF-INFO-1235-ADI6251",
@@ -23831,5 +23841,175 @@
   "processos": "RE 1495108/SP",
   "atualizadoEm": "2026-11-05T01:28:59.479Z",
   "anotacaoManual": ""
+ },
+ {
+  "id": "STJ-INFO-022728",
+  "tribunal": "STJ",
+  "tipo": "Informativo",
+  "numero": "Informativo STJ 909",
+  "questao": "Tribunal do Júri. Intimação do Ministério Público e da Defensoria Pública. Início do cômputo do prazo. Remessa dos autos à instituição. Necessidade. Tema da Relevância da Questão Federal 1403.",
+  "area": "Criminal",
+  "situacao": "Destaque publicado",
+  "publicacao": "2026-11-10",
+  "tese": "O termo inicial da contagem do prazo para impugnar decisão judicial proferida no Tribunal do Júri é, para o Ministério Público e para a Defensoria Pública, a data da entrega dos autos na repartição administrativa do órgão, sendo irrelevante que a intimação pessoal tenha se dado durante a sessão plenária, em cartório ou por mandado.",
+  "fonte": "https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT=022728",
+  "origem": "STJ — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "DIREITO PROCESSUAL PENAL",
+  "processos": "REsp 2.225.548-PA , Rel. Ministro Rogerio Schietti, Terceira Seção, por unanimidade, julgado em 8/10/2026 (RQF Tema 1403 ).",
+  "atualizadoEm": "2026-11-11T01:11:06.556Z"
+ },
+ {
+  "id": "STJ-INFO-022726",
+  "tribunal": "STJ",
+  "tipo": "Informativo",
+  "numero": "Informativo STJ 909",
+  "questao": "Remição da pena por estudo. Aprovação parcial no Enem. Fato gerador centrado no esforço intelectual. Remição proporcional à pontuação mínima por área de conhecimento. Vedação de nova remição pelo mesmo fato gerador. Tema 1270.",
+  "area": "Criminal",
+  "situacao": "Destaque publicado",
+  "publicacao": "2026-11-10",
+  "tese": "1) É cabível a remição proporcional da pena em favor da pessoa privada de liberdade que consiga aprovação parcial no Enem, assim entendida a obtenção, em ao menos uma das quatro áreas de conhecimento ou na redação, da pontuação mínima fixada pelo Inep para fins de certificação (atualmente, 450 pontos por área de conhecimento e 500 pontos na redação), vedada nova remição pelo mesmo fato gerador educacional, nos termos da Tese n. 3 do Tema Repetitivo n. 1.357 do STJ.\n2) A obtenção da pontuação mínima em cada área de conhecimento ou na redação corresponde a 20 dias de remição da pena, consideradas a base de cálculo de 1.200 horas e a razão de 1 dia de pena a cada 12 horas de estudo, de modo a totalizar 100 dias na hipótese de aprovação plena (art. 126, § 1º, I, da Lei n. 7.210/1984).\n3) O acréscimo de 1/3 previsto no art. 126, § 5º, da Lei n. 7.210/1984 pressupõe aprovação plena de que resulte a certificação da conclusão do ensino médio durante o cumprimento da pena.",
+  "fonte": "https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT=022726",
+  "origem": "STJ — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "EXECUÇÃO PENAL",
+  "processos": "REsp 2.101.592-SP , Rel. Ministro Rogerio Schietti, Terceira Seção, por unanimidade, julgado em 8/10/2026 (Repetitivo Tema 1270 ).\nREsp 2.115.433-SP , Rel. Ministro Rogerio Schietti, Terceira Seção, por unanimidade, julgado em 8/10/2026 (Repetitivo Tema 1270 ).",
+  "atualizadoEm": "2026-11-11T01:11:06.556Z"
+ },
+ {
+  "id": "STJ-INFO-022755",
+  "tribunal": "STJ",
+  "tipo": "Informativo",
+  "numero": "Informativo STJ 909",
+  "questao": "Ministério Público. Ação civil pública. Telefonia. Cobrança de serviços não solicitados. Interesses individuais homogêneos disponíveis. Ausência de interesse social qualificado. Inexistência de repercussão quantitativa ou qualitativa. Ilegitimidade ativa.",
+  "area": "Cível",
+  "situacao": "Destaque publicado",
+  "publicacao": "2026-11-10",
+  "tese": "O Ministério Público somente tem legitimidade ativa para ajuizar ação civil pública em defesa de interesses individuais homogêneos disponíveis quando demonstrado interesse social qualificado, aferível por critérios quantitativos (número significativo de lesados) ou qualitativos (natureza do dano ou impacto sistêmico).",
+  "fonte": "https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT=022755",
+  "origem": "STJ — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "DIREITO DO CONSUMIDOR, DIREITO PROCESSUAL CIVIL",
+  "processos": "EAREsp 222.660-MS , Rel. Ministro Raul Araújo, Corte Especial, por unanimidade, julgado em 4/11/2026.",
+  "atualizadoEm": "2026-11-11T01:11:06.556Z"
+ },
+ {
+  "id": "STJ-INFO-022737",
+  "tribunal": "STJ",
+  "tipo": "Informativo",
+  "numero": "Informativo STJ 909",
+  "questao": "Repartição de receitas de ICMS. Valor adicionado fiscal. Mercadorias produzidas por usina e comercializadas por intermédio de cooperativa sediada em outro município. Diferimento. Local de saída da mercadoria. Município do estabelecimento produtor.",
+  "area": "Fazenda Pública",
+  "situacao": "Destaque publicado",
+  "publicacao": "2026-11-10",
+  "tese": "No cálculo do Valor Adicionado Fiscal (VAF), para fins de repartição de receitas do ICMS com os Municípios, considera-se o Município em que situado o estabelecimento produtor como local de saída da mercadoria, ainda que haja a intermediação por uma Cooperativa, instalada em Município diverso, que atue com a responsabilidade de formalizar a venda, recolher o tributo diferido e emitir a documentação fiscal.",
+  "fonte": "https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT=022737",
+  "origem": "STJ — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "DIREITO TRIBUTÁRIO",
+  "processos": "REsp 2.212.566-AL , Rel. Ministro Gurgel De Faria, Primeira Turma, por unanimidade, julgado em 20/10/2026.",
+  "atualizadoEm": "2026-11-11T01:11:06.556Z"
+ },
+ {
+  "id": "STJ-INFO-022750",
+  "tribunal": "STJ",
+  "tipo": "Informativo",
+  "numero": "Informativo STJ 909",
+  "questao": "Servidor público. Demissão. Sobrestamento do processo disciplinar. Natureza procedimental. Prescrição da pretensão punitiva penal. Subsistência da sanção disciplinar autônoma. Ausência de vinculação do mérito administrativo ao resultado da ação penal. Independência entre as instâncias penal e administrativa.",
+  "area": "Criminal",
+  "situacao": "Destaque publicado",
+  "publicacao": "2026-11-10",
+  "tese": "A prescrição da pretensão punitiva penal afasta os efeitos da condenação criminal, inclusive a perda do cargo público dela decorrente, mas não implica, por si só, a desconstituição de penalidade de demissão aplicada em processo administrativo disciplinar com fundamento autônomo.",
+  "fonte": "https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT=022750",
+  "origem": "STJ — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "DIREITO ADMINISTRATIVO, DIREITO PROCESSUAL PENAL",
+  "processos": "RMS 75.683-SP , Rel. Ministro Benedito Gonçalves, Rel. para acórdão Ministra Regina Helena Costa, Primeira Turma, por maioria, julgado em 3/11/2026.",
+  "atualizadoEm": "2026-11-11T01:11:06.556Z"
+ },
+ {
+  "id": "STJ-INFO-022743",
+  "tribunal": "STJ",
+  "tipo": "Informativo",
+  "numero": "Informativo STJ 909",
+  "questao": "Controle sanitário de farmácias e drogarias. Presença física e contínua de farmacêutico responsável. Necessidade. Substituição por telessaúde. Impossibilidade.",
+  "area": "Fazenda Pública",
+  "situacao": "Destaque publicado",
+  "publicacao": "2026-11-10",
+  "tese": "A exigência do art. 15, § 1º, da Lei n. 5.991/1973 demanda a permanência física e contínua de farmacêutico, durante todo o horário de funcionamento das drogarias e farmácias, em cada estabelecimento, sendo insuficiente o atendimento remoto em regime de plantão.",
+  "fonte": "https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT=022743",
+  "origem": "STJ — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "DIREITO ADMINISTRATIVO, DIREITO DA SAÚDE",
+  "processos": "REsp 1.776.753-MG , Rel. Ministro Marco Aurélio Bellizze, Segunda Turma, por unanimidade, julgado em 3/11/2026.",
+  "atualizadoEm": "2026-11-11T01:11:06.556Z"
+ },
+ {
+  "id": "STJ-INFO-022762",
+  "tribunal": "STJ",
+  "tipo": "Informativo",
+  "numero": "Informativo STJ 909",
+  "questao": "Recuperação judicial. Adiantamento de contratos de câmbio (ACC). Encargos de inadimplência. Comissão de permanência. Natureza extraconcursal.",
+  "area": "Transversal / a conferir",
+  "situacao": "Destaque publicado",
+  "publicacao": "2026-11-10",
+  "tese": "Os encargos acessórios de inadimplência, inclusive a comissão de permanência, decorrentes de adiantamento de contratos de câmbio (ACC), possuem natureza extraconcursal, não podendo ser cindidos do crédito principal para fins de submissão à recuperação judicial.",
+  "fonte": "https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT=022762",
+  "origem": "STJ — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "RECUPERAÇÃO JUDICIAL, DIREITO EMPRESARIAL, DIREITO FALIMENTAR",
+  "processos": "AREsp 2.390.189-SP , Rel. Ministro João Otávio De Noronha, Quarta Turma, por unanimidade, julgado em 3/11/2026.",
+  "atualizadoEm": "2026-11-11T01:11:06.556Z"
+ },
+ {
+  "id": "STJ-INFO-022720",
+  "tribunal": "STJ",
+  "tipo": "Informativo",
+  "numero": "Informativo STJ 909",
+  "questao": "Tráfico de drogas. Majorante do art. 40, IV, da Lei n. 11.343/2006. Não configuração. Finalidade de guardar armamento para terceiro. Posse ilegal de arma de fogo. Desígnios autônomos. Concurso material.",
+  "area": "Criminal",
+  "situacao": "Destaque publicado",
+  "publicacao": "2026-11-10",
+  "tese": "A aplicação da majorante do art. 40, IV, da Lei n. 11.343/2006 exige nexo finalístico entre o uso da arma e a atividade de tráfico, com emprego do armamento para garantir o sucesso da mercancia; nessa hipótese, o delito de arma é absorvido. Ausente o nexo, o crime previsto na Lei n. 10.826/2003 configura crime autônomo, em concurso material com o tráfico.",
+  "fonte": "https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT=022720",
+  "origem": "STJ — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "DIREITO PENAL",
+  "processos": "AgRg no HC 1.092.822-RS , Rel. Ministro Rogerio Schietti, Sexta Turma, por unanimidade, julgado em 26/8/2026, DJEN 31/8/2026.",
+  "atualizadoEm": "2026-11-11T01:11:06.556Z"
+ },
+ {
+  "id": "STJ-INFO-022719",
+  "tribunal": "STJ",
+  "tipo": "Informativo",
+  "numero": "Informativo STJ 909",
+  "questao": "Autoria delitiva. Suspeito com traço distintivo (cicatriz). Condenação baseada exclusivamente em ato viciado de reconhecimento fotográfico. Ilegalidade. Inteligência do Tema 1258/STJ . Fragilidade probatória. Absolvição.",
+  "area": "Criminal",
+  "situacao": "Destaque publicado",
+  "publicacao": "2026-11-10",
+  "tese": "Em casos nos quais o suspeito tem algum traço distintivo, como tatuagem ou cicatriz, apesar de ser difícil conseguir dublês com a mesma característica, é possível tentar ocultar a parte do corpo em que há a marca distintiva em todos os indivíduos exibidos ao reconhecedor de modo a não gerar induzimento em relação a um deles.",
+  "fonte": "https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT=022719",
+  "origem": "STJ — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "DIREITO PROCESSUAL PENAL",
+  "processos": "AgRg no HC 1.056.253-PE , Rel. Ministro Rogerio Schietti, Sexta Turma, por maioria, julgado em 4/8/2026, DJEN 14/9/2026.",
+  "atualizadoEm": "2026-11-11T01:11:06.556Z"
+ },
+ {
+  "id": "STJ-INFO-022763",
+  "tribunal": "STJ",
+  "tipo": "Informativo",
+  "numero": "Informativo STJ 909",
+  "questao": "Embriaguez ao volante. Art. 306, § 1º, I, do CTB. Incidência da agravante do art. 298, III, do CTB. Ausência de habilitação. Circunstância autônoma. Inexistência de bis in idem . Submissão voluntária ao teste do etilômetro. Produção de prova pericial. Ausência de declaração confessória. Atenuante da confissão espontânea. Não incidência.",
+  "area": "Criminal",
+  "situacao": "Destaque publicado",
+  "publicacao": "2026-11-10",
+  "tese": "1. A concordância do investigado com a realização do teste do etilômetro, embora viabilize a produção de prova pericial, não configura confissão apta a ensejar o reconhecimento da circunstância atenuante.\n2. A agravante do art. 298, III, do Código de Trânsito incide quando o agente pratica crime de trânsito sem possuir Permissão para Dirigir ou Carteira Nacional de Habilitação, circunstância que não integra o tipo penal do art. 306 do CTB, razão pela qual não configura bis in idem .",
+  "fonte": "https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT=022763",
+  "origem": "STJ — informativos",
+  "pertinencia": "Possível pertinência — classificação automática ampla",
+  "observacoes": "DIREITO PENAL",
+  "processos": "REsp 2.266.601-DF , Rel. Ministro Sebastião Reis Júnior, Sexta Turma, por unanimidade, julgado em 16/9/2026, DJEN 23/9/2026.",
+  "atualizadoEm": "2026-11-11T01:11:06.556Z"
  }
 ]
