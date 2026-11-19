@@ -1,8 +1,8 @@
 [
  [
   "STJ — temas e processos",
-  "2026-11-18T17:56:10.893Z",
-  "2026-11-18T17:56:10.893Z",
+  "2026-11-19T02:28:29.940Z",
+  "2026-11-19T02:28:29.940Z",
   "Consulta concluída",
   "1495",
   "O STJ publicou estes arquivos em 18/11/2026. Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -10,7 +10,7 @@
  ],
  [
   "TJMG — IUJ",
-  "2026-11-18T17:56:32.474Z",
+  "2026-11-19T02:28:51.355Z",
   "2026-11-11T01:10:39.811Z",
   "Falha / cobertura pendente",
   "0",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-11-18T17:56:32.475Z",
-  "2026-11-18T17:56:32.475Z",
+  "2026-11-19T02:28:51.356Z",
+  "2026-11-19T02:28:51.356Z",
   "Consulta concluída",
   "174",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,7 +28,7 @@
  ],
  [
   "STJ — informativos",
-  "2026-11-18T17:57:28.692Z",
+  "2026-11-19T02:30:05.815Z",
   "2026-11-18T02:50:31.686Z",
   "Falha / cobertura pendente",
   "0",
@@ -37,17 +37,17 @@
  ],
  [
   "STF — repercussão geral",
+  "2026-11-19T02:32:51.652Z",
   "2026-11-18T17:58:04.016Z",
-  "2026-11-18T17:58:04.016Z",
-  "Consulta concluída",
-  "1193",
-  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "Falha / cobertura pendente",
+  "0",
+  "Em 3 tentativas: A tabela de temas do STF veio com apenas 789 linhas; a base anterior foi preservada.",
   "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
  ],
  [
   "STF — informativos",
-  "2026-11-18T17:59:51.023Z",
-  "2026-11-18T17:59:51.023Z",
+  "2026-11-19T02:32:51.653Z",
+  "2026-11-19T02:32:51.653Z",
   "Consulta concluída",
   "1071",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
