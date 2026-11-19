@@ -29840,7 +29840,7 @@
   "numero": "1305",
   "questao": "Definir:a) se a União deve figurar no polo passivo de demanda em que se pretende a revisão da Tabela de Procedimentos Ambulatoriais e Hospitalares do Sistema Único de Saúde - SUS;b) a (in)existência de litisconsórcio passivo necessário entre os entes federativos para integrarem a lide; ec) se é possível equiparar os valores da Tabela de Procedimentos Ambulatoriais e Hospitalares do Sistema Único de Saúde - SUS aos estabelecidos pela Agência da Nacional de Saúde - ANS (TUNEP/IVR), com o objetivo de preservar o equilíbrio econômico-financeiro de contrato ou convênio firmado com hospitais privados, para prestação de serviços de saúde em caráter complementar.",
   "area": "Fazenda Pública",
-  "situacao": "Afetado",
+  "situacao": "Cancelado",
   "suspensao": "Há determinação de suspensão do processamento de todos os processos pendentes, individuais ou coletivos, que versem sobre a mesma matéria e tramitem no território nacional, nos termos do art. 1.037, II, do CPCP/15.",
   "julgamento": "",
   "publicacao": "",
@@ -29849,8 +29849,8 @@
   "origem": "STJ — dados abertos",
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "RRC de Origem (art. 1030, IV e art. 1036, §1º, do CPC/15).Afetação na sessão eletrônica iniciada em 11/12/2024 e finalizada em 17/12/2024 (Primeira Seção).Vide Controvérsia n. 535/STJ.\n\na) Legitimidade da União para figurar no polo passivo de demanda em que se pretende a revisão da Tabela de Procedimentos Ambulatoriais e Hospitalares do Sistema Único de Saúde (SUS) e b) preservação do equilíbrio econômico-financeiro de contrato ou convênio firmado com hospitais privados, para prestação de serviços de saúde em caráter complementar, mediante equiparação de valores à Tabela Única Nacional de Equivalência de Procedimentos (Tunep).\n\nA data do trânsito não é fornecida neste arquivo. As informações complementares podem conter determinações históricas de suspensão.",
-  "processos": "REsp 2184221 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2176896 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2176897 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2182157 | Julgamento: não informado | Publicação: não informada | ED: não informados",
-  "atualizadoEm": "2026-11-16T19:29:47.253Z",
+  "processos": "REsp 2184221 | Julgamento: 2026-11-11 | Publicação: 2026-11-18 | ED: não informados\nREsp 2176896 | Julgamento: 2026-11-11 | Publicação: 2026-11-18 | ED: não informados\nREsp 2176897 | Julgamento: 2026-11-11 | Publicação: 2026-11-18 | ED: não informados\nREsp 2182157 | Julgamento: 2026-11-11 | Publicação: 2026-11-18 | ED: não informados",
+  "atualizadoEm": "2026-11-19T18:09:39.421Z",
   "anotacaoManual": ""
  },
  {
@@ -30820,17 +30820,17 @@
   "numero": "1352",
   "questao": "Definir se o direito à prorrogação do período de graça, decorrente da presença de mais de 120 (cento e vinte) contribuições, sem a perda da qualidade de segurado, deve ou não ser incorporado ao patrimônio jurídico do beneficiário para utilização por mais de uma vez, independente de novo período contributivo.",
   "area": "Fazenda Pública",
-  "situacao": "Mérito Julgado",
+  "situacao": "Acórdão Publicado",
   "suspensao": "Há determinação de suspender o processamento apenas dos recursos especiais e agravos em recurso especial nos processos pendentes que versem sobre a questão delimitada e em trâmite no território nacional.",
-  "julgamento": "",
-  "publicacao": "",
-  "tese": "*Aguardando a publicação do acórdão do julgamento de mérito. ",
+  "julgamento": "2026-11-11",
+  "publicacao": "2026-11-18",
+  "tese": "A prorrogação do período de graça pelo prazo de 24 (vinte e quatro) meses, prevista no artigo 15, \"caput\", II e § 1º da Lei 8.213/1991, se incorpora ao patrimônio jurídico previdenciário do segurado do RGPS uma vez efetuado o pagamento de mais de 120 (cento e vinte) contribuições mensais sem interrupção que acarrete a perda da qualidade de segurado, admitindo-se sua utilização de forma permanente, sem limitação de reingressos no RGPS e independentemente de novo período contributivo.",
   "fonte": "https://processo.stj.jus.br/repetitivos/temas_repetitivos/pesquisa.jsp?novaConsulta=true&tipo_pesquisa=T&cod_tema_inicial=1352&cod_tema_final=1352",
   "origem": "STJ — dados abertos",
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Dados parcialmente recuperados via sistema Athos.Afetação na sessão eletrônica iniciada em 28/5/2025 e finalizada em 3/6/2025 (Primeira Seção).Vide Controvérsia n. 699/STJ.\n\nA data do trânsito não é fornecida neste arquivo. As informações complementares podem conter determinações históricas de suspensão.",
-  "processos": "REsp 2188859 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2189004 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2171338 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2188858 | Julgamento: não informado | Publicação: não informada | ED: não informados",
-  "atualizadoEm": "2026-11-16T19:29:47.253Z",
+  "processos": "REsp 2188859 | Julgamento: 2026-11-11 | Publicação: 2026-11-18 | ED: não informados\nREsp 2189004 | Julgamento: 2026-11-11 | Publicação: 2026-11-18 | ED: não informados\nREsp 2171338 | Julgamento: 2026-11-11 | Publicação: 2026-11-18 | ED: não informados\nREsp 2188858 | Julgamento: 2026-11-11 | Publicação: 2026-11-18 | ED: não informados",
+  "atualizadoEm": "2026-11-19T18:09:39.421Z",
   "anotacaoManual": ""
  },
  {
@@ -32268,17 +32268,17 @@
   "numero": "1432",
   "questao": "Definir o teor do conceito de contemporaneidade da avaliação para identificação do preço atual de mercado em ação expropriatória direta ou indireta, para fins de fixar o momento a ser considerado na apuração do montante indenizatório, tanto em termos de parâmetro geral, quanto das exceções cabíveis.",
   "area": "Fazenda Pública",
-  "situacao": "Mérito Julgado",
+  "situacao": "Acórdão Publicado",
   "suspensao": "Há determinação de suspensão do processamento, nos termos do art. 1.037, II, do CPC/2015, de todos os processos, individuais ou coletivos, que versem sobre a mesma matéria, nos quais tenha havido a interposição de recurso especial ou de agravo em recurso especial, na segunda instância, ou que estejam em tramitação no STJ, observada a orientação prevista no art. 256-L do RISTJ.",
   "julgamento": "2026-10-14",
-  "publicacao": "",
-  "tese": "*Aguardando a publicação do acórdão do julgamento de mérito.",
+  "publicacao": "2026-11-18",
+  "tese": "A. Nas desapropriações em geral, a contemporaneidade entre o preço e o valor indenizatório é definida pelo momento básico de sua aferição técnica, em regra correspondente ao preço de mercado do bem quando da realização da perícia judicial.B1. Nas desapropriações por utilidade pública ou interesse social, o momento básico não pode ser superior a 1 (um) ano desde a propositura da ação judicial.B2. Nas desapropriações para fins de reforma agrária, o momento básico não pode exceder 90 (noventa) dias desde a propositura da ação judicial.B3. Nas indenizações por desapropriação indireta, o momento básico corresponde à data do apossamento administrativo. A perícia deve reconstituir o preço de mercado do bem nessa data, sem prejuízo da correção monetária e dos juros compensatórios na forma da lei.C. Quando o expropriante der causa à demora na realização da primeira perícia, por fato a ele imputável e reconhecido em decisão fundamentada, o limite temporal das teses B1, B2 e B3 é acrescido apenas do período de atraso que lhe for atribuível. A demora imputável ao expropriado, ao serviço judiciário ou a terceiro não afasta nem dilata o limite.D. As perícias realizadas após o prazo estipulado devem reportar-se ao preço de mercado do momento básico limite, mediante técnicas disponíveis no campo científico.E. Em qualquer situação, as variações de preço decorrentes da própria ação estatal devem ser identificadas em separado pelo perito e descontadas do valor indenizatório fixado em juízo.F1. As teses incidem nos casos de desapropriação direta com perícias determinadas a partir da publicação deste acórdão, isto é, com peritos nomeados a partir desse momento.F2. Nas desapropriações indiretas, a tese incide imediatamente sobre os casos em que o ponto tenha sido objeto de insurgência das partes e ainda não tenha sido definitivamente decidido.",
   "fonte": "https://processo.stj.jus.br/repetitivos/temas_repetitivos/pesquisa.jsp?novaConsulta=true&tipo_pesquisa=T&cod_tema_inicial=1432&cod_tema_final=1432",
   "origem": "STJ — dados abertos",
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Processos destacados de ofício pelo relator.Afetação na sessão eletrônica iniciada em 22/04/2026 e finalizada em 28/04/2026 (Primeira Seção). ProAfR 507/STJ. \n\nA data do trânsito não é fornecida neste arquivo. As informações complementares podem conter determinações históricas de suspensão.",
-  "processos": "REsp 1809093 | Julgamento: 2026-10-14 | Publicação: não informada | ED: não informados\nREsp 1814350 | Julgamento: 2026-10-14 | Publicação: não informada | ED: não informados\nREsp 1950981 | Julgamento: 2026-10-14 | Publicação: não informada | ED: não informados\nREsp 2004109 | Julgamento: 2026-10-14 | Publicação: não informada | ED: não informados",
-  "atualizadoEm": "2026-10-25T14:01:10.891Z",
+  "processos": "REsp 1809093 | Julgamento: 2026-10-14 | Publicação: 2026-11-18 | ED: não informados\nREsp 1814350 | Julgamento: 2026-10-14 | Publicação: 2026-11-18 | ED: não informados\nREsp 1950981 | Julgamento: 2026-10-14 | Publicação: 2026-11-18 | ED: não informados\nREsp 2004109 | Julgamento: 2026-10-14 | Publicação: 2026-11-18 | ED: não informados",
+  "atualizadoEm": "2026-11-19T18:09:39.421Z",
   "anotacaoManual": "",
   "boletim": "Informativo Semanal NUGEPNAC 12 (27/04/2026 a 09/05/2026)",
   "boletimUrl": "https://www.tjmg.jus.br/data/files/CD/C1/96/D9/2C81E910347E5FD99208CCA8/Informativo%20Semanal%20Nugepnac%20-%2012%20_27-04-2026%20a%2009-05-2026_.pdf"
@@ -63077,8 +63077,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "04/02/2022",
-  "dataDaTese": "31/03/2025",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "31/03/2025"
  },
  {
   "id": "STF-TEMA-1195",
@@ -63101,8 +63100,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/02/2022",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1196",
@@ -63127,8 +63125,7 @@
   "repercussaoGeral": "18/02/2022",
   "dataDaTese": "15/09/2025",
   "boletim": "Informativo Semanal NUGEPNAC 32 (29/09/2025 a 04/10/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/5F/86/71/AD/7DAB9910BCDF79990D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2032%20_29-09-2025%20a%2004-10-2025_.pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/5F/86/71/AD/7DAB9910BCDF79990D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2032%20_29-09-2025%20a%2004-10-2025_.pdf"
  },
  {
   "id": "STF-TEMA-1197",
@@ -63151,8 +63148,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/02/2022",
-  "dataDaTese": "18/02/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "18/02/2022"
  },
  {
   "id": "STF-TEMA-1198",
@@ -63176,8 +63172,7 @@
   "anotacaoManual": "",
   "repercussaoGeral": "18/02/2022",
   "dataDaTese": "",
-  "suspensaoNacionalDesde": "30/03/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "suspensaoNacionalDesde": "30/03/2022"
  },
  {
   "id": "STF-TEMA-1199",
@@ -63200,8 +63195,7 @@
   "atualizadoEm": "2026-11-16T00:56:27.955Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/02/2022",
-  "dataDaTese": "18/08/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "18/08/2022"
  },
  {
   "id": "STF-TEMA-1200",
@@ -63224,8 +63218,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/02/2022",
-  "dataDaTese": "26/06/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "26/06/2023"
  },
  {
   "id": "STF-TEMA-1201",
@@ -63248,8 +63241,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "04/03/2022",
-  "dataDaTese": "04/03/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "04/03/2022"
  },
  {
   "id": "STF-TEMA-1202",
@@ -63272,8 +63264,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "11/03/2022",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1203",
@@ -63296,8 +63287,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "11/03/2022",
-  "dataDaTese": "11/03/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "11/03/2022"
  },
  {
   "id": "STF-TEMA-1204",
@@ -63320,8 +63310,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/03/2022",
-  "dataDaTese": "07/08/2024",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "07/08/2024"
  },
  {
   "id": "STF-TEMA-1205",
@@ -63344,8 +63333,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/03/2022",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1206",
@@ -63368,8 +63356,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/04/2022",
-  "dataDaTese": "01/04/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "01/04/2022"
  },
  {
   "id": "STF-TEMA-1207",
@@ -63392,8 +63379,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/04/2022",
-  "dataDaTese": "01/04/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "01/04/2022"
  },
  {
   "id": "STF-TEMA-1208",
@@ -63416,8 +63402,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/04/2022",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1209",
@@ -63443,8 +63428,7 @@
   "dataDaTese": "18/02/2026",
   "suspensaoNacionalDesde": "26/04/2022",
   "boletim": "Informativo Semanal NUGEPNAC 06 (02/03/2026 a 07/03/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/A6/75/4E/02/0F3DC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2006%20_02-03-2026%20a%2007-03-2026_.pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/A6/75/4E/02/0F3DC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2006%20_02-03-2026%20a%2007-03-2026_.pdf"
  },
  {
   "id": "STF-TEMA-1210",
@@ -63467,8 +63451,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/04/2022",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1211",
@@ -63491,8 +63474,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/04/2022",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1212",
@@ -63515,8 +63497,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "29/04/2022",
-  "dataDaTese": "29/04/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "29/04/2022"
  },
  {
   "id": "STF-TEMA-1213",
@@ -63539,8 +63520,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "29/04/2022",
-  "dataDaTese": "29/04/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "29/04/2022"
  },
  {
   "id": "STF-TEMA-1214",
@@ -63563,8 +63543,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/05/2022",
-  "dataDaTese": "16/12/2024",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "16/12/2024"
  },
  {
   "id": "STF-TEMA-1215",
@@ -63587,8 +63566,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/05/2022",
-  "dataDaTese": "13/05/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "13/05/2022"
  },
  {
   "id": "STF-TEMA-1216",
@@ -63611,8 +63589,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/05/2022",
-  "dataDaTese": "13/05/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "13/05/2022"
  },
  {
   "id": "STF-TEMA-1217",
@@ -63637,8 +63614,7 @@
   "repercussaoGeral": "20/05/2022",
   "dataDaTese": "25/02/2026",
   "boletim": "Informativo Semanal NUGEPNAC 06 (02/03/2026 a 07/03/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/A6/75/4E/02/0F3DC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2006%20_02-03-2026%20a%2007-03-2026_.pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/A6/75/4E/02/0F3DC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2006%20_02-03-2026%20a%2007-03-2026_.pdf"
  },
  {
   "id": "STF-TEMA-1218",
@@ -63661,8 +63637,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "27/05/2022",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1219",
@@ -63685,8 +63660,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "03/06/2022",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1220",
@@ -63709,8 +63683,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "10/06/2022",
-  "dataDaTese": "31/03/2025",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "31/03/2025"
  },
  {
   "id": "STF-TEMA-1221",
@@ -63733,8 +63706,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/06/2022",
-  "dataDaTese": "17/06/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "17/06/2022"
  },
  {
   "id": "STF-TEMA-1222",
@@ -63757,8 +63729,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/07/2022",
-  "dataDaTese": "01/07/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "01/07/2022"
  },
  {
   "id": "STF-TEMA-1223",
@@ -63781,8 +63752,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "06/08/2022",
-  "dataDaTese": "06/08/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "06/08/2022"
  },
  {
   "id": "STF-TEMA-1224",
@@ -63805,8 +63775,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/08/2022",
-  "dataDaTese": "02/10/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "02/10/2023"
  },
  {
   "id": "STF-TEMA-1225",
@@ -63829,8 +63798,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/08/2022",
-  "dataDaTese": "13/08/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "13/08/2022"
  },
  {
   "id": "STF-TEMA-1226",
@@ -63853,8 +63821,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/08/2022",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1227",
@@ -63877,8 +63844,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/08/2022",
-  "dataDaTese": "13/08/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "13/08/2022"
  },
  {
   "id": "STF-TEMA-1228",
@@ -63901,8 +63867,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "20/08/2022",
-  "dataDaTese": "20/08/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "20/08/2022"
  },
  {
   "id": "STF-TEMA-1229",
@@ -63927,8 +63892,7 @@
   "repercussaoGeral": "20/08/2022",
   "dataDaTese": "26/11/2025",
   "boletim": "Informativo Semanal NUGEPNAC 09 (23/03/2026 a 28/03/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/17/72/AD/93/3104D910C16320D99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2009%20_23-03-2026%20a%2028-03-2026_.pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/17/72/AD/93/3104D910C16320D99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2009%20_23-03-2026%20a%2028-03-2026_.pdf"
  },
  {
   "id": "STF-TEMA-1230",
@@ -63951,8 +63915,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "02/09/2022",
-  "dataDaTese": "02/09/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "02/09/2022"
  },
  {
   "id": "STF-TEMA-1231",
@@ -63975,8 +63938,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "02/09/2022",
-  "dataDaTese": "02/09/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "02/09/2022"
  },
  {
   "id": "STF-TEMA-1232",
@@ -63986,7 +63948,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 5º, II, LIV e LV, 97 e 170 da Constituição Federal, acerca da possibilidade da inclusão, no polo passivo de execução trabalhista, de pessoa jurídica reconhecida como do grupo econômico, sem ter participado da fase de conhecimento, em alegado afastamento do artigo 513, § 5º, do CPC, em violação à Súmula Vinculante 10, e, ainda, independente de instauração de incidente de desconsideração da personalidade jurídica (artigos 133 a 137 e 795, § 4º, do CPC).",
   "area": "Transversal / a conferir",
   "situacao": "Acórdão de mérito publicado — Há repercussão geral",
-  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
+  "suspensao": "",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -63996,14 +63958,13 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Possibilidade de inclusão no polo passivo da lide, na fase de execução trabalhista, de empresa integrante de grupo econômico que não participou do processo de conhecimento.\nRelator: MIN. DIAS TOFFOLI\nRepercussão geral apreciada em: 09/09/2022\nData da tese: 13/10/2025\nAssuntos: 5356-DIREITO DO TRABALHO | Responsabilidade Solidária / Subsidiária | Grupo Econômico\n9148-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Liquidação / Cumprimento / Execução\n12974-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Liquidação / Cumprimento / Execução | Desconsideração da Personalidade Jurídica\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1387795",
-  "atualizadoEm": "2026-11-16T00:56:27.955Z",
+  "atualizadoEm": "2026-11-19T18:11:59.203Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/09/2022",
   "dataDaTese": "13/10/2025",
   "suspensaoNacionalDesde": "25/05/2023",
   "boletim": "Informativo Semanal NUGEPNAC 40 (01/12/2025 a 13/12/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/18/87/0E/98/D5C2B9101AB101B90D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2040%20_01-12-2025%20a%2013-12-2025_.pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/18/87/0E/98/D5C2B9101AB101B90D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2040%20_01-12-2025%20a%2013-12-2025_.pdf"
  },
  {
   "id": "STF-TEMA-1233",
@@ -64026,8 +63987,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/09/2022",
-  "dataDaTese": "09/09/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "09/09/2022"
  },
  {
   "id": "STF-TEMA-1234",
@@ -64037,7 +63997,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 23, II, 109, I, 196, 197 e 198, I, da Constituição Federal, a obrigatoriedade de a União constar do polo passivo de lide que verse sobre a obtenção de medicamento ou tratamento não incorporado nas políticas públicas do SUS, embora registrado pela Anvisa.",
   "area": "Fazenda Pública",
   "situacao": "Trânsito em Julgado — Há repercussão geral",
-  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
+  "suspensao": "",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -64047,13 +64007,12 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Legitimidade passiva da União e competência da Justiça Federal, nas demandas que versem sobre fornecimento de medicamentos registrados na Agência Nacional de Vigilância Sanitária - ANVISA, mas não padronizados no Sistema Único de Saúde – SUS.Anotações NUGEP\nTese de Repercussão Geral alterada de acordo com a Certidão de Julgamento da Sessão Extraordinária de 19/02/2026.\nRelator: MIN. GILMAR MENDES\nRepercussão geral apreciada em: 09/09/2022\nData da tese: 16/09/2024\nAssuntos: 11884-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Serviços | Saúde | Fornecimento de Medicamentos\n8829-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Jurisdição e Competência | Competência\n14067-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Formação, Suspensão e Extinção do Processo | Condições da Ação | Legitimidade Ativa e Passiva\n9991-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Responsabilidade da Administração\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1366243",
-  "atualizadoEm": "2026-11-16T00:56:27.955Z",
+  "atualizadoEm": "2026-11-19T18:11:59.203Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/09/2022",
   "dataDaTese": "16/09/2024",
   "boletim": "Informativo Semanal NUGEPNAC 05 (23/02/2026 a 28/02/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/7A/46/6E/D6/A00BC910CF170AC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2005%20_23-02-2026%20a%2028-02-2026_.pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/7A/46/6E/D6/A00BC910CF170AC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2005%20_23-02-2026%20a%2028-02-2026_.pdf"
  },
  {
   "id": "STF-TEMA-1235",
@@ -64076,8 +64035,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/09/2022",
-  "dataDaTese": "09/09/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "09/09/2022"
  },
  {
   "id": "STF-TEMA-1236",
@@ -64100,8 +64058,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "29/09/2022",
-  "dataDaTese": "01/02/2024",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "01/02/2024"
  },
  {
   "id": "STF-TEMA-1237",
@@ -64124,8 +64081,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "28/10/2022",
-  "dataDaTese": "11/04/2024",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "11/04/2024"
  },
  {
   "id": "STF-TEMA-1238",
@@ -64148,8 +64104,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/12/2022",
-  "dataDaTese": "09/12/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "09/12/2022"
  },
  {
   "id": "STF-TEMA-1239",
@@ -64172,8 +64127,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/12/2022",
-  "dataDaTese": "16/12/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "16/12/2022"
  },
  {
   "id": "STF-TEMA-1240",
@@ -64196,8 +64150,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/12/2022",
-  "dataDaTese": "16/12/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "16/12/2022"
  },
  {
   "id": "STF-TEMA-1241",
@@ -64220,8 +64173,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/12/2022",
-  "dataDaTese": "16/12/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "16/12/2022"
  },
  {
   "id": "STF-TEMA-1242",
@@ -64244,8 +64196,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/12/2022",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1243",
@@ -64268,8 +64219,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/12/2022",
-  "dataDaTese": "16/12/2022",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "16/12/2022"
  },
  {
   "id": "STF-TEMA-1244",
@@ -64294,8 +64244,7 @@
   "repercussaoGeral": "03/02/2023",
   "dataDaTese": "05/11/2025",
   "boletim": "Informativo Semanal NUGEPNAC 39 (24/11/2025 a 29/11/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/4F/53/40/AB/E6BDA910EE6199A99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2039%20_24-11-2025%20a%2029-11-2025_.pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/4F/53/40/AB/E6BDA910EE6199A99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2039%20_24-11-2025%20a%2029-11-2025_.pdf"
  },
  {
   "id": "STF-TEMA-1245",
@@ -64318,8 +64267,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "04/03/2023",
-  "dataDaTese": "04/03/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "04/03/2023"
  },
  {
   "id": "STF-TEMA-1246",
@@ -64342,8 +64290,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/03/2023",
-  "dataDaTese": "25/03/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "25/03/2023"
  },
  {
   "id": "STF-TEMA-1247",
@@ -64366,8 +64313,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/04/2023",
-  "dataDaTese": "13/04/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "13/04/2023"
  },
  {
   "id": "STF-TEMA-1248",
@@ -64390,8 +64336,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/04/2023",
-  "dataDaTese": "13/04/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "13/04/2023"
  },
  {
   "id": "STF-TEMA-1249",
@@ -64414,8 +64359,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/04/2023",
-  "dataDaTese": "18/04/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "18/04/2023"
  },
  {
   "id": "STF-TEMA-1250",
@@ -64438,8 +64382,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/04/2023",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1251",
@@ -64462,8 +64405,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1252",
@@ -64473,7 +64415,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 5º, II, 37, caput, e 170 da Constituição Federal, a definição dos contornos e limites da função normativa exercida pelas agências reguladoras, notadamente a iniciativa da Agência Nacional de Vigilância Sanitária (ANVISA) de proibir a importação e a comercialização no Brasil de produtos fumígenos derivados do tabaco que contenham as substâncias ou compostos que ela define como aditivos, conforme o previsto na Resolução da Diretoria Colegiada (RDC) nº 14/2012, considerado o julgamento da ADI 4.874/DF sem efeitos vinculantes.",
   "area": "Fazenda Pública",
   "situacao": "Acórdão de Repercussão Geral publicado — Há repercussão geral",
-  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
+  "suspensao": "",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -64483,12 +64425,11 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Competência da Agência Nacional de Vigilância Sanitária – ANVISA para editar normas sobre a restrição de importação e comercialização de cigarros, especificamente as contidas na Resolução da Diretoria Colegiada (RDC) nº 14/2012, no que proíbe o uso de certos aditivos.\nRelator: MIN. DIAS TOFFOLI\nRepercussão geral apreciada em: 03/06/2023\nAssuntos: 10001-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Atos Administrativos | Licenças | Comercialização sem Restrições de Produtos Industrializados\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 1348238",
-  "atualizadoEm": "2026-11-16T00:56:27.955Z",
+  "atualizadoEm": "2026-11-19T18:11:59.203Z",
   "anotacaoManual": "",
   "repercussaoGeral": "03/06/2023",
   "dataDaTese": "",
-  "suspensaoNacionalDesde": "11/09/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "suspensaoNacionalDesde": "11/09/2023"
  },
  {
   "id": "STF-TEMA-1253",
@@ -64511,8 +64452,7 @@
   "atualizadoEm": "2026-11-16T19:32:38.001Z",
   "anotacaoManual": "",
   "repercussaoGeral": "03/06/2023",
-  "dataDaTese": "12/03/2026",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "12/03/2026"
  },
  {
   "id": "STF-TEMA-1254",
@@ -64535,8 +64475,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/06/2023",
-  "dataDaTese": "13/06/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "13/06/2023"
  },
  {
   "id": "STF-TEMA-1255",
@@ -64559,8 +64498,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/08/2023",
-  "dataDaTese": "",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": ""
  },
  {
   "id": "STF-TEMA-1256",
@@ -64583,8 +64521,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/06/2023",
-  "dataDaTese": "17/06/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "17/06/2023"
  },
  {
   "id": "STF-TEMA-1257",
@@ -64607,8 +64544,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/06/2023",
-  "dataDaTese": "17/06/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "17/06/2023"
  },
  {
   "id": "STF-TEMA-1258",
@@ -64631,8 +64567,7 @@
   "atualizadoEm": "2026-10-29T16:02:21.417Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/08/2023",
-  "dataDaTese": "08/09/2026",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "08/09/2026"
  },
  {
   "id": "STF-TEMA-1259",
@@ -64655,8 +64590,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/08/2023",
-  "dataDaTese": "15/08/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "15/08/2023"
  },
  {
   "id": "STF-TEMA-1260",
@@ -64666,7 +64600,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 5º, LIII, e 93, IX, da Constituição Federal, entendimento do Tribunal de origem de que (i) a omissão de doação de recursos a companhas eleitorais (caixa dois), tipificada como crime eleitoral no art. 350 da Lei 4.737/1965, possa também ser objeto de investigação sobre a existência de eventual ato ímprobo do agente público, quando praticado no exercício do cargo e para beneficiar o doador (Lei 8.429/1992, na redação da Lei 14.230/2021); e (ii) havendo indícios da prática de atos de improbidade administrativa, seria competente a Justiça estadual, e não a eleitoral, para processar e julgar a lide ajuizada, no caso, pelo Ministério Público.",
   "area": "Fazenda Pública",
   "situacao": "Trânsito em Julgado — Há repercussão geral",
-  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
+  "suspensao": "",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -64676,13 +64610,12 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Crime eleitoral e improbidade administrativa: (I) a possibilidade de dupla responsabilização por crime eleitoral – “caixa dois” – (art. 350 do Código Eleitoral) e ato de improbidade administrativa (Lei 8.429/1992); (II) Justiça competente para julgar ação de improbidade administrativa por ato que também configure crime eleitoral. Art. 350 da Lei 4.737/1965.\nRelator: MIN. ALEXANDRE DE MORAES\nRepercussão geral apreciada em: 15/08/2023\nData da tese: 09/02/2026\nAssuntos: 10013-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Atos Administrativos | Improbidade Administrativa | Enriquecimento ilícito\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 1428742",
-  "atualizadoEm": "2026-11-16T00:56:27.955Z",
+  "atualizadoEm": "2026-11-19T18:11:59.203Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/08/2023",
   "dataDaTese": "09/02/2026",
   "boletim": "Informativo Semanal NUGEPNAC 07 (09/03/2026 a 14/03/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/DF/84/C0/6A/7F7FC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2007%20_09-03-2026%20a%2014-03-2026_..pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/DF/84/C0/6A/7F7FC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2007%20_09-03-2026%20a%2014-03-2026_..pdf"
  },
  {
   "id": "STF-TEMA-1261",
@@ -64705,8 +64638,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/08/2023",
-  "dataDaTese": "22/08/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "22/08/2023"
  },
  {
   "id": "STF-TEMA-1262",
@@ -64731,8 +64663,7 @@
   "repercussaoGeral": "22/08/2023",
   "dataDaTese": "22/08/2023",
   "boletim": "Informativo Semanal NUGEPNAC 05 (23/02/2026 a 28/02/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/7A/46/6E/D6/A00BC910CF170AC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2005%20_23-02-2026%20a%2028-02-2026_.pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/7A/46/6E/D6/A00BC910CF170AC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2005%20_23-02-2026%20a%2028-02-2026_.pdf"
  },
  {
   "id": "STF-TEMA-1263",
@@ -64755,8 +64686,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/08/2023",
-  "dataDaTese": "22/08/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "22/08/2023"
  },
  {
   "id": "STF-TEMA-1264",
@@ -64779,8 +64709,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/08/2023",
-  "dataDaTese": "22/08/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "22/08/2023"
  },
  {
   "id": "STF-TEMA-1265",
@@ -64803,8 +64732,7 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/08/2023",
-  "dataDaTese": "22/08/2023",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "dataDaTese": "22/08/2023"
  },
  {
   "id": "STF-TEMA-1266",
@@ -64829,8 +64757,7 @@
   "repercussaoGeral": "22/08/2023",
   "dataDaTese": "22/10/2025",
   "boletim": "Informativo Semanal NUGEPNAC 12 (27/04/2026 a 09/05/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/CD/C1/96/D9/2C81E910347E5FD99208CCA8/Informativo%20Semanal%20Nugepnac%20-%2012%20_27-04-2026%20a%2009-05-2026_.pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/CD/C1/96/D9/2C81E910347E5FD99208CCA8/Informativo%20Semanal%20Nugepnac%20-%2012%20_27-04-2026%20a%2009-05-2026_.pdf"
  },
  {
   "id": "STF-TEMA-1267",
@@ -64855,8 +64782,7 @@
   "repercussaoGeral": "02/09/2023",
   "dataDaTese": "19/05/2025",
   "boletim": "Informativo Semanal NUGEPNAC 13 (11/05/2026 a 16/05/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/F7/46/2B/AF/16C3E910FE32E2E99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2013%20_11-05-2026%20a%2016-05-2026_.pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/F7/46/2B/AF/16C3E910FE32E2E99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2013%20_11-05-2026%20a%2016-05-2026_.pdf"
  },
  {
   "id": "STF-TEMA-1268",
@@ -64881,8 +64807,7 @@
   "repercussaoGeral": "02/09/2023",
   "dataDaTese": "02/09/2023",
   "boletim": "Informativo Semanal NUGEPNAC 33 (06/10/2025 a 18/10/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/CE/F4/BC/E4/8E20A910F732BC999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2033%20_06-10-2025%20a%2018-10-2025_.pdf",
-  "verificadoEm": "2026-11-18T02:51:48.971Z"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/CE/F4/BC/E4/8E20A910F732BC999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2033%20_06-10-2025%20a%2018-10-2025_.pdf"
  },
  {
   "id": "STF-TEMA-1269",
