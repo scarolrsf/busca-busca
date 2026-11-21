@@ -1,8 +1,8 @@
 [
  [
   "STJ — temas e processos",
-  "2026-11-20T17:42:14.591Z",
-  "2026-11-20T17:42:14.591Z",
+  "2026-11-21T02:05:10.171Z",
+  "2026-11-21T02:05:10.171Z",
   "Consulta concluída",
   "1495",
   "O STJ publicou estes arquivos em 20/11/2026. Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -10,7 +10,7 @@
  ],
  [
   "TJMG — IUJ",
-  "2026-11-20T17:42:38.260Z",
+  "2026-11-21T02:05:31.798Z",
   "2026-11-11T01:10:39.811Z",
   "Falha / cobertura pendente",
   "0",
@@ -19,8 +19,8 @@
  ],
  [
   "TJMG — IRDR, IAC e GR",
-  "2026-11-20T17:42:38.262Z",
-  "2026-11-20T17:42:38.262Z",
+  "2026-11-21T02:05:31.799Z",
+  "2026-11-21T02:05:31.799Z",
   "Consulta concluída",
   "174",
   "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
@@ -28,7 +28,7 @@
  ],
  [
   "STJ — informativos",
-  "2026-11-20T17:43:30.483Z",
+  "2026-11-21T02:06:24.701Z",
   "2026-11-18T02:50:31.686Z",
   "Falha / cobertura pendente",
   "0",
@@ -37,20 +37,20 @@
  ],
  [
   "STF — repercussão geral",
+  "2026-11-21T02:08:45.142Z",
   "2026-11-20T17:43:30.484Z",
-  "2026-11-20T17:43:30.484Z",
-  "Consulta concluída",
-  "1069",
-  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "Falha / cobertura pendente",
+  "0",
+  "Em 3 tentativas: A fonte respondeu HTTP 503. Resposta: Service Unavailable Service Unavailable HTTP Error 503. The service is unavailable.",
   "https://portal.stf.jus.br/jurisprudenciaRepercussao/todostemas.asp"
  ],
  [
   "STF — informativos",
+  "2026-11-21T02:11:01.153Z",
   "2026-11-20T17:44:42.405Z",
-  "2026-11-20T17:44:42.405Z",
-  "Consulta concluída",
-  "1071",
-  "Dados reconhecidos e comparados com a base. A consulta não certifica a completude da fonte.",
+  "Falha / cobertura pendente",
+  "0",
+  "Em 3 tentativas: A fonte respondeu HTTP 504. Resposta: Error Page The requested URL was rejected. Please consult with your administrator. Your support ID is 25a603e2-bc10-441f-bc08-952f247f34d1 Error 504 - Gateway Timeout F5 site: wes-sea [Go Back]",
   "https://portal.stf.jus.br/textos/verTexto.asp?servico=informativoSTF"
  ]
 ]
