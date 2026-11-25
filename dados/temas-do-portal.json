@@ -1884,7 +1884,8 @@
   "atualizadoEm": "2026-11-12T02:15:14.041Z",
   "repercussaoGeral": "10/02/2024",
   "dataDaTese": "",
-  "suspensaoNacionalDesde": "08/03/2024"
+  "suspensaoNacionalDesde": "08/03/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1373",
@@ -1909,7 +1910,8 @@
   "repercussaoGeral": "22/02/2025",
   "dataDaTese": "22/02/2025",
   "boletim": "Informativo Semanal NUGEPNAC 35 (27/10/2025 a 01/11/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/74/30/93/06/7FA4A910FE6FB3A90D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2035%20_27-10-2025%20a%2001-11-2025_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/74/30/93/06/7FA4A910FE6FB3A90D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2035%20_27-10-2025%20a%2001-11-2025_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1420",
@@ -2732,7 +2734,8 @@
   "anotacaoManual": "",
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "repercussaoGeral": "27/11/2024",
-  "dataDaTese": "27/11/2024"
+  "dataDaTese": "27/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1471",
@@ -2835,7 +2838,8 @@
   "repercussaoGeral": "29/06/2024",
   "dataDaTese": "16/04/2026",
   "boletim": "Informativo Semanal NUGEPNAC 25 (17/08/2026 a 22/08/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/52/E1/5F/5E/FE430A10EA5AC10A9128CCA8/Informativo%20Semanal%20Nugepnac%20-%2025%20_17-08-2026%20a%2022-08-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/52/E1/5F/5E/FE430A10EA5AC10A9128CCA8/Informativo%20Semanal%20Nugepnac%20-%2025%20_17-08-2026%20a%2022-08-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STJ-TEMA-1224",
@@ -3346,7 +3350,8 @@
   "anotacaoManual": "",
   "atualizadoEm": "2026-11-10T03:26:05.333Z",
   "repercussaoGeral": "07/08/2024",
-  "dataDaTese": "02/09/2026"
+  "dataDaTese": "02/09/2026",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-837",
@@ -29813,7 +29818,7 @@
   "numero": "1304",
   "questao": "Definir se é possível, ou não, excluir o ICMS, o PIS e a COFINS da base de cálculo do IPI, a partir do conceito de 'valor da operação' inserto no art. 47, II, a, do CTN; e no art. 14, II, da Lei 4.502/64.",
   "area": "Fazenda Pública",
-  "situacao": "Acórdão Publicado - RE Pendente",
+  "situacao": "Trânsito em Julgado",
   "suspensao": "Há determinação de suspensão do processamento de todos os processos, individuais ou coletivos, que versem sobre a mesma matéria, nos quais tenha havido a interposição de recurso especial ou de agravo em recurso especial, na segunda instância, ou que estejam em tramitação no STJ, observada a orientação prevista no art. 256-L do RISTJ.",
   "julgamento": "2025-12-10",
   "publicacao": "2025-12-17",
@@ -29823,7 +29828,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Dados parcialmente recuperados via sistema Athos.Afetação na sessão eletrônica iniciada em 11/12/2024 e finalizada em 17/12/2024 (Primeira Seção).Vide Controvérsia n. 642/STJ.A situação do tema foi alterada de Acórdão Publicado - RE pendente para Acórdão Publicado diante do trânsito em julgado do ARE 1591780 (derivado do REsp 2143997/SP) em 11/04/2026 e a pendência de julgamento dos embargos de declaração no REsp 2143866/SP.\n\nInclusão do ICMS na base de cálculo do PIS e da COFINS.\n\nA data do trânsito não é fornecida neste arquivo. As informações complementares podem conter determinações históricas de suspensão.",
   "processos": "REsp 2143997 | Julgamento: 2025-12-10 | Publicação: 2025-12-17 | ED: não informados\nREsp 2119311 | Julgamento: 2025-12-10 | Publicação: 2025-12-17 | ED: não informados\nREsp 2143866 | Julgamento: 2025-12-10 | Publicação: 2025-12-17 | ED: 2026-09-21",
-  "atualizadoEm": "2026-10-01T00:29:24.336Z",
+  "atualizadoEm": "2026-11-25T19:06:46.174Z",
   "anotacaoManual": "",
   "boletim": "Informativo Semanal NUGEPNAC 01 (15/12/2025 a 10/01/2026)",
   "boletimUrl": "https://www.tjmg.jus.br/data/files/48/F1/C4/06/7A3BB91042A101B99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2001%20_15-12-2025%20a%2010-01-2026_.pdf"
@@ -30443,17 +30448,17 @@
   "numero": "1334",
   "questao": "Definir se o vale-transporte pago em pecúnia integra a base de cálculo da contribuição para o FGTS.",
   "area": "Fazenda Pública",
-  "situacao": "Mérito Julgado",
+  "situacao": "Acórdão Publicado",
   "suspensao": "Há determinação de suspender a tramitação de todos os processos em primeira e segunda instâncias envolvendo a matéria, inclusive no Superior Tribunal de Justiça, nos termos do art. 1.037, II, do CPC/2015.",
-  "julgamento": "",
-  "publicacao": "",
-  "tese": "*Aguardando a publicação do acórdão do julgamento de mérito. ",
+  "julgamento": "2026-11-11",
+  "publicacao": "2026-11-24",
+  "tese": "O vale-transporte pago em pecúnia integra, via de regra, a base de cálculo do Fundo de Garantia do Tempo de Serviço (FGTS).",
   "fonte": "https://processo.stj.jus.br/repetitivos/temas_repetitivos/pesquisa.jsp?novaConsulta=true&tipo_pesquisa=T&cod_tema_inicial=1334&cod_tema_final=1334",
   "origem": "STJ — dados abertos",
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "RRC de Origem (art. 1030, IV e art. 1036, §1º, do CPC/15).Afetação na sessão eletrônica iniciada em 19/32025 e finalizada em 25/3/2025 (Primeira Seção).Vide Controvérsia n. 386/STJ.\n\nA data do trânsito não é fornecida neste arquivo. As informações complementares podem conter determinações históricas de suspensão.",
-  "processos": "REsp 2116965 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2126604 | Julgamento: não informado | Publicação: não informada | ED: não informados",
-  "atualizadoEm": "2026-11-16T19:29:47.253Z",
+  "processos": "REsp 2116965 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2126604 | Julgamento: 2026-11-11 | Publicação: 2026-11-24 | ED: não informados",
+  "atualizadoEm": "2026-11-25T19:06:46.174Z",
   "anotacaoManual": ""
  },
  {
@@ -62513,7 +62518,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/10/2021",
-  "dataDaTese": "12/12/2023"
+  "dataDaTese": "12/12/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1171",
@@ -62536,7 +62542,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "24/09/2021",
-  "dataDaTese": "24/09/2021"
+  "dataDaTese": "24/09/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1172",
@@ -62559,7 +62566,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/10/2021",
-  "dataDaTese": "18/12/2022"
+  "dataDaTese": "18/12/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1173",
@@ -62582,7 +62590,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/10/2021",
-  "dataDaTese": "01/10/2021"
+  "dataDaTese": "01/10/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1174",
@@ -62605,7 +62614,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "08/10/2021",
-  "dataDaTese": "21/10/2024"
+  "dataDaTese": "21/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1175",
@@ -62628,7 +62638,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/10/2021",
-  "dataDaTese": "15/10/2021"
+  "dataDaTese": "15/10/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1176",
@@ -62651,7 +62662,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/10/2021",
-  "dataDaTese": "15/10/2021"
+  "dataDaTese": "15/10/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1177",
@@ -62674,7 +62686,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/10/2021",
-  "dataDaTese": "22/10/2021"
+  "dataDaTese": "22/10/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1178",
@@ -62697,7 +62710,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/10/2021",
-  "dataDaTese": "22/10/2021"
+  "dataDaTese": "22/10/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1179",
@@ -62720,7 +62734,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "29/10/2021",
-  "dataDaTese": "29/10/2021"
+  "dataDaTese": "29/10/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1180",
@@ -62745,7 +62760,8 @@
   "repercussaoGeral": "12/11/2021",
   "dataDaTese": "18/02/2026",
   "boletim": "Informativo Semanal NUGEPNAC 11 (13/04/2026 a 25/04/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/2C/D2/0C/FC/D30DD910A8E41CD99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2011%20_13-04-2026%20a%2025-04-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/2C/D2/0C/FC/D30DD910A8E41CD99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2011%20_13-04-2026%20a%2025-04-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1181",
@@ -62768,7 +62784,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/11/2021",
-  "dataDaTese": "12/11/2021"
+  "dataDaTese": "12/11/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1182",
@@ -62791,7 +62808,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/11/2021",
-  "dataDaTese": "12/05/2022"
+  "dataDaTese": "12/05/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1183",
@@ -62814,7 +62832,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/11/2021",
-  "dataDaTese": "19/11/2021"
+  "dataDaTese": "19/11/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1184",
@@ -62839,7 +62858,8 @@
   "repercussaoGeral": "26/11/2021",
   "dataDaTese": "19/12/2023",
   "boletim": "Informativo Semanal NUGEPNAC 33 (06/10/2025 a 18/10/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/CE/F4/BC/E4/8E20A910F732BC999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2033%20_06-10-2025%20a%2018-10-2025_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/CE/F4/BC/E4/8E20A910F732BC999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2033%20_06-10-2025%20a%2018-10-2025_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1185",
@@ -62862,7 +62882,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "03/12/2021",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1186",
@@ -62885,7 +62906,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "03/12/2021",
-  "dataDaTese": "02/06/2025"
+  "dataDaTese": "02/06/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1187",
@@ -62908,7 +62930,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "10/12/2021",
-  "dataDaTese": "10/12/2021"
+  "dataDaTese": "10/12/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1188",
@@ -62931,7 +62954,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "10/12/2021",
-  "dataDaTese": "10/12/2021"
+  "dataDaTese": "10/12/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1189",
@@ -62956,7 +62980,8 @@
   "repercussaoGeral": "10/12/2021",
   "dataDaTese": "01/09/2025",
   "boletim": "Informativo Semanal NUGEPNAC 33 (06/10/2025 a 18/10/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/CE/F4/BC/E4/8E20A910F732BC999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2033%20_06-10-2025%20a%2018-10-2025_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/CE/F4/BC/E4/8E20A910F732BC999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2033%20_06-10-2025%20a%2018-10-2025_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1190",
@@ -62979,7 +63004,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/12/2021",
-  "dataDaTese": "04/10/2023"
+  "dataDaTese": "04/10/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1191",
@@ -63002,7 +63028,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/12/2021",
-  "dataDaTese": "17/12/2021"
+  "dataDaTese": "17/12/2021",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1192",
@@ -63026,7 +63053,8 @@
   "anotacaoManual": "",
   "repercussaoGeral": "17/12/2021",
   "dataDaTese": "",
-  "suspensaoNacionalDesde": "19/07/2024"
+  "suspensaoNacionalDesde": "19/07/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1193",
@@ -63049,7 +63077,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "04/02/2022",
-  "dataDaTese": "04/02/2022"
+  "dataDaTese": "04/02/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1194",
@@ -63072,7 +63101,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "04/02/2022",
-  "dataDaTese": "31/03/2025"
+  "dataDaTese": "31/03/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1195",
@@ -63095,7 +63125,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/02/2022",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1196",
@@ -63120,7 +63151,8 @@
   "repercussaoGeral": "18/02/2022",
   "dataDaTese": "15/09/2025",
   "boletim": "Informativo Semanal NUGEPNAC 32 (29/09/2025 a 04/10/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/5F/86/71/AD/7DAB9910BCDF79990D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2032%20_29-09-2025%20a%2004-10-2025_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/5F/86/71/AD/7DAB9910BCDF79990D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2032%20_29-09-2025%20a%2004-10-2025_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1197",
@@ -63143,7 +63175,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/02/2022",
-  "dataDaTese": "18/02/2022"
+  "dataDaTese": "18/02/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1198",
@@ -63167,7 +63200,8 @@
   "anotacaoManual": "",
   "repercussaoGeral": "18/02/2022",
   "dataDaTese": "",
-  "suspensaoNacionalDesde": "30/03/2022"
+  "suspensaoNacionalDesde": "30/03/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1199",
@@ -63190,7 +63224,8 @@
   "atualizadoEm": "2026-11-16T00:56:27.955Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/02/2022",
-  "dataDaTese": "18/08/2022"
+  "dataDaTese": "18/08/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1200",
@@ -63213,7 +63248,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/02/2022",
-  "dataDaTese": "26/06/2023"
+  "dataDaTese": "26/06/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1201",
@@ -63236,7 +63272,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "04/03/2022",
-  "dataDaTese": "04/03/2022"
+  "dataDaTese": "04/03/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1202",
@@ -63259,7 +63296,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "11/03/2022",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1203",
@@ -63282,7 +63320,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "11/03/2022",
-  "dataDaTese": "11/03/2022"
+  "dataDaTese": "11/03/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1204",
@@ -63305,7 +63344,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/03/2022",
-  "dataDaTese": "07/08/2024"
+  "dataDaTese": "07/08/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1205",
@@ -63328,7 +63368,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/03/2022",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1206",
@@ -63351,7 +63392,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/04/2022",
-  "dataDaTese": "01/04/2022"
+  "dataDaTese": "01/04/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1207",
@@ -63374,7 +63416,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/04/2022",
-  "dataDaTese": "01/04/2022"
+  "dataDaTese": "01/04/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1208",
@@ -63397,7 +63440,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/04/2022",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1209",
@@ -63423,7 +63467,8 @@
   "dataDaTese": "18/02/2026",
   "suspensaoNacionalDesde": "26/04/2022",
   "boletim": "Informativo Semanal NUGEPNAC 06 (02/03/2026 a 07/03/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/A6/75/4E/02/0F3DC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2006%20_02-03-2026%20a%2007-03-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/A6/75/4E/02/0F3DC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2006%20_02-03-2026%20a%2007-03-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1210",
@@ -63446,7 +63491,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/04/2022",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1211",
@@ -63469,7 +63515,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/04/2022",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1212",
@@ -63492,7 +63539,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "29/04/2022",
-  "dataDaTese": "29/04/2022"
+  "dataDaTese": "29/04/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1213",
@@ -63515,7 +63563,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "29/04/2022",
-  "dataDaTese": "29/04/2022"
+  "dataDaTese": "29/04/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1214",
@@ -63538,7 +63587,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/05/2022",
-  "dataDaTese": "16/12/2024"
+  "dataDaTese": "16/12/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1215",
@@ -63561,7 +63611,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/05/2022",
-  "dataDaTese": "13/05/2022"
+  "dataDaTese": "13/05/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1216",
@@ -63584,7 +63635,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/05/2022",
-  "dataDaTese": "13/05/2022"
+  "dataDaTese": "13/05/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1217",
@@ -63609,7 +63661,8 @@
   "repercussaoGeral": "20/05/2022",
   "dataDaTese": "25/02/2026",
   "boletim": "Informativo Semanal NUGEPNAC 06 (02/03/2026 a 07/03/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/A6/75/4E/02/0F3DC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2006%20_02-03-2026%20a%2007-03-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/A6/75/4E/02/0F3DC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2006%20_02-03-2026%20a%2007-03-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1218",
@@ -63632,7 +63685,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "27/05/2022",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1219",
@@ -63655,7 +63709,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "03/06/2022",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1220",
@@ -63678,7 +63733,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "10/06/2022",
-  "dataDaTese": "31/03/2025"
+  "dataDaTese": "31/03/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1221",
@@ -63701,7 +63757,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/06/2022",
-  "dataDaTese": "17/06/2022"
+  "dataDaTese": "17/06/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1222",
@@ -63724,7 +63781,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/07/2022",
-  "dataDaTese": "01/07/2022"
+  "dataDaTese": "01/07/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1223",
@@ -63747,7 +63805,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "06/08/2022",
-  "dataDaTese": "06/08/2022"
+  "dataDaTese": "06/08/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1224",
@@ -63770,7 +63829,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/08/2022",
-  "dataDaTese": "02/10/2023"
+  "dataDaTese": "02/10/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1225",
@@ -63793,7 +63853,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/08/2022",
-  "dataDaTese": "13/08/2022"
+  "dataDaTese": "13/08/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1226",
@@ -63816,7 +63877,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/08/2022",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1227",
@@ -63839,7 +63901,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/08/2022",
-  "dataDaTese": "13/08/2022"
+  "dataDaTese": "13/08/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1228",
@@ -63862,7 +63925,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "20/08/2022",
-  "dataDaTese": "20/08/2022"
+  "dataDaTese": "20/08/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1229",
@@ -63887,7 +63951,8 @@
   "repercussaoGeral": "20/08/2022",
   "dataDaTese": "26/11/2025",
   "boletim": "Informativo Semanal NUGEPNAC 09 (23/03/2026 a 28/03/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/17/72/AD/93/3104D910C16320D99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2009%20_23-03-2026%20a%2028-03-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/17/72/AD/93/3104D910C16320D99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2009%20_23-03-2026%20a%2028-03-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1230",
@@ -63910,7 +63975,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "02/09/2022",
-  "dataDaTese": "02/09/2022"
+  "dataDaTese": "02/09/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1231",
@@ -63933,7 +63999,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "02/09/2022",
-  "dataDaTese": "02/09/2022"
+  "dataDaTese": "02/09/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1232",
@@ -63959,7 +64026,8 @@
   "dataDaTese": "13/10/2025",
   "suspensaoNacionalDesde": "25/05/2023",
   "boletim": "Informativo Semanal NUGEPNAC 40 (01/12/2025 a 13/12/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/18/87/0E/98/D5C2B9101AB101B90D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2040%20_01-12-2025%20a%2013-12-2025_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/18/87/0E/98/D5C2B9101AB101B90D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2040%20_01-12-2025%20a%2013-12-2025_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1233",
@@ -63982,7 +64050,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/09/2022",
-  "dataDaTese": "09/09/2022"
+  "dataDaTese": "09/09/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1234",
@@ -64007,7 +64076,8 @@
   "repercussaoGeral": "09/09/2022",
   "dataDaTese": "16/09/2024",
   "boletim": "Informativo Semanal NUGEPNAC 05 (23/02/2026 a 28/02/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/7A/46/6E/D6/A00BC910CF170AC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2005%20_23-02-2026%20a%2028-02-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/7A/46/6E/D6/A00BC910CF170AC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2005%20_23-02-2026%20a%2028-02-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1235",
@@ -64030,7 +64100,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/09/2022",
-  "dataDaTese": "09/09/2022"
+  "dataDaTese": "09/09/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1236",
@@ -64053,7 +64124,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "29/09/2022",
-  "dataDaTese": "01/02/2024"
+  "dataDaTese": "01/02/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1237",
@@ -64076,7 +64148,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "28/10/2022",
-  "dataDaTese": "11/04/2024"
+  "dataDaTese": "11/04/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1238",
@@ -64099,7 +64172,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/12/2022",
-  "dataDaTese": "09/12/2022"
+  "dataDaTese": "09/12/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1239",
@@ -64122,7 +64196,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/12/2022",
-  "dataDaTese": "16/12/2022"
+  "dataDaTese": "16/12/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1240",
@@ -64145,7 +64220,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/12/2022",
-  "dataDaTese": "16/12/2022"
+  "dataDaTese": "16/12/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1241",
@@ -64168,7 +64244,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/12/2022",
-  "dataDaTese": "16/12/2022"
+  "dataDaTese": "16/12/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1242",
@@ -64191,7 +64268,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/12/2022",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1243",
@@ -64214,7 +64292,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/12/2022",
-  "dataDaTese": "16/12/2022"
+  "dataDaTese": "16/12/2022",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1244",
@@ -64239,7 +64318,8 @@
   "repercussaoGeral": "03/02/2023",
   "dataDaTese": "05/11/2025",
   "boletim": "Informativo Semanal NUGEPNAC 39 (24/11/2025 a 29/11/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/4F/53/40/AB/E6BDA910EE6199A99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2039%20_24-11-2025%20a%2029-11-2025_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/4F/53/40/AB/E6BDA910EE6199A99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2039%20_24-11-2025%20a%2029-11-2025_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1245",
@@ -64262,7 +64342,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "04/03/2023",
-  "dataDaTese": "04/03/2023"
+  "dataDaTese": "04/03/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1246",
@@ -64285,7 +64366,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/03/2023",
-  "dataDaTese": "25/03/2023"
+  "dataDaTese": "25/03/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1247",
@@ -64308,7 +64390,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/04/2023",
-  "dataDaTese": "13/04/2023"
+  "dataDaTese": "13/04/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1248",
@@ -64331,7 +64414,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/04/2023",
-  "dataDaTese": "13/04/2023"
+  "dataDaTese": "13/04/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1249",
@@ -64354,7 +64438,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/04/2023",
-  "dataDaTese": "18/04/2023"
+  "dataDaTese": "18/04/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1250",
@@ -64377,7 +64462,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/04/2023",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1251",
@@ -64400,7 +64486,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1252",
@@ -64424,7 +64511,8 @@
   "anotacaoManual": "",
   "repercussaoGeral": "03/06/2023",
   "dataDaTese": "",
-  "suspensaoNacionalDesde": "11/09/2023"
+  "suspensaoNacionalDesde": "11/09/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1253",
@@ -64447,7 +64535,8 @@
   "atualizadoEm": "2026-11-16T19:32:38.001Z",
   "anotacaoManual": "",
   "repercussaoGeral": "03/06/2023",
-  "dataDaTese": "12/03/2026"
+  "dataDaTese": "12/03/2026",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1254",
@@ -64470,7 +64559,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "13/06/2023",
-  "dataDaTese": "13/06/2023"
+  "dataDaTese": "13/06/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1255",
@@ -64493,7 +64583,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/08/2023",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1256",
@@ -64516,7 +64607,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/06/2023",
-  "dataDaTese": "17/06/2023"
+  "dataDaTese": "17/06/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1257",
@@ -64539,7 +64631,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/06/2023",
-  "dataDaTese": "17/06/2023"
+  "dataDaTese": "17/06/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1258",
@@ -64562,7 +64655,8 @@
   "atualizadoEm": "2026-10-29T16:02:21.417Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/08/2023",
-  "dataDaTese": "08/09/2026"
+  "dataDaTese": "08/09/2026",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1259",
@@ -64585,7 +64679,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/08/2023",
-  "dataDaTese": "15/08/2023"
+  "dataDaTese": "15/08/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1260",
@@ -64610,7 +64705,8 @@
   "repercussaoGeral": "15/08/2023",
   "dataDaTese": "09/02/2026",
   "boletim": "Informativo Semanal NUGEPNAC 07 (09/03/2026 a 14/03/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/DF/84/C0/6A/7F7FC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2007%20_09-03-2026%20a%2014-03-2026_..pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/DF/84/C0/6A/7F7FC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2007%20_09-03-2026%20a%2014-03-2026_..pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1261",
@@ -64633,7 +64729,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/08/2023",
-  "dataDaTese": "22/08/2023"
+  "dataDaTese": "22/08/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1262",
@@ -64658,7 +64755,8 @@
   "repercussaoGeral": "22/08/2023",
   "dataDaTese": "22/08/2023",
   "boletim": "Informativo Semanal NUGEPNAC 05 (23/02/2026 a 28/02/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/7A/46/6E/D6/A00BC910CF170AC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2005%20_23-02-2026%20a%2028-02-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/7A/46/6E/D6/A00BC910CF170AC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2005%20_23-02-2026%20a%2028-02-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1263",
@@ -64681,7 +64779,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/08/2023",
-  "dataDaTese": "22/08/2023"
+  "dataDaTese": "22/08/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1264",
@@ -64704,7 +64803,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/08/2023",
-  "dataDaTese": "22/08/2023"
+  "dataDaTese": "22/08/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1265",
@@ -64727,7 +64827,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/08/2023",
-  "dataDaTese": "22/08/2023"
+  "dataDaTese": "22/08/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1266",
@@ -64752,7 +64853,8 @@
   "repercussaoGeral": "22/08/2023",
   "dataDaTese": "22/10/2025",
   "boletim": "Informativo Semanal NUGEPNAC 12 (27/04/2026 a 09/05/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/CD/C1/96/D9/2C81E910347E5FD99208CCA8/Informativo%20Semanal%20Nugepnac%20-%2012%20_27-04-2026%20a%2009-05-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/CD/C1/96/D9/2C81E910347E5FD99208CCA8/Informativo%20Semanal%20Nugepnac%20-%2012%20_27-04-2026%20a%2009-05-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1267",
@@ -64777,7 +64879,8 @@
   "repercussaoGeral": "02/09/2023",
   "dataDaTese": "19/05/2025",
   "boletim": "Informativo Semanal NUGEPNAC 13 (11/05/2026 a 16/05/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/F7/46/2B/AF/16C3E910FE32E2E99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2013%20_11-05-2026%20a%2016-05-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/F7/46/2B/AF/16C3E910FE32E2E99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2013%20_11-05-2026%20a%2016-05-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1268",
@@ -64802,7 +64905,8 @@
   "repercussaoGeral": "02/09/2023",
   "dataDaTese": "02/09/2023",
   "boletim": "Informativo Semanal NUGEPNAC 33 (06/10/2025 a 18/10/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/CE/F4/BC/E4/8E20A910F732BC999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2033%20_06-10-2025%20a%2018-10-2025_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/CE/F4/BC/E4/8E20A910F732BC999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2033%20_06-10-2025%20a%2018-10-2025_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1269",
@@ -64825,7 +64929,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/09/2023",
-  "dataDaTese": "12/09/2023"
+  "dataDaTese": "12/09/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1270",
@@ -64850,7 +64955,8 @@
   "repercussaoGeral": "18/09/2023",
   "dataDaTese": "",
   "boletim": "Informativo Semanal NUGEPNAC 14 (18/05/2026 a 23/05/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/C5/A6/0D/B3/7706E910C71484E99208CCA8/Informativo%20Semanal%20Nugepnac%20-%2014%20_18-05-2026%20a%2023-05-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/C5/A6/0D/B3/7706E910C71484E99208CCA8/Informativo%20Semanal%20Nugepnac%20-%2014%20_18-05-2026%20a%2023-05-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1271",
@@ -64874,7 +64980,8 @@
   "anotacaoManual": "",
   "repercussaoGeral": "18/09/2023",
   "dataDaTese": "",
-  "suspensaoNacionalDesde": "21/01/2025"
+  "suspensaoNacionalDesde": "21/01/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1272",
@@ -64897,7 +65004,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/09/2023",
-  "dataDaTese": "18/09/2023"
+  "dataDaTese": "18/09/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1273",
@@ -64920,7 +65028,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/09/2023",
-  "dataDaTese": "18/09/2023"
+  "dataDaTese": "18/09/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1274",
@@ -64943,7 +65052,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "23/09/2023",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1275",
@@ -64966,7 +65076,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "23/09/2023",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1276",
@@ -64989,7 +65100,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "23/09/2023",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1277",
@@ -65014,7 +65126,8 @@
   "repercussaoGeral": "23/09/2023",
   "dataDaTese": "25/08/2025",
   "boletim": "Informativo Semanal NUGEPNAC 32 (29/09/2025 a 04/10/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/5F/86/71/AD/7DAB9910BCDF79990D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2032%20_29-09-2025%20a%2004-10-2025_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/5F/86/71/AD/7DAB9910BCDF79990D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2032%20_29-09-2025%20a%2004-10-2025_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1278",
@@ -65037,7 +65150,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "23/09/2023",
-  "dataDaTese": "23/09/2023"
+  "dataDaTese": "23/09/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1279",
@@ -65060,7 +65174,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "23/09/2023",
-  "dataDaTese": "23/09/2023"
+  "dataDaTese": "23/09/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1280",
@@ -65083,7 +65198,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "30/09/2023",
-  "dataDaTese": "16/12/2024"
+  "dataDaTese": "16/12/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1281",
@@ -65106,7 +65222,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "08/11/2023",
-  "dataDaTese": "08/11/2023"
+  "dataDaTese": "08/11/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1282",
@@ -65129,7 +65246,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "08/11/2023",
-  "dataDaTese": "26/03/2025"
+  "dataDaTese": "26/03/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1283",
@@ -65152,7 +65270,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "11/11/2023",
-  "dataDaTese": "11/11/2023"
+  "dataDaTese": "11/11/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1284",
@@ -65175,7 +65294,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "21/11/2023",
-  "dataDaTese": "21/11/2023"
+  "dataDaTese": "21/11/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1285",
@@ -65198,7 +65318,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/11/2023",
-  "dataDaTese": "25/11/2023"
+  "dataDaTese": "25/11/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1286",
@@ -65221,7 +65342,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/12/2023",
-  "dataDaTese": "09/06/2025"
+  "dataDaTese": "09/06/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1287",
@@ -65244,7 +65366,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/12/2023",
-  "dataDaTese": "19/12/2023"
+  "dataDaTese": "19/12/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1288",
@@ -65267,7 +65390,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/12/2023",
-  "dataDaTese": "19/12/2023"
+  "dataDaTese": "19/12/2023",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1289",
@@ -65292,7 +65416,8 @@
   "repercussaoGeral": "10/02/2024",
   "dataDaTese": "18/02/2026",
   "boletim": "Informativo Semanal NUGEPNAC 11 (13/04/2026 a 25/04/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/2C/D2/0C/FC/D30DD910A8E41CD99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2011%20_13-04-2026%20a%2025-04-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/2C/D2/0C/FC/D30DD910A8E41CD99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2011%20_13-04-2026%20a%2025-04-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1291",
@@ -65315,7 +65440,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "02/03/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1292",
@@ -65338,7 +65464,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "02/03/2024",
-  "dataDaTese": "02/03/2024"
+  "dataDaTese": "02/03/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1293",
@@ -65361,7 +65488,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/03/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1294",
@@ -65384,7 +65512,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "16/03/2024",
-  "dataDaTese": "16/03/2024"
+  "dataDaTese": "16/03/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1295",
@@ -65407,7 +65536,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "23/03/2024",
-  "dataDaTese": "23/03/2024"
+  "dataDaTese": "23/03/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1296",
@@ -65430,7 +65560,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "04/04/2024",
-  "dataDaTese": "04/04/2024"
+  "dataDaTese": "04/04/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1297",
@@ -65454,7 +65585,8 @@
   "anotacaoManual": "",
   "repercussaoGeral": "09/04/2024",
   "dataDaTese": "",
-  "suspensaoNacionalDesde": "20/12/2024"
+  "suspensaoNacionalDesde": "20/12/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1298",
@@ -65477,7 +65609,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "20/04/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1299",
@@ -65500,7 +65633,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "11/05/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1300",
@@ -65525,7 +65659,8 @@
   "repercussaoGeral": "26/04/2024",
   "dataDaTese": "18/12/2025",
   "boletim": "Informativo Semanal NUGEPNAC 11 (13/04/2026 a 25/04/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/2C/D2/0C/FC/D30DD910A8E41CD99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2011%20_13-04-2026%20a%2025-04-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/2C/D2/0C/FC/D30DD910A8E41CD99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2011%20_13-04-2026%20a%2025-04-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1301",
@@ -65548,7 +65683,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "07/05/2024",
-  "dataDaTese": "07/05/2024"
+  "dataDaTese": "07/05/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1302",
@@ -65571,7 +65707,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/05/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1303",
@@ -65596,7 +65733,8 @@
   "repercussaoGeral": "05/06/2024",
   "dataDaTese": "05/06/2024",
   "boletim": "Informativo Semanal NUGEPNAC 31 (22/09/2025 a 27/09/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/A3/E7/66/49/2D699910DBE937999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2031%20_22-09-2025%20a%2027-09-2025_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/A3/E7/66/49/2D699910DBE937999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2031%20_22-09-2025%20a%2027-09-2025_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1304",
@@ -65619,7 +65757,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "05/06/2024",
-  "dataDaTese": "16/09/2024"
+  "dataDaTese": "16/09/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1305",
@@ -65642,7 +65781,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "11/06/2024",
-  "dataDaTese": "11/06/2024"
+  "dataDaTese": "11/06/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1306",
@@ -65665,7 +65805,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/06/2024",
-  "dataDaTese": "15/06/2024"
+  "dataDaTese": "15/06/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1307",
@@ -65688,7 +65829,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "29/06/2024",
-  "dataDaTese": "29/06/2024"
+  "dataDaTese": "29/06/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1310",
@@ -65711,7 +65853,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "10/08/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1311",
@@ -65734,7 +65877,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "10/08/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1312",
@@ -65757,7 +65901,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "10/08/2024",
-  "dataDaTese": "10/08/2024"
+  "dataDaTese": "10/08/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1313",
@@ -65780,7 +65925,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/08/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1314",
@@ -65803,7 +65949,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/08/2024",
-  "dataDaTese": "17/08/2024"
+  "dataDaTese": "17/08/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1315",
@@ -65826,7 +65973,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/08/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1316",
@@ -65849,7 +65997,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/08/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1317",
@@ -65872,7 +66021,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "24/08/2024",
-  "dataDaTese": "24/08/2024"
+  "dataDaTese": "24/08/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1318",
@@ -65895,7 +66045,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "24/08/2024",
-  "dataDaTese": "24/08/2024"
+  "dataDaTese": "24/08/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1319",
@@ -65918,7 +66069,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "07/09/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1320",
@@ -65941,7 +66093,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "14/09/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1321",
@@ -65964,7 +66117,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "14/09/2024",
-  "dataDaTese": "14/09/2024"
+  "dataDaTese": "14/09/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1322",
@@ -65987,7 +66141,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "10/09/2024",
-  "dataDaTese": "10/09/2024"
+  "dataDaTese": "10/09/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1323",
@@ -66010,7 +66165,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "28/09/2024",
-  "dataDaTese": "28/09/2024"
+  "dataDaTese": "28/09/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1324",
@@ -66033,7 +66189,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "28/09/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1325",
@@ -66056,7 +66213,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "28/09/2024",
-  "dataDaTese": "28/09/2024"
+  "dataDaTese": "28/09/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1326",
@@ -66079,7 +66237,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "05/10/2024",
-  "dataDaTese": "05/10/2024"
+  "dataDaTese": "05/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1327",
@@ -66102,7 +66261,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "05/10/2024",
-  "dataDaTese": "05/10/2024"
+  "dataDaTese": "05/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1328",
@@ -66125,7 +66285,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "05/10/2024",
-  "dataDaTese": "05/10/2024"
+  "dataDaTese": "05/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1329",
@@ -66149,7 +66310,8 @@
   "anotacaoManual": "",
   "repercussaoGeral": "05/10/2024",
   "dataDaTese": "",
-  "suspensaoNacionalDesde": "19/03/2025"
+  "suspensaoNacionalDesde": "19/03/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1330",
@@ -66172,7 +66334,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "05/10/2024",
-  "dataDaTese": "05/10/2024"
+  "dataDaTese": "05/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1331",
@@ -66195,7 +66358,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/10/2024",
-  "dataDaTese": "12/10/2024"
+  "dataDaTese": "12/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1332",
@@ -66218,7 +66382,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/10/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1333",
@@ -66241,7 +66406,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/10/2024",
-  "dataDaTese": "12/10/2024"
+  "dataDaTese": "12/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1334",
@@ -66264,7 +66430,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/10/2024",
-  "dataDaTese": "12/10/2024"
+  "dataDaTese": "12/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1335",
@@ -66287,7 +66454,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/10/2024",
-  "dataDaTese": "12/10/2024"
+  "dataDaTese": "12/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1336",
@@ -66310,7 +66478,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/10/2024",
-  "dataDaTese": "12/10/2024"
+  "dataDaTese": "12/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1337",
@@ -66335,7 +66504,8 @@
   "repercussaoGeral": "19/10/2024",
   "dataDaTese": "19/10/2024",
   "boletim": "Informativo Semanal NUGEPNAC 09 (23/03/2026 a 28/03/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/17/72/AD/93/3104D910C16320D99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2009%20_23-03-2026%20a%2028-03-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/17/72/AD/93/3104D910C16320D99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2009%20_23-03-2026%20a%2028-03-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1338",
@@ -66358,7 +66528,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/10/2024",
-  "dataDaTese": "19/10/2024"
+  "dataDaTese": "19/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1339",
@@ -66381,7 +66552,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/10/2024",
-  "dataDaTese": "19/10/2024"
+  "dataDaTese": "19/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1340",
@@ -66404,7 +66576,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/10/2024",
-  "dataDaTese": "19/10/2024"
+  "dataDaTese": "19/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1341",
@@ -66427,7 +66600,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/10/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1342",
@@ -66450,7 +66624,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/10/2024",
-  "dataDaTese": "19/10/2024"
+  "dataDaTese": "19/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1343",
@@ -66473,7 +66648,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/10/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1344",
@@ -66496,7 +66672,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "26/10/2024",
-  "dataDaTese": "26/10/2024"
+  "dataDaTese": "26/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1345",
@@ -66519,7 +66696,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "26/10/2024",
-  "dataDaTese": "26/10/2024"
+  "dataDaTese": "26/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1346",
@@ -66542,7 +66720,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "26/10/2024",
-  "dataDaTese": "26/10/2024"
+  "dataDaTese": "26/10/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1347",
@@ -66565,7 +66744,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "06/11/2024",
-  "dataDaTese": "06/11/2024"
+  "dataDaTese": "06/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1348",
@@ -66588,7 +66768,8 @@
   "atualizadoEm": "2026-10-21T14:29:13.874Z",
   "anotacaoManual": "",
   "repercussaoGeral": "06/11/2024",
-  "dataDaTese": "20/10/2026"
+  "dataDaTese": "20/10/2026",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1349",
@@ -66611,7 +66792,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "06/11/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1350",
@@ -66634,7 +66816,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "06/11/2024",
-  "dataDaTese": "06/11/2024"
+  "dataDaTese": "06/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1351",
@@ -66657,7 +66840,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/11/2024",
-  "dataDaTese": "12/11/2024"
+  "dataDaTese": "12/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1352",
@@ -66682,7 +66866,8 @@
   "repercussaoGeral": "12/11/2024",
   "dataDaTese": "15/09/2025",
   "boletim": "Informativo Semanal NUGEPNAC 30 (15/09/2025 a 20/09/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/A0/47/04/BE/CA279910BFF1B3999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2030%20_15-09-2025%20a%2020-09-2025_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/A0/47/04/BE/CA279910BFF1B3999128CCA8/Informativo%20Semanal%20Nugepnac%20-%2030%20_15-09-2025%20a%2020-09-2025_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1353",
@@ -66705,7 +66890,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/11/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1354",
@@ -66728,7 +66914,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/11/2024",
-  "dataDaTese": "12/11/2024"
+  "dataDaTese": "12/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1355",
@@ -66751,7 +66938,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/11/2024",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1356",
@@ -66774,7 +66962,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/11/2024",
-  "dataDaTese": "19/11/2024"
+  "dataDaTese": "19/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1357",
@@ -66797,7 +66986,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/11/2024",
-  "dataDaTese": "19/11/2024"
+  "dataDaTese": "19/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1358",
@@ -66820,7 +67010,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/11/2024",
-  "dataDaTese": "19/11/2024"
+  "dataDaTese": "19/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1359",
@@ -66843,7 +67034,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/11/2024",
-  "dataDaTese": "19/11/2024"
+  "dataDaTese": "19/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1360",
@@ -66866,7 +67058,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "27/11/2024",
-  "dataDaTese": "27/11/2024"
+  "dataDaTese": "27/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1362",
@@ -66889,7 +67082,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "30/11/2024",
-  "dataDaTese": "30/11/2024"
+  "dataDaTese": "30/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1363",
@@ -66912,7 +67106,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "30/11/2024",
-  "dataDaTese": "30/11/2024"
+  "dataDaTese": "30/11/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1364",
@@ -66935,7 +67130,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "14/12/2024",
-  "dataDaTese": "14/12/2024"
+  "dataDaTese": "14/12/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1365",
@@ -66958,7 +67154,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "14/12/2024",
-  "dataDaTese": "14/12/2024"
+  "dataDaTese": "14/12/2024",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1366",
@@ -66981,7 +67178,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "04/02/2025",
-  "dataDaTese": "04/02/2025"
+  "dataDaTese": "04/02/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1367",
@@ -67006,7 +67204,8 @@
   "repercussaoGeral": "04/02/2025",
   "dataDaTese": "04/02/2025",
   "boletim": "Informativo Semanal NUGEPNAC 37 (10/11/2025 a 15/11/2025)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/30/10/56/85/E739A9109BDE57A90D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2037%20_10-11-2025%20a%2015-11-2025_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/30/10/56/85/E739A9109BDE57A90D08CCA8/Informativo%20Semanal%20Nugepnac%20-%2037%20_10-11-2025%20a%2015-11-2025_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1368",
@@ -67029,7 +67228,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "04/02/2025",
-  "dataDaTese": "04/02/2025"
+  "dataDaTese": "04/02/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1369",
@@ -67052,7 +67252,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/02/2025",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1370",
@@ -67077,7 +67278,8 @@
   "repercussaoGeral": "15/02/2025",
   "dataDaTese": "16/12/2025",
   "boletim": "Informativo Semanal NUGEPNAC 23 (27/07/2026 a 08/08/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/DB/31/BE/65/B2DEF9105C87BEF99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2023%20_27-07-2026%20a%2008-08-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/DB/31/BE/65/B2DEF9105C87BEF99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2023%20_27-07-2026%20a%2008-08-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1371",
@@ -67100,7 +67302,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/02/2025",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1372",
@@ -67123,7 +67326,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/02/2025",
-  "dataDaTese": "15/02/2025"
+  "dataDaTese": "15/02/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1374",
@@ -67146,7 +67350,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/02/2025",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1375",
@@ -67169,7 +67374,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/02/2025",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1376",
@@ -67192,7 +67398,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/02/2025",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1377",
@@ -67215,7 +67422,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/03/2025",
-  "dataDaTese": "01/03/2025"
+  "dataDaTese": "01/03/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1378",
@@ -67238,7 +67446,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/03/2025",
-  "dataDaTese": "01/03/2025"
+  "dataDaTese": "01/03/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1379",
@@ -67261,7 +67470,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/03/2025",
-  "dataDaTese": "01/03/2025"
+  "dataDaTese": "01/03/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1380",
@@ -67284,7 +67494,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "01/03/2025",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1381",
@@ -67307,7 +67518,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/03/2025",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1382",
@@ -67332,7 +67544,8 @@
   "repercussaoGeral": "15/03/2025",
   "dataDaTese": "29/04/2026",
   "boletim": "Informativo Semanal NUGEPNAC 20 (29/06/2026 a 04/07/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/9A/72/41/74/9C83F910BFA1A2F99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2020%20_29-06-2026%20a%2004-07-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/9A/72/41/74/9C83F910BFA1A2F99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2020%20_29-06-2026%20a%2004-07-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1383",
@@ -67355,7 +67568,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/03/2025",
-  "dataDaTese": "22/03/2025"
+  "dataDaTese": "22/03/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1384",
@@ -67378,7 +67592,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "22/03/2025",
-  "dataDaTese": "22/03/2025"
+  "dataDaTese": "22/03/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1385",
@@ -67401,7 +67616,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "05/04/2025",
-  "dataDaTese": "05/04/2025"
+  "dataDaTese": "05/04/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1386",
@@ -67424,7 +67640,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/04/2025",
-  "dataDaTese": "12/04/2025"
+  "dataDaTese": "12/04/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1387",
@@ -67447,7 +67664,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/04/2025",
-  "dataDaTese": "12/04/2025"
+  "dataDaTese": "12/04/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1388",
@@ -67472,7 +67690,8 @@
   "repercussaoGeral": "12/04/2025",
   "dataDaTese": "27/08/2025",
   "boletim": "Informativo Semanal NUGEPNAC 06 (02/03/2026 a 07/03/2026)",
-  "boletimUrl": "https://www.tjmg.jus.br/data/files/A6/75/4E/02/0F3DC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2006%20_02-03-2026%20a%2007-03-2026_.pdf"
+  "boletimUrl": "https://www.tjmg.jus.br/data/files/A6/75/4E/02/0F3DC91038011BC99128CCA8/Informativo%20Semanal%20Nugepnac%20-%2006%20_02-03-2026%20a%2007-03-2026_.pdf",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1389",
@@ -67496,7 +67715,8 @@
   "anotacaoManual": "",
   "repercussaoGeral": "12/04/2025",
   "dataDaTese": "",
-  "suspensaoNacionalDesde": "14/04/2025"
+  "suspensaoNacionalDesde": "14/04/2025",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1390",
@@ -67519,7 +67739,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/04/2025",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1391",
@@ -67542,7 +67763,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/04/2025",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1392",
@@ -67565,7 +67787,8 @@
   "atualizadoEm": "2026-09-10T11:12:00.558Z",
   "anotacaoManual": "",
   "repercussaoGeral": "07/05/2025",
-  "dataDaTese": ""
+  "dataDaTese": "",
+  "verificadoEm": "2026-11-25T04:06:48.071Z"
  },
  {
   "id": "STF-TEMA-1393",
