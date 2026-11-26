@@ -1873,7 +1873,7 @@
   "observacoes": "Título: Critério de reajuste do saldo devedor das cédulas de crédito rural, no mês de março de 1990, nos quais prevista a indexação aos índices da caderneta de poupança.\nRelator: MIN. ALEXANDRE DE MORAES\nRepercussão geral apreciada em: 10/02/2024\nAssuntos: 12946-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Processo Coletivo | Ação Civil Pública\n4964-DIREITO CIVIL | Obrigações | Espécies de Títulos de Crédito | Cédula de Crédito Rural\n14861-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Liquidação / Cumprimento / Execução | Valor da Execução / Cálculo / Atualização | Correção Monetária | Inclusão de Expurgos Inflacionários\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "origem": "STF — repercussão geral",
   "pertinencia": "Selecionado na planilha inicial",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -1881,7 +1881,7 @@
   "fonte": "https://portal.stf.jus.br/jurisprudenciaRepercussao/verAndamentoProcesso.asp?incidente=6674122&numeroProcesso=1445162&classeProcesso=RE&numeroTema=1290",
   "processos": "RE 1445162",
   "anotacaoManual": "",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "repercussaoGeral": "10/02/2024",
   "dataDaTese": "",
   "suspensaoNacionalDesde": "08/03/2024"
@@ -1972,7 +1972,7 @@
   "observacoes": "Título: Prevalência das normas sobre o transporte aéreo em relação às normas de proteção ao consumidor para disciplinar a responsabilidade civil por cancelamento, alteração ou atraso de voo por motivo de caso fortuito ou força maior.\nRelator: MIN. DIAS TOFFOLI\nRepercussão geral apreciada em: 23/08/2025\nAssuntos: 7780-DIREITO DO CONSUMIDOR | Responsabilidade do Fornecedor | Indenização por Dano Material\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "origem": "STF — repercussão geral",
   "pertinencia": "Selecionado na planilha inicial",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -1980,7 +1980,7 @@
   "fonte": "https://portal.stf.jus.br/jurisprudenciaRepercussao/verAndamentoProcesso.asp?incidente=7313323&numeroProcesso=1560244&classeProcesso=ARE&numeroTema=1417",
   "processos": "ARE 1560244",
   "anotacaoManual": "",
-  "atualizadoEm": "2026-11-24T20:08:18.947Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "repercussaoGeral": "23/08/2025",
   "dataDaTese": "",
   "suspensaoNacionalDesde": "26/11/2025",
@@ -26292,7 +26292,7 @@
   "numero": "1124",
   "questao": "Caso superada a ausência do interesse de agir, definir o termo inicial dos efeitos financeiros dos benefícios previdenciários concedidos ou revisados judicialmente, por meio de prova não submetida ao crivo administrativo do INSS, se a contar da data do requerimento administrativo ou da citação da autarquia previdenciária.",
   "area": "Fazenda Pública",
-  "situacao": "Acórdão Publicado",
+  "situacao": "Trânsito em Julgado",
   "suspensao": "Há determinação da suspensão do trâmite de todos os processos em grau recursal, tanto no âmbito dos Tribunais quanto nas Turmas Recursais dos Juizados Especiais Federais, cujos objetos coincidam com o da matéria afetada.",
   "julgamento": "2025-10-08",
   "publicacao": "2025-11-06",
@@ -26302,7 +26302,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Em sessão de julgamento realizada em 22/5/2024, a Primeira Seção, por unanimidade, acolheu questão de ordem proposta pelo Sr. Ministro Relator para alterar a delimitação do tema 1124 para constar na redação: \"Caso superada a ausência do interesse de agir, definir o termo inicial dos efeitos financeiros dos benefícios previdenciários concedidos ou revisados judicialmente, por meio de prova não submetida ao crivo administrativo do INSS, se a contar da data do requerimento administrativo ou da citação da autarquia previdenciária.\" (acórdão publicado no DJe de 29/5/2024)Dados parcialmente recuperados via sistema Athos e Projeto Accordes - PGFAfetação na sessão eletrônica iniciada em 15/9/2021 e finalizada em 21/9/2021 (Primeira Seção).Vide Controvérsia n. 286/STJ.\n\nPrévio requerimento administrativo como condição para o acesso ao Judiciário.\n\nA data do trânsito não é fornecida neste arquivo. As informações complementares podem conter determinações históricas de suspensão.",
   "processos": "REsp 1905830 | Julgamento: 2025-10-08 | Publicação: 2025-11-06 | ED: 2026-09-21, 2026-09-21, 2026-09-21, 2026-09-21\nREsp 1912784 | Julgamento: 2025-10-08 | Publicação: 2025-11-06 | ED: 2026-09-21, 2026-09-21\nREsp 1913152 | Julgamento: 2025-10-08 | Publicação: 2025-11-06 | ED: 2026-09-21, 2026-09-21",
-  "atualizadoEm": "2026-09-22T23:38:12.870Z",
+  "atualizadoEm": "2026-11-26T18:56:38.389Z",
   "anotacaoManual": ""
  },
  {
@@ -28600,7 +28600,7 @@
   "numero": "1242",
   "questao": "Definir se há legitimidade concorrente da parte e do advogado para postular a condenação ou a majoração dos honorários advocatícios sucumbencias. ",
   "area": "Fazenda Pública",
-  "situacao": "Afetado",
+  "situacao": "Em Julgamento",
   "suspensao": "Há determinação de suspensão do trâmite de todos os Recursos Especiais e Agravos em Recurso Especial no STJ e em segunda instância que tratem exclusivamente de honorários nos termos delimitados.",
   "julgamento": "",
   "publicacao": "",
@@ -28610,7 +28610,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Em sessão de julgamento realizada em 19/6/2024, a Corte Especial, por unanimidade, acolheu questão de ordem proposta pelo Sr. Ministro Relator para alterar a delimitação do tema 1242 para constar na redação: \"Definir se há legitimidade concorrente da parte e do advogado para postular a condenação ou a majoração dos honorários advocatícios sucumbencias.\"Dados parcialmente recuperados via sistema Athos.Afetação na sessão eletrônica iniciada em 13/12/2023 e finalizada em 19/12/2023 (Corte Especial).Vide Controvérsia n. 505/STJ.\n\nA data do trânsito não é fornecida neste arquivo. As informações complementares podem conter determinações históricas de suspensão.",
   "processos": "REsp 2035052 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2035262 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2035272 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2035284 | Julgamento: não informado | Publicação: não informada | ED: não informados",
-  "atualizadoEm": "2026-09-10T11:12:00.212Z",
+  "atualizadoEm": "2026-11-26T18:56:38.389Z",
   "anotacaoManual": ""
  },
  {
@@ -32115,17 +32115,17 @@
   "numero": "1423",
   "questao": "(In)admissibilidade de recurso especial interposto contra decisão monocrática de relator proferida em segunda instância.",
   "area": "Transversal / a conferir",
-  "situacao": "Afetado",
+  "situacao": "Mérito Julgado",
   "suspensao": "A Corte Especial decidiu pela não suspensão dos processos nos termos do voto do Ministro Relator.",
-  "julgamento": "",
+  "julgamento": "2026-11-25",
   "publicacao": "",
-  "tese": "",
+  "tese": "*Aguardando a publicação do acórdão do julgamento de mérito.",
   "fonte": "https://processo.stj.jus.br/repetitivos/temas_repetitivos/pesquisa.jsp?novaConsulta=true&tipo_pesquisa=T&cod_tema_inicial=1423&cod_tema_final=1423",
   "origem": "STJ — dados abertos",
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "RRC de origem (TJPA).Vide Controvérsia nº 795/STJ.Tema 1.246/STJ.Tema 1.375/STJ.\n\nA data do trânsito não é fornecida neste arquivo. As informações complementares podem conter determinações históricas de suspensão.",
-  "processos": "REsp 2234699 | Julgamento: não informado | Publicação: não informada | ED: não informados\nREsp 2234706 | Julgamento: não informado | Publicação: não informada | ED: não informados",
-  "atualizadoEm": "2026-09-10T11:12:00.212Z",
+  "processos": "REsp 2234699 | Julgamento: 2026-11-25 | Publicação: não informada | ED: não informados\nREsp 2234706 | Julgamento: 2026-11-25 | Publicação: não informada | ED: não informados",
+  "atualizadoEm": "2026-11-26T18:56:38.389Z",
   "anotacaoManual": "",
   "boletim": "Informativo Semanal NUGEPNAC 10 (30/03/2026 a 11/04/2026)",
   "boletimUrl": "https://www.tjmg.jus.br/data/files/50/36/FE/96/5DB8D9103FED46D99208CCA8/Informativo%20Semanal%20Nugepnac%20-%2010%20_30-03-2026%20a%2011-04-2026_.pdf"
@@ -61558,7 +61558,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 153, III, e 158, I, da Constituição Federal o direito do ente municipal ao produto da arrecadação do imposto de renda retido na fonte, incidente sobre rendimentos pagos, a qualquer título, pelo município, por suas autarquias e fundações, incluindo-se o pagamento de rendimentos a pessoas físicas e jurídicas, em razão do fornecimento de bens ou serviços.",
   "area": "Fazenda Pública",
   "situacao": "Trânsito em Julgado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -61568,7 +61568,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Titularidade das receitas arrecadadas a título de imposto de renda retido na fonte incidente sobre valores pagos pelos Municípios, suas autarquias e fundações a pessoas físicas ou jurídicas contratadas para a prestação de bens ou serviços.\nRelator: MIN. ALEXANDRE DE MORAES\nRepercussão geral apreciada em: 19/03/2021\nData da tese: 11/10/2021\nAssuntos: 10957-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Orçamento | Repasse de Verbas Públicas\n5986-DIREITO TRIBUTÁRIO | Crédito Tributário\n5917-DIREITO TRIBUTÁRIO | Impostos | IRPF/Imposto de Renda de Pessoa Física\n5933-DIREITO TRIBUTÁRIO | Impostos | IRPJ/Imposto de Renda de Pessoa Jurídica\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1293453",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "19/03/2021",
   "dataDaTese": "11/10/2021"
@@ -62996,7 +62996,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos arts. 29, V e VI, 37, X, e 39, §4º, da Constituição Federal a constitucionalidade das Leis 3.056/2019 e 3.114/2020 do Município de Pontal/SP, que preveem revisão geral anual do subsídio mensal do Prefeito e do Vice-Prefeito, considerando-se os princípios da moralidade administrativa, da anterioridade da legislatura e da inalterabilidade do subsídio durante o mandato eletivo.",
   "area": "Fazenda Pública",
   "situacao": "Acórdão de Repercussão Geral publicado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -63006,7 +63006,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Constitucionalidade de lei municipal que preveja revisão geral anual do subsídio de agentes políticos na mesma legislatura.\nRelator: MIN. ANDRÉ MENDONÇA\nRepercussão geral apreciada em: 17/12/2021\nAssuntos: 10645-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Controle de Constitucionalidade\n10203-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Agentes Políticos | Prefeito | Remuneração\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1344400",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "17/12/2021",
   "dataDaTese": "",
@@ -63137,7 +63137,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 1º, IV, 5º, XIII, XXII, XXXV e LV, 146, III, a, 150, I, II, IV e V, 155, III, e 170, parágrafo único, da Constituição Federal, se a Lei 13.296/2008 do Estado de São Paulo, questionada na ADI 4.376, Rel. Min. Gilmar Mendes, pode submeter locadora de veículos ao recolhimento de IPVA relativo aos automóveis colocados para locação naquele Estado, mesmo que a empresa seja sediada em outro Estado da federação, onde realiza o registro de toda sua frota e recolhe referido tributo, bem como submeter seus clientes locatários como responsáveis solidários da obrigação tributária. Ademais, questiona-se a proporcionalidade e vedação ao confisco na seara tributária, pela imposição de multa tributária de 100% (cem por cento) após a inscrição do débito em dívida ativa.",
   "area": "Fazenda Pública",
   "situacao": "Acórdão de Repercussão Geral publicado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -63147,7 +63147,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Constitucionalidade da cobrança do Imposto sobre a Propriedade de Veículos Automotores (IPVA) por Estado diverso da sede de empresa locadora de veículos, quando esta possuir filial em outro estado, onde igualmente exerce atividades comerciais (distinção do Tema 708, RE 1.016.605).\nRelator: MIN. ANDRÉ MENDONÇA\nRepercussão geral apreciada em: 18/02/2022\nAssuntos: 5953-DIREITO TRIBUTÁRIO | Impostos | IPVA - Imposto Sobre Propriedade de Veículos Automotores\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 1357421",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/02/2022",
   "dataDaTese": "",
@@ -63161,7 +63161,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz do artigo 37, § 5º, da Constituição Federal, a prescritibilidade dos atos de improbidade administrativa imputados à recorrente, por alegada conduta negligente na condução dos processos judiciais em que atuava como representante contratada do INSS, sem demonstração do elemento subjetivo dolo (Temas 666, 897 e 899 do STF). Delimita-se a temática de repercussão geral em definir se as novidades inseridas na Lei de Improbidade Administrativa (Lei 8.429/1992, com as alterações dadas pela Lei 14.230/2021) devem retroagir para beneficiar aqueles que porventura tenham cometido atos de improbidade administrativa na modalidade culposa, inclusive quanto ao prazo de prescrição para as ações de ressarcimento.",
   "area": "Fazenda Pública",
   "situacao": "Trânsito em Julgado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -63171,7 +63171,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Definição de eventual (IR)RETROATIVIDADE das disposições da Lei 14.230/2021, em especial, em relação: (I) A necessidade da presença do elemento subjetivo – dolo – para a configuração do ato de improbidade administrativa, inclusive no artigo 10 da LIA; e (II) A aplicação dos novos prazos de prescrição geral e intercorrente.\nRelator: MIN. ALEXANDRE DE MORAES\nRepercussão geral apreciada em: 25/02/2022\nData da tese: 18/08/2022\nAssuntos: 5632-DIREITO CIVIL | Fatos Jurídicos | Prescrição e Decadência\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 843989",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "25/02/2022",
   "dataDaTese": "18/08/2022"
@@ -63391,7 +63391,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 201, § 1º, e 202, II, da Constituição Federal, a possibilidade de concessão de aposentadoria especial, pelo Regime Geral de Previdência Social (RGPS), ao vigilante que comprove exposição a atividade nociva com risco à integridade física do segurado, considerando-se o disposto no artigo 201, § 1º, da Constituição Federal e as alterações promovidas pela Emenda Constitucional 103/2019.",
   "area": "Fazenda Pública",
   "situacao": "Acórdão de mérito publicado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -63401,7 +63401,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Reconhecimento da atividade de vigilante como especial, com fundamento na exposição ao perigo, seja em período anterior ou posterior à promulgação da Emenda Constitucional 103/2019.\nRelator: MIN. NUNES MARQUES\nRepercussão geral apreciada em: 15/04/2022\nData da tese: 18/02/2026\nAssuntos: 6100-DIREITO PREVIDENCIÁRIO | Benefícios em Espécie | Aposentadoria Especial (Art. 57/8)\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1368225",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/04/2022",
   "dataDaTese": "18/02/2026",
@@ -63927,7 +63927,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 5º, II, LIV e LV, 97 e 170 da Constituição Federal, acerca da possibilidade da inclusão, no polo passivo de execução trabalhista, de pessoa jurídica reconhecida como do grupo econômico, sem ter participado da fase de conhecimento, em alegado afastamento do artigo 513, § 5º, do CPC, em violação à Súmula Vinculante 10, e, ainda, independente de instauração de incidente de desconsideração da personalidade jurídica (artigos 133 a 137 e 795, § 4º, do CPC).",
   "area": "Transversal / a conferir",
   "situacao": "Acórdão de mérito publicado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -63937,7 +63937,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Possibilidade de inclusão no polo passivo da lide, na fase de execução trabalhista, de empresa integrante de grupo econômico que não participou do processo de conhecimento.\nRelator: MIN. DIAS TOFFOLI\nRepercussão geral apreciada em: 09/09/2022\nData da tese: 13/10/2025\nAssuntos: 5356-DIREITO DO TRABALHO | Responsabilidade Solidária / Subsidiária | Grupo Econômico\n9148-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Liquidação / Cumprimento / Execução\n12974-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Liquidação / Cumprimento / Execução | Desconsideração da Personalidade Jurídica\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1387795",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/09/2022",
   "dataDaTese": "13/10/2025",
@@ -63976,7 +63976,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 23, II, 109, I, 196, 197 e 198, I, da Constituição Federal, a obrigatoriedade de a União constar do polo passivo de lide que verse sobre a obtenção de medicamento ou tratamento não incorporado nas políticas públicas do SUS, embora registrado pela Anvisa.",
   "area": "Fazenda Pública",
   "situacao": "Trânsito em Julgado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -63986,7 +63986,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Legitimidade passiva da União e competência da Justiça Federal, nas demandas que versem sobre fornecimento de medicamentos registrados na Agência Nacional de Vigilância Sanitária - ANVISA, mas não padronizados no Sistema Único de Saúde – SUS.Anotações NUGEP\nTese de Repercussão Geral alterada de acordo com a Certidão de Julgamento da Sessão Extraordinária de 19/02/2026.\nRelator: MIN. GILMAR MENDES\nRepercussão geral apreciada em: 09/09/2022\nData da tese: 16/09/2024\nAssuntos: 11884-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Serviços | Saúde | Fornecimento de Medicamentos\n8829-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Jurisdição e Competência | Competência\n14067-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Formação, Suspensão e Extinção do Processo | Condições da Ação | Legitimidade Ativa e Passiva\n9991-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Responsabilidade da Administração\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1366243",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/09/2022",
   "dataDaTese": "16/09/2024",
@@ -64394,7 +64394,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 5º, II, 37, caput, e 170 da Constituição Federal, a definição dos contornos e limites da função normativa exercida pelas agências reguladoras, notadamente a iniciativa da Agência Nacional de Vigilância Sanitária (ANVISA) de proibir a importação e a comercialização no Brasil de produtos fumígenos derivados do tabaco que contenham as substâncias ou compostos que ela define como aditivos, conforme o previsto na Resolução da Diretoria Colegiada (RDC) nº 14/2012, considerado o julgamento da ADI 4.874/DF sem efeitos vinculantes.",
   "area": "Fazenda Pública",
   "situacao": "Acórdão de Repercussão Geral publicado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -64404,7 +64404,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Competência da Agência Nacional de Vigilância Sanitária – ANVISA para editar normas sobre a restrição de importação e comercialização de cigarros, especificamente as contidas na Resolução da Diretoria Colegiada (RDC) nº 14/2012, no que proíbe o uso de certos aditivos.\nRelator: MIN. DIAS TOFFOLI\nRepercussão geral apreciada em: 03/06/2023\nAssuntos: 10001-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Atos Administrativos | Licenças | Comercialização sem Restrições de Produtos Industrializados\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 1348238",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "03/06/2023",
   "dataDaTese": "",
@@ -64579,7 +64579,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 5º, LIII, e 93, IX, da Constituição Federal, entendimento do Tribunal de origem de que (i) a omissão de doação de recursos a companhas eleitorais (caixa dois), tipificada como crime eleitoral no art. 350 da Lei 4.737/1965, possa também ser objeto de investigação sobre a existência de eventual ato ímprobo do agente público, quando praticado no exercício do cargo e para beneficiar o doador (Lei 8.429/1992, na redação da Lei 14.230/2021); e (ii) havendo indícios da prática de atos de improbidade administrativa, seria competente a Justiça estadual, e não a eleitoral, para processar e julgar a lide ajuizada, no caso, pelo Ministério Público.",
   "area": "Fazenda Pública",
   "situacao": "Trânsito em Julgado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -64589,7 +64589,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Crime eleitoral e improbidade administrativa: (I) a possibilidade de dupla responsabilização por crime eleitoral – “caixa dois” – (art. 350 do Código Eleitoral) e ato de improbidade administrativa (Lei 8.429/1992); (II) Justiça competente para julgar ação de improbidade administrativa por ato que também configure crime eleitoral. Art. 350 da Lei 4.737/1965.\nRelator: MIN. ALEXANDRE DE MORAES\nRepercussão geral apreciada em: 15/08/2023\nData da tese: 09/02/2026\nAssuntos: 10013-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Atos Administrativos | Improbidade Administrativa | Enriquecimento ilícito\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 1428742",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "15/08/2023",
   "dataDaTese": "09/02/2026",
@@ -64844,7 +64844,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 2º, 60, § 4º, 201, da Constituição Federal e do artigo 23, § 6º, da Emenda Constitucional 103/2019, se a retirada da criança e do adolescente sob guarda do rol de beneficiários, na qualidade de dependentes do segurado do Regime Geral de Previdência Social, violou os princípios da igualdade, proibição do retrocesso e da proteção integral das crianças e dos adolescentes.",
   "area": "Fazenda Pública",
   "situacao": "Acórdão de Repercussão Geral publicado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -64854,7 +64854,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Exclusão da criança e do adolescente sob guarda do rol de beneficiários, na condição de dependentes, do segurado do Regime Geral de Previdência Social, implementada pelo art. 23 da Emenda Constitucional nº 103/2019.\nRelator: MIN. ANDRÉ MENDONÇA\nRepercussão geral apreciada em: 18/09/2023\nAssuntos: 14820-DIREITO PREVIDENCIÁRIO | Benefícios em Espécie | Pensão por Morte (Art. 74/9) | Urbana (Pensão por Morte (Art. 74/9)) | Menor sob Guarda\n10645-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Controle de Constitucionalidade\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1442021",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "18/09/2023",
   "dataDaTese": "",
@@ -65424,7 +65424,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz do artigo 150, VI, “a”, da Constituição Federal, se o arrendamento de bem imóvel da União para concessionária de serviço público de transporte ferroviário afasta a imunidade tributária recíproca, com a consequente incidência de IPTU sobre o imóvel afetado à prestação do serviço.",
   "area": "Fazenda Pública",
   "situacao": "Acórdão de Repercussão Geral publicado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -65434,7 +65434,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Imunidade tributária recíproca sobre bens afetados à concessão de serviço público.\nRelator: MIN. ANDRÉ MENDONÇA\nRepercussão geral apreciada em: 09/04/2024\nAssuntos: 5952-DIREITO TRIBUTÁRIO | Impostos | IPTU/ Imposto Predial e Territorial Urbano\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1479602",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "09/04/2024",
   "dataDaTese": "",
@@ -66119,7 +66119,7 @@
   "questao": "Recurso extraordinário em que se discute à luz do artigo 5º; XXXVI, da Constituição Federal e dos artigos 3º; e 17 da Emenda Constitucional nº 103/2019 a possibilidade de recolhimento de contribuição previdenciária após a edição da EC nº 103/2019 para enquadramento na regra de transição prevista no art. 17, que exige tempo mínimo de contribuição até a data de entrada em vigor da Emenda.",
   "area": "Fazenda Pública",
   "situacao": "Acórdão de Repercussão Geral publicado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -66129,7 +66129,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Possibilidade de complementação de contribuição previdenciária para enquadramento em regra de transição prevista no art. 17 da Emenda Constitucional nº 103/2019.\nRelator: MIN. ALEXANDRE DE MORAES\nRepercussão geral apreciada em: 05/10/2024\nAssuntos: 6118-DIREITO PREVIDENCIÁRIO | Benefícios em Espécie | Aposentadoria por Tempo de Contribuição (Art. 55/6)\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1508285",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "05/10/2024",
   "dataDaTese": "",
@@ -67466,7 +67466,7 @@
   "questao": "Recurso extraordinário que discute, à luz do entendimento consolidado na ADPF 324, a licitude da contratação de trabalhador autônomo ou pessoa jurídica para a prestação de serviços, bem como o ônus da prova relacionado à alegação de fraude na contratação civil. Preliminarmente, será analisada a competência da Justiça do Trabalho para julgar as causas que tratam da existência de fraude no contrato civil/comercial de prestação de serviços.",
   "area": "Cível",
   "situacao": "Acórdão de Repercussão Geral publicado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -67476,7 +67476,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Competência e ônus da prova nos processos que discutem a existência de fraude no contrato civil/comercial de prestação de serviços; e a licitude da contratação de pessoa jurídica ou trabalhador autônomo para essa finalidade.\nRelator: MIN. GILMAR MENDES\nRepercussão geral apreciada em: 12/04/2025\nAssuntos: 9608-DIREITO CIVIL | Obrigações | Espécies de Contratos | Franquia\n14045-DIREITO DO TRABALHO | Direito Individual do Trabalho | Responsabilidade Solidária/Subsidiária | Terceirização/Tomador de Serviços | Licitude/Ilicitude\n2554-DIREITO DO TRABALHO | Contrato Individual de Trabalho | Reconhecimento de Relação de Emprego\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 1532603",
-  "atualizadoEm": "2026-11-26T03:30:24.690Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "12/04/2025",
   "dataDaTese": "",
@@ -67812,7 +67812,7 @@
   "questao": "Recurso extraordinário em que se discute, à luz dos artigos 5º; X; XII; XXXVI e 129; VI; VII; VIII; e IX, da Constituição Federal, as seguintes hipóteses: (i) saber se o Ministério Público pode requisitar dados às autoridades fiscais, sem autorização judicial; e (ii) saber se o compartilhamento de dados fiscais pressupõe instauração de procedimento de investigação penal formal.",
   "area": "Criminal",
   "situacao": "Acórdão de Repercussão Geral publicado — Há repercussão geral",
-  "suspensao": "",
+  "suspensao": "O STF assinala determinação de suspensão nacional para este tema, na lista de temas de repercussão geral (art. 1.035, § 5º, do CPC). A marca não informa a data nem as exceções: confira o andamento do leading case antes de aplicar a um processo.",
   "julgamento": "",
   "publicacao": "",
   "transito": "",
@@ -67822,7 +67822,7 @@
   "pertinencia": "Possível pertinência — classificação automática ampla",
   "observacoes": "Título: Provas obtidas pelo Ministério Público por requisição de relatórios de inteligência financeira ou de procedimentos fiscalizatórios da Receita, sem autorização judicial e/ou sem a prévia instauração de procedimento de investigação formal.\nRelator: MIN. ALEXANDRE DE MORAES\nRepercussão geral apreciada em: 07/06/2025\nAssuntos: 10926-DIREITO PROCESSUAL PENAL | Ação Penal | Provas | Prova Ilícita\n10891-DIREITO PROCESSUAL PENAL | Habeas Corpus | Habeas Corpus - Cabimento\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1537165",
-  "atualizadoEm": "2026-11-24T20:08:18.947Z",
+  "atualizadoEm": "2026-11-26T18:59:26.685Z",
   "anotacaoManual": "",
   "repercussaoGeral": "07/06/2025",
   "dataDaTese": "",
@@ -69538,7 +69538,8 @@
   "observacoes": "Título: Revisão dos encargos financeiros de contratos de financiamento estudantil celebrados no âmbito do FIES.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 12844-DIREITO À EDUCAÇÃO | Permanência | Programas de Bolsas e Financiamento Estudantil com Recursos Públicos | Fies\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 1620532",
   "atualizadoEm": "2026-11-16T00:56:27.955Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "TJMG-IUJ-1000024410808.0.000",
@@ -69647,7 +69648,8 @@
   "observacoes": "Título: Ônus da prova quanto à impossibilidade de controle da jornada de empregado em trabalho externo.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 13317-DIREITO DO TRABALHO | Duração do Trabalho | Trabalho Externo\n13768-DIREITO DO TRABALHO | Direito Individual do Trabalho | Duração do Trabalho | Controle de Jornada\n13555-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Processo e Procedimento | Provas | Ônus da Prova | Trabalho Externo\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1617212",
   "atualizadoEm": "2026-11-16T00:56:27.955Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "STF-TEMA-1489",
@@ -69670,7 +69672,8 @@
   "observacoes": "Título: Fixação do termo inicial da contagem e dos efeitos financeiros da progressão e da promoção funcional dos servidores do INSS em data distinta do ingresso na carreira.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 14201-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Regime Estatutário | Promoção / Ascensão | Progressão Funcional com Interstício de Doze Meses\n10288-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Sistema Remuneratório e Benefícios\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 1621292",
   "atualizadoEm": "2026-11-23T21:13:13.994Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "TJMG-IUJ-1.0000.24.410808.0.000",
@@ -69715,7 +69718,8 @@
   "observacoes": "Título: Concessão da Gratificação de Movimentação (GMOV) a servidores públicos residentes fora do Distrito Federal e cancelamento administrativo da vantagem.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 10667-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Sistema Remuneratório e Benefícios | Gratificações Estaduais Específicas\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1620936",
   "atualizadoEm": "2026-11-23T21:13:13.994Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "STF-TEMA-1491",
@@ -69738,7 +69742,8 @@
   "observacoes": "Título: Limites da revisão judicial, repartição federativa dos encargos financeiros e legitimidade da União e dos entes subnacionais para figurar no polo passivo de ações nas quais entidades privadas prestadoras de serviços de saúde, em caráter complementar ao SUS, pleiteiam o reajuste da Tabela SUS, mediante sua equiparação aos valores da TUNEP/IVR.\nRelator: MIN. GILMAR MENDES\nAssuntos: 12514-DIREITO DA SAÚDE | Pública | Sistema Único de Saúde (SUS) | Reajuste da tabela do SUS\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1612904",
   "atualizadoEm": "2026-11-24T20:08:18.947Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "STF-TEMA-1492",
@@ -69761,7 +69766,8 @@
   "observacoes": "Título: Inclusão do auxílio-refeição na base de cálculo das férias e do terço constitucional de servidores públicos.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 10310-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Sistema Remuneratório e Benefícios | Gratificação Natalina/13º salário\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1626168",
   "atualizadoEm": "2026-11-10T03:26:05.333Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "TJMG-IRDR-115",
@@ -69805,7 +69811,8 @@
   "observacoes": "Título: Possibilidade de restringir a incidência do art. 62 do Código Florestal à consolidação de ocupações antrópicas anteriores a 22 de julho de 2008.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 11828-DIREITO AMBIENTAL | Área de Preservação Permanente\n13089-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Atos Processuais | Nulidade | Cerceamento de Defesa\n13024-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Liquidação / Cumprimento / Execução | Preclusão / Coisa Julgada\n14067-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Formação, Suspensão e Extinção do Processo | Condições da Ação | Legitimidade Ativa e Passiva\n8986-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Processo e Procedimento | Erro de Procedimento\n9258-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Partes e Procuradores | Honorários Periciais\n9994-DIREITO AMBIENTAL | Dano Ambiental\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1621821",
   "atualizadoEm": "2026-11-10T03:26:05.333Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "STF-TEMA-1494",
@@ -69828,7 +69835,8 @@
   "observacoes": "Título: Presunção de hipossuficiência econômica decorrente do patrocínio da causa pela Defensoria Pública.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 10168-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Organização Político-administrativa / Administração Pública | Conselhos Regionais de Fiscalização Profissional e Afins | Multas e demais Sanções\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 1619165",
   "atualizadoEm": "2026-11-10T03:26:05.333Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "TJMG-IUJ-2817379-39.2026.8.13.0000",
@@ -69873,7 +69881,8 @@
   "observacoes": "Título: Prazo prescricional aplicável à pretensão de reparação de danos morais em ricochete decorrentes da morte de trabalhador.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 14046-DIREITO DO TRABALHO | Prescrição e Decadência no Direito do Trabalho | Prescrição\n8809-DIREITO DO TRABALHO | Responsabilidade Civil do Empregador | Indenização por Dano Material | Acidente de Trabalho\n2569-DIREITO DO TRABALHO | Responsabilidade Civil do Empregador | Indenizaçao por Dano Moral | Acidente de Trabalho\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1624749",
   "atualizadoEm": "2026-11-05T17:19:50.905Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "STF-TEMA-1496",
@@ -69896,7 +69905,8 @@
   "observacoes": "Título: Retomada da exigibilidade do adicional de 1% da Cofins-Importação após a revogação da Medida Provisória nº 774/2017 e incidência da anterioridade nonagesimal.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 10562-DIREITO TRIBUTÁRIO | Contribuições | Contribuições Sociais | COFINS - Importação\n6012-DIREITO TRIBUTÁRIO | Crédito Tributário | Alíquota\n5913-DIREITO TRIBUTÁRIO | Limitações ao Poder de Tributar\n6030-DIREITO TRIBUTÁRIO | GATT -\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1538549",
   "atualizadoEm": "2026-11-05T17:19:50.905Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "TJMG-IUJ-10000.24.422724-5/000",
@@ -69941,7 +69951,8 @@
   "observacoes": "Título: Critérios de cálculo da aposentadoria da pessoa com deficiência após a Emenda Constitucional nº 103/2019.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 14768-DIREITO PREVIDENCIÁRIO | Benefícios em Espécie | Aposentadoria Especial (Art. 57/8) | Pessoa com Deficiência\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1597638",
   "atualizadoEm": "2026-11-12T02:15:14.041Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "STF-TEMA-1498",
@@ -69964,7 +69975,8 @@
   "observacoes": "Título: Requisitos para a contratação temporária de professor substituto no âmbito de instituições públicas distintas.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 10410-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Empregado Público / Temporário | Contrato Temporário de Mão de Obra L 8.745/1993\n10696-DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Categorias Especiais de Servidor Público | Professor\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1602130",
   "atualizadoEm": "2026-11-12T02:15:14.041Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "STF-TEMA-1499",
@@ -69987,7 +69999,8 @@
   "observacoes": "Título: Aplicação do divisor mínimo no cálculo do salário de benefício das aposentadorias concedidas entre a vigência da EC nº 103/2019 e a da Lei nº 14.331/2022.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 6096-DIREITO PREVIDENCIÁRIO | Benefícios em Espécie | Aposentadoria por Idade (Art. 48/51)\n6119-DIREITO PREVIDENCIÁRIO | RMI - Renda Mensal Inicial, Reajustes e Revisões Específicas\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1624991",
   "atualizadoEm": "2026-11-16T00:56:27.955Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "STF-TEMA-1500",
@@ -70010,7 +70023,8 @@
   "observacoes": "Título: Direito à compensação de créditos tributários anteriores à impetração do mandado de segurança e não atingidos pela prescrição.\nRelator: MIN. DIAS TOFFOLI\nAssuntos: 5946-DIREITO TRIBUTÁRIO | Impostos | ICMS/ Imposto sobre Circulação de Mercadorias\n6007-DIREITO TRIBUTÁRIO | Crédito Tributário | Repetição de indébito\n12958-DIREITO PROCESSUAL CIVIL E DO TRABALHO | Mandado de Segurança | Cabimento\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1617746",
   "atualizadoEm": "2026-11-24T20:08:18.947Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "TJMG-IUJ-2822802-77.2026.8.13.0000",
@@ -70099,7 +70113,8 @@
   "observacoes": "Título: Cálculo do adicional de insalubridade de empregados públicos de empresa pública federal sobre o salário-base previsto em contrato de trabalho.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 864-DIREITO DO TRABALHO\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "ARE 1630478",
   "atualizadoEm": "2026-11-24T20:08:18.947Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  },
  {
   "id": "STF-TEMA-1502",
@@ -70122,6 +70137,7 @@
   "observacoes": "Título: Direito ao salário-maternidade da segurada contribuinte individual, especial ou facultativa que verteu uma única contribuição, sem cumprimento de período de carência.\nRelator: MINISTRO PRESIDENTE\nAssuntos: 14831-DIREITO PREVIDENCIÁRIO | Benefícios em Espécie | Salário-Maternidade (Art. 71/73) | Urbano | Contribuinte Individual ou Segurada Desempregada\nO portal do STF não publica o alcance da suspensão em formato legível por programa; quando houver suspensão nacional, confira no painel de Suspensão Nacional.",
   "processos": "RE 1619727",
   "atualizadoEm": "2026-11-26T03:30:24.690Z",
-  "anotacaoManual": ""
+  "anotacaoManual": "",
+  "verificadoEm": "2026-11-26T03:30:24.690Z"
  }
 ]
